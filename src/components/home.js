@@ -2,6 +2,23 @@ import React, { Component } from 'react';
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
+// Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
+import Logo2 from '../assets/images/logo2.png';
+import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
+import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';
+import UserAvatarSmall3 from '../assets/images/user-avatar-small-03.jpg';
+import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
+
+import HomeBackground2 from '../assets/images/home-background-02.jpg';
+import JobCategory1 from '../assets/images/job-category-01.jpg';
+import JobCategory2 from '../assets/images/job-category-02.jpg';
+import JobCategory3 from '../assets/images/job-category-03.jpg';
+import JobCategory4 from '../assets/images/job-category-04.jpg';
+import JobCategory5 from '../assets/images/job-category-05.jpg';
+import JobCategory6 from '../assets/images/job-category-06.jpg';
+import JobCategory7 from '../assets/images/job-category-07.jpg';
+import JobCategory8 from '../assets/images/job-category-08.jpg';
+
 export default class Home extends Component {
     render() {
         return (
@@ -17,7 +34,7 @@ export default class Home extends Component {
                                 <div className="left-side">
                                     {/* Logo */}
                                     <div id="logo">
-                                        <a href="index.html"><img src="images/logo2.png" data-sticky-logo="images/logo.png" data-transparent-logo="images/logo2.png" alt="" /></a>
+                                        <a href="index.html"><img src={Logo2} data-sticky-logo={Logo2} data-transparent-logo={Logo2} alt="" /></a>
                                     </div>
                                     {/* Main Navigation */}
                                     <nav id="navigation">
@@ -194,7 +211,7 @@ export default class Home extends Component {
                                                             {/* Notification */}
                                                             <li className="notifications-not-read">
                                                                 <a href="dashboard-messages.html">
-                                                                    <span className="notification-avatar status-online"><img src="images/user-avatar-small-03.jpg" alt="" /></span>
+                                                                    <span className="notification-avatar status-online"><img src={UserAvatarSmall3} alt="" /></span>
                                                                     <div className="notification-text">
                                                                         <strong>David Peterson</strong>
                                                                         <p className="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
@@ -205,7 +222,7 @@ export default class Home extends Component {
                                                             {/* Notification */}
                                                             <li className="notifications-not-read">
                                                                 <a href="dashboard-messages.html">
-                                                                    <span className="notification-avatar status-offline"><img src="images/user-avatar-small-02.jpg" alt="" /></span>
+                                                                    <span className="notification-avatar status-offline"><img src={UserAvatarSmall2} alt="" /></span>
                                                                     <div className="notification-text">
                                                                         <strong>Sindy Forest</strong>
                                                                         <p className="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
@@ -216,7 +233,7 @@ export default class Home extends Component {
                                                             {/* Notification */}
                                                             <li className="notifications-not-read">
                                                                 <a href="dashboard-messages.html">
-                                                                    <span className="notification-avatar status-online"><img src="images/user-avatar-placeholder.png" alt="" /></span>
+                                                                    <span className="notification-avatar status-online"><img src={UserAvatarPlaceholder} alt="" /></span>
                                                                     <div className="notification-text">
                                                                         <strong>Marcin Kowalski</strong>
                                                                         <p className="notification-msg-text">I received payment. Thanks for cooperation!</p>
@@ -237,7 +254,7 @@ export default class Home extends Component {
                                         {/* Messages */}
                                         <div className="header-notifications user-menu">
                                             <div className="header-notifications-trigger">
-                                                <a href="#"><div className="user-avatar status-online"><img src="images/user-avatar-small-01.jpg" alt="" /></div></a>
+                                                <a href="#"><div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div></a>
                                             </div>
                                             {/* Dropdown */}
                                             <div className="header-notifications-dropdown">
@@ -245,7 +262,7 @@ export default class Home extends Component {
                                                 <div className="user-status">
                                                     {/* User Name / Avatar */}
                                                     <div className="user-details">
-                                                        <div className="user-avatar status-online"><img src="images/user-avatar-small-01.jpg" alt="" /></div>
+                                                        <div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div>
                                                         <div className="user-name">
                                                             Tom Smith <span>Freelancer</span>
                                                         </div>
@@ -285,7 +302,7 @@ export default class Home extends Component {
                     {/* Header Container / End */}
                     {/* Intro Banner
 ================================================== */}
-                    <div className="intro-banner dark-overlay" data-background-image="images/home-background-02.jpg">
+                    <div className="intro-banner dark-overlay" data-background-image={HomeBackground2}>
                         {/* Transparent Header Spacer */}
                         <div className="transparent-header-spacer" />
                         <div className="container">
@@ -375,7 +392,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-list-layout-1.html" className="photo-box small" data-background-image="images/job-category-01.jpg">
+                                    <a href="jobs-list-layout-1.html" className="photo-box small" data-background-image={JobCategory1}>
                                         <div className="photo-box-content">
                                             <h3>Web / Software Dev</h3>
                                             <span>612</span>
@@ -384,7 +401,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-list-layout-full-page-map.html" className="photo-box small" data-background-image="images/job-category-02.jpg">
+                                    <a href="jobs-list-layout-full-page-map.html" className="photo-box small" data-background-image={JobCategory2}>
                                         <div className="photo-box-content">
                                             <h3>Data Science / Analitycs</h3>
                                             <span>113</span>
@@ -393,7 +410,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-grid-layout-full-page.html" className="photo-box small" data-background-image="images/job-category-03.jpg">
+                                    <a href="jobs-grid-layout-full-page.html" className="photo-box small" data-background-image={JobCategory3}>
                                         <div className="photo-box-content">
                                             <h3>Accounting / Consulting</h3>
                                             <span>186</span>
@@ -402,7 +419,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image="images/job-category-04.jpg">
+                                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory4}>
                                         <div className="photo-box-content">
                                             <h3>Writing &amp; Translations</h3>
                                             <span>298</span>
@@ -411,7 +428,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-list-layout-1.html" className="photo-box small" data-background-image="images/job-category-05.jpg">
+                                    <a href="jobs-list-layout-1.html" className="photo-box small" data-background-image={JobCategory5}>
                                         <div className="photo-box-content">
                                             <h3>Sales &amp; Marketing</h3>
                                             <span>549</span>
@@ -420,7 +437,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-list-layout-full-page-map.html" className="photo-box small" data-background-image="images/job-category-06.jpg">
+                                    <a href="jobs-list-layout-full-page-map.html" className="photo-box small" data-background-image={JobCategory6}>
                                         <div className="photo-box-content">
                                             <h3>Graphics &amp; Design</h3>
                                             <span>873</span>
@@ -429,7 +446,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-grid-layout-full-page.html" className="photo-box small" data-background-image="images/job-category-07.jpg">
+                                    <a href="jobs-grid-layout-full-page.html" className="photo-box small" data-background-image={JobCategory7}>
                                         <div className="photo-box-content">
                                             <h3>Digital Marketing</h3>
                                             <span>125</span>
@@ -438,7 +455,7 @@ export default class Home extends Component {
                                 </div>
                                 <div className="col-xl-3 col-md-6">
                                     {/* Photo Box */}
-                                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image="images/job-category-08.jpg">
+                                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory8}>
                                         <div className="photo-box-content">
                                             <h3>Education &amp; Training</h3>
                                             <span>445</span>
@@ -683,7 +700,7 @@ export default class Home extends Component {
                                 <div className="fw-carousel-review">
                                     <div className="testimonial-box">
                                         <div className="testimonial-avatar">
-                                            <img src="images/user-avatar-small-02.jpg" alt="" />
+                                            <img src={UserAvatarSmall2} alt="" />
                                         </div>
                                         <div className="testimonial-author">
                                             <h4>Sindy Forest</h4>
@@ -696,7 +713,7 @@ export default class Home extends Component {
                                 <div className="fw-carousel-review">
                                     <div className="testimonial-box">
                                         <div className="testimonial-avatar">
-                                            <img src="images/user-avatar-small-01.jpg" alt="" />
+                                            <img src={UserAvatarSmall1} alt="" />
                                         </div>
                                         <div className="testimonial-author">
                                             <h4>Tom Smith</h4>
@@ -709,7 +726,7 @@ export default class Home extends Component {
                                 <div className="fw-carousel-review">
                                     <div className="testimonial-box">
                                         <div className="testimonial-avatar">
-                                            <img src="images/user-avatar-placeholder.png" alt="" />
+                                            <img src={UserAvatarPlaceholder} alt="" />
                                         </div>
                                         <div className="testimonial-author">
                                             <h4>Sebastiano Piccio</h4>
@@ -722,7 +739,7 @@ export default class Home extends Component {
                                 <div className="fw-carousel-review">
                                     <div className="testimonial-box">
                                         <div className="testimonial-avatar">
-                                            <img src="images/user-avatar-small-03.jpg" alt="" />
+                                            <img src={UserAvatarSmall3} alt="" />
                                         </div>
                                         <div className="testimonial-author">
                                             <h4>David Peterson</h4>
@@ -735,7 +752,7 @@ export default class Home extends Component {
                                 <div className="fw-carousel-review">
                                     <div className="testimonial-box">
                                         <div className="testimonial-avatar">
-                                            <img src="images/user-avatar-placeholder.png" alt="" />
+                                            <img src={UserAvatarPlaceholder} alt="" />
                                         </div>
                                         <div className="testimonial-author">
                                             <h4>Marcin Kowalski</h4>
@@ -807,7 +824,7 @@ export default class Home extends Component {
                                             <div className="footer-rows-left">
                                                 <div className="footer-row">
                                                     <div className="footer-row-inner footer-logo">
-                                                        <img src="images/logo2.png" alt="" />
+                                                        <img src={Logo2} alt="" />
                                                     </div>
                                                 </div>
                                             </div>
