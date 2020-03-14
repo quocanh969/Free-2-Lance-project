@@ -6,7 +6,6 @@
       // Locations
       // ----------------------------------------------- //
       var ib = new InfoBox();
-
       // Infobox Output
       function locationData(jobURL, companyLogo, companyName, jobTitle, verifiedBadge) {
           return(''+
