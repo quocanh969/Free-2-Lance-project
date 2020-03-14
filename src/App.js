@@ -4,6 +4,7 @@ import Home from './components/home';
 
 import {BrowserRouter,Switch, Redirect, Route} from 'react-router-dom';
 import JobDetail from './components/JobDetail';
+import JobList from './components/JobList';
 
 function App() {
   return (    
@@ -11,6 +12,7 @@ function App() {
       <Switch>
         <Route path='/home' exact component={Home}></Route>
         <Route path='/job-detail' exact component={JobDetail}></Route>
+        <Route path='/job-list' exact component={JobList}></Route>
         <Redirect to='/home'></Redirect>
       </Switch>
     </BrowserRouter>
