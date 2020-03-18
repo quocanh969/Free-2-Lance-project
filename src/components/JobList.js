@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MapContainer from './map_JobsList';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 import Logo from '../assets/images/logo.png';
@@ -22,14 +23,34 @@ export default class JobList extends Component {
         document.body.appendChild(script);
     }
 
+    state = {
+        places: [
+            {
+                name: "Sydney",
+                title: "Sydney",
+                position: { lat: -33.847927, lng: 150.6517938 }
+            },
+            {
+                name: "Melbourne",
+                title: "Melbourne",
+                position: { lat: -37.9722342, lng: 144.7729561 }
+            },
+            {
+                name: "Perth",
+                title: "Perth",
+                position: { lat: -31.9546904, lng: 115.8350292 }
+            }
+        ]
+    }
+
     render() {
         return (
-            <div id="wrapper">
+            <div id="wrapper" >
                 {/* Header Container
 ================================================== */}
-                <header id="header-container" className="fullwidth not-sticky">
+                < header id="header-container" className="fullwidth not-sticky" >
                     {/* Header */}
-                    <div id="header">
+                    < div id="header" >
                         <div className="container">
                             {/* Left Side Content */}
                             <div className="left-side">
@@ -786,14 +807,19 @@ export default class JobList extends Component {
                                 <span className="show-text">Show Filters</span>
                                 <span className="hide-text">Hide Filters</span>
                             </button>
-                            <div className="filter-button-tooltip">Click to expand sidebar with filters!</div>
+                            {/* <div className="filter-button-tooltip">Click to expand sidebar with filters!</div> */}
                         </div>
                         {/* Map */}
-                        <div id="map" data-map-zoom={12} data-map-scroll="true" />
+                        {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
+                            <MapContainer></MapContainer>
+                        </div> */}
+                        <div>
+                            <MapContainer places={this.state.places} />
+                        </div>
                     </div>
                     {/* Full Page Map / End */}
                 </div>
-            </div>
+            </div >
         )
     }
 }

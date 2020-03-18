@@ -5,6 +5,7 @@ import Home from './components/home';
 import {BrowserRouter,Switch, Redirect, Route} from 'react-router-dom';
 import JobDetail from './components/JobDetail';
 import JobList from './components/JobList';
+import MapContainer from './components/map_JobsList';
 
 function App() {
   return (    
