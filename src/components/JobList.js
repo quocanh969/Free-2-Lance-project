@@ -813,9 +813,9 @@ export default class JobList extends Component {
                         {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
                             <MapContainer></MapContainer>
                         </div> */}
-                        <div>
+                        {/* <div>
                             <MapContainer places={this.state.places} />
-                        </div>
+                        </div> */}
                     </div>
                     {/* Full Page Map / End */}
                 </div>
