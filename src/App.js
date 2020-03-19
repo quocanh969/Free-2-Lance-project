@@ -13,6 +13,8 @@ import Contact from './components/Contact';
 import Register from './components/Login/Register';
 import ForgetPassword from './components/Login/ForgetPassword';
 import UserDetail from './components/User/UserDetail';
+import MapContainer from './components/map_JobsList';
+
 
 function App() {
   console.log(window.location);

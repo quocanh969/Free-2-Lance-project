@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Header from './Header';
 
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
+import MapContainer from './map_JobsList';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 import Logo from '../assets/images/logo.png';
@@ -24,6 +24,41 @@ export default class JobList extends Component {
         script.src = "./assets/maps.js";
         script.async = true;
         document.body.appendChild(script);
+    }
+
+    state = {
+        places: [
+            {
+                name: "Sydney",
+                title: "Sydney",
+                position: { lat: -33.847927, lng: 150.6517938 }
+            },
+            {
+                name: "Melbourne",
+                title: "Melbourne",
+                position: { lat: -37.9722342, lng: 144.7729561 }
+            },
+            {
+                name: "Perth",
+                title: "Perth",
+                position: { lat: -31.9546904, lng: 115.8350292 }
+            }
+        ]
+    }
+
+    calculateAvgCoord = () => {
+        var sumLat = 0;
+        var sumLng = 0;
+        this.state.places.map(place => {
+            sumLat += place.position.lat;
+            sumLng += place.position.lng;
+        });
+        var avgLat = sumLat/this.state.places.length;
+        var avgLng = sumLng/this.state.places.length;
+        console.log("Lat: " + avgLat);
+        console.log("Lng: " + avgLng);
+
+        return {avgLat, avgLng};
     }
 
     render() {
@@ -471,24 +506,30 @@ export default class JobList extends Component {
                         {/* Pagination / End */}
                         
                     </div>
-                </div>
-                {/* Full Page Content / End */}
-                {/* Full Page Map */}
-                <div className="full-page-map-container">
-                    {/* Enable Filters Button */}
-                    <div className="filter-button-container">
-                        <button className="enable-filters-button">
-                            <i className="enable-filters-button-icon" />
-                            <span className="show-text">Show Filters</span>
-                            <span className="hide-text">Hide Filters</span>
-                        </button>
-                        <div className="filter-button-tooltip">Click to expand sidebar with filters!</div>
+                    {/* Full Page Content / End */}
+                    {/* Full Page Map */}
+                    <div className="full-page-map-container">
+                        {/* Enable Filters Button */}
+                        <div className="filter-button-container">
+                            <button className="enable-filters-button">
+                                <i className="enable-filters-button-icon" />
+                                <span className="show-text">Show Filters</span>
+                                <span className="hide-text">Hide Filters</span>
+                            </button>
+                            {/* <div className="filter-button-tooltip">Click to expand sidebar with filters!</div> */}
+                        </div>
+                        {/* Map */}
+                        {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
+                            <MapContainer></MapContainer>
+                        </div> */}
+                        <div>
+                            <MapContainer places={this.state.places} isList={true} avgCoord={this.calculateAvgCoord()}/>
+                        </div>
                     </div>
                     {/* Map */}
                     <div id="map" data-map-zoom={12} data-map-scroll="true" />
                 </div>
-                {/* Full Page Map / End */}
-            </div>
+            </div >
         )
     }
 }
