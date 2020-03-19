@@ -43,6 +43,21 @@ export default class JobList extends Component {
         ]
     }
 
+    calculateAvgCoord = () => {
+        var sumLat = 0;
+        var sumLng = 0;
+        this.state.places.map(place => {
+            sumLat += place.position.lat;
+            sumLng += place.position.lng;
+        });
+        var avgLat = sumLat/this.state.places.length;
+        var avgLng = sumLng/this.state.places.length;
+        console.log("Lat: " + avgLat);
+        console.log("Lng: " + avgLng);
+
+        return {avgLat, avgLng};
+    }
+
     render() {
         return (
             <div id="wrapper" >
@@ -814,7 +829,7 @@ export default class JobList extends Component {
                             <MapContainer></MapContainer>
                         </div> */}
                         <div>
-                            <MapContainer places={this.state.places} />
+                            <MapContainer places={this.state.places} isList={true} avgCoord={this.calculateAvgCoord()}/>
                         </div>
                     </div>
                     {/* Full Page Map / End */}

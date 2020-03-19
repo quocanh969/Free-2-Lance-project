@@ -17,6 +17,8 @@ import CompanyLogo3a from '../assets/images/company-logo-03.png';
 
 import BackgroundSingleJob from '../assets/images/single-job.jpg';
 
+import MapContainer from './map_JobsList'
+
 export default class JobDetail extends Component {
     componentDidMount() {
         const script = document.createElement("script");
@@ -25,6 +27,15 @@ export default class JobDetail extends Component {
         document.body.appendChild(script);
     }
 
+    state = {
+        places: [
+            {
+                name: "Dud location 1",
+                title: "Dud location 1",
+                position: { lat: 51.507717, lng: -0.131095 }
+            }
+        ]
+    }
     render() {
         return (
             <div>
@@ -352,8 +363,11 @@ export default class JobDetail extends Component {
                                 <div className="single-page-section">
                                     <h3 className="margin-bottom-30">Location</h3>
                                     <div id="single-job-map-container">
-                                        <div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger" />
-                                        <a href="#" id="streetView">Street View</a>
+                                        {/* <div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger" /> */} */}
+                                        {/* <a href="#" id="streetView">Street View</a> */}
+                                        <div>
+                                            <MapContainer places={this.state.places} isList={false}/>
+                                        </div>
                                         {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
                                     </div>
                                 </div>
