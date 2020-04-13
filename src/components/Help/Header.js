@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import '../assets/css/style.css';
-import '../assets/css/colors/blue.css';
+import '../../assets/css/style.css';
+import '../../assets/css/colors/blue.css';
 
-import Logo2 from '../assets/images/logo2.png';
-import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
-import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';
-import UserAvatarSmall3 from '../assets/images/user-avatar-small-03.jpg';
-import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
+import Logo2 from '../../assets/images/logo2.png';
+import UserAvatarSmall1 from '../../assets/images/user-avatar-small-01.jpg';
+import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
+import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
+import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 
 export default class Header extends Component {
     render() {

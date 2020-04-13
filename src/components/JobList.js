@@ -17,6 +17,7 @@ import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
 import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';
 import UserAvatarSmall3 from '../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
+import MiniFooter from './Help/MiniFooter';
 
 export default class JobList extends Component {
     componentDidMount() {
@@ -43,6 +44,140 @@ export default class JobList extends Component {
                 title: "Perth",
                 position: { lat: -31.9546904, lng: 115.8350292 }
             }
+        ],
+        jobList: [
+            {
+                id: 1,
+                logo: CompanyLogo1,
+                company:'Hexagon',
+                title:'Bilingual Event Support Specialist',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 2,
+                logo: CompanyLogo5,
+                company:'Laxo',
+                title:'Competition Law Officer',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 3,
+                logo: CompanyLogo2,
+                company:'Coffee',
+                title:'Barista and Cashier',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 4,
+                logo: CompanyLogo3,
+                company:'King',
+                title:'Restaurant General Manager',
+                isVerified: true,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 5,
+                logo: CompanyLogo5,
+                company:'Skyist',
+                title:'International Marketing Coordinator',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 6,
+                logo: CompanyLogo5,
+                company:'Podous',
+                title:'Construction Labourers',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 7,
+                logo: CompanyLogo4,
+                company:'Mates',
+                title:'Administrative Assistant',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 8,
+                logo: CompanyLogo6,
+                company:'Trideo',
+                title:'Human Resources Consultant',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 9,
+                logo: CompanyLogo6,
+                company:'Trideo',
+                title:'International Marketing Specialist',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 10,
+                logo: CompanyLogo2,
+                company:'Coffee',
+                title:'Terrain Cafe Barista',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 11,
+                logo: CompanyLogo5,
+                company:'Kinte',
+                title:'Skilled Labourer',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
+            {
+                id: 12,
+                logo: CompanyLogo5,
+                company:'Alilia',
+                title:'Healthcare Claims Advisor',
+                isVerified: false,
+                location: ' San Francisco',
+                workingTime: ' Full Time',
+                salary: ' $35000-$38000',
+                postDay: ' 2 days ago',
+            },
         ]
     }
 
@@ -59,6 +194,40 @@ export default class JobList extends Component {
         console.log("Lng: " + avgLng);
 
         return {avgLat, avgLng};
+    }
+
+    generateJobList() {
+        let content = [];
+        for(let e of this.state.jobList)
+        {            
+            content.push(
+                <a href="single-job-page.html" className="job-listing" key={e.id}>
+                    {/* Job Listing Details */}
+                    <div className="job-listing-details">
+                        {/* Logo */}
+                        <div className="job-listing-company-logo">
+                            <img src={e.logo} alt="" />
+                        </div>
+                        {/* Details */}
+                        <div className="job-listing-description">
+                            <h4 className="job-listing-company">{e.company} {e.isVerified ? <span className="verified-badge" title="Verified Employer" data-tippy-placement="top"/>:''}</h4>
+                            <h3 className="job-listing-title">{e.title}</h3>
+                        </div>
+                    </div>
+                    {/* Job Listing Footer */}
+                    <div className="job-listing-footer">
+                        <span className="bookmark-icon" />
+                        <ul>
+                            <li><i className="icon-material-outline-location-on" />{e.location}</li>
+                            <li><i className="icon-material-outline-business-center" />{e.workingTime}</li>
+                            <li><i className="icon-material-outline-account-balance-wallet" />{e.salary}</li>
+                            <li><i className="icon-material-outline-access-time" />{e.postDay}</li>
+                        </ul>
+                    </div>
+                </a>                            
+            )
+        }
+        return content;
     }
 
     render() {
@@ -186,307 +355,8 @@ export default class JobList extends Component {
                                 </select>
                             </div>
                         </div>
-                        <div className="listings-container grid-layout margin-top-35">
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo1} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Hexagon <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4>
-                                        <h3 className="job-listing-title">Bilingual Event Support Specialist</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo5} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Laxo</h4>
-                                        <h3 className="job-listing-title">Competition Law Officer</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo2} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Coffee</h4>
-                                        <h3 className="job-listing-title">Barista and Cashier</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo3} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">King <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4>
-                                        <h3 className="job-listing-title">Restaurant General Manager</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo5} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Skyist</h4>
-                                        <h3 className="job-listing-title">International Marketing Coordinator</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo5} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Podous</h4>
-                                        <h3 className="job-listing-title">Construction Labourers</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo4} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Mates</h4>
-                                        <h3 className="job-listing-title">Administrative Assistant</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo6} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Trideo</h4>
-                                        <h3 className="job-listing-title">Human Resources Consultant</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo6} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Trideo</h4>
-                                        <h3 className="job-listing-title">International Marketing Specialist</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo2} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Coffee</h4>
-                                        <h3 className="job-listing-title">Terrain Cafe Barista</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo5} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Kinte</h4>
-                                        <h3 className="job-listing-title">Skilled Labourer</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
-                            {/* Job Listing */}
-                            <a href="single-job-page.html" className="job-listing">
-                                {/* Job Listing Details */}
-                                <div className="job-listing-details">
-                                    {/* Logo */}
-                                    <div className="job-listing-company-logo">
-                                        <img src={CompanyLogo5} alt="" />
-                                    </div>
-                                    {/* Details */}
-                                    <div className="job-listing-description">
-                                        <h4 className="job-listing-company">Alilia</h4>
-                                        <h3 className="job-listing-title">Healthcare Claims Advisor</h3>
-                                    </div>
-                                </div>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <span className="bookmark-icon" />
-                                    <ul>
-                                        <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                        <li><i className="icon-material-outline-business-center" /> Full Time</li>
-                                        <li><i className="icon-material-outline-account-balance-wallet" /> $35000-$38000</li>
-                                        <li><i className="icon-material-outline-access-time" /> 2 days ago</li>
-                                    </ul>
-                                </div>
-                            </a>
+                        <div className="listings-container compact-list-layout margin-top-35 margin-bottom-25">
+                            {this.generateJobList()}
                         </div>
                         {/* Pagination */}
                         <div className="clearfix" />
@@ -504,31 +374,35 @@ export default class JobList extends Component {
                         </div>
                         <div className="clearfix" />
                         {/* Pagination / End */}
-                        
+                        <MiniFooter></MiniFooter>    
                     </div>
-                    {/* Full Page Content / End */}
-                    {/* Full Page Map */}
-                    <div className="full-page-map-container">
-                        {/* Enable Filters Button */}
-                        <div className="filter-button-container">
-                            <button className="enable-filters-button">
-                                <i className="enable-filters-button-icon" />
-                                <span className="show-text">Show Filters</span>
-                                <span className="hide-text">Hide Filters</span>
-                            </button>
-                            {/* <div className="filter-button-tooltip">Click to expand sidebar with filters!</div> */}
-                        </div>
-                        {/* Map */}
-                        {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
-                            <MapContainer></MapContainer>
-                        </div> */}
-                        {/* <div>
-                            <MapContainer places={this.state.places} />
-                        </div> */}
+                    {/* Full Page Content / End */}    
+                                
+                </div>
+
+                
+                {/* Full Page Map */}
+                <div className="full-page-map-container">
+                    {/* Enable Filters Button */}
+                    <div className="filter-button-container">
+                        <button className="enable-filters-button">
+                            <i className="enable-filters-button-icon" />
+                            <span className="show-text">Show Filters</span>
+                            <span className="hide-text">Hide Filters</span>
+                        </button>
+                        <div className="filter-button-tooltip">Click to expand sidebar with filters!</div>
                     </div>
                     {/* Map */}
-                    <div id="map" data-map-zoom={12} data-map-scroll="true" />
+                    {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
+                        <MapContainer></MapContainer>
+                    </div> */}
+                    {/* <div>
+                        <MapContainer places={this.state.places} />
+                    </div> */}
+                    <div id="map" data-map-zoom={12} data-map-scroll="true"></div>
                 </div>
+                {/* Map */}
+
             </div >
         )
     }

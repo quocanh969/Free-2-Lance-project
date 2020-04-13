@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../Header';
+import Header from '../Help/Header';
 
 // Image
 import SingleFreelancer from '../../assets/images/single-freelancer.jpg';
