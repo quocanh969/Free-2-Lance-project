@@ -17,7 +17,6 @@ import MapContainer from './components/map_JobsList';
 
 
 function App() {
-  console.log(window.location);
   return (
     <div>
         <BrowserRouter>

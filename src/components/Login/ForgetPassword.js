@@ -1,9 +1,46 @@
 import React, { Component } from 'react';
-import Header from '../Header';
 
-import { NavLink } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { sendForgetPassword } from '../../actions/Login';
+import reducer from '../../reducers/reducer';
 
-export default class ForgetPassword extends Component {
+class ForgetPasswordComponent extends Component {
+
+    sendForgetPWReq() {
+        console.log(this.props);
+        let {onSend} = this.props;
+
+        onSend('123456');
+    }
+
+    noticeRequest() {
+        let {sending, status, message} = this.props.ForgetPWReducer;
+
+        if(status === 0 && sending)
+        {
+            return (
+                <h1>SENDING</h1>
+            )
+        }
+        else if(status === 1)
+        {
+            return (
+                <h1>SUCCESS</h1>
+            )
+        }
+        else if(status === -1)
+        {
+            return (
+                <h1>FAILURE</h1>
+            )
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div>
@@ -37,14 +74,15 @@ export default class ForgetPassword extends Component {
                                     <span>If you remembered it, get back to <NavLink to='/login'>Sign In!</NavLink></span>
                                 </div>
                                 {/* Form */}
-                                <form method="post" id="login-form">
+                                {/* <form method="post" id="login-form">
                                     <div className="input-with-icon-left">
                                         <i className="icon-material-baseline-mail-outline" />
                                         <input type="email" className="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address" required />
                                     </div>
-                                </form>
+                                </form> */}
                                 {/* Button */}
-                                <button className="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit" form="login-form">Send Email <i className="icon-material-outline-arrow-right-alt" /></button>                                
+                                {this.noticeRequest()}
+                                <button onClick={()=>{this.sendForgetPWReq()}} className="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit" form="login-form">Send Email <i className="icon-material-outline-arrow-right-alt" /></button>                                
                             </div>
                         </div>
                     </div>
@@ -56,3 +94,20 @@ export default class ForgetPassword extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSend: email => {            
+            dispatch(sendForgetPassword(email));
+        },
+    }
+}
+
+const ForgetPassword = withRouter(connect(mapStateToProps, mapDispatchToProps)(ForgetPasswordComponent));
+export default ForgetPassword;

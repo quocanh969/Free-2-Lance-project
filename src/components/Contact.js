@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Header from './Header';
-import MapContainer from './map_JobsList'
+import Header from './Help/Header';
 
+import MapContainer from './map_JobsList';
 import { NavLink } from 'react-router-dom';
 
 export default class Contact extends Component {
@@ -9,7 +9,7 @@ export default class Contact extends Component {
         places: [{
             name: "HCMUS",
             title: "HCMUS",
-            position: {lat: 0.0, lng: 0.0}
+            position: { lat: 0.0, lng: 0.0 }
         }]
     }
     render() {
@@ -24,7 +24,7 @@ export default class Contact extends Component {
                                 {/* Breadcrumbs */}
                                 <nav id="breadcrumbs" className="dark">
                                     <ul>
-                                        <li><NavLink to='/home'>Home</NavLink></li>                                        
+                                        <li><NavLink to='/home'>Home</NavLink></li>
                                         <li>Contact</li>
                                     </ul>
                                 </nav>

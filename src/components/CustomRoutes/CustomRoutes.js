@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Header from '../Header';
-import Footer from '../Footer';
+import Header from '../Help/Header';
+import Footer from '../Help/Footer';
 
 export const SRoute = ({ component: Component, ...rest }) => {    
     
@@ -15,10 +15,27 @@ export const SRoute = ({ component: Component, ...rest }) => {
                             <header id="header-container" className='fullwidth transparent-header'>
                                 <Header></Header>
                             </header>
-                            <div className="clearfix" />                            
-                            <Component {...props}></Component>
+                            <div className="clearfix" />    
+                            
+                            <Component {...props}></Component> 
+                            
                             <Footer></Footer>
                         </div>                        
+                    )
+                }
+                else if (window.location.href.includes('job-list'))
+                {
+                    console.log('haleluyah');
+                    console.log(window.location.href.includes('job-list'));
+                    return (
+                        <div id="wrapper">
+                            <header id="header-container" className='fullwidth'>
+                                <Header></Header>
+                            </header>
+                            <div className="clearfix" /> 
+
+                            <Component {...props}></Component>    
+                        </div>                      
                     )
                 }
                 else
@@ -29,7 +46,9 @@ export const SRoute = ({ component: Component, ...rest }) => {
                                 <Header></Header>
                             </header>
                             <div className="clearfix" /> 
-                            <Component {...props}></Component>
+
+                            <Component {...props}></Component>                             
+                                                    
                             <Footer></Footer>
                         </div> 
                     )

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import Header from './Header';
+import Header from './Help/Header';
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
