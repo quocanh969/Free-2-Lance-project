@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { readLocation } from '../actions/ReadLocation';
+import reducer from '../reducers/reducer'
 
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 import MapContainer from './map_JobsList';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
-import Logo from '../assets/images/logo.png';
-import CompanyLogo1 from '../assets/images/company-logo-01.png';
-import CompanyLogo2 from '../assets/images/company-logo-02.png';
-import CompanyLogo3 from '../assets/images/company-logo-03.png';
-import CompanyLogo4 from '../assets/images/company-logo-04.png';
-import CompanyLogo5 from '../assets/images/company-logo-05.png';
-import CompanyLogo6 from '../assets/images/company-logo-06.png';
 
-import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
-import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';
-import UserAvatarSmall3 from '../assets/images/user-avatar-small-03.jpg';
-import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
 import MiniFooter from './Help/MiniFooter';
 
 export default class JobList extends Component {
@@ -25,23 +18,23 @@ export default class JobList extends Component {
         super(props);
 
         this.state = {
-            places: [
-                {
-                    name: "Sydney",
-                    title: "Sydney",
-                    position: { lat: -33.847927, lng: 150.6517938 }
-                },
-                {
-                    name: "Melbourne",
-                    title: "Melbourne",
-                    position: { lat: -37.9722342, lng: 144.7729561 }
-                },
-                {
-                    name: "Perth",
-                    title: "Perth",
-                    position: { lat: -31.9546904, lng: 115.8350292 }
-                }
-            ],
+            // places: [
+            //     {
+            //         name: "Sydney",
+            //         title: "Sydney",
+            //         position: { lat: -33.847927, lng: 150.6517938 }
+            //     },
+            //     {
+            //         name: "Melbourne",
+            //         title: "Melbourne",
+            //         position: { lat: -37.9722342, lng: 144.7729561 }
+            //     },
+            //     {
+            //         name: "Perth",
+            //         title: "Perth",
+            //         position: { lat: -31.9546904, lng: 115.8350292 }
+            //     }
+            // ],
             jobList: [
                 {
                     id: 1,
@@ -184,27 +177,189 @@ export default class JobList extends Component {
         script.src = "./assets/maps.js";
         script.async = true;
         document.body.appendChild(script);
-    }   
+    }
+    // state = {
+    //     places: [
+    //         {
+    //             name: "Sydney",
+    //             title: "Sydney",
+    //             position: { lat: -33.847927, lng: 150.6517938 }
+    //         },
+    //         {
+    //             name: "Melbourne",
+    //             title: "Melbourne",
+    //             position: { lat: -37.9722342, lng: 144.7729561 }
+    //         },
+    //         {
+    //             name: "Perth",
+    //             title: "Perth",
+    //             position: { lat: -31.9546904, lng: 115.8350292 }
+    //         }
+    //     ],
+    //     jobList: [
+    //         {
+    //             id: 1,
+    //             logo: CompanyLogo1,
+    //             company: 'Hexagon',
+    //             title: 'Bilingual Event Support Specialist',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 2,
+    //             logo: CompanyLogo5,
+    //             company: 'Laxo',
+    //             title: 'Competition Law Officer',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 3,
+    //             logo: CompanyLogo2,
+    //             company: 'Coffee',
+    //             title: 'Barista and Cashier',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 4,
+    //             logo: CompanyLogo3,
+    //             company: 'King',
+    //             title: 'Restaurant General Manager',
+    //             isVerified: true,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 5,
+    //             logo: CompanyLogo5,
+    //             company: 'Skyist',
+    //             title: 'International Marketing Coordinator',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 6,
+    //             logo: CompanyLogo5,
+    //             company: 'Podous',
+    //             title: 'Construction Labourers',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 7,
+    //             logo: CompanyLogo4,
+    //             company: 'Mates',
+    //             title: 'Administrative Assistant',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 8,
+    //             logo: CompanyLogo6,
+    //             company: 'Trideo',
+    //             title: 'Human Resources Consultant',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 9,
+    //             logo: CompanyLogo6,
+    //             company: 'Trideo',
+    //             title: 'International Marketing Specialist',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 10,
+    //             logo: CompanyLogo2,
+    //             company: 'Coffee',
+    //             title: 'Terrain Cafe Barista',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 11,
+    //             logo: CompanyLogo5,
+    //             company: 'Kinte',
+    //             title: 'Skilled Labourer',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //         {
+    //             id: 12,
+    //             logo: CompanyLogo5,
+    //             company: 'Alilia',
+    //             title: 'Healthcare Claims Advisor',
+    //             isVerified: false,
+    //             location: ' San Francisco',
+    //             workingTime: ' Full Time',
+    //             salary: ' $35000-$38000',
+    //             postDay: ' 2 days ago',
+    //         },
+    //     ]
+    // }
+
+    // readLocationOnMap = () => {
+    //     console.log(this.props);
+    //     let {onSend} = this.props;
+    // }
+
+    // noticeRequest = () => {
+    //     let {message} = this.props.readLocation
+    // }
 
     calculateAvgCoord = () => {
         var sumLat = 0;
         var sumLng = 0;
-        this.state.places.map(place => {
+        this.props.ReadLocationReducer.places.map(place => {
             sumLat += place.position.lat;
             sumLng += place.position.lng;
         });
-        var avgLat = sumLat/this.state.places.length;
-        var avgLng = sumLng/this.state.places.length;
+        var avgLat = sumLat / this.props.ReadLocationReducer.places.length;
+        var avgLng = sumLng / this.props.ReadLocationReducer.places.length;
         console.log("Lat: " + avgLat);
         console.log("Lng: " + avgLng);
 
-        return {avgLat, avgLng};
+        return { avgLat, avgLng };
     }
 
     generateJobList() {
         let content = [];
-        for(let e of this.state.jobList)
-        {            
+        console.log(this.props);
+        for (let e of this.props.ReadLocationReducer.jobList) {
             content.push(
                 <a href="single-job-page.html" className="job-listing" key={e.id}>
                     {/* Job Listing Details */}
@@ -215,7 +370,7 @@ export default class JobList extends Component {
                         </div>
                         {/* Details */}
                         <div className="job-listing-description">
-                            <h4 className="job-listing-company">{e.company} {e.isVerified ? <span className="verified-badge" title="Verified Employer" data-tippy-placement="top"/>:''}</h4>
+                            <h4 className="job-listing-company">{e.company} {e.isVerified ? <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /> : ''}</h4>
                             <h3 className="job-listing-title">{e.title}</h3>
                         </div>
                     </div>
@@ -229,7 +384,7 @@ export default class JobList extends Component {
                             <li><i className="icon-material-outline-access-time" />{e.postDay}</li>
                         </ul>
                     </div>
-                </a>                            
+                </a>
             )
         }
         return content;
@@ -379,14 +534,13 @@ export default class JobList extends Component {
                         </div>
                         <div className="clearfix" />
                         {/* Pagination / End */}
-                        <MiniFooter></MiniFooter>      
+                        <MiniFooter></MiniFooter>
                     </div>
-                    {/* Full Page Content / End */}    
-                    
+                    {/* Full Page Content / End */}
+
                 </div>
 
-                
-                
+
                 {/* Full Page Map */}
                 <div className="full-page-map-container">
                     {/* Enable Filters Button */}
@@ -402,10 +556,10 @@ export default class JobList extends Component {
                     {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
                         <MapContainer></MapContainer>
                     </div> */}
-                    {/* <div>
-                        <MapContainer places={this.state.places} />
-                    </div> */}
-                    <div id="map" data-map-zoom={12} data-map-scroll="true"></div>
+                    <div>
+                        <MapContainer places={this.props.ReadLocationReducer.places} isList={true} avgCoord={this.calculateAvgCoord()} />
+                    </div> 
+                    {/* <div id="map" data-map-zoom={12} data-map-scroll="true"></div> */}
                 </div>
                 {/* Map */}
 
@@ -413,3 +567,18 @@ export default class JobList extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSend: () => {
+            dispatch(readLocation());
+        }
+    }
+}
+
+const JobList = withRouter(connect(mapStateToProps, mapDispatchToProps)(JobListComponent));
+export default JobList;

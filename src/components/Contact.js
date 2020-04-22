@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import Header from './Help/Header';
 
+import MapContainer from './map_JobsList';
 import { NavLink } from 'react-router-dom';
 
 export default class Contact extends Component {
+    state = {
+        places: [{
+            name: "HCMUS",
+            title: "HCMUS",
+            position: { lat: 0.0, lng: 0.0 }
+        }]
+    }
     render() {
         return (
             <div>
@@ -16,7 +24,7 @@ export default class Contact extends Component {
                                 {/* Breadcrumbs */}
                                 <nav id="breadcrumbs" className="dark">
                                     <ul>
-                                        <li><NavLink to='/home'>Home</NavLink></li>                                        
+                                        <li><NavLink to='/home'>Home</NavLink></li>
                                         <li>Contact</li>
                                     </ul>
                                 </nav>
@@ -49,8 +57,11 @@ export default class Contact extends Component {
                                     </ul>
                                 </div>
                                 <div id="single-job-map-container">
-                                    <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" />
-                                    <a href="#" id="streetView">Street View</a>
+                                    {/* <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" /> */}
+                                    <div>
+                                        <MapContainer places={this.state.places} isList={false}></MapContainer>
+                                    </div>
+                                    {/* <a href="#" id="streetView">Street View</a> */}
                                 </div>
                             </div>
                         </div>
