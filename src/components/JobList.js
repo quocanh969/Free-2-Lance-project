@@ -8,11 +8,18 @@ import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 import MapContainer from './map_JobsList';
 
+import CompanyLogo1 from '../assets/images/company-logo-01.png';
+import CompanyLogo2 from '../assets/images/company-logo-02.png';
+import CompanyLogo3 from '../assets/images/company-logo-03.png';
+import CompanyLogo4 from '../assets/images/company-logo-04.png';
+import CompanyLogo5 from '../assets/images/company-logo-05.png';
+import CompanyLogo6 from '../assets/images/company-logo-06.png';
+
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 
 import MiniFooter from './Help/MiniFooter';
 
-export default class JobList extends Component {
+class JobListComponent extends Component {
     
     constructor(props) {
         super(props);

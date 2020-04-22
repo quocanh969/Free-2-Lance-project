@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import '../../assets/css/style.css';
 import '../../assets/css/colors/blue.css';
 
@@ -7,9 +9,8 @@ import UserAvatarSmall1 from '../../assets/images/user-avatar-small-01.jpg';
 import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
 import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
-import { NavLink } from 'react-router-dom';
 
-export default class HeaderComponent extends Component {
+class HeaderComponent extends Component {
 
     constructor(props)
     {

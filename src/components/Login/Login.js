@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Header from '../Help/Header';
 
-import {NavLink} from 'react-router-dom';
+import {withRouter, NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-export default class LoginComponent extends Component {
-    
+class LoginComponent extends Component {  
     
     render() {
         return (

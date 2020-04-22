@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Header from '../Help/Header';
 
-import { NavLink } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default class RegisterComponent extends Component {
+class RegisterComponent extends Component {
     render() {
         return (
             <div>
