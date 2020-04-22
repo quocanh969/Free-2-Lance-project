@@ -3,7 +3,9 @@ import Header from '../Help/Header';
 
 import {NavLink} from 'react-router-dom';
 
-export default class Login extends Component {
+export default class LoginComponent extends Component {
+    
+    
     render() {
         return (
             <div>
@@ -65,3 +67,18 @@ export default class Login extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
+
+const Login = withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginComponent));
+export default Login;

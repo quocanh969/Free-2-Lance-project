@@ -3,7 +3,7 @@ import Header from '../Help/Header';
 
 import { NavLink } from 'react-router-dom';
 
-export default class Register extends Component {
+export default class RegisterComponent extends Component {
     render() {
         return (
             <div>
@@ -79,3 +79,17 @@ export default class Register extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+    }
+}
+
+const Register = withRouter(connect(mapStateToProps, mapDispatchToProps)(RegisterComponent));
+export default Register;

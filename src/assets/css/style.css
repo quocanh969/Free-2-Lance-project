@@ -489,7 +489,6 @@ header.fullwidth .container {
 	position: relative;
 }
 
-
 /* Header User Menu Dropdown */
 .header-notifications-dropdown {
 	width: 360px;
@@ -15589,3 +15588,27 @@ ul.dashboard-box-list > li:hover {
 	.padding-left-90 { padding-left: 90px !important; }
 	.padding-left-95 { padding-left: 95px !important; }
 	.padding-left-100 { padding-left: 100px !important; }
+
+	.transparent-header .btn-outline-header-login {
+		font-weight: bold;
+    	font-size: 20px;		
+		color: #f8f9fa;
+		border: #f8f9fa 3px solid;
+	}
+
+	.transparent-header .btn-outline-header-login:hover {
+		color: #666;
+		background-color: #f8f9fa;
+	}
+
+	.btn-outline-header-login {
+		font-weight: bold;
+    	font-size: 20px;		
+		color: #666;
+		border: #666 3px solid;
+	}
+
+	.btn-outline-header-login:hover {
+		color: #f8f9fa;
+		background-color: #666;
+	}
