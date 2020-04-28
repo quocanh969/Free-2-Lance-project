@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Logo2 from '../../assets/images/logo2.png';
 
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 export default class Footer extends Component {
     render() {
         return (
@@ -79,10 +82,10 @@ export default class Footer extends Component {
                                 <div className="footer-links">
                                     <h3>For Candidates</h3>
                                     <ul>
-                                        <li><a href="#"><span>Browse Jobs</span></a></li>
-                                        <li><a href="#"><span>Add Resume</span></a></li>
-                                        <li><a href="#"><span>Job Alerts</span></a></li>
-                                        <li><a href="#"><span>My Bookmarks</span></a></li>
+                                        <li><NavLink to="/"><span>Browse Jobs</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Add Resume</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Job Alerts</span></NavLink></li>
+                                        <li><NavLink to="/"><span>My Bookmarks</span></NavLink></li>
                                     </ul>
                                 </div>
                             </div>
@@ -91,10 +94,10 @@ export default class Footer extends Component {
                                 <div className="footer-links">
                                     <h3>For Employers</h3>
                                     <ul>
-                                        <li><a href="#"><span>Browse Candidates</span></a></li>
-                                        <li><a href="#"><span>Post a Job</span></a></li>
-                                        <li><a href="#"><span>Post a Task</span></a></li>
-                                        <li><a href="#"><span>Plans &amp; Pricing</span></a></li>
+                                        <li><NavLink to="/"><span>Browse Candidates</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Post a Job</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Post a Task</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Plans &amp; Pricing</span></NavLink></li>
                                     </ul>
                                 </div>
                             </div>
@@ -103,9 +106,9 @@ export default class Footer extends Component {
                                 <div className="footer-links">
                                     <h3>Helpful Links</h3>
                                     <ul>
-                                        <li><a href="#"><span>Contact</span></a></li>
-                                        <li><a href="#"><span>Privacy Policy</span></a></li>
-                                        <li><a href="#"><span>Terms of Use</span></a></li>
+                                        <li><NavLink to="/contact"><span>Contact</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Privacy Policy</span></NavLink></li>
+                                        <li><NavLink to="/"><span>Terms of Use</span></NavLink></li>
                                     </ul>
                                 </div>
                             </div>
@@ -114,8 +117,8 @@ export default class Footer extends Component {
                                 <div className="footer-links">
                                     <h3>Account</h3>
                                     <ul>
-                                        <li><a href="#"><span>Log In</span></a></li>
-                                        <li><a href="#"><span>My Account</span></a></li>
+                                        <li><NavLink to='/login'><span>Log In</span></NavLink></li>
+                                        <li><NavLink to="/"><span>My Account</span></NavLink></li>
                                     </ul>
                                 </div>
                             </div>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
 
-import Header from './Help/Header';
+import {withRouter, NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
@@ -22,7 +23,7 @@ import JobCategory6 from '../assets/images/job-category-06.jpg';
 import JobCategory7 from '../assets/images/job-category-07.jpg';
 import JobCategory8 from '../assets/images/job-category-08.jpg';
 
-export default class Home extends Component {
+class HomeComponent extends Component {
     render() {
         return (
             <div>
@@ -111,7 +112,7 @@ export default class Home extends Component {
                             {/* Section Headline */}
                             <div className="col-xl-12">
                                 <div className="section-headline centered margin-top-0 margin-bottom-45">
-                                    <h3>Popular Categories</h3>
+                                    <h3>Popular Topics</h3>
                                 </div>
                             </div>
                             <div className="col-xl-3 col-md-6">
@@ -538,3 +539,18 @@ export default class Home extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
+
+const Home = withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeComponent));
+export default Home;

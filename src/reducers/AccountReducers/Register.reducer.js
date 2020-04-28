@@ -5,16 +5,16 @@ const initState = {
     user: null,
 }
 
-const LoginReducer = (state = initState, action) => {
+const RegisterReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'LOGIN_REQUEST':
+        case 'REGISTER_REQUEST':
             return {
                 ...state,
                 status: 0,
                 message: '',
                 sending: true,
             };
-        case 'LOGIN_SUCCESS':
+        case 'REGISTER_SUCCESS':
             return {
                 ...state,
                 status: 1,
@@ -22,7 +22,7 @@ const LoginReducer = (state = initState, action) => {
                 sending: false,
                 user: action.user,
             };
-        case 'LOGIN_FAILURE':
+        case 'REGISTER_FAILURE':
             return {
                 ...state,
                 status: -1,
@@ -30,11 +30,11 @@ const LoginReducer = (state = initState, action) => {
                 sending: false,
                 user: null,
             };
-        case 'LOGIN_RESET':
+        case 'REGISTER_RESET':
             return initState;
         default:
             return state
     }
 }
 
-export default LoginReducer;
+export default RegisterReducer;

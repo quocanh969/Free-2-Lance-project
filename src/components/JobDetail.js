@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import Header from './Help/Header';
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
+
+import {withRouter, NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 import Logo2 from '../assets/images/logo2.png';
@@ -16,24 +19,20 @@ import BackgroundSingleJob from '../assets/images/single-job.jpg';
 
 import MapContainer from './map_JobsList'
 
-export default class JobDetail extends Component {
+class JobDetailComponent extends Component {
     componentDidMount() {
         const script = document.createElement("script");
         script.src = "./assets/maps.js";
         script.async = true;
         document.body.appendChild(script);
     }
-
-    state = {
-        places: [
-            {
-                name: "Dud location 1",
-                title: "Dud location 1",
-                position: { lat: 51.507717, lng: -0.131095 }
-            }
-        ]
+    constructor(props)
+    {
+        super(props);        
     }
+    
     render() {
+        let { places } = this.props.JobDetailReducer;
         return (
             <div>
 
@@ -84,7 +83,7 @@ export default class JobDetail extends Component {
                                         {/* <div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger" /> */} */}
                                         {/* <a href="#" id="streetView">Street View</a> */}
                                         <div>
-                                            <MapContainer places={this.state.places} isList={false}/>
+                                            <MapContainer places={places} isList={false}/>
                                         </div>
                                         {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
                                     </div>
@@ -256,3 +255,18 @@ export default class JobDetail extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
+
+const JobDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(JobDetailComponent));
+export default JobDetail;

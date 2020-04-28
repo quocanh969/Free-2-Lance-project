@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import Header from './Help/Header';
 
 import MapContainer from './map_JobsList';
-import { NavLink } from 'react-router-dom';
 
-export default class Contact extends Component {
-    state = {
-        places: [{
-            name: "HCMUS",
-            title: "HCMUS",
-            position: { lat: 0.0, lng: 0.0 }
-        }]
-    }
+import {withRouter, NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+
+class ContactComponent extends Component {
+    
     render() {
+        let {places} = this.props.ContactUsReducer;
+
         return (
             <div>
                 {/* Titlebar ================================================== */}
@@ -59,7 +57,7 @@ export default class Contact extends Component {
                                 <div id="single-job-map-container">
                                     {/* <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" /> */}
                                     <div>
-                                        <MapContainer places={this.state.places} isList={false}></MapContainer>
+                                        <MapContainer places={places} isList={false}></MapContainer>
                                     </div>
                                     {/* <a href="#" id="streetView">Street View</a> */}
                                 </div>
@@ -101,3 +99,18 @@ export default class Contact extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
+
+const Contact = withRouter(connect(mapStateToProps, mapDispatchToProps)(ContactComponent));
+export default Contact;

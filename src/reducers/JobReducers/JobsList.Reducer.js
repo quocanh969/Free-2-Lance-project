@@ -1,10 +1,10 @@
 // import Logo from '../assets/images/logo.png';
-import CompanyLogo1 from '../assets/images/company-logo-01.png';
-import CompanyLogo2 from '../assets/images/company-logo-02.png';
-import CompanyLogo3 from '../assets/images/company-logo-03.png';
-import CompanyLogo4 from '../assets/images/company-logo-04.png';
-import CompanyLogo5 from '../assets/images/company-logo-05.png';
-import CompanyLogo6 from '../assets/images/company-logo-06.png';
+import CompanyLogo1 from '../../assets/images/company-logo-01.png';
+import CompanyLogo2 from '../../assets/images/company-logo-02.png';
+import CompanyLogo3 from '../../assets/images/company-logo-03.png';
+import CompanyLogo4 from '../../assets/images/company-logo-04.png';
+import CompanyLogo5 from '../../assets/images/company-logo-05.png';
+import CompanyLogo6 from '../../assets/images/company-logo-06.png';
 
 // import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
 // import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';

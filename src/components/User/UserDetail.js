@@ -8,7 +8,11 @@ import FlagDE from '../../assets/images/flags/de.svg';
 import BrowseCompanies03 from '../../assets/images/browse-companies-03.png';
 import BrowseCompanies04 from '../../assets/images/browse-companies-04.png';
 
-export default class UserDetail extends Component {
+import {withRouter, NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+
+
+class UserDetailComponent extends Component {
     state = {
         user: {
             name: 'John Cena',
@@ -357,3 +361,18 @@ export default class UserDetail extends Component {
         )
     }
 }
+
+// === Container
+
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+}
+
+const UserDetail = withRouter(connect(mapStateToProps, mapDispatchToProps)(UserDetailComponent));
+export default UserDetail;

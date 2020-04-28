@@ -15,16 +15,32 @@ class HeaderComponent extends Component {
     constructor(props)
     {
         super(props);
+    }
 
-        this.state = {
-            user: null,
+    componentWillMount() {
+        // kiêm tra local storage
+        let today = new Date();
+        let lastTime = JSON.parse(localStorage.getItem('timeOut'));
+
+        // khoảng thời gian tính theo giây
+        let diff = (Date.parse(today) - Date.parse(lastTime))/1000; 
+        if(diff > 3600)
+        { // time out
+            localStorage.setItem('user', null);
+            localStorage.setItem('timeOut', null);
+        }
+        else
+        {   
+            let { onUpdateUser } = this.props;
+            let user = JSON.parse(localStorage.getItem('user'));
+            onUpdateUser(user);
         }
     }
 
     generateRightSideContent() {
         let content = [];
-
-        if(this.state.user)
+        let {user} = this.props.HeaderReducer;
+        if(user)
         {
             content.push(
                 <div className="header-widget hide-on-mobile" key={1}>
@@ -143,6 +159,7 @@ class HeaderComponent extends Component {
                     </div>
                 </div>
             );
+
             content.push(                
                 <div className="header-widget" key={2}>
                     {/* Messages */}
@@ -184,14 +201,14 @@ class HeaderComponent extends Component {
             content.push(
                 <div className="header-widget" key={1}>
                     <div className='header-notifications padding-top-15'>
-                        <div className="btn btn-outline-header-login">
+                        <NavLink className="btn btn-outline-header-login" to='/register'>
                             Register
-                        </div>
+                        </NavLink>
                     </div>
                     <div className='header-notifications padding-top-15'>
-                        <div className="btn btn-outline-header-login">
+                        <NavLink className="btn btn-outline-header-login" to='/login'>
                             Log In
-                        </div>
+                        </NavLink>
                     </div>
                 </div>
             );
@@ -279,6 +296,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onUpdateUser: user => {            
+            dispatch({
+                    type: 'UPDATE_USER',
+                    user: user,
+            });
+        }
     }
 }
 

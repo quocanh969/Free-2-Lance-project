@@ -8,7 +8,6 @@ import reducer from '../../reducers/reducer';
 class ForgetPasswordComponent extends Component {
 
     sendForgetPWReq() {
-        console.log(this.props);
         let {onSend} = this.props;
 
         onSend('123456');

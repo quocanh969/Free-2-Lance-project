@@ -17,7 +17,9 @@ export const SRoute = ({ component: Component, ...rest }) => {
                             </header>
                             <div className="clearfix" />    
                             
-                            <Component {...props}></Component> 
+                            <div className='content'>
+                                <Component {...props}></Component> 
+                            </div>
                             
                             <Footer></Footer>
                         </div>                        
@@ -34,7 +36,9 @@ export const SRoute = ({ component: Component, ...rest }) => {
                             </header>
                             <div className="clearfix" /> 
 
-                            <Component {...props}></Component>    
+                            <div className='content'>
+                                <Component {...props}></Component> 
+                            </div>   
                         </div>                      
                     )
                 }
@@ -47,7 +51,9 @@ export const SRoute = ({ component: Component, ...rest }) => {
                             </header>
                             <div className="clearfix" /> 
 
-                            <Component {...props}></Component>                             
+                            <div className='content'>
+                                <Component {...props}></Component> 
+                            </div>                             
                                                     
                             <Footer></Footer>
                         </div> 

@@ -10,3 +10,17 @@
 .full-page-map-container,.full-page-content-container {
     height: 100vh !important;
 } */
+
+.content {
+    min-height: 60vh;
+}
+
+.loading {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.alert-login {
+    margin: 20px 0;
+}
