@@ -202,12 +202,12 @@ class HeaderComponent extends Component {
                 <div className="header-widget" key={1}>
                     <div className='header-notifications padding-top-15'>
                         <NavLink className="btn btn-outline-header-login" to='/register'>
-                            Register
+                            Đăng ký
                         </NavLink>
                     </div>
                     <div className='header-notifications padding-top-15'>
                         <NavLink className="btn btn-outline-header-login" to='/login'>
-                            Log In
+                            Đăng nhập
                         </NavLink>
                     </div>
                 </div>
@@ -231,16 +231,16 @@ class HeaderComponent extends Component {
                         <nav id="navigation">
                             <ul id="responsive" style={{paddingTop:'5px'}}>
                                 <li>
-                                    <NavLink to="/home" className="font-weight-bold">Home</NavLink>
+                                    <NavLink to="/home" className="font-weight-bold">Trang chủ</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/job-list" className="font-weight-bold">Find Work</NavLink>                                    
+                                    <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>                                    
                                 </li>
                                 <li>
                                     <NavLink to="/job-list" className="font-weight-bold">Blogs</NavLink>                                    
                                 </li>
                                 <li>
-                                    <NavLink to="/contact" className="font-weight-bold">Contact Us</NavLink>                                    
+                                    <NavLink to="/contact" className="font-weight-bold">Liên hệ</NavLink>                                    
                                 </li>
                             </ul>
                         </nav>
