@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import {withRouter, NavLink} from 'react-router-dom';
-import {connect} from 'react-redux';
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
@@ -24,85 +24,192 @@ import JobCategory7 from '../assets/images/job-category-07.jpg';
 import JobCategory8 from '../assets/images/job-category-08.jpg';
 
 class HomeComponent extends Component {
-    render() {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            jobPost: 1586,
+            taskPost: 3543,
+            freelancer: 1232,
+            topics: [
+                {
+                    title: 'Web/Software Dev',
+                    post: 612,
+                    bgURL: '',
+                },
+                {
+                    title: 'Data Science/Analitycs',
+                    post: 113,
+                    bgURL: '',
+                },
+                {
+                    title: 'Accounting/Consulting',
+                    post: 186,
+                    bgURL: '',
+                },
+                {
+                    title: 'Writting & Translations',
+                    post: 298,
+                    bgURL: '',
+                },
+                {
+                    title: 'Sales & Marketing',
+                    post: 549,
+                    bgURL: '',
+                },
+                {
+                    title: 'Graphics & Design',
+                    post: 873,
+                    bgURL: '',
+                },
+                {
+                    title: 'Digital Marketing',
+                    post: 125,
+                    bgURL: '',
+                },
+                {
+                    title: 'Education & Training',
+                    post: 445,
+                    bgURL: '',
+                },
+
+            ]
+        }
+    }
+
+    areaSession(areas) {
+        let content = [];
+        let count = 1;
+        for (let i of areas) {
+            content.push(
+                <option value={count} key={count}>{i}</option>
+            )
+            count++;
+        }
+
+        return content;
+    }
+
+    categorySession(categories) {
+        let content = [];
+        let count = 1;
+        for (let i of categories) {
+            content.push(
+                <option value={count} key={count}>{i}</option>
+            )
+            count++;
+        }
+
+        return content;
+    }
+
+    bannerSession() {
+        let areas = ['TPHCM', 'Hà Nội', 'Hải Phòng', 'Đà Nẵng', 'Nghệ An'];
+        let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];
+
         return (
-            <div>
-                <div className="intro-banner dark-overlay" data-background-image={HomeBackground2}>
-                    {/* Transparent Header Spacer */}
-                    <div className="transparent-header-spacer" />
-                    <div className="container">
-                        {/* Intro Headline */}
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="banner-headline">
-                                    <h3>
-                                        <strong>Hire experts freelancers for any job, any time.</strong>
-                                        <br />
-                                        <span>Huge community of designers, developers and creatives ready for your project.</span>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Search Bar */}
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="intro-banner-search-form margin-top-95">
-                                    {/* Search Field */}
-                                    <div className="intro-search-field with-autocomplete">
-                                        <label htmlFor="autocomplete-input" className="field-title ripple-effect">Where?</label>
-                                        <div className="input-with-icon">
-                                            <input id="autocomplete-input" type="text" placeholder="Online Job" />
-                                            <i className="icon-material-outline-location-on" />
-                                        </div>
-                                    </div>
-                                    {/* Search Field */}
-                                    <div className="intro-search-field">
-                                        <label htmlFor="intro-keywords" className="field-title ripple-effect">What you need done?</label>
-                                        <input id="intro-keywords" type="text" placeholder="e.g. build me a website" />
-                                    </div>
-                                    {/* Search Field */}
-                                    <div className="intro-search-field">
-                                        <select className="selectpicker default" multiple data-selected-text-format="count" data-size={7} title="All Categories">
-                                            <option>Admin Support</option>
-                                            <option>Customer Service</option>
-                                            <option>Data Analytics</option>
-                                            <option>Design &amp; Creative</option>
-                                            <option>Legal</option>
-                                            <option>Software Developing</option>
-                                            <option>IT &amp; Networking</option>
-                                            <option>Writing</option>
-                                            <option>Translation</option>
-                                            <option>Sales &amp; Marketing</option>
-                                        </select>
-                                    </div>
-                                    {/* Button */}
-                                    <div className="intro-search-button">
-                                        {/* <button className="button ripple-effect" onClick={window.location.href='freelancers-grid-layout-full-page.html'}>Search</button> */}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* Stats */}
-                        <div className="row">
-                            <div className="col-md-12">
-                                <ul className="intro-stats margin-top-45 hide-under-992px">
-                                    <li>
-                                        <strong className="counter">1,586</strong>
-                                        <span>Jobs Posted</span>
-                                    </li>
-                                    <li>
-                                        <strong className="counter">3,543</strong>
-                                        <span>Tasks Posted</span>
-                                    </li>
-                                    <li>
-                                        <strong className="counter">1,232</strong>
-                                        <span>Freelancers</span>
-                                    </li>
-                                </ul>
+            <div className="intro-banner dark-overlay" data-background-image={HomeBackground2}>
+                {/* Transparent Header Spacer */}
+                <div className="transparent-header-spacer" />
+
+                <div className="container">
+                    {/* Intro Headline */}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="banner-headline">
+                                <h3>
+                                    <strong>Công việc dành cho các cá nhân có nhu cầu làm việc thêm</strong>
+                                    <br />
+                                    <span>Số lượng công việc nhiều, phù hợp với nhu cầu và khả năng của người ứng tuyển.</span>
+                                </h3>
                             </div>
                         </div>
                     </div>
+                    {/* Search Bar */}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="intro-banner-search-form margin-top-95">
+                                {/* Search Field */}
+                                <div className="intro-search-field">
+                                    <label htmlFor="input-title" className="field-title ripple-effect">Bạn cần trợ giúp việc gì?</label>
+                                    <input id="input-title" type="text" placeholder="Ví dụ: tạo một website giúp .." />
+                                </div>
+
+                                {/* Search Field */}
+                                <div className="intro-search-field">
+                                    <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
+
+                                    <select id='select-area' className="selectpicker default" defaultValue={0}>
+                                        <option value={0} disabled>Khu vực</option>
+                                        {this.areaSession(areas)}
+                                    </select>
+
+                                </div>
+                                {/* Search Field */}
+                                <div className="intro-search-field">
+                                    <label htmlFor="select-category" className="field-title ripple-effect">Tính chất cộng việc là gì?</label>
+                                    <select id='select-category' className="selectpicker default" defaultValue={0}>
+                                        <option value={0} disabled>Loại công việc</option>
+                                        {this.categorySession(categories)}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Stats */}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <ul className="intro-stats margin-top-45 hide-under-992px">
+                                <li>
+                                    <strong className="counter">{this.state.jobPost}</strong>
+                                    <span>Công việc</span>
+                                </li>
+                                <li>
+                                    <strong className="counter">{this.state.taskPost}</strong>
+                                    <span>Bài đăng</span>
+                                </li>
+                                <li>
+                                    <strong className="counter">{this.state.freelancer}</strong>
+                                    <span>Ứng viên</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+
+            </div>
+        )
+    }
+
+    topicSession() {
+        let content = [];
+        let count = 0;
+
+        for (let e of this.state.topics) {
+            content.push(
+                <div className="col-xl-3 col-md-6" key={count}>
+                    {/* Photo Box */}
+                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory8}>
+                        <div className="photo-box-content">
+                            <h3>{e.title}</h3>
+                            <span>{e.post}</span>
+                        </div>
+                    </a>
+                </div>
+            );
+            count++;
+        }
+
+        return content;
+    }
+
+    render() {
+        return (
+            <div>
+
+                {this.bannerSession()}
+
                 {/* Content
 ================================================== */}
                 {/* Popular Job Categories */}
@@ -112,81 +219,10 @@ class HomeComponent extends Component {
                             {/* Section Headline */}
                             <div className="col-xl-12">
                                 <div className="section-headline centered margin-top-0 margin-bottom-45">
-                                    <h3>Popular Topics</h3>
+                                    <h3>Các chủ đề nổi bật</h3>
                                 </div>
                             </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <NavLink to='/job-list' className="photo-box small" data-background-image={JobCategory1}>
-                                    <div className="photo-box-content">
-                                        <h3>Web / Software Dev</h3>
-                                        <span>612</span>
-                                    </div>
-                                </NavLink>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-list-layout-full-page-map.html" className="photo-box small" data-background-image={JobCategory2}>
-                                    <div className="photo-box-content">
-                                        <h3>Data Science / Analitycs</h3>
-                                        <span>113</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-grid-layout-full-page.html" className="photo-box small" data-background-image={JobCategory3}>
-                                    <div className="photo-box-content">
-                                        <h3>Accounting / Consulting</h3>
-                                        <span>186</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory4}>
-                                    <div className="photo-box-content">
-                                        <h3>Writing &amp; Translations</h3>
-                                        <span>298</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-list-layout-1.html" className="photo-box small" data-background-image={JobCategory5}>
-                                    <div className="photo-box-content">
-                                        <h3>Sales &amp; Marketing</h3>
-                                        <span>549</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-list-layout-full-page-map.html" className="photo-box small" data-background-image={JobCategory6}>
-                                    <div className="photo-box-content">
-                                        <h3>Graphics &amp; Design</h3>
-                                        <span>873</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-grid-layout-full-page.html" className="photo-box small" data-background-image={JobCategory7}>
-                                    <div className="photo-box-content">
-                                        <h3>Digital Marketing</h3>
-                                        <span>125</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div className="col-xl-3 col-md-6">
-                                {/* Photo Box */}
-                                <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory8}>
-                                    <div className="photo-box-content">
-                                        <h3>Education &amp; Training</h3>
-                                        <span>445</span>
-                                    </div>
-                                </a>
-                            </div>
+                            {this.topicSession()}
                         </div>
                     </div>
                 </div>
@@ -534,7 +570,7 @@ class HomeComponent extends Component {
                         </div>
                     </div>
                 </div>
-                {/* Counters / End */}                              
+                {/* Counters / End */}
             </div>
         )
     }
@@ -548,7 +584,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+
     }
 }
 

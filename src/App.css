@@ -4,7 +4,7 @@
 }
 
 .dropdown-toggle::after {
-    display: none;
+    display: none !important;
 }
 /* 
 .full-page-map-container,.full-page-content-container {
@@ -23,4 +23,22 @@
 
 .alert-login {
     margin: 20px 0;
+}
+
+.s-checkbox {
+    height: 15px;
+    width: 15px;
+    margin-top: 5px;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.s-find-job {
+    min-height: 100vh;
 }
