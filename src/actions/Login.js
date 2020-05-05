@@ -34,6 +34,7 @@ export const sendForgetPassword = (email) => {
 export const sendLogin = (email, password) => {
     return dispatch => {
         dispatch(request());
+        
         login(email, password)
         .then(res=>{
             console.log(res);
@@ -44,6 +45,7 @@ export const sendLogin = (email, password) => {
             else
             {// thành công
                 dispatch(success(res.data.message));
+
                 dispatch(updateUser(res.data.data));
                 // Lưu vào localstorage
                 localStorage.setItem('user', JSON.stringify(res.data.data));

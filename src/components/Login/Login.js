@@ -19,10 +19,13 @@ class LoginComponent extends Component {
         
         let {onSendLogin} = this.props;
 
-        let email = this.refs.email.value;
-        let password = this.refs.password.value;
+        let email = document.getElementById('emailaddress').value;
 
-        onSendLogin(email, password);
+        console.log(email)
+        //let email = this.refs.email.value;
+        //let password = this.refs.password.value;
+
+        //onSendLogin(email, password);
     }
 
     spinnerLoadingNotification() {
@@ -98,7 +101,7 @@ class LoginComponent extends Component {
                                 <form method="post" id="login-form" onSubmit={this.handleSubmit}>
                                     <div className="input-with-icon-left">
                                         <i className="icon-material-baseline-mail-outline" />
-                                        <input type="text" ref='email' className="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address" required />
+                                        <input type="text" ref='email'  className="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address" required />
                                     </div>
                                     <div className="input-with-icon-left">
                                         <i className="icon-material-outline-lock" />
