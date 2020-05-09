@@ -45,15 +45,15 @@ export const sendLogin = (email, password) => {
             {// thành công
                 dispatch(success(res.data.message));
                 dispatch(updateUser(res.data.data));
-                // Lưu vào localstorage
-                localStorage.setItem('user', JSON.stringify(res.data.data));
-                // Time out
-                localStorage.setItem('timeOut', JSON.stringify(new Date()));                
+                // // Lưu vào localstorage
+                // localStorage.setItem('user', JSON.stringify(res.data.data));
+                // // Time out
+                // localStorage.setItem('timeOut', JSON.stringify(new Date()));                
             }
         })
         .catch(err=>{
             console.log(err);
-            dispatch(failure("There was error with server connection. Error log on console"));
+            //dispatch(failure("There was error with server connection. Error log on console"));
         })
     }
     
@@ -64,14 +64,14 @@ export const sendLogin = (email, password) => {
         }
     }
     function success(message) {
-        console.log('success');
+        
         return {
             type: 'LOG_IN_SUCCESS',
             message,
         }
     }
     function failure(message) {
-        console.log('failure');
+        
         return {
             type: 'LOG_IN_FAILURE',
             message,
@@ -81,6 +81,20 @@ export const sendLogin = (email, password) => {
         return {
             type: 'UPDATE_USER',
             user,
+        }
+    }
+}
+
+export const reset = () => {
+    return dispatch => {
+        console.log('reset in action')
+        dispatch(callAction());
+        
+    }
+    
+    function callAction() {        
+        return {
+            type: 'LOG_IN_RESET',
         }
     }
 }

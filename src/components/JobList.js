@@ -25,23 +25,7 @@ class JobListComponent extends Component {
         super(props);
 
         this.state = {
-            // places: [
-            //     {
-            //         name: "Sydney",
-            //         title: "Sydney",
-            //         position: { lat: -33.847927, lng: 150.6517938 }
-            //     },
-            //     {
-            //         name: "Melbourne",
-            //         title: "Melbourne",
-            //         position: { lat: -37.9722342, lng: 144.7729561 }
-            //     },
-            //     {
-            //         name: "Perth",
-            //         title: "Perth",
-            //         position: { lat: -31.9546904, lng: 115.8350292 }
-            //     }
-            // ],
+            showFilter: false,
             jobList: [
                 {
                     id: 1,
@@ -177,6 +161,8 @@ class JobListComponent extends Component {
                 },
             ]
         }
+
+        this.handleFilter = this.handleFilter.bind(this);
     }
     
     componentDidMount() {
@@ -185,159 +171,6 @@ class JobListComponent extends Component {
         script.async = true;
         document.body.appendChild(script);
     }
-    // state = {
-    //     places: [
-    //         {
-    //             name: "Sydney",
-    //             title: "Sydney",
-    //             position: { lat: -33.847927, lng: 150.6517938 }
-    //         },
-    //         {
-    //             name: "Melbourne",
-    //             title: "Melbourne",
-    //             position: { lat: -37.9722342, lng: 144.7729561 }
-    //         },
-    //         {
-    //             name: "Perth",
-    //             title: "Perth",
-    //             position: { lat: -31.9546904, lng: 115.8350292 }
-    //         }
-    //     ],
-    //     jobList: [
-    //         {
-    //             id: 1,
-    //             logo: CompanyLogo1,
-    //             company: 'Hexagon',
-    //             title: 'Bilingual Event Support Specialist',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 2,
-    //             logo: CompanyLogo5,
-    //             company: 'Laxo',
-    //             title: 'Competition Law Officer',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 3,
-    //             logo: CompanyLogo2,
-    //             company: 'Coffee',
-    //             title: 'Barista and Cashier',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 4,
-    //             logo: CompanyLogo3,
-    //             company: 'King',
-    //             title: 'Restaurant General Manager',
-    //             isVerified: true,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 5,
-    //             logo: CompanyLogo5,
-    //             company: 'Skyist',
-    //             title: 'International Marketing Coordinator',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 6,
-    //             logo: CompanyLogo5,
-    //             company: 'Podous',
-    //             title: 'Construction Labourers',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 7,
-    //             logo: CompanyLogo4,
-    //             company: 'Mates',
-    //             title: 'Administrative Assistant',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 8,
-    //             logo: CompanyLogo6,
-    //             company: 'Trideo',
-    //             title: 'Human Resources Consultant',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 9,
-    //             logo: CompanyLogo6,
-    //             company: 'Trideo',
-    //             title: 'International Marketing Specialist',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 10,
-    //             logo: CompanyLogo2,
-    //             company: 'Coffee',
-    //             title: 'Terrain Cafe Barista',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 11,
-    //             logo: CompanyLogo5,
-    //             company: 'Kinte',
-    //             title: 'Skilled Labourer',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //         {
-    //             id: 12,
-    //             logo: CompanyLogo5,
-    //             company: 'Alilia',
-    //             title: 'Healthcare Claims Advisor',
-    //             isVerified: false,
-    //             location: ' San Francisco',
-    //             workingTime: ' Full Time',
-    //             salary: ' $35000-$38000',
-    //             postDay: ' 2 days ago',
-    //         },
-    //     ]
-    // }
 
     // readLocationOnMap = () => {
     //     console.log(this.props);
@@ -397,10 +230,14 @@ class JobListComponent extends Component {
         return content;
     }
 
+    handleFilter() {
+        this.setState({showFilter: !this.state.showFilter});
+    }
+
     render() {
         return (
             <div className="full-page-container with-map">
-                <div className="full-page-sidebar hidden-sidebar">
+                <div className={'full-page-sidebar hidden-sidebar' + (this.state.showFilter?'enabled-sidebar':'')}>
                     <div className="full-page-sidebar-inner" data-simplebar>
                         <div className="sidebar-container">
                             {/* Keywords */}
@@ -552,7 +389,8 @@ class JobListComponent extends Component {
                 <div className="full-page-map-container">
                     {/* Enable Filters Button */}
                     <div className="filter-button-container">
-                        <button className="enable-filters-button">
+                        <button className={'enable-filters-button ' + (this.state.showFilter?'active':'')}
+                                onClick={this.handleFilter}>
                             <i className="enable-filters-button-icon" />
                             <span className="show-text">Show Filters</span>
                             <span className="hide-text">Hide Filters</span>

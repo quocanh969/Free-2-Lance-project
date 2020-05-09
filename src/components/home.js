@@ -22,6 +22,7 @@ import JobCategory5 from '../assets/images/job-category-05.jpg';
 import JobCategory6 from '../assets/images/job-category-06.jpg';
 import JobCategory7 from '../assets/images/job-category-07.jpg';
 import JobCategory8 from '../assets/images/job-category-08.jpg';
+import { S_Selector } from '../assets/s-helper/S_Help_Input';
 
 class HomeComponent extends Component {
 
@@ -140,19 +141,21 @@ class HomeComponent extends Component {
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
 
-                                    <select id='select-area' className="selectpicker default" defaultValue={0}>
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
+                                    {/* <select id='select-area' className="" defaultValue={0}>
                                         <option value={0} disabled>Khu vực</option>
                                         {this.areaSession(areas)}
-                                    </select>
+                                    </select> */}
 
                                 </div>
                                 {/* Search Field */}
                                 <div className="intro-search-field">
-                                    <label htmlFor="select-category" className="field-title ripple-effect">Tính chất cộng việc là gì?</label>
-                                    <select id='select-category' className="selectpicker default" defaultValue={0}>
+                                    <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
+                                    {/* <select id='select-category' className="selectpicker default" defaultValue={0}>
                                         <option value={0} disabled>Loại công việc</option>
                                         {this.categorySession(categories)}
-                                    </select>
+                                    </select> */}
                                 </div>
                             </div>
                         </div>

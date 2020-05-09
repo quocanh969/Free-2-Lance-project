@@ -28,6 +28,7 @@ const LoginReducer = (state = initState, action) => {
                 sending: false,
             };
         case 'LOG_IN_RESET':
+            console.log('reset');
             return initState;
         default:
             return state

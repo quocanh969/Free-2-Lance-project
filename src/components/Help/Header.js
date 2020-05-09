@@ -27,7 +27,6 @@ class HeaderComponent extends Component {
         if(diff > 3600)
         { // time out
             localStorage.setItem('user', null);
-            localStorage.setItem('timeOut', null);
         }
         else
         {   

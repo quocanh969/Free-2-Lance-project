@@ -12,12 +12,13 @@ function login(email, password) {
     // return fetch(`http://localhost:8000/login`, requestOptions)
     //     .then(handleResponse);
 
-    return axios.post('/login',
-        {
-            email,
-            password,
-        }
-    )
+    // return axios.post('/login',
+    //     {
+    //         email,
+    //         password,
+    //     }
+    // )
+    return axios.get('/users/getUser');
 }
 
 

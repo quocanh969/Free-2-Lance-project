@@ -3,7 +3,7 @@ import Header from '../Help/Header';
 
 import {withRouter, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
-import { sendLogin } from '../../actions/Login';
+import { sendLogin, reset } from '../../actions/Login';
 
 class LoginComponent extends Component {  
     constructor(props)
@@ -13,6 +13,13 @@ class LoginComponent extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
+    componentWillUnmount() {
+        let {onReset} = this.props;
+        console.log('will unmount log in');
+
+        onReset();
+    }
+
     handleSubmit(e)
     {
         e.preventDefault();
@@ -44,8 +51,7 @@ class LoginComponent extends Component {
             );
         }
         else if(!sending && status === -1)
-        { // failure ...
-            console.log("flag failure")
+        { // failure ...            
             content.push(
                 <div className="alert alert-login alert-danger" key={1} role="alert">
                     {message}
@@ -137,6 +143,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onReset: () => {
+            dispatch(reset());
+        },
         onSendLogin: (username, password) =>{
             dispatch(sendLogin(username, password));
         }

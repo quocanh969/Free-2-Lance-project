@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import {S_Selector} from '../assets/s-helper/S_Help_Input';
+
 class FindJobComponent extends Component {
     constructor(props)
     {
@@ -123,7 +125,7 @@ class FindJobComponent extends Component {
                         </div>
                         <div className='row px-5'>
                             <label className='col-5 font-weight-bold pt-3'>Mức lương mong đợi:</label>
-                            <select className="col-7" id='salary-select' defaultValue={0}>
+                            <select className="col-7 btn dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={0}>
                                 <option value={0} disabled>Giá tiền</option>
                                 <option value={1}>50.000đ - 100.000đ</option>
                                 <option value={2}>100.000đ - 500.000đ</option>
@@ -173,37 +175,37 @@ class FindJobComponent extends Component {
         let category = document.getElementById('select-category').value;
         
         // Type Chechbox Field
-        let dealableJob = document.getElementById('co-dau-gia').checked;
-        let undealableJob = document.getElementById('khong-dau-gia').checked;
-        let companyJob = document.getElementById('cong-ty').checked;
-        let personalJob = document.getElementById('ca-nhan').checked;        
-        let workByTime = document.getElementById('viec-lam-thoi-vu').checked;
-        let workByProduct = document.getElementById('viec-theo-san-pham').checked;
-        let onlineJob = document.getElementById('viec-lam-online').checked;
-        let offlineJob = document.getElementById('viec-theo-san-pham').checked;        
+        // let dealableJob = document.getElementById('co-dau-gia').checked;
+        // let undealableJob = document.getElementById('khong-dau-gia').checked;
+        // let companyJob = document.getElementById('cong-ty').checked;
+        // let personalJob = document.getElementById('ca-nhan').checked;        
+        // let workByTime = document.getElementById('viec-lam-thoi-vu').checked;
+        // let workByProduct = document.getElementById('viec-theo-san-pham').checked;
+        // let onlineJob = document.getElementById('viec-lam-online').checked;
+        // let offlineJob = document.getElementById('viec-theo-san-pham').checked;        
 
 
         // More option field
-        if(this.state.isMoreOption)
-        {
-            let employer = document.getElementById('employer-input').value;
-            let salary = document.getElementById('salary-select').value;
-            let district = document.getElementById('district-select').value;
-            let expiredDate = document.getElementById('expired-input').value;
-            let vacancy = document.getElementById('vacancy-input').value;
-        }
+        // if(this.state.isMoreOption)
+        // {
+        //     let employer = document.getElementById('employer-input').value;
+        //     let salary = document.getElementById('salary-select').value;
+        //     let district = document.getElementById('district-select').value;
+        //     let expiredDate = document.getElementById('expired-input').value;
+        //     let vacancy = document.getElementById('vacancy-input').value;
+        // }
 
-        // console.log('Title: ', title);
-        // console.log('Area: ', area);
-        // console.log('Category: ', category);
-        console.log('Dealable Job: ', dealableJob);
-        console.log('Undealable Job: ', undealableJob);
-        console.log('Company Job: ', companyJob);
-        console.log('Personal Job: ', personalJob);
-        console.log('Work By Time: ', workByTime);
-        console.log('Work By Product: ', workByProduct);
-        console.log('Online Job: ', onlineJob);
-        console.log('Offline Job: ', offlineJob);
+        console.log('Title: ', title);
+        console.log('Area: ', area);
+        console.log('Category: ', category);
+        // console.log('Dealable Job: ', dealableJob);
+        // console.log('Undealable Job: ', undealableJob);
+        // console.log('Company Job: ', companyJob);
+        // console.log('Personal Job: ', personalJob);
+        // console.log('Work By Time: ', workByTime);
+        // console.log('Work By Product: ', workByProduct);
+        // console.log('Online Job: ', onlineJob);
+        // console.log('Offline Job: ', offlineJob);
         // console.log('Employer: ', employer);
         // console.log('Salary: ', salary);
         // console.log('District: ', district);
@@ -234,21 +236,22 @@ class FindJobComponent extends Component {
                                 {/* Area Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-                                    
-                                    <select id='select-area' className="selectpicker default" defaultValue={0}>
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
+                                    {/* <select id='select-area' className="selectpicker default" defaultValue={0}>
                                         <option value={0} disabled>Khu vực</option>
                                         {this.areaSession(areas)}
-                                    </select>
+                                    </select> */}
                                     
                                 </div>
                                 
                                 {/* Category Search Field */}
                                 <div className="intro-search-field">
-                                    <label htmlFor="select-category" className="field-title ripple-effect">Tính chất cộng việc là gì?</label>
-                                    <select className="selectpicker default" id='select-category' defaultValue={0}>
+                                    <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
+                                    {/* <select className="selectpicker default" id='select-category' defaultValue={0}>
                                         <option value={0} disabled>Loại công việc</option>
                                         {this.categorySession(categories)}
-                                    </select>
+                                    </select> */}
                                 </div>
                                 
                             </div>
