@@ -36,6 +36,7 @@ class RegisterStepOneComponent extends Component {
     account.dial = this.refs.dial.value;
     account.address = this.refs.address.value;
     account.gender = this.refs.gender.value;
+    account.dob = this.refs.birthday.value;
     onUpdateProfile(account);
     goToNextStep();
   }
