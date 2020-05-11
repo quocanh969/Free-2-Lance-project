@@ -12096,7 +12096,7 @@ input.default-slider {
 ------------------------------------- */
 select.bs-select-hidden,
 select.selectpicker {
-  display: none !important;
+	/*display: none !important;*/
 }
 
 .bootstrap-select .btn {

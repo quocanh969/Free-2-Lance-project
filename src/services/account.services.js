@@ -26,7 +26,7 @@ function register(account) {
 }
 
 function forgetPassword(email) {
-  return axios.post("/login", {
+  return axios.post("/forgetPassword", {
     email,
   });
 }
