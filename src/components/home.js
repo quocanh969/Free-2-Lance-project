@@ -79,6 +79,10 @@ class HomeComponent extends Component {
         }
     }
 
+    componentWillMount() {
+        console.log(this.props.HeaderReducer);
+    }
+
     areaSession(areas) {
         let content = [];
         let count = 1;

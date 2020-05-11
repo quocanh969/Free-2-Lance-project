@@ -18,6 +18,7 @@ import ForgetPassword from './components/Login/ForgetPassword';
 import UserDetail from './components/User/UserDetail';
 import MapContainer from './components/map_JobsList';
 import FindJob from './components/FindJob';
+import Profile from './components/Profile/Profile';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Switch>
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
+            <SRoute path='/profile' exact component={Profile}></SRoute>
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
             <SRoute path='/job-list' exact component={JobList}></SRoute>
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>

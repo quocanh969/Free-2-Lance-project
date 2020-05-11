@@ -1,6 +1,7 @@
 import { login } from '../services/account.services';
 
 import axios from 'axios';
+import { history } from '../assets/history/history';
 
 export const sendForgetPassword = (email) => {
     return dispatch => {
@@ -37,18 +38,19 @@ export const sendLogin = (email, password) => {
         login(email, password)
         .then(res=>{
             console.log(res);
-            if(res.data.code === 0)
-            {// thất bại
+            if(res.data.code === '-101')
+            {// thất bại                
                 dispatch(failure(res.data.message));
             }
             else
             {// thành công
-                dispatch(success(res.data.message));
-                dispatch(updateUser(res.data.data));
-                // // Lưu vào localstorage
-                // localStorage.setItem('user', JSON.stringify(res.data.data));
-                // // Time out
-                // localStorage.setItem('timeOut', JSON.stringify(new Date()));                
+                dispatch(success(res.data.cb.message));
+                dispatch(updateUser(res.data.user.loginUser));
+                // Lưu token vào localstorage
+                localStorage.setItem('user', JSON.stringify(res.data.user.loginUser));   
+                localStorage.setItem('token', JSON.stringify(res.data.token));   
+                
+                history.push('/home');
             }
         })
         .catch(err=>{

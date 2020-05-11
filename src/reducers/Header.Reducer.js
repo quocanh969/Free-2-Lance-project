@@ -1,6 +1,7 @@
 
 const initState = {
     user: null,
+    token: null,
 }
 
 const HeaderReducer = (state = initState, action) => {
@@ -9,11 +10,13 @@ const HeaderReducer = (state = initState, action) => {
             return {
                 ...state,
                 user: action.user,
+                token: action.token,
             };
         case 'USER_LOG_OUT':                        
             return {
                 ...state,
                 user: null,
+                token: null,
             }
         default:
             return state

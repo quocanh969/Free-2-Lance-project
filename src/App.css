@@ -42,3 +42,9 @@
 .s-find-job {
     min-height: 100vh;
 }
+
+.tab-component {
+    border-left: 1px #DEE2E6 solid;
+    border-right: 1px #DEE2E6 solid;
+    border-bottom: 1px #DEE2E6 solid;
+}

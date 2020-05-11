@@ -16,13 +16,19 @@ let axios = Axios.create({
 axios.interceptors.response.use(response => {
     return response;
 }, error => {
+    console.log(error);
     if (error.response.status === 401) {
         console.log(error.response.data);
         alert(error.response.data.message);
+
+        localStorage.setItem('user', null);
+        localStorage.setItem('token', null);
+
         history.push('/login');
         MyStore.dispatch({
             type: 'USER_LOG_OUT',
         })
+     
     }
     return Promise.reject(error);
 });
