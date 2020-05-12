@@ -9,7 +9,7 @@ import ProInfo from './Professional_Info/Pro-Info';
 class ProfileComponent extends Component {
     render() {
         return (
-            <div className='container-fluid'>
+            <div className='container-fluid dashboard'>
                 <div className='row'>
                     {/* Personal Info */}
                     <div className='col-4 pl-5 pr-2 py-5'>

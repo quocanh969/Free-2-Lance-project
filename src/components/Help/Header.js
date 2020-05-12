@@ -187,9 +187,9 @@ class HeaderComponent extends Component {
                                 </div>
                             </div>
                             <ul className="user-menu-small-nav">
-                                <li><a href="dashboard.html"><i className="icon-material-outline-dashboard" /> Dashboard</a></li>
-                                <li><a href="dashboard-settings.html"><i className="icon-material-outline-settings" /> Settings</a></li>
-                                <li><div className='cursor-pointer' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
+                                <li><NavLink to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</NavLink></li>
+                                <li><a href="dashboard.html"><i className="icon-material-outline-settings" /> Settings</a></li>
+                                <li><div className='cursor-pointer nav-link-simulate' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
                             </ul>
                         </div>
                     </div>
