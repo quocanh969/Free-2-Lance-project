@@ -18,23 +18,23 @@ class HeaderComponent extends Component {
     }
 
     componentWillMount() {
-        // kiêm tra local storage
-        let today = new Date();
-        let lastTime = JSON.parse(localStorage.getItem('timeOut'));
+        let {onUpdateUser} = this.props;
 
-        // khoảng thời gian tính theo giây
-        let diff = (Date.parse(today) - Date.parse(lastTime))/1000; 
-        if(diff > 3600)
-        { // time out
-            localStorage.setItem('user', null);
-            localStorage.setItem('timeOut', null);
-        }
-        else
-        {   
-            let { onUpdateUser } = this.props;
+        // kiêm tra local storage
+        if(localStorage.getItem('user') && localStorage.getItem('token'))
+        {
             let user = JSON.parse(localStorage.getItem('user'));
-            onUpdateUser(user);
+            let token = JSON.parse(localStorage.getItem('token'));
+            onUpdateUser(user, token);
         }
+    }
+
+    handleLogOut() {
+        let {onLogOut} = this.props;
+
+        localStorage.setItem('user', null);
+        localStorage.setItem('token', null);
+        onLogOut();
     }
 
     generateRightSideContent() {
@@ -162,7 +162,7 @@ class HeaderComponent extends Component {
 
             content.push(                
                 <div className="header-widget" key={2}>
-                    {/* Messages */}
+                    {/* Info */}
                     <div className="header-notifications user-menu">
                         <div className="header-notifications-trigger">
                             <a href="#"><div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div></a>
@@ -187,9 +187,9 @@ class HeaderComponent extends Component {
                                 </div>
                             </div>
                             <ul className="user-menu-small-nav">
-                                <li><a href="dashboard.html"><i className="icon-material-outline-dashboard" /> Dashboard</a></li>
-                                <li><a href="dashboard-settings.html"><i className="icon-material-outline-settings" /> Settings</a></li>
-                                <li><a href="index-logged-out.html"><i className="icon-material-outline-power-settings-new" /> Logout</a></li>
+                                <li><NavLink to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</NavLink></li>
+                                <li><a href="dashboard.html"><i className="icon-material-outline-settings" /> Settings</a></li>
+                                <li><div className='cursor-pointer nav-link-simulate' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
                             </ul>
                         </div>
                     </div>
@@ -296,11 +296,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUpdateUser: user => {            
+        onUpdateUser: (user, token) => {            
             dispatch({
-                    type: 'UPDATE_USER',
-                    user: user,
+                type: 'UPDATE_USER',
+                user: user,
+                token: token,
             });
+        },
+        onLogOut: () => {
+            dispatch({
+                type: 'USER_LOG_OUT',
+            })
         }
     }
 }

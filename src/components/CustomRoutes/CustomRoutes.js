@@ -27,8 +27,6 @@ export const SRoute = ({ component: Component, ...rest }) => {
                 }
                 else if (window.location.href.includes('job-list'))
                 {
-                    console.log('haleluyah');
-                    console.log(window.location.href.includes('job-list'));
                     return (
                         <div id="wrapper">
                             <header id="header-container" className='fullwidth'>

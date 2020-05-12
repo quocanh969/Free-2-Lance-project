@@ -1,8 +1,11 @@
 import React from 'react';
 import './App.css';
+
+import {history} from './assets/history/history';
+
 import Home from './components/home';
 
-import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect, Router } from 'react-router-dom';
 
 import {SRoute} from './components/CustomRoutes/CustomRoutes';
 
@@ -15,15 +18,17 @@ import ForgetPassword from './components/Login/ForgetPassword';
 import UserDetail from './components/User/UserDetail';
 import MapContainer from './components/map_JobsList';
 import FindJob from './components/FindJob';
+import Profile from './components/Profile/Profile';
 
 
 function App() {
   return (
     <div>
-        <BrowserRouter>
+        <Router history={history}>
           <Switch>
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
+            <SRoute path='/dashboard' exact component={Profile}></SRoute>
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
             <SRoute path='/job-list' exact component={JobList}></SRoute>
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
@@ -33,7 +38,7 @@ function App() {
             <SRoute path='/contact' exact component={Contact}></SRoute>
             <Redirect to='/home'></Redirect>
           </Switch>
-        </BrowserRouter>
+        </Router>
     </div>
   );
 }
