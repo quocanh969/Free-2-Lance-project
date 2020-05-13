@@ -9,8 +9,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 class YourJobsComponent extends Component {
     render() {
         return (
-            <div>
-                <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} />
+            <div className='row'>
+                <div className='col-5' style={{minHeight:'500px'}}>
+                    <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} />
+                </div>
+                <div className='col-7'>
+                    
+                </div>
             </div>
         )
     }
