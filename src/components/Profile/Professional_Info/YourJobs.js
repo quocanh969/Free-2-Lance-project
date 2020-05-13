@@ -3,11 +3,14 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+
 class YourJobsComponent extends Component {
     render() {
         return (
             <div>
-                YourJobs work !
+                <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} />
             </div>
         )
     }

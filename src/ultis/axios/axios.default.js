@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { MyStore } from "../..";
-import { history } from "../history/history";
+import { history } from "../../assets/history/history";
 
 let token = "";
 if (localStorage.getItem("user") && localStorage.getItem("user").token) {

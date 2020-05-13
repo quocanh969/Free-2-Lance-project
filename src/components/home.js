@@ -22,7 +22,7 @@ import JobCategory5 from '../assets/images/job-category-05.jpg';
 import JobCategory6 from '../assets/images/job-category-06.jpg';
 import JobCategory7 from '../assets/images/job-category-07.jpg';
 import JobCategory8 from '../assets/images/job-category-08.jpg';
-import { S_Selector } from '../assets/s-helper/S_Help_Input';
+import { S_Selector } from '../ultis/SHelper/S_Help_Input';
 
 class HomeComponent extends Component {
 

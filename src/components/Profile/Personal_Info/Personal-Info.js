@@ -4,8 +4,35 @@ import UserAvatarPlaceholder from '../../../assets/images/user-avatar-placeholde
 
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { S_Drag_Drop } from '../../../ultis/SHelper/S_Help_Input';
 
 class PersonalInfoComponent extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            potrait: null,
+            frontID: null,
+            backID: null,
+            cvFile: null,
+        }
+    }
+
+    handlePotraitChange(file) {
+        this.setState({potrait: file});
+        console.log(this.state);
+    }
+
+    handleFrontIDChange(file) {
+        this.setState({frontID: file});
+        console.log(this.state);
+    }
+
+    handleBackIDChange(file) {
+        this.setState({backID: file});
+        console.log(this.state);
+    }
+
     render() {
         let { user } = this.props.HeaderReducer;
         return (
@@ -46,13 +73,31 @@ class PersonalInfoComponent extends Component {
                         </div>
                         <div className='form-control'>{user.identity}</div>
                     </div>
-                    <div className='row'>
-                        
+                    <div className='row px-5 mt-3'>
+                        <S_Drag_Drop className='col-4 mx-0 px-1' style={{height: '150px'}} 
+                            onChange={this.handlePotraitChange}
+                            type='image'
+                            title='Drag your image here'>                            
+                        </S_Drag_Drop>
+                        <S_Drag_Drop className='col-4 mx-0 px-1' style={{height: '150px'}} 
+                            onChange={this.handleFrontIDChange}
+                            type='image'
+                            title='Drag your image here'>
+                        </S_Drag_Drop>
+                        <S_Drag_Drop className='col-4 mx-0 px-1' style={{height: '150px'}} 
+                            onChange={this.handleBackIDChange}
+                            type='image'
+                            title='Drag your image here'>
+                        </S_Drag_Drop>                        
                     </div>
                 </div>
  
-                <div className='rounded mt-3' style={{ height: '200px' }}>
-                    Câp nhật CV cá nhân
+                <div className='rounded mt-3 p-5'>
+                    <h3 className='font-weight-bold mb-4'>Hồ sơ CV cá nhân</h3>
+                    <S_Drag_Drop 
+                        onChange={this.handleBackIDChange}
+                        title="Drag 'n' Drop your file here">
+                    </S_Drag_Drop>    
                 </div>
             </div>
         )

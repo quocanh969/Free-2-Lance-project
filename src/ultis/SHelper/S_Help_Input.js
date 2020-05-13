@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-//import './selector.css';
-import '../css/style.css';
+import '../../assets/css/style.css';
+import './S_Help_style.css';
 
 class S_Selector extends Component {
     
@@ -84,6 +84,60 @@ class S_Selector extends Component {
     }
 }
 
+class S_Drag_Drop extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isDragOver: false,
+            file:null,
+        }
+
+
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleDrop(e){
+        e.preventDefault();
+        //this.setState({file:e.dataTransfer.files.FileList});
+        //this.props.file = e.dataTransfer.files.FileList[0];
+        this.props.onChange(e.dataTransfer.files[0]);
+    }
+
+    handleChange(e) {
+        //this.setState({file:e.dataTransfer.files.FileList});
+        //this.props.file = e.dataTransfer.files.FileList[0];        
+        this.props.onChange(e.target.files[0]);
+    }
+
+    render() {
+        let fileTypeClass = 'icon-feather-upload'
+        if(this.props.type === 'image')
+        {
+            fileTypeClass = 'icon-feather-camera'
+        }
+        return (
+            <div className={this.props.className}>
+                <input id='file-input' multiple={false} type='file' style={{display:'none'}} onChange={this.handleChange}></input>
+                <div className={'py-2 px-1 '+(this.state.isDragOver ? 'drag-box-over' : 'drag-box')} 
+                    id='drag-drop-box'
+                    style={{fontSize: this.props.fontSize || '15px'}}                    
+                    onDrop={this.handleDrop} 
+                    onDragOver={(e)=>{e.preventDefault();this.setState({isDragOver: true})}}
+                    onDragLeave={()=>{this.setState({isDragOver: false})}}>
+                        {this.props.title} <br></br>or<br></br>
+                        <span className='camera-icon py-1 px-3 rounded cursor-pointer'
+                            onClick={()=>{document.getElementById('file-input').click()}}
+                        >
+                            <i className={fileTypeClass}></i>
+                        </span>
+                </div>
+            </div>
+        )
+    }
+}
+
 export {
     S_Selector,
+    S_Drag_Drop,
 }

@@ -4,7 +4,7 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import HistoryJobs from "./HistoryJobs";
 import YourJobs from "./YourJobs";
-import Schedule from "./Schedule";
+import ApplyingJobs from "./ApplyingJobs";
 
 class ProInfoComponent extends Component {
   constructor(props) {
@@ -14,111 +14,61 @@ class ProInfoComponent extends Component {
     };
   }
 
-    render() {
-        return (
-            <div>
-                {/* General Statistic */}
-                <div className='row'>
-                    <div className='col-4'>
-                        <div className='rounded'  style={{height:'150px'}}>
-                            Số công việc đã làm
-                        </div>
-                    </div>
-                    <div className='col-4'>
-                        <div className='rounded'  style={{height:'150px'}}>
-                            Số công việc đăng ký
-                        </div>
-                    </div>
-                    <div className='col-4'>
-                        <div className='rounded' style={{height:'150px'}}>
-                            Thông báo có việc làm
-                        </div>
-                    </div>
-                </div>
-
-                {/* Tab Component */}
-                <ul className="nav nav-tabs mt-4">
-                    <li className="nav-item">
-                        <div className={"nav-link cursor-pointer" + (this.state.tab === 1 ? ' active':'')} 
-                        onClick={()=>{this.setState({tab: 1})}}>
-                            Lịch sử công việc
-                        </div>
-                    </li>
-                    <li className="nav-item">
-                        <div className={"nav-link cursor-pointer" + (this.state.tab === 2 ? ' active':'')} 
-                        onClick={()=>{this.setState({tab: 2})}}>
-                            Công việc hiện tại
-                        </div>
-                    </li>
-                    <li className="nav-item">
-                        <div className={"nav-link cursor-pointer" + (this.state.tab === 3 ? ' active':'')} 
-                        onClick={()=>{this.setState({tab: 3})}}>
-                            Lịch biểu
-                        </div>
-                    </li>
-                </ul>
-                <div className='tab-component px-3 py-4'>
-                    {
-                        (this.state === 1
-                        ? <HistoryJobs></HistoryJobs>
-                        : (this.state === 2
-                            ? <YourJobs></YourJobs>
-                            : <Schedule></Schedule>
-                            )
-                        )
-                    }
-                </div>
+  render() {
+    return (
+      <div>
+        {/* General Statistic */}
+        <div className='row'>
+          <div className='col-4'>
+            <div className='rounded px-4 pt-5 text-center' style={{ height: '150px' }}>
+              <div className='font-size-50 mb-4'>0</div>
+              <h4>Số công việc đang thực hiện</h4>
+            </div>
+          </div>
+          <div className='col-4'>
+            <div className='rounded px-4 pt-5 text-center' style={{ height: '150px' }}>
+              <div className='font-size-50 mb-4'>0</div>
+              <h4>Số công việc đang ứng tuyển</h4>
+            </div>
+          </div>
+          <div className='col-4'>
+            <div className='rounded px-4 pt-5 text-center' style={{ height: '150px' }}>
+              <div className='font-size-50 mb-4'>0</div>
+              <h4>Số công việc đã hoàn thành</h4>
+            </div>
+          </div>
+        </div>
 
         {/* Tab Component */}
-        <ul className="nav nav-tabs mt-2">
+        <ul className="nav nav-tabs mt-4">
           <li className="nav-item">
-            <div
-              className={
-                "nav-link cursor-pointer" +
-                (this.state.tab === 1 ? " active" : "")
-              }
-              onClick={() => {
-                this.setState({ tab: 1 });
-              }}
-            >
-              History
+            <div className={"nav-link cursor-pointer" + (this.state.tab === 1 ? ' active' : '')}
+              onClick={() => { this.setState({ tab: 1 }) }}>
+              Công việc hiện tại
+              </div>
+          </li>
+          <li className="nav-item">
+            <div className={"nav-link cursor-pointer" + (this.state.tab === 2 ? ' active' : '')}
+              onClick={() => { this.setState({ tab: 2 }) }}>
+              Công việc đang ứng tuyển
             </div>
           </li>
           <li className="nav-item">
-            <div
-              className={
-                "nav-link cursor-pointer" +
-                (this.state.tab === 2 ? " active" : "")
-              }
-              onClick={() => {
-                this.setState({ tab: 2 });
-              }}
-            >
-              Your Jobs
-            </div>
-          </li>
-          <li className="nav-item">
-            <div
-              className={
-                "nav-link cursor-pointer" +
-                (this.state.tab === 3 ? " active" : "")
-              }
-              onClick={() => {
-                this.setState({ tab: 3 });
-              }}
-            >
-              Shedule
-            </div>
-          </li>
+            <div className={"nav-link cursor-pointer" + (this.state.tab === 3 ? ' active' : '')}
+              onClick={() => { this.setState({ tab: 3 }) }}>
+              Lịch sử công việc
+              </div>
+          </li>          
         </ul>
-        <div className="tab-component">
+
+        <div className="tab-component rounded px-3 py-4">
           {this.state.tab === 1 ? (
-            <HistoryJobs></HistoryJobs>
-          ) : this.state.tab === 2 ? (
             <YourJobs></YourJobs>
+          ) : this.state.tab === 2 ? (
+            <ApplyingJobs></ApplyingJobs>
           ) : (
-            <Schedule></Schedule>
-          )}
+                <HistoryJobs></HistoryJobs>
+              )}
         </div>
       </div>
     );
