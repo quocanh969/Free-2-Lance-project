@@ -3,6 +3,18 @@ import React, { Component } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Dashboard from './Tab/Dashboard';
+import Messages from './Tab/Messages';
+import Reviews from './Tab/Reviews';
+import Setting from './Tab/Setting';
+import Candidates from './Tab/Jobs/Candidates';
+import JobsDoing from './Tab/Jobs/JobsDoing';
+import JobsDone from './Tab/Jobs/JobsDone';
+import PostJob from './Tab/Jobs/PostJob';
+import TasksApplying from './Tab/Tasks/TasksApplying';
+import TasksDone from './Tab/Tasks/TasksDone';
+import TasksDoing from './Tab/Tasks/TasksDoing';
+
 class ProfileComponent extends Component {
 
     constructor(props) {
@@ -18,47 +30,48 @@ class ProfileComponent extends Component {
         {
             case 1:
                 return (
-                    <div>Quản lý chung hoạt động</div>
-                );
+                    <Dashboard></Dashboard>
+                );     
+                
             case 2:
                 return (
-                    <div>Tin nhắn hoạt động</div>
+                    <Messages></Messages>
                 );
             case 3:
                 return (
-                    <div>Nhận xét hoạt động</div>
+                    <Reviews></Reviews>
                 );
             case 4:
                 return (
-                    <div>4</div>
+                    <Candidates></Candidates>
                 );
             case 5:
                 return (
-                    <div>5</div>
+                    <JobsDoing></JobsDoing>
                 );
             case 6:
                 return (
-                    <div>6</div>
+                    <JobsDone></JobsDone>
                 );
             case 7:
                 return (
-                    <div>7</div>
+                    <PostJob></PostJob>
                 );
             case 8:
                 return (
-                    <div>8</div>
+                    <TasksDoing></TasksDoing>
                 );
             case 9:
                 return (
-                    <div>9</div>
+                    <TasksApplying></TasksApplying>
                 );
             case 10:
                 return (
-                    <div>10</div>
+                    <TasksDone></TasksDone>
                 );
             case 11:
                 return (
-                    <div>11</div>
+                    <Setting></Setting>
                 );
             default: return (<div></div>);
         }
