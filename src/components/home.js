@@ -247,7 +247,7 @@ class HomeComponent extends Component {
                                 {/* Jobs Container */}
                                 <div className="tasks-list-container compact-list margin-top-35">
                                     {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
+                                    <NavLink to="/job-detail" className="task-listing">
                                         {/* Job Listing Details */}
                                         <div className="task-listing-details">
                                             {/* Details */}
@@ -274,7 +274,7 @@ class HomeComponent extends Component {
                                                 <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
                                             </div>
                                         </div>
-                                    </a>
+                                    </NavLink>
                                     {/* Task */}
                                     <a href="single-task-page.html" className="task-listing">
                                         {/* Job Listing Details */}

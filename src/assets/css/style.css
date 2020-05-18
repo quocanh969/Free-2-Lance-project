@@ -13742,8 +13742,8 @@ body .pac-container {
 }
 
 /* Apply Now Button */
-a.apply-now-button {
-  background-color: #66676b;
+button.apply-now-button {
+  background-color: #293FE4;
   color: #fff;
   text-align: center;
   font-size: 18px;
@@ -13755,12 +13755,12 @@ a.apply-now-button {
   display: block;
 }
 
-a.apply-now-button:hover {
+button.apply-now-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 2px 8px rgba(102, 103, 107, 0.35);
 }
 
-a.apply-now-button i {
+button.apply-now-button i {
   font-size: 22px;
   position: relative;
   line-height: 0;
@@ -14138,6 +14138,25 @@ a.dashboard-responsive-nav-trigger {
   font-size: 15px;
 }
 
+.dashboard-nav ul li div {
+  color: #707070;
+  display: block;
+  padding: 11px 32px;
+  transition: 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.dashboard-nav ul li div i {
+  padding-right: 8px;
+  width: 20px;
+  font-size: 20px;
+  color: #909090;
+  transition: 0.3s;
+  position: relative;
+  top: 2px;
+}
+
 .dashboard-nav ul li a {
   color: #707070;
   display: block;
@@ -14158,13 +14177,13 @@ a.dashboard-responsive-nav-trigger {
 }
 
 /* Hover State */
-.dashboard-nav ul li ul li:hover a {
+.dashboard-nav ul li ul li:hover div {
   padding-left: 4px;
 }
 
-.dashboard-nav ul li.active-submenu a i,
-.dashboard-nav ul li.active a i,
-.dashboard-nav ul li:hover a i {
+.dashboard-nav ul li.active-submenu div i,
+.dashboard-nav ul li.active div i,
+.dashboard-nav ul li:hover div i {
   color: #66676b;
 }
 
@@ -14179,9 +14198,9 @@ a.dashboard-responsive-nav-trigger {
 	background-color: #f8f8f8;
 }*/
 
-.dashboard-nav ul li.active-submenu a,
-.dashboard-nav ul li:hover a,
-.dashboard-nav ul li.active a {
+.dashboard-nav ul li.active-submenu div,
+.dashboard-nav ul li:hover div,
+.dashboard-nav ul li.active div {
   color: #66676b;
 }
 
@@ -14231,7 +14250,7 @@ a.dashboard-responsive-nav-trigger {
   margin: 0;
 }
 
-.dashboard-nav ul li ul li a {
+.dashboard-nav ul li ul li div {
   padding: 5px 0;
 }
 
@@ -14263,16 +14282,16 @@ a.dashboard-responsive-nav-trigger {
   top: 15px;
 }
 
-.dashboard-nav ul li.active-submenu a:after,
-.dashboard-nav ul li.active a:after,
-.dashboard-nav ul li:hover a:after {
+.dashboard-nav ul li.active-submenu div:after,
+.dashboard-nav ul li.active div:after,
+.dashboard-nav ul li:hover div:after {
   color: #66676b;
   background: rgba(102, 103, 107, 0.13);
   opacity: 0.8;
 }
 
 .dashboard-nav ul li ul:before,
-.dashboard-nav ul li a:only-child:after {
+.dashboard-nav ul li div:only-child:after {
   content: "";
   display: none;
 }
@@ -15269,7 +15288,7 @@ ul.dashboard-box-list > li:hover {
   .dashboard-nav ul:before {
     padding: 0 29px;
   }
-  .dashboard-nav ul li a {
+  .dashboard-nav ul li div {
     padding: 10px 25px;
   }
 

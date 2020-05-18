@@ -95,9 +95,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .font-size-30 {
     font-size: 30px;
 }
+.font-size-20 {
+  font-size: 20px;
+}
 .font-size-15 {
     font-size: 15px;
 }
 .font-size-13 {
     font-size: 13px;
+}
+
+/* button */
+.btn-293FE4 {
+  background-color: #293FE4;
+  color: white;
 }

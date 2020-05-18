@@ -99,14 +99,10 @@ class S_Drag_Drop extends Component {
 
     handleDrop(e){
         e.preventDefault();
-        //this.setState({file:e.dataTransfer.files.FileList});
-        //this.props.file = e.dataTransfer.files.FileList[0];
         this.props.onChange(e.dataTransfer.files[0]);
     }
 
     handleChange(e) {
-        //this.setState({file:e.dataTransfer.files.FileList});
-        //this.props.file = e.dataTransfer.files.FileList[0];        
         this.props.onChange(e.target.files[0]);
     }
 
@@ -117,7 +113,7 @@ class S_Drag_Drop extends Component {
             fileTypeClass = 'icon-feather-camera'
         }
         return (
-            <div className={this.props.className}>
+            <div className={this.props.className} style={this.props.style}>
                 <input id='file-input' multiple={false} type='file' style={{display:'none'}} onChange={this.handleChange}></input>
                 <div className={'py-2 px-1 '+(this.state.isDragOver ? 'drag-box-over' : 'drag-box')} 
                     id='drag-drop-box'
