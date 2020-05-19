@@ -31,6 +31,18 @@ function forgetPassword(email) {
   });
 }
 
+function activateAccount(token) {
+  return axios.put(`/activation/${token}`, {
+    token,
+  });
+}
+
+function resendActivationMail(email) {
+  return axios.post("/resendActivation", {
+    email,
+  });
+}
+
 function handleResponse(response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
@@ -48,4 +60,4 @@ function handleResponse(response) {
   });
 }
 
-export { login, register, forgetPassword };
+export { login, register, forgetPassword, activateAccount, resendActivationMail };

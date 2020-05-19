@@ -129,7 +129,11 @@ class LoginComponent extends Component {
                     />
                   </div>
                   <NavLink to="/forgot-password" className="forgot-password">
-                    Forgot Password?
+                    Forgot password?
+                  </NavLink>
+                  <br/>
+                  <NavLink to="/resendActivation" className="forgot-password">
+                    Have not activated your account yet?
                   </NavLink>
                 </form>
                 {/*spinner loading notification */}

@@ -15,6 +15,8 @@ import Login from './components/Login/Login';
 import Contact from './components/Contact';
 import Register from './components/Login/Register';
 import ForgetPassword from './components/Login/ForgetPassword';
+import AccountActivation from './components/Login/ActivationComponent';
+import ResendAccountActivation from './components/Login/ResendActivationComponent';
 import UserDetail from './components/User/UserDetail';
 import MapContainer from './components/map_JobsList';
 import FindJob from './components/FindJob';
@@ -35,6 +37,8 @@ function App() {
             <SRoute path='/login' exact component={Login}></SRoute>
             <SRoute path='/register' exact component={Register}></SRoute>
             <SRoute path='/forgot-password' exact component={ForgetPassword}></SRoute>
+            <SRoute path='/activation/:activationToken' exact component={AccountActivation}></SRoute>
+            <SRoute path='/resendActivation' exact component={ResendAccountActivation}></SRoute>
             <SRoute path='/contact' exact component={Contact}></SRoute>
             <Redirect to='/home'></Redirect>
           </Switch>
