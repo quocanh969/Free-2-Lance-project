@@ -45,10 +45,10 @@ export const sendLogin = (email, password) => {
             }
             else
             {// thành công
-                dispatch(success(res.data.cb.message));
-                dispatch(updateUser(res.data.user.loginUser));
+                dispatch(success(res.data.message));
+                dispatch(updateUser(res.data.user));
                 // Lưu token vào localstorage
-                localStorage.setItem('user', JSON.stringify(res.data.user.loginUser));   
+                localStorage.setItem('user', JSON.stringify(res.data.user));   
                 localStorage.setItem('token', JSON.stringify(res.data.token));   
                 
                 history.push('/home');
