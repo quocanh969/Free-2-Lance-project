@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-class YourJobsComponent extends Component {
+class CandidatesComponent extends Component {
     render() {
         return (
             <div>
-                YourJobs work !
+                CandidatesComponent work !!!
             </div>
         )
     }
@@ -25,5 +25,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const YourJobs = withRouter(connect(mapStateToProps, mapDispatchToProps)(YourJobsComponent));
-export default YourJobs;
+const Candidates = withRouter(connect(mapStateToProps, mapDispatchToProps)(CandidatesComponent));
+export default Candidates;

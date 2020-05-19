@@ -1,0 +1,16 @@
+.drag-box {
+    border: 3px dashed #ccc;
+    color: #ccc;
+    text-align: center; 
+}
+
+.drag-box-over {
+    border: 3px dashed black;
+    color: black;
+    text-align: center;
+}
+
+.camera-icon {
+    background-color: #5b85ef;
+    color: white;    
+}

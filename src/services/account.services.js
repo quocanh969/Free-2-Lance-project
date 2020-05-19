@@ -1,4 +1,4 @@
-import axios from "../assets/axios/axios.default";
+import axios from "../ultis/axios/axios.default";
 import Axios from "axios";
 
 function login(email, password) {

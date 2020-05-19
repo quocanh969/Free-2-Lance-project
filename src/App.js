@@ -9,7 +9,7 @@ import { BrowserRouter, Switch, Redirect, Router } from 'react-router-dom';
 
 import {SRoute} from './components/CustomRoutes/CustomRoutes';
 
-import JobDetail from './components/JobDetail';
+import JobDetail from './components/JobDetail/JobDetail';
 import JobList from './components/JobList';
 import Login from './components/Login/Login';
 import Contact from './components/Contact';

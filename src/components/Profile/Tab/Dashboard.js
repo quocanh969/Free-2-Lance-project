@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-class ScheduleComponent extends Component {
+class DashboardComponent extends Component {
     render() {
         return (
             <div>
-                Schedule work !
+                Dashboard work !!!
             </div>
         )
     }
@@ -25,5 +25,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const Schedule = withRouter(connect(mapStateToProps, mapDispatchToProps)(ScheduleComponent));
-export default Schedule;
+const Dashboard = withRouter(connect(mapStateToProps, mapDispatchToProps)(DashboardComponent));
+export default Dashboard;
