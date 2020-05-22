@@ -18,6 +18,14 @@ function login(email, password) {
   });
 }
 
+function verify() {
+  return axios.get("/users/", {
+    headers: {
+      "Authorization": "Bearer " + JSON.parse(localStorage.getItem("token")),
+    }
+  })
+}
+
 function register(account) {
   console.log("hahahahhasdjashdkj");
   return axios.post("/signup", {
@@ -60,4 +68,4 @@ function handleResponse(response) {
   });
 }
 
-export { login, register, forgetPassword, activateAccount, resendActivationMail };
+export { login, register, forgetPassword, activateAccount, resendActivationMail, verify };

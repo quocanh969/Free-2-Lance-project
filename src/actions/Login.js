@@ -51,8 +51,8 @@ export const sendLogin = (email, password) => {
                 // Lưu token vào localstorage
                 localStorage.setItem('user', JSON.stringify(res.data.data.user));   
                 localStorage.setItem('token', JSON.stringify(res.data.data.token));   
-                
-                history.push('/home');
+                window.history.back();
+                // history.push('/home');
             }
             
         })

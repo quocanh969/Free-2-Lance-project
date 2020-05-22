@@ -7,7 +7,7 @@ import Home from './components/home';
 
 import { BrowserRouter, Switch, Redirect, Router } from 'react-router-dom';
 
-import {SRoute} from './components/CustomRoutes/CustomRoutes';
+import {SRoute, PrivateRoute} from './components/CustomRoutes/CustomRoutes';
 
 import JobDetail from './components/JobDetail/JobDetail';
 import JobList from './components/JobList';
@@ -26,11 +26,11 @@ import Profile from './components/Profile/Profile';
 function App() {
   return (
     <div>
-        <Router history={history}>
+        <BrowserRouter>
           <Switch>
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
-            <SRoute path='/dashboard' exact component={Profile}></SRoute>
+            <PrivateRoute path='/dashboard' exact component={Profile}></PrivateRoute>
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
             <SRoute path='/job-list' exact component={JobList}></SRoute>
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
@@ -42,7 +42,7 @@ function App() {
             <SRoute path='/contact' exact component={Contact}></SRoute>
             <Redirect to='/home'></Redirect>
           </Switch>
-        </Router>
+        </BrowserRouter>
     </div>
   );
 }

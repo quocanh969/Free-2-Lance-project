@@ -163,7 +163,7 @@ class HeaderComponent extends Component {
             content.push(                
                 <div className="header-widget" key={2}>
                     {/* Info */}
-                    {/* <div className="header-notifications user-menu">
+                    <div className="header-notifications user-menu">
                         <div className="header-notifications-trigger">
                             <a href="#"><div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div></a>
                         </div>
@@ -187,8 +187,8 @@ class HeaderComponent extends Component {
                                 <li><div className='cursor-pointer nav-link-simulate' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
                             </ul>
                         </div>
-                    </div> */}
-                    <div className="header-notifications user-menu">
+                    </div>
+                    {/* <div className="header-notifications user-menu">
                         <div className="dropdown header-notifications-trigger">
                             <div className="user-avatar status-online" type="button" id="userMenuDropdown" 
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -203,7 +203,7 @@ class HeaderComponent extends Component {
                                 
                             </div>
                         </div>
-                    </div>                
+                    </div>                 */}
                 </div>                
             );
         }

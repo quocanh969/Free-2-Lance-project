@@ -20,13 +20,15 @@ axios.interceptors.response.use(
   (error) => {
     console.log(error);
     if (error.response.status === 401) {
-      console.log(error.response.data);
-      alert(error.response.data.message);
+      console.log(error.response);
+      // alert(error.response);
+      alert('Đăng nhập đi ba');
 
       localStorage.setItem("user", null);
       localStorage.setItem("token", null);
 
-      history.push("/login");
+      // history.push("/login");
+      window.location.href = './login';
       MyStore.dispatch({
         type: "USER_LOG_OUT",
       });
