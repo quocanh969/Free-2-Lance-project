@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import {history} from './assets/history/history';
+import {history} from './ultis/history/history';
 
 import Home from './components/home';
 
@@ -30,7 +30,7 @@ function App() {
           <Switch>
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
-            <PrivateRoute path='/dashboard' exact component={Profile}></PrivateRoute>
+            <PrivateRoute path='/dashboard' exact component={Profile}></PrivateRoute>            
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
             <SRoute path='/job-list' exact component={JobList}></SRoute>
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>

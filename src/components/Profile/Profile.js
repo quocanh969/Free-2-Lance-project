@@ -7,13 +7,13 @@ import Dashboard from './Tab/Dashboard';
 import Messages from './Tab/Messages';
 import Reviews from './Tab/Reviews';
 import Setting from './Tab/Setting';
-import Candidates from './Tab/Jobs/Candidates';
 import JobsDoing from './Tab/Jobs/JobsDoing';
 import JobsDone from './Tab/Jobs/JobsDone';
 import PostJob from './Tab/Jobs/PostJob';
 import TasksApplying from './Tab/Tasks/TasksApplying';
 import TasksDone from './Tab/Tasks/TasksDone';
 import TasksDoing from './Tab/Tasks/TasksDoing';
+import ChangePassword from './Tab/ChangePassword';
 
 class ProfileComponent extends Component {
 
@@ -21,7 +21,7 @@ class ProfileComponent extends Component {
         super(props);
 
         this.state = {
-            tab: 7,
+            tab: 10,
         }
     }
 
@@ -41,43 +41,48 @@ class ProfileComponent extends Component {
                 return (
                     <Reviews></Reviews>
                 );
+            // case 4:
+            //     return (
+            //         <Candidates></Candidates>
+            //     );
             case 4:
-                return (
-                    <Candidates></Candidates>
-                );
-            case 5:
                 return (
                     <JobsDoing></JobsDoing>
                 );
-            case 6:
+            case 5:
                 return (
                     <JobsDone></JobsDone>
                 );
-            case 7:
+            case 6:
                 return (
                     <PostJob></PostJob>
                 );
-            case 8:
+            case 7:
                 return (
                     <TasksDoing></TasksDoing>
                 );
-            case 9:
+            case 8:
                 return (
                     <TasksApplying></TasksApplying>
                 );
-            case 10:
+            case 9:
                 return (
                     <TasksDone></TasksDone>
                 );
-            case 11:
+            case 10:
                 return (
                     <Setting></Setting>
+                );
+            case 11:
+                return (
+                    <ChangePassword></ChangePassword>
                 );
             default: return (<div></div>);
         }
     }
 
     render() {
+        let isBusinessUser = this.props.HeaderReducer.user.isBusinessUser;
         return (
             <div className='container-fluid'>
                 <div className='row dashboard'>
@@ -115,49 +120,64 @@ class ProfileComponent extends Component {
                                             </li>
                                         </ul>
                                         <ul data-submenu-title="Quản lý đăng công việc">
-                                            <li className={(this.state.tab === 4 ? 'active' : '')}>
+                                            {/* <li className={(this.state.tab === 4 ? 'active' : '')}>
                                                 <div className='cursor-pointer' onClick={() => { this.setState({ tab: 4 }) }}>
                                                     <i className="icon-feather-users" /> Ứng viên
+                                                </div>
+                                            </li> */}
+                                            <li className={(this.state.tab === 4 ? 'active' : '')}>
+                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 4 }) }}>
+                                                    <i className="icon-material-outline-business-center" /> Công việc hiện tại
                                                 </div>
                                             </li>
                                             <li className={(this.state.tab === 5 ? 'active' : '')}>
                                                 <div className='cursor-pointer' onClick={() => { this.setState({ tab: 5 }) }}>
-                                                    <i className="icon-material-outline-business-center" /> Công việc hiện tại
+                                                    <i className="icon-feather-check-square" /> Công việc đã hoàn thành
                                                 </div>
                                             </li>
                                             <li className={(this.state.tab === 6 ? 'active' : '')}>
                                                 <div className='cursor-pointer' onClick={() => { this.setState({ tab: 6 }) }}>
-                                                    <i className="icon-feather-check-square" /> Công việc đã hoàn thành
-                                                </div>
-                                            </li>
-                                            <li className={(this.state.tab === 7 ? 'active' : '')}>
-                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 7 }) }}>
                                                     <i className="icon-material-outline-note-add" /> Đăng công việc
                                                 </div>
                                             </li>
-                                        </ul>
-                                        <ul data-submenu-title="Quản lý việc làm">
-                                            <li className={(this.state.tab === 8 ? 'active' : '')}>
-                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 8 }) }}>
-                                                    <i className="icon-material-outline-business-center" /> Công việc hiện tại
+                                        </ul>                                        
+                                        {(
+                                            isBusinessUser
+                                            ?
+                                            <ul data-submenu-title="Quản lý việc làm">
+                                                <div className='m-3 p-3 border border-primary rounded'>
+                                                    Tài khoản của bạn là tài khoản doanh nghiệp nên không thể tham gia các hoạt động ứng tuyển việc làm.
                                                 </div>
-                                            </li>
-                                            <li className={(this.state.tab === 9 ? 'active' : '')}>
-                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 9 }) }}>
-                                                    <i className="icon-line-awesome-hourglass" /> Công việc đang ứng tuyển
-                                                </div>
-                                            </li>
+                                            </ul>
+                                            :
+                                            <ul data-submenu-title="Quản lý việc làm">
+                                                <li className={(this.state.tab === 7 ? 'active' : '')}>
+                                                    <div className='cursor-pointer' onClick={() => { this.setState({ tab: 7 }) }}>
+                                                        <i className="icon-material-outline-business-center" /> Công việc hiện tại
+                                                    </div>
+                                                </li>
+                                                <li className={(this.state.tab === 8 ? 'active' : '')}>
+                                                    <div className='cursor-pointer' onClick={() => { this.setState({ tab: 8 }) }}>
+                                                        <i className="icon-line-awesome-hourglass" /> Công việc đang ứng tuyển
+                                                    </div>
+                                                </li>
+                                                <li className={(this.state.tab === 9 ? 'active' : '')}>
+                                                    <div className='cursor-pointer' onClick={() => { this.setState({ tab: 9 }) }}>
+                                                        <i className="icon-feather-check-square" /> Công việc đã hoàn thành
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        )}
+                                        <ul data-submenu-title="Tài khoản">
                                             <li className={(this.state.tab === 10 ? 'active' : '')}>
                                                 <div className='cursor-pointer' onClick={() => { this.setState({ tab: 10 }) }}>
-                                                    <i className="icon-feather-check-square" /> Công việc đã hoàn thành
-                                                </div>
+                                                    <i className="icon-material-outline-settings" /> Thiết lập
+                                                </div> 
                                             </li>
-                                        </ul>
-                                        <ul data-submenu-title="Tài khoản">
                                             <li className={(this.state.tab === 11 ? 'active' : '')}>
                                                 <div className='cursor-pointer' onClick={() => { this.setState({ tab: 11 }) }}>
-                                                    <i className="icon-material-outline-settings" /> Thiết lập
-                                            </div>
+                                                    <i className="icon-feather-lock" /> Đổi mật khẩu
+                                                </div> 
                                             </li>
                                             <li><div className='cursor-pointer'><i className="icon-material-outline-power-settings-new" /> Đăng xuất</div></li>
                                         </ul>

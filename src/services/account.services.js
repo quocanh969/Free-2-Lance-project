@@ -1,5 +1,4 @@
 import axios from "../ultis/axios/axios.default";
-import Axios from "axios";
 
 function login(email, password) {
   // const requestOptions = {

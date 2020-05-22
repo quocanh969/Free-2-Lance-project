@@ -7,18 +7,34 @@ import { S_Selector } from '../../../ultis/SHelper/S_Help_Input';
 
 import avatarPlaceholder from '../../../assets/images/user-avatar-placeholder.png';
 import browseCompoanies from '../../../assets/images/browse-companies-03.png';
+import { getUser } from '../../../services/user.services';
 
 class SettingComponent extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            isLoaded: false,
+        }        
     }
 
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0,0);        
+    }
+
+    initData() {
+        getUser()
+        .then(res=>{
+            console.log(res);            
+        })
+        .catch(err=>{
+            console.log(err);
+        })
     }
     
     render() {
         let { user } = this.props.HeaderReducer;
+        // this.initData();
 
         let genders = ['Nam', 'Nữ'];
 
@@ -59,7 +75,8 @@ class SettingComponent extends Component {
 
                 {/* Row */}
                 <div className="row">
-                    {/* Thông tin chung */}
+
+                    {/* Thông tin nhân */}
                     <div className="col-12">
                         <div className="dashboard-box margin-top-0">
                             <div className="headline">
@@ -92,17 +109,13 @@ class SettingComponent extends Component {
                                                 <div className="submit-field">
                                                     <h5>Loại tài khoản</h5>
                                                     <div className="account-type">
-                                                        <div>
-                                                            <input type="radio" name="account-type-radio" id="personal-radio" className="account-type-radio"
-                                                                defaultChecked={!user.isBusinessUser} onChange={() => { user.isBusinessUser = false }} />
-                                                            <label htmlFor="personal-radio" className="ripple-effect-dark">
+                                                        <div>                                                            
+                                                            <label htmlFor="personal-radio" className={"ripple-effect-dark account-type-label " +(!user.isBusinessUser ? 'account-type-check' : '')}>
                                                                 <i className="icon-material-outline-account-circle"></i> Personal
                                                             </label>
                                                         </div>
                                                         <div>
-                                                            <input type="radio" name="account-type-radio" id="company-radio" className="account-type-radio"
-                                                                defaultChecked={user.isBusinessUser} onChange={() => { user.isBusinessUser = true }} />
-                                                            <label htmlFor="company-radio" className="ripple-effect-dark">
+                                                            <label htmlFor="company-radio" className={"ripple-effect-dark account-type-label " +(user.isBusinessUser ? 'account-type-check' : '')}>
                                                                 <i className="icon-material-outline-business"></i> Company
                                                             </label>
                                                         </div>
@@ -146,7 +159,7 @@ class SettingComponent extends Component {
                         </div>
                     </div>
 
-                    {/* Tài khoản */}
+                    {/* Thông tin xác thực -- CMND / Passport */}
                     <div className="col-12">
                         <div className="dashboard-box">
                             {/* Headline */}
@@ -205,47 +218,57 @@ class SettingComponent extends Component {
                         </div>
                     </div>
 
-                    {/* Thông tin xác thực -- CMND / Passport */}
-                    <div className="col-xl-12">
-                        <div id="test1" className="dashboard-box">
-                            {/* Headline */}
-                            <div className="headline">
-                                <h3><i className="icon-material-outline-lock" /> Mật khẩu &amp; Bảo mật</h3>
-                            </div>
-                            <div className="dashboard-content with-padding">
-                                <div className="row">
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Mật khẩu hiện tại</h5>
-                                            <input type="password" id='current-password' className="with-border" />
+                    {/* Thông tin của công ty ( nếu có ) */}       
+                    {(
+                        user.isBusinessUser
+                        ?
+                        <div className="col-12">
+                            <div className="dashboard-box">
+                                <div className="headline">
+                                    <h3><i className="icon-material-outline-business" />Thông tin công ty</h3>
+                                </div>
+                                <div className="dashboard-content with-padding padding-bottom-0">
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <div className="submit-field">
+                                                <h5>Công ty</h5>
+                                                <input type="text" className="with-border" /*defaultValue={user.fullname}*/ defaultValue='Công ty TNHH Tin học Bambi' />
+                                            </div>
+                                        </div>  
+                                        <div className="col-12">
+                                            <div className="submit-field">
+                                                <h5>Địa chỉ công ty</h5>
+                                                <input type="text" className="with-border" defaultValue={user.address} />
+                                            </div>
+                                        </div>                                      
+                                        <div className='col-12'>
+                                            <div className="submit-field">
+                                                <h5>Email công ty</h5>
+                                                <input type="email" className="with-border" defaultValue={user.email} />
+                                            </div>
+                                        </div>                                        
+                                        <div className="col-6">
+                                            <div className="submit-field">
+                                                <h5>Số nhân viên</h5>
+                                                <input type="number" min={1} className="with-border" defaultValue={2} />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Mật khẩu mới</h5>
-                                            <input type="password" id='new-password' className="with-border" />
+                                        <div className="col-6">
+                                            <div className="submit-field">
+                                                <h5>Vai trò của bạn trong công ty</h5>
+                                                <input type="text" className="with-border" defaultValue='CEO' />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Nhập lại mật khẩu mới</h5>
-                                            <input type="password" id='repeat-password' className="with-border" />
-                                        </div>
-                                    </div>
-                                    {/* <div className="col-xl-12">
-                                        <div className="checkbox">
-                                            <input type="checkbox" id="two-step" defaultChecked />
-                                            <label htmlFor="two-step"><span className="checkbox-icon" /> Enable Two-Step Verification via Email</label>
-                                        </div>
-                                    </div> */}
+                                    </div>                             
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        : ''
+                    )}
 
                     {/* Button */}
                     <div className="col-xl-12">
-                        <button className="button ripple-effect big margin-top-30">Save Changes</button>
+                        <button className="button ripple-effect big margin-top-30">Lưu thay đổi</button>
                     </div>
                 </div>
                 {/* Row / End */}

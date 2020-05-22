@@ -17,7 +17,6 @@ import CompanyLogo6 from '../assets/images/company-logo-06.png';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 
-import MiniFooter from './Help/MiniFooter';
 
 class JobListComponent extends Component {
     
@@ -377,8 +376,7 @@ class JobListComponent extends Component {
                             </nav>
                         </div>
                         <div className="clearfix" />
-                        {/* Pagination / End */}
-                        <MiniFooter></MiniFooter>
+                        
                     </div>
                     {/* Full Page Content / End */}
 
