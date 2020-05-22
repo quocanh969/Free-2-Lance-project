@@ -1,7 +1,7 @@
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
 
-.font-weight-bold {
+#header .font-weight-bold {
   font-weight: bold !important;
   font-size: 20px;
 }
@@ -52,6 +52,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   -webkit-appearance: none;
 }
 
+.acc-image-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  height: 200px;
+}
+
 .s-checkbox {
   height: 15px;
   width: 15px;
@@ -66,6 +74,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
+.cursor-auto {
+  cursor: auto !important;
+}
+
 .s-find-job {
   min-height: 100vh;
 }
@@ -78,14 +90,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .nav-link-simulate:hover {
     color: #2A41E8;
-}
-
-.dashboard .rounded {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.identity-box {
-  border: 1px solid black;
 }
 
 /* Font size */
@@ -109,4 +113,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .btn-293FE4 {
   background-color: #293FE4;
   color: white;
+}
+
+/* background */
+.bg-F0F0F0 {
+  background-color: #F0F0F0 !important;
+}
+
+/* Dashboard css*/
+.dashboard {
+  background-color: #FAFAFA;
+}
+
+.sidebar-dashboard {
+  background-color: white;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);;
 }

@@ -38,20 +38,22 @@ export const sendLogin = (email, password) => {
         login(email, password)
         .then(res=>{
             console.log(res);
+            
             if(res.data.code === '-101')
             {// thất bại                
                 dispatch(failure(res.data.message));
             }
             else
             {// thành công
-                dispatch(success(res.data.cb.message));
-                dispatch(updateUser(res.data.user.loginUser));
+                dispatch(success(res.data.message));
+                dispatch(updateUser(res.data.data.user));
                 // Lưu token vào localstorage
-                localStorage.setItem('user', JSON.stringify(res.data.user.loginUser));   
-                localStorage.setItem('token', JSON.stringify(res.data.token));   
+                localStorage.setItem('user', JSON.stringify(res.data.data.user));   
+                localStorage.setItem('token', JSON.stringify(res.data.data.token));   
                 
                 history.push('/home');
             }
+            
         })
         .catch(err=>{
             console.log(err);
