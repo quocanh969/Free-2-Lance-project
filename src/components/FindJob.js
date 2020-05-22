@@ -17,6 +17,10 @@ class FindJobComponent extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        window.scrollTo(0,0);
+    }
+
     areaSession(areas) {        
         let content = [];
         let count = 1;

@@ -11,7 +11,6 @@ import Logo2 from '../../assets/images/logo2.png';
 
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 
-import GBFlag from '../../assets/images/flags/gb.svg';
 import CompanyLogo2a from '../../assets/images/company-logo-02.png';
 import CompanyLogo3a from '../../assets/images/company-logo-03.png';
 
@@ -54,20 +53,21 @@ class JobDetailComponent extends Component {
                                     <div className="left-side">
                                         <div className="header-image"><a href="single-company-profile.html"><img src={CompanyLogo3a} alt="" /></a></div>
                                         <div className="header-details">
-                                            <h3>Restaurant General Manager</h3>
-                                            <h5>About the Employer</h5>
+                                            <h3>Job 's Title</h3>
+                                            <h5>Job 's Topics</h5>
                                             <ul>
-                                                <li><a href="single-company-profile.html"><i className="icon-material-outline-business" /> King</a></li>
+                                                <li><a href="single-company-profile.html">Employer</a></li>
                                                 <li><div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">{4.9}</div></li>
-                                                <li><img className="flag" src={GBFlag} alt="" /> United Kingdom</li>
-                                                <li><div className="verified-badge-with-title">Verified</div></li>
+                                                <li><i className="icon-material-outline-location-city" /> Thành phố, Khu vực</li>
+                                                {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
                                             </ul>
+                                            <div className='font-weight-bold'><i className='icon-line-awesome-calendar'></i> Date post</div>
                                         </div>
                                     </div>
                                     <div className="right-side">
                                         <div className="salary-box">
                                             <div className="salary-type">Annual Salary</div>
-                                            <div className="salary-amount">$35k - $38k</div>
+                                            <div className="salary-amount">Salary</div>
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@ class JobDetailComponent extends Component {
                                         <JobDetailInfo></JobDetailInfo>  
                                         : this.state.tab === 2 ?
                                         <EmployerInfo></EmployerInfo>
-                                        :
+                                        : this.state.tab === 3 ?
                                         <div id="single-job-map-container">
                                             <div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger"></div>
                                             {/* <a href="#" id="streetView">Street View</a> */}
@@ -116,6 +116,11 @@ class JobDetailComponent extends Component {
                                                 <MapContainer places={places} isList={false}/>
                                             </div> */}
                                             {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
+                                        </div>
+                                        : <div className='text-center'>
+                                            <img src={CompanyLogo2a} className='my-2'></img>
+                                            <img src={CompanyLogo2a} className='my-2'></img>
+                                            <img src={CompanyLogo2a} className='my-2'></img>
                                         </div>
                                     )
                                 }

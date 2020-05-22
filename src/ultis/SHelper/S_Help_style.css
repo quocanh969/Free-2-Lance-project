@@ -1,3 +1,4 @@
+/* S_Drag */
 .drag-box {
     border: 3px dashed #ccc;
     color: #ccc;
@@ -13,4 +14,22 @@
 .camera-icon {
     background-color: #5b85ef;
     color: white;    
+}
+
+/* S_Selector */
+.btn-select {
+    background-color: white;
+    margin: 0;
+    height: 48px;
+    line-height: 48px;
+    font-family: inherit;    
+}
+
+.btn-select:hover {
+    background-color: white
+}
+
+.dropdown-item:hover {
+    color: #2A41E8 !important;
+    background-color: #F0F1FE !important;
 }

@@ -163,26 +163,21 @@ class HeaderComponent extends Component {
             content.push(                
                 <div className="header-widget" key={2}>
                     {/* Info */}
-                    <div className="header-notifications user-menu">
+                    {/* <div className="header-notifications user-menu">
                         <div className="header-notifications-trigger">
                             <a href="#"><div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div></a>
                         </div>
-                        {/* Dropdown */}
                         <div className="header-notifications-dropdown">
-                            {/* User Status */}
                             <div className="user-status">
-                                {/* User Name / Avatar */}
                                 <div className="user-details">
                                     <div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div>
                                     <div className="user-name">
                                         Tom Smith <span>Freelancer</span>
                                     </div>
                                 </div>
-                                {/* User Status Switcher */}
                                 <div className="status-switch" id="snackbar-user-status">
                                     <label className="user-online current-status">Online</label>
                                     <label className="user-invisible">Invisible</label>
-                                    {/* Status Indicator */}
                                     <span className="status-indicator" aria-hidden="true" />
                                 </div>
                             </div>
@@ -192,7 +187,23 @@ class HeaderComponent extends Component {
                                 <li><div className='cursor-pointer nav-link-simulate' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
                             </ul>
                         </div>
-                    </div>
+                    </div> */}
+                    <div className="header-notifications user-menu">
+                        <div className="dropdown header-notifications-trigger">
+                            <div className="user-avatar status-online" type="button" id="userMenuDropdown" 
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src={UserAvatarSmall1} alt="" />
+                            </div>
+                            <div className="dropdown-menu mt-2" aria-labelledby="userMenuDropdown" onClick={(e)=>{e.stopPropagation()}}>
+                                <div className="dropdown-header">
+                                    Tom Smith
+                                </div>
+                                <div className='cursor-pointer nav-link-simulate dropdown-item' to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</div>
+                                <div className='cursor-pointer nav-link-simulate dropdown-item' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div>
+                                
+                            </div>
+                        </div>
+                    </div>                
                 </div>                
             );
         }

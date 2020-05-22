@@ -14,34 +14,38 @@ class EmployerInfoComponent extends Component {
             <div>
                 {/* Thông tin cá nhân */}
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Người thuê:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Người thuê:</div>
+                    <div className='col-7'></div>
                 </div>
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Email liên hệ:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Người dùng đánh giá:</div>
+                    <div className='col-7'></div>
                 </div>
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Điện thoại liên lạc:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Email liên hệ:</div>
+                    <div className='col-7'></div>
+                </div>
+                <div className='row mb-3'>
+                    <div className='col-5 font-weight-bold'>Điện thoại liên lạc:</div>
+                    <div className='col-7'></div>
                 </div>                
                 {/* Thông tin công ty */}
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Vai trò:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Vai trò:</div>
+                    <div className='col-7'></div>
                 </div>
                 <hr></hr>
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Tên công ty:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Tên công ty:</div>
+                    <div className='col-7'></div>
                 </div>
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Địa chỉ:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Địa chỉ:</div>
+                    <div className='col-7'></div>
                 </div>
                 <div className='row mb-3'>
-                    <div className='col-4 font-weight-bold'>Email công ty:</div>
-                    <div className='col-8'></div>
+                    <div className='col-5 font-weight-bold'>Email công ty:</div>
+                    <div className='col-7'></div>
                 </div>    
             </div>
         )
