@@ -22,6 +22,7 @@ import MapContainer from './components/map_JobsList';
 import FindJob from './components/FindJob';
 import Profile from './components/Profile/Profile';
 
+import GoogleMapAutocomplete from './components/Help/GoogleMapAutocomplete';
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
           <Switch>
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
-            <PrivateRoute path='/dashboard' exact component={Profile}></PrivateRoute>
+            <SRoute path='/dashboard' exact component={Profile}></SRoute>
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
             <SRoute path='/job-list' exact component={JobList}></SRoute>
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
@@ -40,6 +41,7 @@ function App() {
             <SRoute path='/activation/:activationToken' exact component={AccountActivation}></SRoute>
             <SRoute path='/resendActivation' exact component={ResendAccountActivation}></SRoute>
             <SRoute path='/contact' exact component={Contact}></SRoute>
+            <SRoute path='/auto' exact component={GoogleMapAutocomplete}></SRoute>
             <Redirect to='/home'></Redirect>
           </Switch>
         </BrowserRouter>

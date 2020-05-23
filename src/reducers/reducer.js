@@ -8,6 +8,7 @@ import ResendActivationReducer from './AccountReducers/ResendActivation.reducer'
 
 import ReadLocationReducer from './JobReducers/JobsList.Reducer';
 import JobDetailReducer from './JobReducers/JobDetail.Reducer';
+import AddJobReducer from './JobReducers/AddJobForm.Reducer';
 
 import ContactUsReducer from './Contact.Reducer';
 
@@ -24,6 +25,9 @@ const reducer = combineReducers(
         RegisterReducer,
         ActivationReducer,
         ResendActivationReducer,
+
+        // Add job reducer
+        AddJobReducer,
 
         // Map reducer
         ReadLocationReducer,
