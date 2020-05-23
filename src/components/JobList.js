@@ -17,158 +17,167 @@ import CompanyLogo6 from '../assets/images/company-logo-06.png';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 
+import { S_Selector } from '../ultis/SHelper/S_Help_Input';
 
 class JobListComponent extends Component {
-    
+
     constructor(props) {
         super(props);
 
         this.state = {
-            showFilter: false,
+            isGridMode: false,
             jobList: [
                 {
                     id: 1,
                     logo: CompanyLogo1,
-                    company:'Hexagon',
-                    title:'Bilingual Event Support Specialist',
+                    company: 'Hexagon',
+                    title: 'Bilingual Event Support Specialist',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 2,
                     logo: CompanyLogo5,
-                    company:'Laxo',
-                    title:'Competition Law Officer',
+                    company: 'Laxo',
+                    title: 'Competition Law Officer',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 3,
                     logo: CompanyLogo2,
-                    company:'Coffee',
-                    title:'Barista and Cashier',
+                    company: 'Coffee',
+                    title: 'Barista and Cashier',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 4,
                     logo: CompanyLogo3,
-                    company:'King',
-                    title:'Restaurant General Manager',
+                    company: 'King',
+                    title: 'Restaurant General Manager',
                     isVerified: true,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 5,
                     logo: CompanyLogo5,
-                    company:'Skyist',
-                    title:'International Marketing Coordinator',
+                    company: 'Skyist',
+                    title: 'International Marketing Coordinator',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 6,
                     logo: CompanyLogo5,
-                    company:'Podous',
-                    title:'Construction Labourers',
+                    company: 'Podous',
+                    title: 'Construction Labourers',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 7,
                     logo: CompanyLogo4,
-                    company:'Mates',
-                    title:'Administrative Assistant',
+                    company: 'Mates',
+                    title: 'Administrative Assistant',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 8,
                     logo: CompanyLogo6,
-                    company:'Trideo',
-                    title:'Human Resources Consultant',
+                    company: 'Trideo',
+                    title: 'Human Resources Consultant',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 9,
                     logo: CompanyLogo6,
-                    company:'Trideo',
-                    title:'International Marketing Specialist',
+                    company: 'Trideo',
+                    title: 'International Marketing Specialist',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 10,
                     logo: CompanyLogo2,
-                    company:'Coffee',
-                    title:'Terrain Cafe Barista',
+                    company: 'Coffee',
+                    title: 'Terrain Cafe Barista',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 11,
                     logo: CompanyLogo5,
-                    company:'Kinte',
-                    title:'Skilled Labourer',
+                    company: 'Kinte',
+                    title: 'Skilled Labourer',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
                 {
                     id: 12,
                     logo: CompanyLogo5,
-                    company:'Alilia',
-                    title:'Healthcare Claims Advisor',
+                    company: 'Alilia',
+                    title: 'Healthcare Claims Advisor',
                     isVerified: false,
                     location: ' San Francisco',
                     workingTime: ' Full Time',
                     salary: ' $35000-$38000',
                     postDay: ' 2 days ago',
+                    description: 'Sự thật là danh tính nhân vật làm việc tại AT&T đã ủng hộ Zack cũng như chiến dịch Snyder Cut suốt thời gian qua vẫn còn là một ẩn số. Cũng rất may là trong các admin của page có một ad hiện đang sinh sống tại Mỹ. Và admin đó sẽ giúp đỡ page tìm thêm thông tin về nhân vật này.',
                 },
             ]
         }
-
-        this.handleFilter = this.handleFilter.bind(this);
     }
-    
+
     componentDidMount() {
-        const script = document.createElement("script");
-        script.src = "./assets/maps.js";
-        script.async = true;
-        document.body.appendChild(script);
+        window.scrollTo(0, 0);
     }
 
     // readLocationOnMap = () => {
@@ -195,12 +204,12 @@ class JobListComponent extends Component {
         return { avgLat, avgLng };
     }
 
-    generateJobList() {
+    generateJobListGridMode() {
         let content = [];
         console.log(this.props);
-        for (let e of this.props.ReadLocationReducer.jobList) {
+        for (let e of this.state.jobList) {
             content.push(
-                <a href="single-job-page.html" className="job-listing" key={e.id}>
+                <a href="#" className="job-listing">
                     {/* Job Listing Details */}
                     <div className="job-listing-details">
                         {/* Logo */}
@@ -209,7 +218,7 @@ class JobListComponent extends Component {
                         </div>
                         {/* Details */}
                         <div className="job-listing-description">
-                            <h4 className="job-listing-company">{e.company} {e.isVerified ? <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /> : ''}</h4>
+                            <h4 className="job-listing-company">{e.company} <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4>
                             <h3 className="job-listing-title">{e.title}</h3>
                         </div>
                     </div>
@@ -217,10 +226,10 @@ class JobListComponent extends Component {
                     <div className="job-listing-footer">
                         <span className="bookmark-icon" />
                         <ul>
-                            <li><i className="icon-material-outline-location-on" />{e.location}</li>
-                            <li><i className="icon-material-outline-business-center" />{e.workingTime}</li>
-                            <li><i className="icon-material-outline-account-balance-wallet" />{e.salary}</li>
-                            <li><i className="icon-material-outline-access-time" />{e.postDay}</li>
+                            <li><i className="icon-material-outline-location-on" /> {e.location}</li>
+                            <li><i className="icon-material-outline-business-center" /> {e.workingTime}</li>
+                            <li><i className="icon-material-outline-account-balance-wallet" /> {e.salary}</li>
+                            <li><i className="icon-material-outline-access-time" /> {e.postDay}</li>
                         </ul>
                     </div>
                 </a>
@@ -229,184 +238,204 @@ class JobListComponent extends Component {
         return content;
     }
 
-    handleFilter() {
-        this.setState({showFilter: !this.state.showFilter});
+    generateJobListListMode() {
+        let content = [];
+        console.log(this.props);
+        for (let e of this.state.jobList) {
+            content.push(
+                <a href="#" className="job-listing">
+                    {/* Job Listing Details */}
+                    <div className="job-listing-details">
+                        {/* Logo */}
+                        <div className="job-listing-company-logo">
+                            <img src={e.logo} alt="" />
+                        </div>
+                        {/* Details */}
+                        <div className="job-listing-description">
+                            <h4 className="job-listing-company">{e.company} <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4>
+                            <h3 className="job-listing-title">{e.title}</h3>
+                            <p className="d-inline-block text-truncate" style={{maxWidth: "100vh"}}>{e.description}</p>
+                        </div>
+                        {/* Bookmark */}
+                        <span className="bookmark-icon" />
+                    </div>
+                    {/* Job Listing Footer */}
+                    <div className="job-listing-footer">
+                        <ul>
+                            <li><i className="icon-material-outline-location-on" /> {e.location}</li>
+                            <li><i className="icon-material-outline-business-center" /> {e.workingTime}</li>
+                            <li><i className="icon-material-outline-account-balance-wallet" /> {e.salary}</li>
+                            <li><i className="icon-material-outline-access-time" /> {e.postDay}</li>
+                        </ul>
+                    </div>
+                </a>
+            )
+        }
+        return content;
     }
 
     render() {
+        let areas = ['TPHCM', 'Hà Nội', 'Hải Phòng', 'Đà Nẵng', 'Nghệ An'];
+        let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];
+        let sortType = ['Mới nhất', 'Đã đăng lâu nhất'];
+
         return (
-            <div className="full-page-container with-map">
-                <div className={'full-page-sidebar hidden-sidebar' + (this.state.showFilter?'enabled-sidebar':'')}>
-                    <div className="full-page-sidebar-inner" data-simplebar>
-                        <div className="sidebar-container">
-                            {/* Keywords */}
-                            <div className="sidebar-widget">
-                                <h3>Keywords</h3>
-                                <div className="keywords-container">
-                                    <div className="keyword-input-container">
-                                        <input type="text" className="keyword-input" placeholder="e.g. job title" />
-                                        <button className="keyword-input-button ripple-effect"><i className="icon-material-outline-add" /></button>
+            <div>
+                <div className="margin-top-90"></div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xl-3 col-lg-4">
+                            <div className="sidebar-container">
+
+                                {/* Từ khóa */}
+                                <div className="sidebar-widget">
+                                    <h3>Keywords</h3>
+                                    <div className="keywords-container">
+                                        <div className="keyword-input-container">
+                                            <input type="text" className="keyword-input" placeholder="e.g. job title" />
+                                            <button className="keyword-input-button ripple-effect"><i className="icon-material-outline-add" /></button>
+                                        </div>
+                                        <div className="keywords-list">{/* keywords go here */}</div>
+                                        <div className="clearfix" />
                                     </div>
-                                    <div className="keywords-list">{/* keywords go here */}</div>
+                                </div>
+
+                                {/* Khu vực */}
+                                <div className="sidebar-widget">
+                                    <h3>Khu vực</h3>
+                                    <div className="input-with-icon">
+                                        <S_Selector className='with-border' id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
+                                    </div>
+                                </div>
+
+                                {/* Category */}
+                                <div className="sidebar-widget">
+                                    <h3>Chủ đề</h3>
+                                    <S_Selector className='with-border' id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
+                                </div>
+                                {/* Job Types */}
+                                <div className="sidebar-widget">
+                                    <h3>Job Type</h3>
+                                    <div className="switches-list">
+                                        <div className="switch-container">
+                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Freelance</label>
+                                        </div>
+                                        <div className="switch-container">
+                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Full Time</label>
+                                        </div>
+                                        <div className="switch-container">
+                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Part Time</label>
+                                        </div>
+                                        <div className="switch-container">
+                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Internship</label>
+                                        </div>
+                                        <div className="switch-container">
+                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Temporary</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Salary */}
+                                <div className="sidebar-widget">
+                                    <h3>Salary</h3>
+                                    <div className="margin-top-55" />
+                                    {/* Range Slider */}
+                                    <input className="range-slider" type="text" defaultValue data-slider-currency="$" data-slider-min={1500} data-slider-max={15000} data-slider-step={100} data-slider-value="[1500,15000]" />
+                                </div>
+                                {/* Tags */}
+                                <div className="sidebar-widget">
+                                    <h3>Tags</h3>
+                                    <div className="tags-container">
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag1" />
+                                            <label htmlFor="tag1">front-end dev</label>
+                                        </div>
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag2" />
+                                            <label htmlFor="tag2">angular</label>
+                                        </div>
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag3" />
+                                            <label htmlFor="tag3">react</label>
+                                        </div>
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag4" />
+                                            <label htmlFor="tag4">vue js</label>
+                                        </div>
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag5" />
+                                            <label htmlFor="tag5">web apps</label>
+                                        </div>
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag6" />
+                                            <label htmlFor="tag6">design</label>
+                                        </div>
+                                        <div className="tag">
+                                            <input type="checkbox" id="tag7" />
+                                            <label htmlFor="tag7">wordpress</label>
+                                        </div>
+                                    </div>
                                     <div className="clearfix" />
                                 </div>
                             </div>
-                            {/* Category */}
-                            <div className="sidebar-widget">
-                                <h3>Category</h3>
-                                <select className="selectpicker default" multiple data-selected-text-format="count" data-size={7} title="All Categories">
-                                    <option value={1}>Admin Support</option>
-                                    <option value={2}>Customer Service</option>
-                                    <option value={3}>Data Analytics</option>
-                                    <option value={4}>Design &amp; Creative</option>
-                                    <option value={5}>Legal</option>
-                                    <option value={6}>Software Developing</option>
-                                    <option value={7}>IT &amp; Networking</option>
-                                    <option value={8}>Writing</option>
-                                    <option value={9}>Translation</option>
-                                    <option value={10}>Sales &amp; Marketing</option>
-                                </select>
-                            </div>
-                            {/* Job Types */}
-                            <div className="sidebar-widget">
-                                <h3>Job Type</h3>
-                                <div className="switches-list">
-                                    <div className="switch-container">
-                                        <label className="switch"><input type="checkbox" /><span className="switch-button" /> Freelance</label>
+                        </div>
+                        <div className="col-xl-9 col-lg-8 content-left-offset">
+
+                            <h3 className="page-title">Danh sách công việc</h3>
+
+                            <div className="notify-box margin-top-15 container">
+                                <div className='row py-auto'>
+                                    <div className='col-6 my-auto'>
+                                        <span className={'text-white pt-2 pb-1 px-1 rounded mr-1 cursor-pointer ' + (this.state.isGridMode ? 'bg-293FE4' : 'bg-secondary')}
+                                            onClick={() => { this.setState({ isGridMode: true }) }}>
+                                            <i className='icon-feather-grid p-1 my-auto'></i>
+                                        </span>
+                                        <span className={'text-white pt-2 pb-1 px-1 rounded mr-1 cursor-pointer ' + (!this.state.isGridMode ? 'bg-293FE4' : 'bg-secondary')}
+                                            onClick={() => { this.setState({ isGridMode: false }) }}>
+                                            <i className='icon-feather-list p-1 my-auto'></i>
+                                        </span>
                                     </div>
-                                    <div className="switch-container">
-                                        <label className="switch"><input type="checkbox" /><span className="switch-button" /> Full Time</label>
-                                    </div>
-                                    <div className="switch-container">
-                                        <label className="switch"><input type="checkbox" /><span className="switch-button" /> Part Time</label>
-                                    </div>
-                                    <div className="switch-container">
-                                        <label className="switch"><input type="checkbox" /><span className="switch-button" /> Internship</label>
-                                    </div>
-                                    <div className="switch-container">
-                                        <label className="switch"><input type="checkbox" /><span className="switch-button" /> Temporary</label>
+                                    <div className="col-6 row">
+                                        <div className='col-3 my-auto'>Sort by:</div>
+                                        <S_Selector id='select-sort-type' flex='col-9' placeholder='Mới nhất' data={sortType}></S_Selector>
                                     </div>
                                 </div>
                             </div>
-                            {/* Salary */}
-                            <div className="sidebar-widget">
-                                <h3>Salary</h3>
-                                <div className="margin-top-55" />
-                                {/* Range Slider */}
-                                <input className="range-slider" type="text" defaultValue data-slider-currency="$" data-slider-min={1500} data-slider-max={15000} data-slider-step={100} data-slider-value="[1500,15000]" />
+
+                            <div className={"listings-container margin-top-35 " + (this.state.isGridMode ? 'grid-layout' : 'compact-list-layout')}>
+                                {(
+                                    this.state.isGridMode
+                                        ?
+                                        this.generateJobListGridMode()
+                                        :
+                                        this.generateJobListListMode()
+                                )}
+
+
                             </div>
-                            {/* Tags */}
-                            <div className="sidebar-widget">
-                                <h3>Tags</h3>
-                                <div className="tags-container">
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag1" />
-                                        <label htmlFor="tag1">front-end dev</label>
-                                    </div>
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag2" />
-                                        <label htmlFor="tag2">angular</label>
-                                    </div>
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag3" />
-                                        <label htmlFor="tag3">react</label>
-                                    </div>
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag4" />
-                                        <label htmlFor="tag4">vue js</label>
-                                    </div>
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag5" />
-                                        <label htmlFor="tag5">web apps</label>
-                                    </div>
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag6" />
-                                        <label htmlFor="tag6">design</label>
-                                    </div>
-                                    <div className="tag">
-                                        <input type="checkbox" id="tag7" />
-                                        <label htmlFor="tag7">wordpress</label>
+                            {/* Pagination */}
+                            <div className="clearfix" />
+                            <div className="row">
+                                <div className="col-md-12">
+                                    {/* Pagination */}
+                                    <div className="pagination-container margin-top-30 margin-bottom-60">
+                                        <nav className="pagination">
+                                            <ul>
+                                                <li className="pagination-arrow"><a href="#"><i className="icon-material-outline-keyboard-arrow-left" /></a></li>
+                                                <li><a href="#">1</a></li>
+                                                <li><a href="#" className="current-page">2</a></li>
+                                                <li><a href="#">3</a></li>
+                                                <li><a href="#">4</a></li>
+                                                <li className="pagination-arrow"><a href="#"><i className="icon-material-outline-keyboard-arrow-right" /></a></li>
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
-                                <div className="clearfix" />
                             </div>
+                            {/* Pagination / End */}
                         </div>
-                        {/* Sidebar Container / End */}
-                        {/* Search Button */}
-                        <div className="sidebar-search-button-container">
-                            <button className="button ripple-effect">Search</button>
-                        </div>
-                        {/* Search Button / End*/}
                     </div>
                 </div>
-                {/* Full Page Sidebar / End */}
-                {/* Full Page Content */}
-                <div className="full-page-content-container" data-simplebar>
-                    <div className="full-page-content-inner">
-                        <h3 className="page-title">Search Results</h3>
-                        <div className="notify-box margin-top-15">
-                            <div className="switch-container">
-                                <label className="switch"><input type="checkbox" /><span className="switch-button" /><span className="switch-text">Turn on email alerts for this search</span></label>
-                            </div>
-                            <div className="sort-by">
-                                <span>Sort by:</span>
-                                <select className="selectpicker hide-tick">
-                                    <option value={1}>Relevance</option>
-                                    <option value={2}>Newest</option>
-                                    <option value={3}>Oldest</option>
-                                    <option value={4}>Random</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="listings-container compact-list-layout margin-top-35 margin-bottom-25">
-                            {this.generateJobList()}
-                        </div>
-                        {/* Pagination */}
-                        <div className="clearfix" />
-                        <div className="pagination-container margin-top-20 margin-bottom-20">
-                            <nav className="pagination">
-                                <ul>
-                                    <li className="pagination-arrow"><a href="#" className="ripple-effect"><i className="icon-material-outline-keyboard-arrow-left" /></a></li>
-                                    <li><a href="#" className="ripple-effect">1</a></li>
-                                    <li><a href="#" className="ripple-effect current-page">2</a></li>
-                                    <li><a href="#" className="ripple-effect">3</a></li>
-                                    <li><a href="#" className="ripple-effect">4</a></li>
-                                    <li className="pagination-arrow"><a href="#" className="ripple-effect"><i className="icon-material-outline-keyboard-arrow-right" /></a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div className="clearfix" />
-                        
-                    </div>
-                    {/* Full Page Content / End */}
-
-                </div>
-
-
-                {/* Full Page Map */}
-                <div className="full-page-map-container">
-                    {/* Enable Filters Button */}
-                    <div className="filter-button-container">
-                        <button className={'enable-filters-button ' + (this.state.showFilter?'active':'')}
-                                onClick={this.handleFilter}>
-                            <i className="enable-filters-button-icon" />
-                            <span className="show-text">Show Filters</span>
-                            <span className="hide-text">Hide Filters</span>
-                        </button>
-                        <div className="filter-button-tooltip">Click to expand sidebar with filters!</div>
-                    </div>
-                    {/* Map */}
-                    {/* <div id="map" data-map-zoom={12} data-map-scroll="true">
-                        <MapContainer></MapContainer>
-                    </div> */}
-                    <div>
-                        <MapContainer places={this.props.ReadLocationReducer.places} isList={true} avgCoord={this.calculateAvgCoord()} />
-                    </div> 
-                    {/* <div id="map" data-map-zoom={12} data-map-scroll="true"></div> */}
-                </div>
-                {/* Map */}
-
-            </div >
+            </div>
         )
     }
 }
