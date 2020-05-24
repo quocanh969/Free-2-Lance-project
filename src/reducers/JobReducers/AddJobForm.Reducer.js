@@ -2,11 +2,13 @@ const initState = {
     status: 0,
     message: "",
     sending: false,
-    jobTitle: "",
-    addressString: "",
-    addressLat: null,
-    addressLng: null,
-    googleMapLink: "",
+    fields: {
+        jobTitle: "",
+        addressString: "", // Address Object
+        googleMapLink: "",
+        jobTopic: "",
+
+    }
 }
 
 const AddJobReducer = (state = initState, action) => {
@@ -33,6 +35,14 @@ const AddJobReducer = (state = initState, action) => {
                 message: action.message,
                 sending: false,
                 user: null,
+            };
+        case "UPDATE_FIELD":
+            let temp = state.fields;
+            console.log("TEMP: " + temp);
+            temp[action.key] = action.value;
+            return {
+                ...state,
+                field: temp,
             };
         case "ADD_JOB_RESET":
             return initState;

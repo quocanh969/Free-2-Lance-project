@@ -8,11 +8,19 @@ import { submitAddJobForm } from '../../../../actions/PostJob';
 class PostJobComponent extends Component {
     constructor(props) {
         super(props);
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        console.log(this.props.AddJobReducer);
+        console.log(this.props);
+
+    }
+
+    handleChange(addrObj) {
+        let { onUpdate } = this.props;
+        onUpdate("addressString", addrObj);
     }
 
     render() {
@@ -75,7 +83,7 @@ class PostJobComponent extends Component {
                                             <div className="input-with-icon">
                                                 <div id="autocomplete-container">
                                                     {/* <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" /> */}
-                                                    <GoogleMapAutocomplete value={this.props.AddJobReducer.addressString}></GoogleMapAutocomplete>
+                                                    <GoogleMapAutocomplete value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
                                                 </div>
                                                 <i className="icon-material-outline-location-on" />
                                             </div>
@@ -129,7 +137,7 @@ class PostJobComponent extends Component {
                         </div>
                     </div>
                     <div className="col-xl-12">
-                        <a href="#" className="button ripple-effect big margin-top-30" onClick={() => {}}><i className="icon-feather-plus" /> Post a Job</a>
+                        <a href="#" className="button ripple-effect big margin-top-30" onClick={() => { console.log(this.props.AddJobReducer.fields.addressString.geometry.location.lat()) }}><i className="icon-feather-plus" /> Post a Job</a>
                     </div>
                 </div>
                 {/* Row / End */}
@@ -148,6 +156,14 @@ const mapDispatchToProps = dispatch => {
     return {
         onSend: () => {
             dispatch(submitAddJobForm);
+        },
+        onUpdate: (key, value) => {
+            dispatch({
+                type: "UPDATE_FIELD",
+                key,
+                value,
+            }
+            );
         }
     }
 }

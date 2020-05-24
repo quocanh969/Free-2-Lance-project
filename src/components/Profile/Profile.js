@@ -22,7 +22,7 @@ class ProfileComponent extends Component {
         super(props);
 
         this.state = {
-            tab: 10,
+            tab: 7,
         }
     }
 
