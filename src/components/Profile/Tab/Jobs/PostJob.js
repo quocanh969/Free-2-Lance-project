@@ -2,22 +2,33 @@ import React, { Component } from 'react'
 
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import GoogleMapAutocomplete from '../../../Help/GoogleMapAutocomplete';
+import { submitAddJobForm } from '../../../../actions/PostJob';
 
 class PostJobComponent extends Component {
     constructor(props) {
         super(props);
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
+        console.log(this.props);
+
     }
-    
+
+    handleChange(addrObj) {
+        let { onUpdate } = this.props;
+        onUpdate("addressString", addrObj);
+    }
+
     render() {
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline">
-                    <h3>Post a Job</h3>                    
+                    <h3>Post a Job</h3>
                 </div>
                 {/* Row */}
                 <div className="row">
@@ -71,7 +82,8 @@ class PostJobComponent extends Component {
                                             <h5>Location</h5>
                                             <div className="input-with-icon">
                                                 <div id="autocomplete-container">
-                                                    <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" />
+                                                    {/* <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" /> */}
+                                                    <GoogleMapAutocomplete value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
                                                 </div>
                                                 <i className="icon-material-outline-location-on" />
                                             </div>
@@ -125,7 +137,7 @@ class PostJobComponent extends Component {
                         </div>
                     </div>
                     <div className="col-xl-12">
-                        <a href="#" className="button ripple-effect big margin-top-30"><i className="icon-feather-plus" /> Post a Job</a>
+                        <a href="#" className="button ripple-effect big margin-top-30" onClick={() => { console.log(this.props.AddJobReducer.fields.addressString.geometry.location.lat()) }}><i className="icon-feather-plus" /> Post a Job</a>
                     </div>
                 </div>
                 {/* Row / End */}
@@ -142,7 +154,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onSend: () => {
+            dispatch(submitAddJobForm);
+        },
+        onUpdate: (key, value) => {
+            dispatch({
+                type: "UPDATE_FIELD",
+                key,
+                value,
+            }
+            );
+        }
     }
 }
 
