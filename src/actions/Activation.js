@@ -1,7 +1,7 @@
 import { activateAccount, resendActivationMail } from '../services/account.services';
 
 import axios from 'axios';
-import { history } from '../assets/history/history';
+import { history } from '../ultis/history/history';
 
 export const accountActivation = (token) => {
     return dispatch => {

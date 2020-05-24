@@ -13,9 +13,12 @@ class LoginComponent extends Component {
   }
 
   componentWillUnmount() {
-    let { onReset } = this.props;
-    console.log("will unmount log in");
+    let { onReset } = this.props;    
     onReset();
+  }
+
+  componentDidMount() {
+    window.scrollTo(0,0);
   }
 
   handleSubmit(e) {

@@ -54,10 +54,11 @@ class S_Selector extends Component {
         return content;
     }
 
-    render() {
+    render() {     
+        let flex = this.props.flex || '';  
         return (
             // <div className='btn-group bootstrap-select'>
-            <div className={'w-100 '+ (this.props.disabled ? 'cursor-auto bg-F0F0F0' : '')}>
+            <div className={'w-100 ' + flex + ' '+ (this.props.disabled ? 'cursor-auto bg-F0F0F0' : '')}>
                 <div className="dropdown">
                     <button disabled={this.props.disabled} 
                         className={"btn btn-select dropdown-toggle w-100 d-flex justify-content-between " + (this.props.className)}  

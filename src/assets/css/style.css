@@ -11766,9 +11766,9 @@ img.mfp-img {
 }
 
 /* hide input */
-.account-type input.account-type-radio:empty {
+/* .account-type input.account-type-radio:empty {
   display: none;
-}
+} */
 
 /* style label */
 .account-type label i {
@@ -11778,7 +11778,7 @@ img.mfp-img {
   margin-right: 2px;
 }
 
-.account-type input.account-type-radio:empty ~ label {
+.account-type .account-type-label {
   position: relative;
   float: left;
   padding: 10px;
@@ -11796,19 +11796,19 @@ img.mfp-img {
   line-height: 28px;
   overflow: hidden;
 }
-
+/* 
 .account-type input.account-type-radio ~ label:hover {
   color: #289c41;
   background-color: #e4f6e9;
-}
+} */
 
-.account-type input.account-type-radio:checked ~ label {
+.account-type .account-type-check {
   color: #fff;
   background-color: #47bb67;
 }
 
-.account-type input.account-type-radio:empty ~ label:after,
-.account-type input.account-type-radio:empty ~ label:before {
+.account-type .account-type-label:after,
+.account-type .account-type-label ~ label:before {
   position: absolute;
   display: block;
   top: 0;

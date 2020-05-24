@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import {history} from './assets/history/history';
+import {history} from './ultis/history/history';
 
 import Home from './components/home';
 

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Header from '../Help/Header';
 import Footer from '../Help/Footer';
 import axios from '../../ultis/axios/axios.default';
 import { verify } from '../../services/account.services';
+import { MyStore } from '../..';
 
 export const SRoute = ({ component: Component, ...rest }) => {
-
     return (
         <Route {...rest} render={
             (props) => {
@@ -23,20 +23,6 @@ export const SRoute = ({ component: Component, ...rest }) => {
                             </div>
 
                             <Footer></Footer>
-                        </div>
-                    )
-                }
-                else if (window.location.href.includes('job-list')) {
-                    return (
-                        <div id="wrapper">
-                            <header id="header-container" className='fullwidth'>
-                                <Header></Header>
-                            </header>
-                            <div className="clearfix" />
-
-                            <div className='content'>
-                                <Component {...props}></Component>
-                            </div>
                         </div>
                     )
                 }
@@ -62,32 +48,66 @@ export const SRoute = ({ component: Component, ...rest }) => {
     );
 }
 
-export const PrivateRoute = ({ component: Component, ...rest }) => {
-    return (
-        <Route {...rest} render={
-            (props) => {
-                verify().then(result => {
-                    console.log(result);
-                    return (
-
-                        <div id="wrapper">
-                            <header id="header-container" className='fullwidth'>
-                                <Header></Header>
-                            </header>
-                            <div className="clearfix" />
-
-                            <div className='content'>
-                                <Component {...props}></Component>
-                            </div>
-
-                            <Footer></Footer>
-                        </div>
-                    )
-                }).catch(err => {
-                    console.log(err);
-                })
-            }
+export class PrivateRoute extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoaded: false,
+            isAuthorized: false,
         }
-        ></Route >
-    );
+    }    
+
+    componentWillMount() {
+        verify().then(res=>{
+            this.setState({isLoaded: true, isAuthorized: true});
+        }).catch(err=>{
+            this.setState({isLoaded: true, isAuthorized: false});
+        })
+    }
+
+    render() {
+        const { component: Component, ...rest } = this.props;
+        if(!this.state.isLoaded) {
+            return (
+                <div className='text-center p-5'>
+                    <div className='border border-primary p-5'>
+                        <div>Chúng tôi đang tiến hành kiểm tra thông tin tài khoản của bạn</div>
+                        <div>Vui lòng đợi ...</div>
+                        <br></br>
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>                    
+                </div>
+            )
+        }
+        else if(this.state.isAuthorized) {
+            return (            
+                <Route {...rest} render={
+                    (props) => {
+                        return (                        
+                            <div id="wrapper">
+                                <header id="header-container" className='fullwidth'>
+                                    <Header></Header>
+                                </header>
+                                <div className="clearfix" />
+
+                                <div className='content'>
+                                    <Component {...props}></Component>
+                                </div>
+
+                                <Footer></Footer>
+                            </div>
+                        )                
+                    }
+                }
+                ></Route >
+            );
+        }
+        else {
+            return(
+                <Redirect to='./login'></Redirect>
+            )
+        }
+    }
 }

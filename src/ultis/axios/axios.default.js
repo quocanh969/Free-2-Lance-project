@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { MyStore } from "../..";
-import { history } from "../../assets/history/history";
+import { history } from "../../ultis/history/history";
 
 let token = "";
 if (localStorage.getItem("user") && localStorage.getItem("user").token) {
@@ -10,7 +10,7 @@ if (localStorage.getItem("user") && localStorage.getItem("user").token) {
 
 let axios = Axios.create({
   baseURL: "http://localhost:8000/",
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "application/json"},
 });
 
 axios.interceptors.response.use(
