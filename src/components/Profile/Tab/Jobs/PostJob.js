@@ -12,7 +12,7 @@ class PostJobComponent extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        console.log(this.props.AddJobReducer);
+        console.log(this.props);
     }
 
     render() {

@@ -6,7 +6,6 @@ import SearchBar from 'material-ui-search-bar';
 
 // Import React Scrit Libraray to load Google object
 import Script from 'react-load-script';
-import { GoogleMap } from 'react-google-maps';
 
 class GoogleMapAutocomplete extends Component {
     // Define Constructor
@@ -15,8 +14,9 @@ class GoogleMapAutocomplete extends Component {
 
         // Declare State
         this.state = {
-            city: '',
-            query: ''
+            // query: '',
+            query: this.props.addressString,
+            addrObj: null,
         };
         this.newValue = this.props.newValue;
     }
