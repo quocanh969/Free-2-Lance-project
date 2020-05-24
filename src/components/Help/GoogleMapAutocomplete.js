@@ -25,7 +25,7 @@ class GoogleMapAutocomplete extends Component {
         // Declare Options For Autocomplete
         const options = {
             types: ['geocode'],
-            componentRestrictions: {country: "vn"},
+            componentRestrictions: { country: "vn" },
         };
 
         // Initialize Google Autocomplete
@@ -57,6 +57,9 @@ class GoogleMapAutocomplete extends Component {
                 {
                     query: addressObject.formatted_address,
                     addrObj: addressObject,
+                },
+                () => {
+                    this.props.onChange(this.state.addrObj);
                 }
             );
         }
@@ -69,7 +72,7 @@ class GoogleMapAutocomplete extends Component {
                     url="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7ZIdLTcp9ECQHsWr09nipuyWGxjOx964&libraries=places"
                     onLoad={this.handleScriptLoad}
                 />
-                <SearchBar id="autocomplete" placeholder="" value={this.state.query} onChange={(value) => { this.setState({ query: value }) }}
+                <SearchBar id="autocomplete" placeholder="" value={this.state.query} onChange={(value) => { this.setState({ query: value }, () => { console.log(document.getElementById("autocomplete").value) }) }}
                     style={{
                         margin: '0 auto',
                         maxWidth: 800,
