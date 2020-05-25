@@ -124,6 +124,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: #293FE4 !important;
 }
 
+.bg-silver {
+  background-color: #bdc3c7 !important;
+}
+
 /* Dashboard css*/
 .dashboard {
   background-color: #FAFAFA;

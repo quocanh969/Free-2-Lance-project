@@ -5,7 +5,7 @@ import {history} from './ultis/history/history';
 
 import Home from './components/home';
 
-import { BrowserRouter, Switch, Redirect, Router } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect, Router, Route } from 'react-router-dom';
 
 import {SRoute, PrivateRoute} from './components/CustomRoutes/CustomRoutes';
 
@@ -23,12 +23,14 @@ import FindJob from './components/FindJob';
 import Profile from './components/Profile/Profile';
 
 import GoogleMapAutocomplete from './components/Help/GoogleMapAutocomplete';
+import test from './components/test';
 
 function App() {
   return (
     <div>
         <BrowserRouter>
           <Switch>
+            <Route path='/test' exact component={test}></Route>
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
             <SRoute path='/dashboard' exact component={Profile}></SRoute>

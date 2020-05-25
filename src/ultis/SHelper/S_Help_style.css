@@ -33,3 +33,21 @@
     color: #2A41E8 !important;
     background-color: #F0F1FE !important;
 }
+
+/* S_Autocomplete_tag */
+.input-tag {
+    position: relative;
+}
+
+.suggestion {
+    background-color: white;
+    list-style-type: none;
+    position: absolute;  
+    width: 100%;
+    z-index: 1000;   
+    display: none; 
+}
+
+.suggestion-show {
+    display: block !important;
+}
