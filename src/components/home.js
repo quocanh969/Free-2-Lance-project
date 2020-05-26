@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import '../assets/css/testimonial.css';
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
@@ -23,6 +24,7 @@ import JobCategory6 from '../assets/images/job-category-06.jpg';
 import JobCategory7 from '../assets/images/job-category-07.jpg';
 import JobCategory8 from '../assets/images/job-category-08.jpg';
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
+import { loadTop8Topic } from '../actions/Home';
 
 class HomeComponent extends Component {
 
@@ -30,57 +32,125 @@ class HomeComponent extends Component {
         super(props);
 
         this.state = {
-            jobPost: 1586,
-            taskPost: 3543,
-            freelancer: 1232,
-            topics: [
+            finishedJob: 1586,
+            jobPost: 3543,
+            member: 1232,
+            jobList: [
                 {
-                    title: 'Web/Software Dev',
-                    post: 612,
-                    bgURL: '',
+                    id: 1,
+                    title: 'Giao đồ ăn nè',
+                    area_province: 'Ho Chi Minh',
+                    area_district: 'Quận 6',
+                    post_date: '02/10/2020',
+                    salary: '$1000',
+                    dealable: true,
+                    description: 'FFXII là phiên bản FF gốc duy nhất thuộc vũ trụ Ivalice. Vũ trụ rộng lớn nhất trong FF. Vì thuộc 1 vũ trụ rộng như vậy nên cốt truyện ffxii sẽ ko thiên về anh hùng gải cứu thế giới như các game FF khác mà mang yếu tố chính trị rất nhiều nên ae chơi con này phải tập trung đọc từng câu thoại thì ae ms hiểu hết đc cốt truyện của nó. Ngoài ra thì cách xây dựng nhân vật trong tựa game này rất đọc đáo, main char trong bản này ko hề bodoi ngàu lòi lạnh lùng như cloud noctis, không giấu nghề như zidane',
+                    tags: [
+                        {
+                            id: 1,
+                            tag: 'Online',
+                        },
+                        {
+                            id: 2,
+                            tag: 'Shipping',
+                        },
+                    ]
                 },
                 {
-                    title: 'Data Science/Analitycs',
-                    post: 113,
-                    bgURL: '',
+                    id: 1,
+                    title: 'Giao đồ ăn nè',
+                    area_province: 'Ho Chi Minh',
+                    area_district: 'Quận 6',
+                    post_date: '02/10/2020',
+                    salary: '$1000',
+                    dealable: false,
+                    description: 'FFXII là phiên bản FF gốc duy nhất thuộc vũ trụ Ivalice.',
+                    tags: [
+                        {
+                            id: 1,
+                            tag: 'Online',
+                        },
+                    ]
                 },
                 {
-                    title: 'Accounting/Consulting',
-                    post: 186,
-                    bgURL: '',
+                    id: 1,
+                    title: 'Giao đồ ăn nè',
+                    area_province: 'Ho Chi Minh',
+                    area_district: 'Quận 6',
+                    post_date: '02/10/2020',
+                    salary: '$1000',
+                    dealable: true,
+                    description: '',
+                    tags: [
+                        {
+                            id: 2,
+                            tag: 'Shipping',
+                        },
+                    ]
                 },
                 {
-                    title: 'Writting & Translations',
-                    post: 298,
-                    bgURL: '',
+                    id: 1,
+                    title: 'Giao đồ ăn nè',
+                    area_province: 'Ho Chi Minh',
+                    area_district: 'Quận 6',
+                    post_date: '02/10/2020',
+                    salary: '$1000',
+                    dealable: false,
+                    description: 'Không có descript',
+                    tags: [
+                        {
+                            id: 1,
+                            tag: 'Online',
+                        },
+                        {
+                            id: 2,
+                            tag: 'Shipping',
+                        },
+                    ]
+                },
+            ],
+            testimonials: [
+                {
+                    id_user: 1,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Katarina',
+                    rate: 4,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
                 {
-                    title: 'Sales & Marketing',
-                    post: 549,
-                    bgURL: '',
+                    id_user: 2,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Garen',
+                    rate: 3,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
                 {
-                    title: 'Graphics & Design',
-                    post: 873,
-                    bgURL: '',
+                    id_user: 3,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Ryze',
+                    rate: 5,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
                 {
-                    title: 'Digital Marketing',
-                    post: 125,
-                    bgURL: '',
+                    id_user: 4,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Sylas',
+                    rate: 4.5,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
-                {
-                    title: 'Education & Training',
-                    post: 445,
-                    bgURL: '',
-                },
-
             ]
         }
     }
 
     componentWillMount() {
-        console.log(this.props.HeaderReducer);
+        window.scrollTo(0,0);
+
+        let {onLoadTop8Topics} = this.props;
+        onLoadTop8Topics();
     }
 
     areaSession(areas) {
@@ -114,19 +184,19 @@ class HomeComponent extends Component {
         let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];
 
         return (
-            <div className="intro-banner dark-overlay" data-background-image={HomeBackground2}>
+            <div id='home'>
                 {/* Transparent Header Spacer */}
                 <div className="transparent-header-spacer" />
 
-                <div className="container">
+                <div className="container margin-top-40">
                     {/* Intro Headline */}
                     <div className="row">
                         <div className="col-md-12">
                             <div className="banner-headline">
                                 <h3>
-                                    <strong>Công việc dành cho các cá nhân có nhu cầu làm việc thêm</strong>
+                                    <strong className='text-white'>Công việc dành cho các cá nhân có nhu cầu làm việc thêm</strong>
                                     <br />
-                                    <span>Số lượng công việc nhiều, phù hợp với nhu cầu và khả năng của người ứng tuyển.</span>
+                                    <span className='text-smoothing-breeze'>Số lượng công việc nhiều, phù hợp với nhu cầu và khả năng của người ứng tuyển.</span>
                                 </h3>
                             </div>
                         </div>
@@ -144,22 +214,12 @@ class HomeComponent extends Component {
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-
                                     <S_Selector id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
-                                    {/* <select id='select-area' className="" defaultValue={0}>
-                                        <option value={0} disabled>Khu vực</option>
-                                        {this.areaSession(areas)}
-                                    </select> */}
-
                                 </div>
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
                                     <S_Selector id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
-                                    {/* <select id='select-category' className="selectpicker default" defaultValue={0}>
-                                        <option value={0} disabled>Loại công việc</option>
-                                        {this.categorySession(categories)}
-                                    </select> */}
                                 </div>
                             </div>
                         </div>
@@ -169,16 +229,16 @@ class HomeComponent extends Component {
                         <div className="col-md-12">
                             <ul className="intro-stats margin-top-45 hide-under-992px">
                                 <li>
-                                    <strong className="counter">{this.state.jobPost}</strong>
-                                    <span>Công việc</span>
+                                    <strong className="counter text-white">{this.state.jobPost}</strong>
+                                    <span className='text-smoothing-breeze'>Công việc</span>
                                 </li>
                                 <li>
-                                    <strong className="counter">{this.state.taskPost}</strong>
-                                    <span>Bài đăng</span>
+                                    <strong className="counter text-white">{this.state.finishedJob}</strong>
+                                    <span className='text-smoothing-breeze'>Công việc hoàn thành</span>
                                 </li>
                                 <li>
-                                    <strong className="counter">{this.state.freelancer}</strong>
-                                    <span>Ứng viên</span>
+                                    <strong className="counter text-white">{this.state.member}</strong>
+                                    <span className='text-smoothing-breeze'>Thành viên</span>
                                 </li>
                             </ul>
                         </div>
@@ -188,26 +248,96 @@ class HomeComponent extends Component {
             </div>
         )
     }
-
+    
     topicSession() {
+        let {jobTopic} = this.props.GeneralReducer;
         let content = [];
         let count = 0;
 
-        for (let e of this.state.topics) {
+        for (let e of jobTopic) {
             content.push(
                 <div className="col-xl-3 col-md-6" key={count}>
                     {/* Photo Box */}
-                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory8}>
+                    <NavLink to="/job-list" className="photo-box small topic-box">
+                        <img src={'data:image/png;base64,'+e.img}></img>
                         <div className="photo-box-content">
-                            <h3>{e.title}</h3>
-                            <span>{e.post}</span>
+                            <h3>{e.name}</h3>
+                            <span>{e.count}</span>
                         </div>
-                    </a>
+                    </NavLink>
                 </div>
             );
             count++;
         }
 
+        return content;
+    }
+
+    renderJobsList() {
+        let content = [], count = 0;
+
+        for (let e of this.state.jobList) {
+            content.push(
+                <NavLink to="/job-detail" className="task-listing" key={count}>
+                    <div className="task-listing-details">
+                        <div className="task-listing-description">
+                            <h3 className="task-listing-title">{e.title}</h3>
+                            <ul className="task-icons">
+                                <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
+                                <li><i className='icon-material-outline-my-location'> {e.area_district}</i></li>
+                                <li><i className="icon-material-outline-access-time" /> {e.post_date}</li>
+                            </ul>
+                            <p className="d-inline-block text-truncate" style={{ maxWidth: "100vh" }}>{e.description}</p>
+                            <div className="task-tags margin-top-15">
+                                {this.renderTagsOfJob(e)}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="task-listing-bid">
+                        <div className="task-listing-bid-inner">
+                            <div className="task-offers">
+                                <strong>{e.salary}</strong>
+                                <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
+                            </div>
+                            <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
+                        </div>
+                    </div>
+                </NavLink>
+            );
+            count++;
+        }
+
+        return content;
+    }
+
+    renderTagsOfJob(job) {
+        let content = [], count = 0;
+        for (let e of job.tags) {
+            content.push(
+                <span key={count}>{e.tag}</span>
+            );
+            count++;
+        }
+        return content;
+    }
+
+    renderTestimonials() {
+        let content = [], count = 0;
+        for(let e of this.state.testimonials)
+        {
+            content.push(
+                <div className={"item carousel-item " + (count === 0 && 'active')} key={count}>
+                    <div className="img-box"><img src={e.avatarImg} alt="" /></div>
+                    <br></br>
+
+                    <p className="overview"><b>{e.fullname}</b></p>
+                    <p>Rating: {e.rate} <i className='icon-material-outline-star text-warning'></i></p>
+                    <p><i className="icon-feather-mail" /> {e.email}</p>
+                    <p><i className="icon-feather-phone" /> {e.dial}</p>
+                </div>
+            );
+            count++;
+        }
         return content;
     }
 
@@ -217,8 +347,7 @@ class HomeComponent extends Component {
 
                 {this.bannerSession()}
 
-                {/* Content
-================================================== */}
+                {/* Content ================================================== */}
                 {/* Popular Job Categories */}
                 <div className="section margin-top-65 margin-bottom-30">
                     <div className="container">
@@ -234,158 +363,19 @@ class HomeComponent extends Component {
                     </div>
                 </div>
                 {/* Features Cities / End */}
+
                 {/* Features Jobs */}
                 <div className="section gray margin-top-45 padding-top-65 padding-bottom-75">
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-12">
                                 {/* Section Headline */}
-                                <div className="section-headline margin-top-0 margin-bottom-35">
-                                    <h3>Recent Tasks</h3>
-                                    <a href="tasks-list-layout-1.html" className="headline-link">Browse All Tasks</a>
+                                <div className="section-headline centered margin-top-0 margin-bottom-35">
+                                    <h3>Các công việc nổi bật gần đây</h3>
                                 </div>
                                 {/* Jobs Container */}
                                 <div className="tasks-list-container compact-list margin-top-35">
-                                    {/* Task */}
-                                    <NavLink to="/job-detail" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">Food Delviery Mobile App</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 2 minutes ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>iOS</span>
-                                                    <span>Android</span>
-                                                    <span>mobile apps</span>
-                                                    <span>design</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$1,000 - $2,500</strong>
-                                                    <span>Fixed Price</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </NavLink>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">2000 Words English to German</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 5 minutes ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>copywriting</span>
-                                                    <span>translating</span>
-                                                    <span>editing</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$75</strong>
-                                                    <span>Fixed Price</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">Fix Python Selenium Code</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 30 minutes ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>Python</span>
-                                                    <span>Flask</span>
-                                                    <span>API Development</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$100 - $150</strong>
-                                                    <span>Hourly Rate</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">WordPress Theme Installation</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 1 hour ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>WordPress</span>
-                                                    <span>Theme Installation</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$100</strong>
-                                                    <span>Fixed Price</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">PHP Core Website Fixes</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 1 hour ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>PHP</span>
-                                                    <span>MySQL Administration</span>
-                                                    <span>API Development</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$50 - $80</strong>
-                                                    <span>Hourly Rate</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    {this.renderJobsList()}
                                 </div>
                                 {/* Jobs Container / End */}
                             </div>
@@ -393,147 +383,36 @@ class HomeComponent extends Component {
                     </div>
                 </div>
                 {/* Featured Jobs / End */}
-                {/* Icon Boxes */}
-                <div className="section padding-top-65 padding-bottom-65">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                {/* Section Headline */}
-                                <div className="section-headline centered margin-top-0 margin-bottom-5">
-                                    <h3>How It Works?</h3>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-md-4">
-                                {/* Icon Box */}
-                                <div className="icon-box with-line">
-                                    {/* Icon */}
-                                    <div className="icon-box-circle">
-                                        <div className="icon-box-circle-inner">
-                                            <i className="icon-line-awesome-lock" />
-                                            <div className="icon-box-check"><i className="icon-material-outline-check" /></div>
-                                        </div>
-                                    </div>
-                                    <h3>Create an Account</h3>
-                                    <p>Bring to the table win-win survival strategies to ensure proactive domination going forward.</p>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-md-4">
-                                {/* Icon Box */}
-                                <div className="icon-box with-line">
-                                    {/* Icon */}
-                                    <div className="icon-box-circle">
-                                        <div className="icon-box-circle-inner">
-                                            <i className="icon-line-awesome-legal" />
-                                            <div className="icon-box-check"><i className="icon-material-outline-check" /></div>
-                                        </div>
-                                    </div>
-                                    <h3>Post a Task</h3>
-                                    <p>Efficiently unleash cross-media information without. Quickly maximize return on investment.</p>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-md-4">
-                                {/* Icon Box */}
-                                <div className="icon-box">
-                                    {/* Icon */}
-                                    <div className="icon-box-circle">
-                                        <div className="icon-box-circle-inner">
-                                            <i className=" icon-line-awesome-trophy" />
-                                            <div className="icon-box-check"><i className="icon-material-outline-check" /></div>
-                                        </div>
-                                    </div>
-                                    <h3>Choose an Expert</h3>
-                                    <p>Nanotechnology immersion along the information highway will close the loop on focusing solely.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Icon Boxes / End */}
+
                 {/* Testimonials */}
-                <div className="section gray padding-top-65 padding-bottom-55">
+                <div className="section gray padding-top-10 padding-bottom-55">
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-12">
                                 {/* Section Headline */}
                                 <div className="section-headline centered margin-top-0 margin-bottom-5">
-                                    <h3>Testimonials</h3>
+                                    <h3>Những người dùng nổi bật</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* Categories Carousel */}
-                    <div className="fullwidth-carousel-container margin-top-20">
-                        <div className="testimonial-carousel testimonials">
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarSmall2} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Sindy Forest</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarSmall1} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Tom Smith</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarPlaceholder} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Sebastiano Piccio</h4>
-                                        <span>Employer</span>
-                                    </div>
-                                    <div className="testimonial">Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarSmall3} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>David Peterson</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Collaboratively administrate turnkey channels whereas virtual e-tailers. Objectively seize scalable metrics whereas proactive e-services. Seamlessly empower fully researched growth strategies and interoperable sources.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarPlaceholder} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Marcin Kowalski</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.</div>
-                                </div>
-                            </div>
+
+                    <div id="myCarousel" className="carousel slide w-50 task-listing p-5" data-ride="carousel">
+                        {/* Wrapper for carousel items */}
+                        <div className="carousel-inner">
+                            {this.renderTestimonials()}
                         </div>
+                        {/* Carousel controls */}
+                        <a className="carousel-control left carousel-control-prev ml-4" href="#myCarousel" data-slide="prev">
+                            <i className="icon-line-awesome-angle-left" />
+                        </a>
+                        <a className="carousel-control right carousel-control-next mr-4" href="#myCarousel" data-slide="next">
+                            <i className="icon-line-awesome-angle-right" />
+                        </a>
                     </div>
-                    {/* Categories Carousel / End */}
                 </div>
                 {/* Testimonials / End */}
+
                 {/* Counters */}
                 <div className="section padding-top-70 padding-bottom-75">
                     <div className="container">
@@ -544,32 +423,23 @@ class HomeComponent extends Component {
                                     <div className="single-counter">
                                         <i className="icon-line-awesome-suitcase" />
                                         <div className="counter-inner">
-                                            <h3><span className="counter">1,586</span></h3>
-                                            <span className="counter-title">Jobs Posted</span>
+                                            <h3><span className="counter">{this.state.jobPost}</span></h3>
+                                            <span className="counter-title">Công việc</span>
                                         </div>
-                                    </div>
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-legal" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">3,543</span></h3>
-                                            <span className="counter-title">Tasks Posted</span>
-                                        </div>
-                                    </div>
-                                    {/* Counter */}
+                                    </div>                                    
                                     <div className="single-counter">
                                         <i className="icon-line-awesome-user" />
                                         <div className="counter-inner">
-                                            <h3><span className="counter">2,413</span></h3>
-                                            <span className="counter-title">Active Members</span>
+                                            <h3><span className="counter">{this.state.member}</span></h3>
+                                            <span className="counter-title">Thành viên</span>
                                         </div>
                                     </div>
                                     {/* Counter */}
                                     <div className="single-counter">
                                         <i className="icon-line-awesome-trophy" />
                                         <div className="counter-inner">
-                                            <h3><span className="counter">99</span>%</h3>
-                                            <span className="counter-title">Satisfaction Rate</span>
+                                            <h3><span className="counter">{this.state.finishedJob}</span></h3>
+                                            <span className="counter-title">Công việc hoàn thành</span>
                                         </div>
                                     </div>
                                 </div>
@@ -591,7 +461,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onLoadTop8Topics: () => {
+            dispatch(loadTop8Topic());
+        }
     }
 }
 

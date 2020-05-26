@@ -16,14 +16,18 @@ import TasksDone from './Tab/Tasks/TasksDone';
 import TasksDoing from './Tab/Tasks/TasksDoing';
 import ChangePassword from './Tab/ChangePassword';
 
+import DetailTemplate from './Tab/Jobs/JobDetail/DetailTemplate';
+
 class ProfileComponent extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            tab: 7,
+            tab: 13,
         }
+
+        this.moveToTab = this.moveToTab.bind(this);
     }
 
     switchTab() {
@@ -31,55 +35,64 @@ class ProfileComponent extends Component {
         {
             case 1:
                 return (
-                    <Dashboard></Dashboard>
+                    <Dashboard switchTab={this.moveToTab}></Dashboard>
                 );     
                 
             case 2:
                 return (
-                    <Messages></Messages>
+                    <Messages switchTab={this.moveToTab}></Messages>
                 );
             case 3:
                 return (
-                    <Reviews></Reviews>
+                    <Reviews switchTab={this.moveToTab}></Reviews>
                 );
             case 4:
                 return (
-                    <JobsApplying></JobsApplying>
+                    <JobsApplying switchTab={this.moveToTab}></JobsApplying>
                 );
             case 5:
                 return (
-                    <JobsDoing></JobsDoing>
+                    <JobsDoing switchTab={this.moveToTab}></JobsDoing>
                 );
             case 6:
                 return (
-                    <JobsDone></JobsDone>
+                    <JobsDone switchTab={this.moveToTab}></JobsDone>
                 );
             case 7:
                 return (
-                    <PostJob></PostJob>
+                    <PostJob switchTab={this.moveToTab}></PostJob>
                 );
             case 8:
                 return (
-                    <TasksDoing></TasksDoing>
+                    <TasksDoing switchTab={this.moveToTab}></TasksDoing>
                 );
             case 9:
                 return (
-                    <TasksApplying></TasksApplying>
+                    <TasksApplying switchTab={this.moveToTab}></TasksApplying>
                 );
             case 10:
                 return (
-                    <TasksDone></TasksDone>
+                    <TasksDone switchTab={this.moveToTab}></TasksDone>
                 );
             case 11:
                 return (
-                    <Setting></Setting>
+                    <Setting switchTab={this.moveToTab}></Setting>
                 );
             case 12:
                 return (
-                    <ChangePassword></ChangePassword>
+                    <ChangePassword switchTab={this.moveToTab}></ChangePassword>
+                );
+            // Các tab khác không có sẳn trên sidebar
+            case 13:
+                return (
+                    <DetailTemplate switchTab={this.moveToTab}></DetailTemplate>
                 );
             default: return (<div></div>);
         }
+    }
+
+    moveToTab(tab) {
+        this.setState({tab,});
     }
 
     render() {

@@ -204,7 +204,7 @@ class S_Tag_Autocomplete extends Component {
     selectTag(tag) {
         let temp = this.state.chosen;
         temp.push(tag);
-        this.setState({chosen: temp, isFocus: false}, ()=>{console.log(this.state.chosen)});
+        this.setState({chosen: temp, isFocus: false});
         document.getElementById(this.props.id).value = '';
         // this.setState({isFocus: false})
     }
@@ -212,7 +212,6 @@ class S_Tag_Autocomplete extends Component {
     removeTag(tag) {
         let temp = this.state.chosen;
         temp = temp.filter((eachTag) => {return eachTag!==tag});
-        //console.log(temp);
         this.setState({chosen: temp});        
     }
 
@@ -225,7 +224,9 @@ class S_Tag_Autocomplete extends Component {
                             onFocus={()=>{this.setState({isFocus: true})}}
                             onChange={this.handleChange}>
                         </input>
-                        <button className='keyword-input-button ripple-effect'><i className='icon-material-outline-add'></i></button>
+                        <button className='keyword-input-button ripple-effect' onClick={()=>{this.selectTag({id: this.props.suggestions.length, tag: document.getElementById(this.props.id).value})}}>
+                            <i className='icon-material-outline-add'></i>
+                        </button>
                     </div>
 
                     <div className={'suggestion ' + (this.state.isFocus && 'suggestion-show')}>

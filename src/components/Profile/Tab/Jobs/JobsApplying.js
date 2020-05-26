@@ -97,10 +97,10 @@ class JobsApplyingComponent extends Component {
                     </div>
                     {/* Buttons */}
                     <div>
-                        <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</span>
-                        <span className='btn mx-2 p-2 bg-light rounded'><i className="icon-line-awesome-clone" /> Details</span>
-                        <span className='btn mx-2 p-2 bg-light rounded'><i className="icon-feather-edit"/> Edit</span>
-                        <span className='btn mx-2 p-2 bg-light rounded'><i className="icon-feather-trash-2"/> Remove</span>
+                        <span className='mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</span>
+                        <span className='btn mx-2 p-2 bg-silver rounded' onClick={()=>{this.props.switchTab(13)}}><i className="icon-line-awesome-clone" /> Details</span>
+                        <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span>
+                        <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-trash-2"/> Remove</span>
                     </div>
                     {/* <div className="buttons-to-right always-visible">
                         <a className='bg-293FE4 text-white'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</a>
@@ -130,7 +130,7 @@ class JobsApplyingComponent extends Component {
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
                             <div className="headline">
-                                <h3><i className="icon-material-outline-business-center" /> My Job Listings</h3>
+                                <h3><i className="icon-material-outline-business-center" /> Danh sách công việc</h3>
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">

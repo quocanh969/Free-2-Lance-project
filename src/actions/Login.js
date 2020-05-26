@@ -5,8 +5,7 @@ import { history } from '../ultis/history/history';
 
 export const sendForgetPassword = (email) => {
     return dispatch => {
-        dispatch(request());        
-        
+        dispatch(request());  
     }
     
     function request() {
