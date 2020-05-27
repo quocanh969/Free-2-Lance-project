@@ -10,6 +10,7 @@ class PostJobComponent extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -18,9 +19,16 @@ class PostJobComponent extends Component {
 
     }
 
-    handleChange(addrObj) {
+    handleChange(fieldKey, fieldValue) {
         let { onUpdate } = this.props;
-        onUpdate("addressString", addrObj);
+        onUpdate(fieldKey, fieldValue);
+    }
+
+    onSubmit() {
+        let { onUpdate } = this.props;
+        let jobTitleValue = document.getElementById("inputJobTitle").value;
+        onUpdate("jobTitle", jobTitleValue);
+        console.log(this.props.AddJobReducer.fields);
     }
 
     render() {
@@ -44,7 +52,7 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Title</h5>
-                                            <input type="text" className="with-border" />
+                                            <input id="inputJobTitle" type="text" className="with-border" required/>
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
@@ -137,7 +145,7 @@ class PostJobComponent extends Component {
                         </div>
                     </div>
                     <div className="col-xl-12">
-                        <a href="#" className="button ripple-effect big margin-top-30" onClick={() => { console.log(this.props.AddJobReducer.fields.addressString.geometry.location.lat()) }}><i className="icon-feather-plus" /> Post a Job</a>
+                        <a href="#" className="button ripple-effect big margin-top-30" onClick={this.onSubmit}><i className="icon-feather-plus" /> Post a Job</a>
                     </div>
                 </div>
                 {/* Row / End */}
