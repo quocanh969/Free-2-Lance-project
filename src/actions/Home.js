@@ -1,12 +1,12 @@
 import {getAllTopics} from '../services/job.services';
 
-export const loadTop8Topic = () => {
+export const loadTopics = () => {
     return dispatch => {
 
         getAllTopics()
         .then(res=>{
             console.log(res.data.data);
-            dispatch(success(res.data.data.slice(0,8)));
+            dispatch(success(res.data.data));
         })
         .catch(err=>{
             console.log(err);

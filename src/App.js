@@ -25,7 +25,7 @@ import Profile from './components/Profile/Profile';
 import GoogleMapAutocomplete from './components/Help/GoogleMapAutocomplete';
 import test from './components/test';
 
-import Intruction from './components/Intruction';
+import NotFoundComponent from './components/404';
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
             <Route path='/test' exact component={test}></Route>            
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
-            <SRoute path='/intruction' exact component={Intruction}></SRoute>
+            <SRoute path='/not-found' exact component={NotFoundComponent}></SRoute>
 
             <SRoute path='/dashboard' exact component={Profile}></SRoute>
 
@@ -54,7 +54,7 @@ function App() {
             
             <SRoute path='/auto' exact component={GoogleMapAutocomplete}></SRoute>
             
-            <Redirect to='/home'></Redirect>
+            <Redirect to='/not-found'></Redirect>
           </Switch>
         </BrowserRouter>
     </div>

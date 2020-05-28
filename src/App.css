@@ -189,3 +189,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .w-40 {
   width: 40% !important
 }
+
+/* hover */
+.menu-child-item {
+  color: black !important;
+}
+
+.menu-child-item:hover {
+  color: #293FE4 !important;
+}

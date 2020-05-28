@@ -1051,6 +1051,7 @@ ul.user-menu-small-nav li a:hover i {
 }
 
 /* Indicator Arrow */
+/* 
 #navigation ul li a:after,
 #navigation ul ul li a:after {
   font-family: "Material-Icons";
@@ -1070,7 +1071,7 @@ ul.user-menu-small-nav li a:hover i {
   text-indent: 0;
   top: 1px;
   position: relative;
-}
+} */
 
 #navigation ul ul.dropdown-nav ul.dropdown-nav li:hover a:after,
 #navigation ul ul.dropdown-nav li:hover a:after,
@@ -1146,7 +1147,7 @@ ul.user-menu-small-nav li a:hover i {
 }
 
 #navigation ul li:hover a {
-  color: #66676b;
+  color: red;
 }
 
 /* Dropdown Styles
@@ -14252,6 +14253,7 @@ a.dashboard-responsive-nav-trigger {
 }
 
 /* Indicator Arrow */
+/* 
 .dashboard-nav ul li a:after {
   font-family: "Material-Icons";
   content: "\e914";
@@ -14272,7 +14274,7 @@ a.dashboard-responsive-nav-trigger {
   position: absolute;
   right: 35px;
   top: 15px;
-}
+} */
 
 .dashboard-nav ul li.active-submenu div:after,
 .dashboard-nav ul li.active div:after,

@@ -148,9 +148,6 @@ class HomeComponent extends Component {
 
     componentWillMount() {
         window.scrollTo(0,0);
-
-        let {onLoadTop8Topics} = this.props;
-        onLoadTop8Topics();
     }
 
     areaSession(areas) {
@@ -472,9 +469,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLoadTop8Topics: () => {
-            dispatch(loadTop8Topic());
-        }
+        
     }
 }
 

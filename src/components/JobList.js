@@ -205,11 +205,11 @@ class JobListComponent extends Component {
     }
 
     generateJobListGridMode() {
-        let content = [];
+        let content = [], count = 0;
         console.log(this.props);
         for (let e of this.state.jobList) {
             content.push(
-                <a href="#" className="job-listing">
+                <a href="#" className="job-listing" key={count}>
                     {/* Job Listing Details */}
                     <div className="job-listing-details">
                         {/* Logo */}
@@ -233,17 +233,18 @@ class JobListComponent extends Component {
                         </ul>
                     </div>
                 </a>
-            )
+            );
+            count++;
         }
         return content;
     }
 
     generateJobListListMode() {
-        let content = [];
+        let content = [], count = 0;
         console.log(this.props);
         for (let e of this.state.jobList) {
             content.push(
-                <a href="#" className="job-listing">
+                <a href="#" className="job-listing" key={count}>
                     {/* Job Listing Details */}
                     <div className="job-listing-details">
                         {/* Logo */}
@@ -269,7 +270,8 @@ class JobListComponent extends Component {
                         </ul>
                     </div>
                 </a>
-            )
+            );
+            count++;
         }
         return content;
     }
