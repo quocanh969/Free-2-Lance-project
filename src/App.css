@@ -1,6 +1,12 @@
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
 
+body {
+  min-width: 800px; /* Suppose you want minimum width of 1000px */
+  width: auto !important; /* Firefox will set width as auto */
+  width: 800px; /* As IE6 ignores !important it will set width as 1000px; */
+}
+
 #header .font-weight-bold {
   font-weight: bold !important;
   font-size: 20px;
@@ -83,13 +89,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .tab-component {
-    border-left: 1px #DEE2E6 solid;
-    border-right: 1px #DEE2E6 solid;
-    border-bottom: 1px #DEE2E6 solid;
+  border-left: 1px #dee2e6 solid;
+  border-right: 1px #dee2e6 solid;
+  border-bottom: 1px #dee2e6 solid;
 }
 
 .nav-link-simulate:hover {
-    color: #2A41E8;
+  color: #2a41e8;
 }
 
 /* Font size */
@@ -97,39 +103,43 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 50px;
 }
 .font-size-30 {
-    font-size: 30px;
+  font-size: 30px;
 }
 .font-size-20 {
   font-size: 20px;
 }
 .font-size-15 {
-    font-size: 15px;
+  font-size: 15px;
 }
 .font-size-13 {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 /* button */
 .btn-293FE4 {
-  background-color: #293FE4;
+  background-color: #293fe4;
   color: white;
 }
 
 /* background */
 .bg-F0F0F0 {
-  background-color: #F0F0F0 !important;
+  background-color: #f0f0f0 !important;
 }
 
 .bg-293FE4 {
-  background-color: #293FE4 !important;
+  background-color: #293fe4 !important;
 }
 
 /* Dashboard css*/
 .dashboard {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 .sidebar-dashboard {
   background-color: white;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.fc-scroller {
+  height: auto !important;
 }
