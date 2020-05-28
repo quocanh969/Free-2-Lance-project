@@ -275,9 +275,9 @@ class JobListComponent extends Component {
     }
 
     render() {
-        let areas = ['TPHCM', 'Hà Nội', 'Hải Phòng', 'Đà Nẵng', 'Nghệ An'];
-        let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];
-        let sortType = ['Mới nhất', 'Đã đăng lâu nhất'];
+        let areas = [{id:1, name:'TPHCM'}, {id:2, name:'Hà Nội'}, {id:3, name:'Hải Phòng'}, {id:4, name:'Nam Định'}, {id:5, name:'Nghệ An'}];
+        let categories = [{id:1, name:'lau nhà'},{id:2, name:'rửa chén'},{id:3, name:'nấu cơm'},{id:4, name:'giặc quần áo'},{id:5, name:'quét bụi'},];        
+        let sortType = [{type: 1, text: 'Mới nhất'}, {type: 2, text: 'Đã đăng lâu nhất'}];
 
         return (
             <div>
@@ -304,14 +304,14 @@ class JobListComponent extends Component {
                                 <div className="sidebar-widget">
                                     <h3>Khu vực</h3>
                                     <div className="input-with-icon">
-                                        <S_Selector className='with-border' id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
+                                        <S_Selector className='with-border' id='select-area' placeholder='Khu vực' data={areas} value_tag='id' text_tag='name'></S_Selector>
                                     </div>
                                 </div>
 
                                 {/* Category */}
                                 <div className="sidebar-widget">
                                     <h3>Chủ đề</h3>
-                                    <S_Selector className='with-border' id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
+                                    <S_Selector className='with-border' id='select-category' placeholder='Loại công việc' data={categories} value_tag='id' text_tag='name'></S_Selector>
                                 </div>
                                 {/* Job Types */}
                                 <div className="sidebar-widget">
@@ -396,7 +396,7 @@ class JobListComponent extends Component {
                                     </div>
                                     <div className="col-6 row">
                                         <div className='col-3 my-auto'>Sort by:</div>
-                                        <S_Selector id='select-sort-type' flex='col-9' placeholder='Mới nhất' data={sortType}></S_Selector>
+                                        <S_Selector id='select-sort-type' flex='col-9' placeholder='Mới nhất' data={sortType} value_tag='type' text_tag='text'></S_Selector>
                                     </div>
                                 </div>
                             </div>

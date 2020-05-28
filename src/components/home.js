@@ -180,8 +180,8 @@ class HomeComponent extends Component {
     }
 
     bannerSession() {
-        let areas = ['TPHCM', 'Hà Nội', 'Hải Phòng', 'Đà Nẵng', 'Nghệ An'];
-        let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];
+        let areas = [{id:1, name:'TPHCM'}, {id:2, name:'Hà Nội'}, {id:3, name:'Hải Phòng'}, {id:4, name:'Nam Định'}, {id:5, name:'Nghệ An'}];
+        let categories = [{id:1, name:'lau nhà'},{id:2, name:'rửa chén'},{id:3, name:'nấu cơm'},{id:4, name:'giặc quần áo'},{id:5, name:'quét bụi'},];        
 
         return (
             <div id='home'>
@@ -214,12 +214,12 @@ class HomeComponent extends Component {
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id' text_tag='name'></S_Selector>
                                 </div>
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
-                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories} value_tag='id' text_tag='name'></S_Selector>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +287,7 @@ class HomeComponent extends Component {
                                 <li><i className='icon-material-outline-my-location'> {e.area_district}</i></li>
                                 <li><i className="icon-material-outline-access-time" /> {e.post_date}</li>
                             </ul>
-                            <p className="d-inline-block text-truncate" style={{ maxWidth: "100vh" }}>{e.description}</p>
+                            <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>
                             <div className="task-tags margin-top-15">
                                 {this.renderTagsOfJob(e)}
                             </div>
@@ -368,13 +368,24 @@ class HomeComponent extends Component {
                 <div className="section gray margin-top-45 padding-top-65 padding-bottom-75">
                     <div className="container">
                         <div className="row">
-                            <div className="col-xl-12">
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                 {/* Section Headline */}
-                                <div className="section-headline centered margin-top-0 margin-bottom-35">
-                                    <h3>Các công việc nổi bật gần đây</h3>
+                                <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
+                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc thời vụ nổi bật gần đây</p>
                                 </div>
                                 {/* Jobs Container */}
-                                <div className="tasks-list-container compact-list margin-top-35">
+                                <div className="tasks-list-container compact-list margin-top-20">
+                                    {this.renderJobsList()}
+                                </div>
+                                {/* Jobs Container / End */}
+                            </div>
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                {/* Section Headline */}
+                                <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
+                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc theo sản phẩm nổi bật gần đây</p>
+                                </div>
+                                {/* Jobs Container */}
+                                <div className="tasks-list-container compact-list margin-top-20">
                                     {this.renderJobsList()}
                                 </div>
                                 {/* Jobs Container / End */}

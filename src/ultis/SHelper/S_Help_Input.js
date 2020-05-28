@@ -4,19 +4,30 @@ import './S_Help_style.css';
 
 class S_Selector extends Component {
 
+    // Một số directive
+    //data: là mảng data object truyền vào
+    //value: là giá trị ban đầu
+    //placeholder: là phần thông tin hiển thị ra bên ngoài
+    //value_tag: là tên thành phần của object dùng để làm giá trị cho thẻ select
+    //text_tag: là tên thành phần của object dùng để hiển thị text ra ngoài
+    //disabled: vô hiệu hóa phím bấm
+    //flex: chỉnh sửa kick thước col- 
+    //className: màu sắc/border của nút bấm
+    //id: là id tương ứng với thẻ select dùng cho sau này khi lấy giá trị
+
     constructor(props) {
         super(props);
 
         this.state = {
-            selected: this.props.value || this.props.placeholder,
+            selected: this.props.value,
         }
 
         //this.handleSelect = this.handleSelect.bind(this);
     }
 
-    handleSelect(text) {
-        this.setState({ selected: text }, () => {
-            document.getElementById(this.props.id).value = text;
+    handleSelect(selected) {
+        this.setState({ selected, }, () => {
+            document.getElementById(this.props.id).value = selected[this.props.value_tag];
         })
     }
 
@@ -28,7 +39,7 @@ class S_Selector extends Component {
             content.push(
                 <div key={count} className={'dropdown-item cursor-pointer d-flex justify-content-between ' + (this.state.selected === e ? 'selected' : '')}
                     onClick={() => { this.handleSelect(e) }}>
-                    <span className="text">{e}</span>
+                    <span className="text">{e[this.props.text_tag]}</span>
                     {(this.state.selected === e ? <i className='icon-feather-check pt-2'></i> : '')}
                 </div>
             );
@@ -44,7 +55,7 @@ class S_Selector extends Component {
 
         for (let e of this.props.data) {
             content.push(
-                <option value={e} key={count}></option>
+                <option value={e[this.props.value_tag]} key={count}></option>
             );
             count++;
         }
@@ -61,7 +72,7 @@ class S_Selector extends Component {
                     <button disabled={this.props.disabled}
                         className={"btn btn-select dropdown-toggle w-100 d-flex justify-content-between " + (this.props.className)}
                         type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span>{this.state.selected}</span>
+                        <span>{this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}</span>
                         <span className="bs-caret">
                             <span className="caret"></span>
                         </span>
