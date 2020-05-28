@@ -223,9 +223,9 @@ class FindJobComponent extends Component {
         let categories = [{id:1, name:'lau nhà'},{id:2, name:'rửa chén'},{id:3, name:'nấu cơm'},{id:4, name:'giặc quần áo'},{id:5, name:'quét bụi'},];        
 
         return (
-            <form className='bg-secondary py-5' onSubmit={this.handleSubmit}>
+            <form id='s-find-job-form' className='py-5' onSubmit={this.handleSubmit}>
 
-                <div className="container s-find-job">                    
+                <div id='s-find-job' className="container">                    
                     {/* Search Bar */}
                     <div className="row">
                         <div className="col-md-12 margin-bottom-40">

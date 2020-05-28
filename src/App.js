@@ -25,25 +25,35 @@ import Profile from './components/Profile/Profile';
 import GoogleMapAutocomplete from './components/Help/GoogleMapAutocomplete';
 import test from './components/test';
 
+import Intruction from './components/Intruction';
+
 function App() {
   return (
     <div>
         <BrowserRouter>
           <Switch>
-            <Route path='/test' exact component={test}></Route>
+            <Route path='/test' exact component={test}></Route>            
             <SRoute path='/home' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
+            <SRoute path='/intruction' exact component={Intruction}></SRoute>
+
             <SRoute path='/dashboard' exact component={Profile}></SRoute>
+
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
             <SRoute path='/job-list' exact component={JobList}></SRoute>
+
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
+
             <SRoute path='/login' exact component={Login}></SRoute>
             <SRoute path='/register' exact component={Register}></SRoute>
             <SRoute path='/forgot-password' exact component={ForgetPassword}></SRoute>
             <SRoute path='/activation/:activationToken' exact component={AccountActivation}></SRoute>
             <SRoute path='/resendActivation' exact component={ResendAccountActivation}></SRoute>
+
             <SRoute path='/contact' exact component={Contact}></SRoute>
+            
             <SRoute path='/auto' exact component={GoogleMapAutocomplete}></SRoute>
+            
             <Redirect to='/home'></Redirect>
           </Switch>
         </BrowserRouter>

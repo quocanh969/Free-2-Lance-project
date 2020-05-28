@@ -248,7 +248,7 @@ class HeaderComponent extends Component {
                                     <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>                                    
                                 </li>
                                 <li>
-                                    <NavLink to="/job-list" className="font-weight-bold">Blogs</NavLink>                                    
+                                    <NavLink to="/intruction" className="font-weight-bold">Hướng dẫn</NavLink>                                    
                                 </li>
                                 <li>
                                     <NavLink to="/contact" className="font-weight-bold">Liên hệ</NavLink>                                    

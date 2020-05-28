@@ -16,6 +16,17 @@
   height: 600px;
 }
 
+#s-find-job-form {
+  background: rgba(0, 0, 0, .65) url('./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg');  
+  background-blend-mode: darken;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#s-find-job {
+  min-height: 100vh;
+}
 
 .dropdown-toggle::after {
   display: none !important;
@@ -87,10 +98,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .cursor-auto {
   cursor: auto !important;
-}
-
-.s-find-job {
-  min-height: 100vh;
 }
 
 .tab-component {
