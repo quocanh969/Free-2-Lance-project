@@ -53,6 +53,11 @@ const AddJobReducer = (state = initState, action) => {
             };
         case "ADD_JOB_RESET":
             return initState;
+        case "LOAD_RESOURCES": 
+            return {
+                ...state,
+                /* */
+            }
         default:
             return state;
     }

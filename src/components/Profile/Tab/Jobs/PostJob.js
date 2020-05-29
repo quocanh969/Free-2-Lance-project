@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GoogleMapAutocomplete from '../../../Help/GoogleMapAutocomplete';
-import { submitAddJobForm } from '../../../../actions/PostJob';
+import { submitAddJobForm, loadResources } from '../../../../actions/PostJob';
+import { S_Selector } from '../../../../ultis/SHelper/S_Help_Input';
 
 class PostJobComponent extends Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class PostJobComponent extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         console.log(this.props);
-
+        let { onSendLoadReq } = this.props;
+        onSendLoadReq();
     }
 
     handleChange(fieldKey, fieldValue) {
@@ -52,7 +54,7 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Title</h5>
-                                            <input id="inputJobTitle" type="text" className="with-border" required/>
+                                            <input id="inputJobTitle" type="text" className="with-border" required />
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
@@ -83,6 +85,7 @@ class PostJobComponent extends Component {
                                                 <option>Miscellaneous</option>
                                                 <option>Public Relations</option>
                                             </select>
+                                            {/* <S_Selector  placeholder="select some shit"></S_Selector> */}
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
@@ -172,6 +175,9 @@ const mapDispatchToProps = dispatch => {
                 value,
             }
             );
+        },
+        onSendLoadReq: () => {
+            dispatch(loadResources);
         }
     }
 }

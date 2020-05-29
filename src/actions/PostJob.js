@@ -44,3 +44,9 @@ export const submitAddJobForm = (address) => {
     };
   }
 };
+
+export const loadResources = () => {
+  return (dispatch => {
+
+  })
+}
