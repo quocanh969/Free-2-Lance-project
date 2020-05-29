@@ -19,7 +19,7 @@ class RegisterStepOneComponent extends Component {
     let radios = document.getElementsByName("account-type-radio");
     radios.forEach((radio) => {
       radio.addEventListener("change", () => {
-        let isBusinessUser = radio.value === "employer" ? true : false;
+        let isBusinessUser = radio.value === "employer" ? 1 : 0;
         console.log(isBusinessUser);
         onChangeAccountType(isBusinessUser);
       });
@@ -35,7 +35,7 @@ class RegisterStepOneComponent extends Component {
     account.fullname = this.refs.fullname.value;
     account.dial = this.refs.dial.value;
     account.address = this.refs.address.value;
-    account.gender = this.refs.gender.value;
+    account.gender = this.refs.gender.value === "male" ? 1 : 0;
     account.dob = this.refs.birthday.value;
     onUpdateProfile(account);
     goToNextStep();
@@ -136,8 +136,8 @@ class RegisterStepOneComponent extends Component {
               name="gender"
               ref="gender"
             >
-              <option value="1">Male</option>
-              <option value="0">Female</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
           </div>
         </form>

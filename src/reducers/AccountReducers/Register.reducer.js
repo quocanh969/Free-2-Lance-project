@@ -11,9 +11,8 @@ const initState = {
     password: null,
     dial: null,
     address: null,
-    isBusinessUser: false,
+    isBusinessUser: 0,
     gender: null,
-    account_status: 0, // default = 0
     confirm: null,
     companyName: null,
     position: null,

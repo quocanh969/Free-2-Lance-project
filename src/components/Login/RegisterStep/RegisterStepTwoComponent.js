@@ -47,7 +47,7 @@ class RegisterStepTwoComponent extends Component {
       // sending ...
       content.push(
         <div className="loading" key={1}>
-          <div className="spinner-border text-primary" role="status">
+          <div className="spinner-border text-primary">
             <span className="sr-only">Loading...</span>
           </div>
         </div>
@@ -63,8 +63,8 @@ class RegisterStepTwoComponent extends Component {
     } else {
       /// success ...
       content.push(
-        <div className="alert alert-login alert-success" key={1} role="alert">
-          {message}
+        <div className="alert alert-login alert-danger" key={1} role="alert">
+          Please check your email to activate account
         </div>
       );
     }

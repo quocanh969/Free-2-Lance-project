@@ -16,11 +16,11 @@ class RegisterStepThreeComponent extends Component {
     let { onUpdateProfile, onSendRegister } = this.props;
 
     let tempAccount = {};
-    tempAccount.companyName = this.refs.companyName.value;
+    tempAccount.company_name = this.refs.companyName.value;
     tempAccount.position = this.refs.position.value;
-    tempAccount.companyAddress = this.refs.companyAddress.value;
-    tempAccount.companyEmail = this.refs.companyEmail.value;
-    tempAccount.numberOfEmployees = this.refs.numberOfEmployees.value;
+    tempAccount.company_address = this.refs.companyAddress.value;
+    tempAccount.company_email = this.refs.companyEmail.value;
+    tempAccount.number_of_employees = Number(this.refs.numberOfEmployees.value);
     onUpdateProfile(tempAccount);
     let { account } = this.props.RegisterReducer;
     account = {
@@ -57,7 +57,7 @@ class RegisterStepThreeComponent extends Component {
       /// success ...
       content.push(
         <div className="alert alert-login alert-success" key={1} role="alert">
-          {message}
+          Please check your email to activate account
         </div>
       );
     }

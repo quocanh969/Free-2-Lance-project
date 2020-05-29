@@ -4,4 +4,8 @@ function postJob(address) {
     return;
 }
 
-export { postJob };
+function getAllTopics() {
+    return axios.get('/allJobsTopics');
+}
+
+export { postJob, getAllTopics };

@@ -1,9 +1,37 @@
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
 
+body {
+  min-width: 800px; /* Suppose you want minimum width of 1000px */
+  width: auto !important; /* Firefox will set width as auto */
+  width: 800px; /* As IE6 ignores !important it will set width as 1000px; */
+}
+
 #header .font-weight-bold {
   font-weight: bold !important;
   font-size: 20px;
+}
+
+#home{
+  background: rgba(0, 0, 0, .65) url('./assets/images/Stocksy_txp4d832598Y5W200_Medium_1565047.jpg');  
+  background-blend-mode: darken;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  height: 600px;
+}
+
+#s-find-job-form {
+  background: rgba(0, 0, 0, .65) url('./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg');  
+  background-blend-mode: darken;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#s-find-job {
+  min-height: 100vh;
 }
 
 .dropdown-toggle::after {
@@ -78,18 +106,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: auto !important;
 }
 
-.s-find-job {
-  min-height: 100vh;
-}
-
 .tab-component {
-    border-left: 1px #DEE2E6 solid;
-    border-right: 1px #DEE2E6 solid;
-    border-bottom: 1px #DEE2E6 solid;
+  border-left: 1px #dee2e6 solid;
+  border-right: 1px #dee2e6 solid;
+  border-bottom: 1px #dee2e6 solid;
 }
 
 .nav-link-simulate:hover {
-    color: #2A41E8;
+  color: #2a41e8;
 }
 
 /* Font size */
@@ -97,39 +121,90 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 50px;
 }
 .font-size-30 {
-    font-size: 30px;
+  font-size: 30px;
 }
 .font-size-20 {
   font-size: 20px;
 }
 .font-size-15 {
-    font-size: 15px;
+  font-size: 15px;
 }
 .font-size-13 {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 /* button */
 .btn-293FE4 {
-  background-color: #293FE4;
+  background-color: #293fe4;
   color: white;
 }
 
 /* background */
 .bg-F0F0F0 {
-  background-color: #F0F0F0 !important;
+  background-color: #f0f0f0 !important;
 }
 
 .bg-293FE4 {
-  background-color: #293FE4 !important;
+  background-color: #293fe4 !important;
+}
+
+.bg-silver {
+  background-color: #bdc3c7 !important;
 }
 
 /* Dashboard css*/
 .dashboard {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 .sidebar-dashboard {
   background-color: white;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.fc-scroller {
+  height: auto !important;
+}
+
+/* Text css*/
+.text-293FE4 {
+  color: #293FE4 !important;
+}
+
+.text-727473 {
+  color: #727473 !important;
+}
+
+.text-smoothing-breeze {
+  color: #b2bec3 !important;
+}
+
+/* ============= */
+.topic-box {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.topic-box img {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* width */
+.w-40 {
+  width: 40% !important
+}
+
+/* hover */
+.menu-child-item {
+  color: black !important;
+}
+
+.menu-child-item:hover {
+  color: #293FE4 !important;
 }
