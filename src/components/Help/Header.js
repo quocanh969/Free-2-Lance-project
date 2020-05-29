@@ -10,6 +10,8 @@ import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
 import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 
+import {loadTopics} from '../../actions/Home';
+
 class HeaderComponent extends Component {
 
     constructor(props)
@@ -18,7 +20,7 @@ class HeaderComponent extends Component {
     }
 
     componentWillMount() {
-        let {onUpdateUser} = this.props;
+        let {onUpdateUser, onLoadTopics} = this.props;
 
         // kiêm tra local storage
         if(localStorage.getItem('user') && localStorage.getItem('token'))
@@ -27,6 +29,9 @@ class HeaderComponent extends Component {
             let token = JSON.parse(localStorage.getItem('token'));
             onUpdateUser(user, token);
         }
+
+        // loadTopics
+        onLoadTopics();
     }
 
     handleLogOut() {
@@ -228,6 +233,22 @@ class HeaderComponent extends Component {
         return content;
     }
 
+    renderTopicsHeader() {
+        let {jobTopic} = this.props.GeneralReducer;
+
+        let content = [], count = 0;
+
+        for(let e of jobTopic)
+        {
+            content.push(
+                <NavLink></NavLink>
+            );
+            count++;
+        }
+
+        return content;
+    }
+
     render() {
         return (
             <div id="header">
@@ -248,7 +269,18 @@ class HeaderComponent extends Component {
                                     <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>                                    
                                 </li>
                                 <li>
-                                    <NavLink to="/job-list" className="font-weight-bold">Blogs</NavLink>                                    
+                                    <a className='font-weight-bold mb-4 pt-0 mt-1' href='#' onClick={(e)=>{e.preventDefault()}}>Chủ đề</a>
+									<ul className="dropdown-nav" style={{backgroundColor: 'white'}}>
+										<li>
+                                            <NavLink className='font-weight-bold menu-child-item' to="/job-list">Rửa chén</NavLink>
+                                        </li>
+										<li>
+                                            <NavLink className='font-weight-bold menu-child-item' to="/job-list">Rửa chén</NavLink>
+                                        </li>
+										<li>
+                                            <NavLink className='font-weight-bold menu-child-item' to="/job-list">Rửa chén</NavLink>
+                                        </li>										
+									</ul>
                                 </li>
                                 <li>
                                     <NavLink to="/contact" className="font-weight-bold">Liên hệ</NavLink>                                    
@@ -318,6 +350,9 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: 'USER_LOG_OUT',
             })
+        },
+        onLoadTopics: () => {
+            dispatch(loadTopics);
         }
     }
 }

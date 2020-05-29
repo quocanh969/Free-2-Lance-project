@@ -12,6 +12,28 @@ body {
   font-size: 20px;
 }
 
+#home{
+  background: rgba(0, 0, 0, .65) url('./assets/images/Stocksy_txp4d832598Y5W200_Medium_1565047.jpg');  
+  background-blend-mode: darken;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  height: 600px;
+}
+
+#s-find-job-form {
+  background: rgba(0, 0, 0, .65) url('./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg');  
+  background-blend-mode: darken;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#s-find-job {
+  min-height: 100vh;
+}
+
 .dropdown-toggle::after {
   display: none !important;
 }
@@ -84,10 +106,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: auto !important;
 }
 
-.s-find-job {
-  min-height: 100vh;
-}
-
 .tab-component {
   border-left: 1px #dee2e6 solid;
   border-right: 1px #dee2e6 solid;
@@ -130,6 +148,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: #293fe4 !important;
 }
 
+.bg-silver {
+  background-color: #bdc3c7 !important;
+}
+
 /* Dashboard css*/
 .dashboard {
   background-color: #fafafa;
@@ -142,4 +164,47 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .fc-scroller {
   height: auto !important;
+}
+
+/* Text css*/
+.text-293FE4 {
+  color: #293FE4 !important;
+}
+
+.text-727473 {
+  color: #727473 !important;
+}
+
+.text-smoothing-breeze {
+  color: #b2bec3 !important;
+}
+
+/* ============= */
+.topic-box {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.topic-box img {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* width */
+.w-40 {
+  width: 40% !important
+}
+
+/* hover */
+.menu-child-item {
+  color: black !important;
+}
+
+.menu-child-item:hover {
+  color: #293FE4 !important;
 }
