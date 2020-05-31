@@ -1,17 +1,23 @@
 const initState = {
     jobTopic: [],
+    areas: [],
 }
 
-const HomeReducer = (state = initState, action) => {
+const GeneralReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'LOAD_TOP_JOB_TOPICS':
+        case 'LOAD_JOB_TOPICS':
             return {
                 ...state,
                 jobTopic: action.jobTopic,
+            }
+        case 'LOAD_AREAS':
+            return {
+                ...state,
+                areas: action.areas,
             }
         default:
             return state
     }
 }
 
-export default HomeReducer;
+export default GeneralReducer;

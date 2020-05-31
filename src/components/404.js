@@ -16,7 +16,7 @@ export default class NotFoundComponent extends Component {
                                 <div className="margin-bottom-50 text-center h4">
                                     {/* Search Field */}
                                     Back to &nbsp;
-                                    <NavLink to='/home'>Home page</NavLink>
+                                    <NavLink to='/'>Home page</NavLink>
                                 </div>
                             </div>
                         </div>

@@ -21,34 +21,6 @@ class FindJobComponent extends Component {
         window.scrollTo(0,0);
     }
 
-    areaSession(areas) {        
-        let content = [];
-        let count = 1;
-        for(let i of areas)
-        {
-            content.push(
-                <option value={count} key={count}>{i}</option>
-            )
-            count++;
-        }
-
-        return content;
-    }
-
-    categorySession(categories) {
-        let content = [];
-        let count = 1;
-        for(let i of categories)
-        {
-            content.push(
-                <option value={count} key={count}>{i}</option>
-            )
-            count++;
-        }
-
-        return content;
-    }
-
     typeSession() {
         let content = [];
 
@@ -219,8 +191,7 @@ class FindJobComponent extends Component {
     }
 
     render() {
-        let areas = [{id:1, name:'TPHCM'}, {id:2, name:'Hà Nội'}, {id:3, name:'Hải Phòng'}, {id:4, name:'Nam Định'}, {id:5, name:'Nghệ An'}];
-        let categories = [{id:1, name:'lau nhà'},{id:2, name:'rửa chén'},{id:3, name:'nấu cơm'},{id:4, name:'giặc quần áo'},{id:5, name:'quét bụi'},];        
+        let {jobTopic, areas} = this.props.GeneralReducer;
 
         return (
             <form id='s-find-job-form' className='py-5' onSubmit={this.handleSubmit}>
@@ -240,22 +211,13 @@ class FindJobComponent extends Component {
                                 {/* Area Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id' text_tag='name'></S_Selector>
-                                    {/* <select id='select-area' className="selectpicker default" defaultValue={0}>
-                                        <option value={0} disabled>Khu vực</option>
-                                        {this.areaSession(areas)}
-                                    </select> */}
-                                    
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
                                 </div>
                                 
                                 {/* Category Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
-                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories} value_tag='id' text_tag='name'></S_Selector>
-                                    {/* <select className="selectpicker default" id='select-category' defaultValue={0}>
-                                        <option value={0} disabled>Loại công việc</option>
-                                        {this.categorySession(categories)}
-                                    </select> */}
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
                                 </div>
                                 
                             </div>

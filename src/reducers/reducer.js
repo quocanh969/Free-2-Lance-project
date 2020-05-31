@@ -11,6 +11,7 @@ import JobDetailReducer from './JobReducers/JobDetail.Reducer';
 import AddJobReducer from './JobReducers/AddJobForm.Reducer';
 
 import ContactUsReducer from './Contact.Reducer';
+import HomeReducer from './Home.reducer';
 import GeneralReducer from './General.Reducer';
 
 import HeaderReducer from './Header.Reducer';
@@ -22,6 +23,7 @@ const reducer = combineReducers(
 
         // Big Component reducer        
         ContactUsReducer,
+        HomeReducer,
 
         // General reducer
         GeneralReducer,

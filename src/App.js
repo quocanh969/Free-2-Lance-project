@@ -33,14 +33,16 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route path='/test' exact component={test}></Route>            
-            <SRoute path='/home' exact component={Home}></SRoute>
+            <SRoute path='/' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
             <SRoute path='/not-found' exact component={NotFoundComponent}></SRoute>
 
             <SRoute path='/dashboard' exact component={Profile}></SRoute>
 
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
+
             <SRoute path='/job-list' exact component={JobList}></SRoute>
+            <SRoute path='/job-list/topic=:id_jobtopic' component={JobList}></SRoute>
 
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
 
@@ -56,6 +58,8 @@ function App() {
             
             <Redirect to='/not-found'></Redirect>
           </Switch>
+
+          
         </BrowserRouter>
     </div>
   );

@@ -174,6 +174,11 @@ class JobListComponent extends Component {
                 },
             ]
         }
+
+    }
+
+    componentWillMount() {
+        console.log(this.props.match.params);
     }
 
     componentDidMount() {

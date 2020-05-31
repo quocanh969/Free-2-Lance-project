@@ -10,7 +10,7 @@ export const SRoute = ({ component: Component, ...rest }) => {
     return (
         <Route {...rest} render={
             (props) => {
-                if (window.location.href.endsWith('/home')) {
+                if (window.location.href.endsWith('/')) {
                     return (
                         <div id="wrapper" className="wrapper-with-transparent-header">
                             <header id="header-container" className='fullwidth transparent-header'>

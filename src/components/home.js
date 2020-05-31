@@ -24,7 +24,7 @@ import JobCategory6 from '../assets/images/job-category-06.jpg';
 import JobCategory7 from '../assets/images/job-category-07.jpg';
 import JobCategory8 from '../assets/images/job-category-08.jpg';
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
-import { loadTop8Topic } from '../actions/Home';
+import { loadProductionJobs, loadTemporalJobs } from '../actions/Home';
 
 class HomeComponent extends Component {
 
@@ -35,80 +35,6 @@ class HomeComponent extends Component {
             finishedJob: 1586,
             jobPost: 3543,
             member: 1232,
-            jobList: [
-                {
-                    id: 1,
-                    title: 'Giao đồ ăn nè',
-                    area_province: 'Ho Chi Minh',
-                    area_district: 'Quận 6',
-                    post_date: '02/10/2020',
-                    salary: '$1000',
-                    dealable: true,
-                    description: 'FFXII là phiên bản FF gốc duy nhất thuộc vũ trụ Ivalice. Vũ trụ rộng lớn nhất trong FF. Vì thuộc 1 vũ trụ rộng như vậy nên cốt truyện ffxii sẽ ko thiên về anh hùng gải cứu thế giới như các game FF khác mà mang yếu tố chính trị rất nhiều nên ae chơi con này phải tập trung đọc từng câu thoại thì ae ms hiểu hết đc cốt truyện của nó. Ngoài ra thì cách xây dựng nhân vật trong tựa game này rất đọc đáo, main char trong bản này ko hề bodoi ngàu lòi lạnh lùng như cloud noctis, không giấu nghề như zidane',
-                    tags: [
-                        {
-                            id: 1,
-                            tag: 'Online',
-                        },
-                        {
-                            id: 2,
-                            tag: 'Shipping',
-                        },
-                    ]
-                },
-                {
-                    id: 1,
-                    title: 'Giao đồ ăn nè',
-                    area_province: 'Ho Chi Minh',
-                    area_district: 'Quận 6',
-                    post_date: '02/10/2020',
-                    salary: '$1000',
-                    dealable: false,
-                    description: 'FFXII là phiên bản FF gốc duy nhất thuộc vũ trụ Ivalice.',
-                    tags: [
-                        {
-                            id: 1,
-                            tag: 'Online',
-                        },
-                    ]
-                },
-                {
-                    id: 1,
-                    title: 'Giao đồ ăn nè',
-                    area_province: 'Ho Chi Minh',
-                    area_district: 'Quận 6',
-                    post_date: '02/10/2020',
-                    salary: '$1000',
-                    dealable: true,
-                    description: '',
-                    tags: [
-                        {
-                            id: 2,
-                            tag: 'Shipping',
-                        },
-                    ]
-                },
-                {
-                    id: 1,
-                    title: 'Giao đồ ăn nè',
-                    area_province: 'Ho Chi Minh',
-                    area_district: 'Quận 6',
-                    post_date: '02/10/2020',
-                    salary: '$1000',
-                    dealable: false,
-                    description: 'Không có descript',
-                    tags: [
-                        {
-                            id: 1,
-                            tag: 'Online',
-                        },
-                        {
-                            id: 2,
-                            tag: 'Shipping',
-                        },
-                    ]
-                },
-            ],
             testimonials: [
                 {
                     id_user: 1,
@@ -147,6 +73,12 @@ class HomeComponent extends Component {
     }
 
     componentWillMount() {
+        let {onLoadProductionJobs, onLoadTemporalJobs} = this.props;
+        onLoadProductionJobs(1, 5);
+        onLoadTemporalJobs(1,5); 
+    }
+
+    componentDidMount() {
         window.scrollTo(0,0);
     }
 
@@ -177,8 +109,7 @@ class HomeComponent extends Component {
     }
 
     bannerSession() {
-        let areas = [{id:1, name:'TPHCM'}, {id:2, name:'Hà Nội'}, {id:3, name:'Hải Phòng'}, {id:4, name:'Nam Định'}, {id:5, name:'Nghệ An'}];
-        let categories = [{id:1, name:'lau nhà'},{id:2, name:'rửa chén'},{id:3, name:'nấu cơm'},{id:4, name:'giặc quần áo'},{id:5, name:'quét bụi'},];        
+        let {jobTopic, areas} = this.props.GeneralReducer;
 
         return (
             <div id='home'>
@@ -198,10 +129,11 @@ class HomeComponent extends Component {
                             </div>
                         </div>
                     </div>
+
                     {/* Search Bar */}
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="intro-banner-search-form margin-top-95">
+                            <form className="intro-banner-search-form margin-top-95">
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="input-title" className="field-title ripple-effect">Bạn cần trợ giúp việc gì?</label>
@@ -211,17 +143,22 @@ class HomeComponent extends Component {
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id' text_tag='name'></S_Selector>
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
                                 </div>
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
-                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories} value_tag='id' text_tag='name'></S_Selector>
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
                                 </div>
-                            </div>
+
+                                <div className="intro-search-button">
+                                    <button className="btn btn-293FE4" type='submit'>Search</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    {/* Stats */}
+                    
+                    {/* Stats */}                    
                     <div className="row">
                         <div className="col-md-12">
                             <ul className="intro-stats margin-top-45 hide-under-992px">
@@ -240,6 +177,7 @@ class HomeComponent extends Component {
                             </ul>
                         </div>
                     </div>
+                
                 </div>
 
             </div>
@@ -247,9 +185,11 @@ class HomeComponent extends Component {
     }
     
     topicSession() {
-        let {jobTopic} = this.props.GeneralReducer;
+        let {jobTopic} = this.props.GeneralReducer;        
         let content = [];
         let count = 0;
+
+        jobTopic = jobTopic.sort((a,b)=>{return b.count - a.count}).slice(0,8);
 
         for (let e of jobTopic) {
             content.push(
@@ -270,15 +210,16 @@ class HomeComponent extends Component {
         return content;
     }
 
-    renderJobsList() {
+    renderProductionJobsList() {
         let content = [], count = 0;
-
-        for (let e of this.state.jobList) {
+        let {productionJobList} = this.props.HomeReducer;
+        
+        for (let e of productionJobList) {
             content.push(
                 <NavLink to="/job-detail" className="task-listing" key={count}>
                     <div className="task-listing-details">
                         <div className="task-listing-description">
-                            <h3 className="task-listing-title">{e.title}</h3>
+                            <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
                             <ul className="task-icons">
                                 <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
                                 <li><i className='icon-material-outline-my-location'> {e.area_district}</i></li>
@@ -286,14 +227,52 @@ class HomeComponent extends Component {
                             </ul>
                             <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>
                             <div className="task-tags margin-top-15">
-                                {this.renderTagsOfJob(e)}
+                                {/* {this.renderTagsOfJob(e)} */}
                             </div>
                         </div>
                     </div>
                     <div className="task-listing-bid">
                         <div className="task-listing-bid-inner">
                             <div className="task-offers">
-                                <strong>{e.salary}</strong>
+                                <strong>{e.salary} VNĐ</strong>
+                                <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
+                            </div>
+                            <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
+                        </div>
+                    </div>
+                </NavLink>
+            );
+            count++;
+        }
+
+        return content;
+    }
+
+    renderTemporalJobsList() {
+        let content = [], count = 0;
+        let {temporalJoblist} = this.props.HomeReducer;
+        
+        for (let e of temporalJoblist) {
+            content.push(
+                <NavLink to="/job-detail" className="task-listing" key={count}>
+                    <div className="task-listing-details">
+                        <div className="task-listing-description">
+                            <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
+                            <ul className="task-icons">
+                                <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
+                                <li><i className='icon-material-outline-my-location'> {e.area_district}</i></li>
+                                <li><i className="icon-material-outline-access-time" /> {e.post_date}</li>
+                            </ul>
+                            <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>
+                            <div className="task-tags margin-top-15">
+                                {/* {this.renderTagsOfJob(e)} */}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="task-listing-bid">
+                        <div className="task-listing-bid-inner">
+                            <div className="task-offers">
+                                <strong>{e.salary} VNĐ</strong>
                                 <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
                             </div>
                             <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
@@ -368,22 +347,22 @@ class HomeComponent extends Component {
                             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                 {/* Section Headline */}
                                 <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
-                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc thời vụ nổi bật gần đây</p>
+                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc thời vụ gần đây</p>
                                 </div>
                                 {/* Jobs Container */}
                                 <div className="tasks-list-container compact-list margin-top-20">
-                                    {this.renderJobsList()}
+                                    {this.renderTemporalJobsList()}
                                 </div>
                                 {/* Jobs Container / End */}
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                 {/* Section Headline */}
                                 <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
-                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc theo sản phẩm nổi bật gần đây</p>
+                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc theo sản phẩm gần đây</p>
                                 </div>
                                 {/* Jobs Container */}
                                 <div className="tasks-list-container compact-list margin-top-20">
-                                    {this.renderJobsList()}
+                                    {this.renderProductionJobsList()}
                                 </div>
                                 {/* Jobs Container / End */}
                             </div>
@@ -469,7 +448,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+        onLoadProductionJobs: (page, take) => {
+            dispatch(loadProductionJobs(page, take));
+        },
+        onLoadTemporalJobs: (page, take) => {
+            dispatch(loadTemporalJobs(page, take));
+        }
     }
 }
 

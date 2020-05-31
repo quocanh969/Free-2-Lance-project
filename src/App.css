@@ -139,6 +139,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: white;
 }
 
+.btn-293FE4:hover {
+  background-color: #1b2ebe;
+  color: white;
+}
+
 /* background */
 .bg-F0F0F0 {
   background-color: #f0f0f0 !important;

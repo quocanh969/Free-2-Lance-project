@@ -22,7 +22,7 @@ class ContactComponent extends Component {
                                 {/* Breadcrumbs */}
                                 <nav id="breadcrumbs" className="dark">
                                     <ul>
-                                        <li><NavLink to='/home'>Home</NavLink></li>
+                                        <li><NavLink to='/'>Home</NavLink></li>
                                         <li>Contact</li>
                                     </ul>
                                 </nav>

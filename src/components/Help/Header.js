@@ -10,7 +10,7 @@ import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
 import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 
-import {loadTopics} from '../../actions/Home';
+import {loadTopics, loadAreas} from '../../actions/Home';
 
 class HeaderComponent extends Component {
 
@@ -20,7 +20,7 @@ class HeaderComponent extends Component {
     }
 
     componentWillMount() {
-        let {onUpdateUser, onLoadTopics} = this.props;
+        let {onUpdateUser, onLoadTopics, onLoadAreas} = this.props;
 
         // kiêm tra local storage
         if(localStorage.getItem('user') && localStorage.getItem('token'))
@@ -31,7 +31,9 @@ class HeaderComponent extends Component {
         }
 
         // loadTopics
+        console.log('hello from header');
         onLoadTopics();
+        onLoadAreas();
     }
 
     handleLogOut() {
@@ -241,7 +243,17 @@ class HeaderComponent extends Component {
         for(let e of jobTopic)
         {
             content.push(
-                <NavLink></NavLink>
+                <li key={count} className={'w-100 ' + (count !== 0 && 'border-top border-secondary pt-2 pb-1')}>
+                    <NavLink className='font-weight-bold menu-child-item h5' 
+                        to={{
+                            pathname: '/job-list',
+                            props: {
+                                topic: e.id_jobtopic,
+                            }
+                        }}>
+                        {e.name}
+                    </NavLink>
+                </li>
             );
             count++;
         }
@@ -257,29 +269,21 @@ class HeaderComponent extends Component {
                     <div className="left-side">
                         {/* Logo */}
                         <div id="logo">
-                            <NavLink to="/home"><img src={Logo2} data-sticky-logo={Logo2} data-transparent-logo={Logo2} alt="" /></NavLink>
+                            <NavLink to="/"><img src={Logo2} data-sticky-logo={Logo2} data-transparent-logo={Logo2} alt="" /></NavLink>
                         </div>
                         {/* Main Navigation */}
                         <nav id="navigation">
                             <ul id="responsive" style={{paddingTop:'5px'}}>
                                 <li>
-                                    <NavLink to="/home" className="font-weight-bold">Trang chủ</NavLink>
+                                    <NavLink to="/" className="font-weight-bold">Trang chủ</NavLink>
                                 </li>
                                 <li>
                                     <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>                                    
                                 </li>
                                 <li>
                                     <a className='font-weight-bold mb-4 pt-0 mt-1' href='#' onClick={(e)=>{e.preventDefault()}}>Chủ đề</a>
-									<ul className="dropdown-nav" style={{backgroundColor: 'white'}}>
-										<li>
-                                            <NavLink className='font-weight-bold menu-child-item' to="/job-list">Rửa chén</NavLink>
-                                        </li>
-										<li>
-                                            <NavLink className='font-weight-bold menu-child-item' to="/job-list">Rửa chén</NavLink>
-                                        </li>
-										<li>
-                                            <NavLink className='font-weight-bold menu-child-item' to="/job-list">Rửa chén</NavLink>
-                                        </li>										
+									<ul className="dropdown-nav mt-0" style={{backgroundColor: 'white', maxHeight: '70vh', width: '350px', overflowY: 'auto', overflowX: 'hidden'}}>
+										{this.renderTopicsHeader()}									
 									</ul>
                                 </li>
                                 <li>
@@ -352,7 +356,10 @@ const mapDispatchToProps = dispatch => {
             })
         },
         onLoadTopics: () => {
-            dispatch(loadTopics);
+            dispatch(loadTopics());
+        },
+        onLoadAreas: () => {
+            dispatch(loadAreas());
         }
     }
 }

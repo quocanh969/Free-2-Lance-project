@@ -8,4 +8,12 @@ function getAllTopics() {
     return axios.get('/allJobsTopics');
 }
 
-export { postJob, getAllTopics };
+function getJobsList(page, take, query) {
+    return axios.post('/getJobsList',{
+        page,
+        take,
+        query,
+    })
+}
+
+export { postJob, getAllTopics, getJobsList };

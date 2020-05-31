@@ -34,6 +34,12 @@
     background-color: #F0F1FE !important;
 }
 
+.selector-dropdown-menu {
+    max-height: calc(100vh - 70vh);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 /* S_Autocomplete_tag */
 .input-tag {
     position: relative;

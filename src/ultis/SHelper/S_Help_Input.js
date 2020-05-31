@@ -77,7 +77,7 @@ class S_Selector extends Component {
                             <span className="caret"></span>
                         </span>
                     </button>
-                    <div className="dropdown-menu mt-1 w-100" aria-labelledby="dropdownMenuButton">
+                    <div className="dropdown-menu mt-1 w-100 selector-dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {this.initContent()}
                     </div>
                 </div>
