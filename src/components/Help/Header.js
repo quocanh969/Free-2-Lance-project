@@ -245,12 +245,7 @@ class HeaderComponent extends Component {
             content.push(
                 <li key={count} className={'w-100 ' + (count !== 0 && 'border-top border-secondary pt-2 pb-1')}>
                     <NavLink className='font-weight-bold menu-child-item h5' 
-                        to={{
-                            pathname: '/job-list',
-                            props: {
-                                topic: e.id_jobtopic,
-                            }
-                        }}>
+                        to={'/job_list/topic='+e.id_jobtopic}>
                         {e.name}
                     </NavLink>
                 </li>

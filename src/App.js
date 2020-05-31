@@ -58,8 +58,6 @@ function App() {
             
             <Redirect to='/not-found'></Redirect>
           </Switch>
-
-          
         </BrowserRouter>
     </div>
   );
