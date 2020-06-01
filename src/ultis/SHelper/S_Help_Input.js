@@ -52,6 +52,11 @@ class S_Selector extends Component {
     initOptions() {
         let count = 1;
         let content = [];
+        
+        content.push(
+            <option value={0} key={count}></option>
+        );
+        count++;
 
         for (let e of this.props.data) {
             content.push(
@@ -75,14 +80,14 @@ class S_Selector extends Component {
                         <span>{this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}</span>
                         <span className="bs-caret">
                             <span className="caret"></span>
-                        </span>
+                        </span> 
                     </button>
                     <div className="dropdown-menu mt-1 w-100 selector-dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {this.initContent()}
                     </div>
                 </div>
 
-                <select id={this.props.id} style={{ display: 'none' }}>
+                <select id={this.props.id} style={{ display: 'none' }} defaultValue="0">
                     {this.initOptions()}
                 </select>
             </div>

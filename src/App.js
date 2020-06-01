@@ -30,7 +30,7 @@ import NotFoundComponent from './components/404';
 function App() {
   return (
     <div>
-        <BrowserRouter>
+        <Router history={history}>
           <Switch>
             <Route path='/test' exact component={test}></Route>            
             <SRoute path='/' exact component={Home}></SRoute>
@@ -42,7 +42,8 @@ function App() {
             <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
 
             <SRoute path='/job-list' exact component={JobList}></SRoute>
-            <SRoute path='/job-list/topic=:id_jobtopic' component={JobList}></SRoute>
+            <SRoute path='/job-list/topic=:job_topic' exact component={JobList}></SRoute>
+            <SRoute path='/job-list/title=:title&area=:area_province&topic=:job_topic' exact component={JobList}></SRoute>
 
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
 
@@ -58,7 +59,7 @@ function App() {
             
             <Redirect to='/not-found'></Redirect>
           </Switch>
-        </BrowserRouter>
+        </Router>
     </div>
   );
 }

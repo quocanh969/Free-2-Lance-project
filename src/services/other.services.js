@@ -5,4 +5,5 @@ function getAllAreas() {
     return axios.get('/getAllProvinces');
 }
 
+
 export { getAllAreas };
