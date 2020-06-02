@@ -1,8 +1,8 @@
 import { getJobsList } from "../services/job.services";
 
-export const loadJobList = (page, take, query) => {
+export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
-    getJobsList(page, take, query)
+    getJobsList(page, take, isASC, query)
       .then((res) => {
         console.log(res.data.data);
         dispatch(success(res.data.data.jobList, res.data.data.page, res.data.data.count));

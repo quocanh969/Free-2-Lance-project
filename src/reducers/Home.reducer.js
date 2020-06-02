@@ -1,6 +1,7 @@
 const initState = {
     productionJobList: [],
     temporalJoblist: [],
+    topUsers: [],
 }
 
 const HomeReducer = (state = initState, action) => {
@@ -14,6 +15,11 @@ const HomeReducer = (state = initState, action) => {
             return {
                 ...state,
                 temporalJoblist: action.temporalJoblist,
+            }
+        case 'LOAD_TOP_USERS':
+            return {
+                ...state,
+                topUsers: action.topUsers,
             }
         default:
             return state

@@ -5,12 +5,7 @@ import { connect } from 'react-redux';
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
-import CompanyLogo1 from '../assets/images/company-logo-01.png';
-import CompanyLogo2 from '../assets/images/company-logo-02.png';
-import CompanyLogo3 from '../assets/images/company-logo-03.png';
-import CompanyLogo4 from '../assets/images/company-logo-04.png';
-import CompanyLogo5 from '../assets/images/company-logo-05.png';
-import CompanyLogo6 from '../assets/images/company-logo-06.png';
+import CompanyLogoPlaceholder from '../assets/images/company-logo-placeholder.png';
 
 import {loadJobList} from '../actions/Job';
 
@@ -23,7 +18,10 @@ class JobListComponent extends Component {
 
         this.state = {
             isGridMode: true,
+            isASC: 2,
         }
+
+        this.hanldeSortChange = this.hanldeSortChange.bind(this);
     }
 
     componentWillMount() {
@@ -49,18 +47,24 @@ class JobListComponent extends Component {
 
     generateJobListGridMode() {
         let content = [], count = 0;
-        let {jobList} = this.props.JobsListReducer;            
+        let {jobList} = this.props.JobsListReducer;
+              
 
         for (let e of jobList) {
             let postDate = new Date(e.post_date);
             let expireDate = new Date(e.expire_date);
+            let logo = CompanyLogoPlaceholder;
+            if(e.img !== null)
+            {
+                logo = 'data:image/png;base64,' + e.img;
+            }    
             content.push(
                 <NavLink to='/job-detail' className="job-listing" key={count}>
                     {/* Job Listing Details */}
                     <div className="job-listing-details">
                         {/* Logo */}
                         <div className="job-listing-company-logo">
-                            <img src={'data:image/png;base64,'+e.img} alt="" />
+                            <img src={logo} alt="" />
                         </div>
                         {/* Details */}
                         <div className="job-listing-description">
@@ -87,20 +91,23 @@ class JobListComponent extends Component {
 
     generateJobListListMode() {
         let content = [], count = 0;
-        let {jobList} = this.props.JobsListReducer;
-        console.log(jobList);     
+        let {jobList} = this.props.JobsListReducer;  
 
         for (let e of jobList) {
             let postDate = new Date(e.post_date);
             let expireDate = new Date(e.expire_date);
-
+            let logo = CompanyLogoPlaceholder;
+            if(e.img !== null)
+            {
+                logo = 'data:image/png;base64,'+ e.img;
+            }
             content.push(
                 <div className="job-listing container" key={count}>
                     {/* Job Listing Details */}
                     <div className="job-listing-details row">
                         {/* Logo */}
                         <div className="col-4">
-                            <img src={'data:image/png;base64,'+e.img} alt="" />
+                            <img src={logo} alt="" />
                         </div>
                         {/* Details */}
                         <div className="col-6">
@@ -140,6 +147,12 @@ class JobListComponent extends Component {
         }        
     }
 
+    hanldeSortChange() {
+        this.setState({isASC: document.getElementById('select-sort-type').value},()=>{
+            this.loadJobListFunc(1);
+        });
+    }
+
     loadJobListFunc(page) {
         let {onLoadJobList} = this.props;
         let query = {};
@@ -164,7 +177,7 @@ class JobListComponent extends Component {
         }
                   
         
-        onLoadJobList(page, 8, query);
+        onLoadJobList(page, 8, this.state.isASC, query);
     }
 
     renderPagination(page, totalPage) {
@@ -191,7 +204,7 @@ class JobListComponent extends Component {
         for(let e = start; e <= end; e++)
         {
             content.push(
-                <li key={e}><div className={page === e && "current-page"} onClick={()=>{this.handlePagination(e)}}>{e}</div></li>
+                <li key={e}><div className={'cursor-pointer ' + (page === e ? "current-page" : undefined)} onClick={()=>{this.handlePagination(e)}}>{e}</div></li>
             );            
         }
 
@@ -203,8 +216,7 @@ class JobListComponent extends Component {
         let {areas, jobTopic} = this.props.GeneralReducer;
         let {page, total} = this.props.JobsListReducer;
         let sortType = [{type: 1, text: 'Mới nhất'}, {type: 2, text: 'Đã đăng lâu nhất'}];
-
-        let totalPage = total/8 + (total % 8 > 0 ? 1 : 0);
+        let totalPage = Math.ceil(total/8);        
 
         return (
             <div>
@@ -223,7 +235,7 @@ class JobListComponent extends Component {
                                             <input type="text" className="keyword-input" placeholder="e.g. job title" />
                                             <button className="keyword-input-button ripple-effect"><i className="icon-material-outline-add" /></button>
                                         </div>
-                                        <div className="keywords-list">{/* keywords go here */}</div>
+                                        <div className="keywords-list">Hello mother fucker</div>
                                         <div className="clearfix" />
                                     </div>
                                 </div>
@@ -326,7 +338,7 @@ class JobListComponent extends Component {
                                     </div>
                                     <div className="col-6 row">
                                         <div className='col-3 my-auto'>Sort by:</div>
-                                        <S_Selector id='select-sort-type' flex='col-9' placeholder='Mới nhất' data={sortType} value_tag='type' text_tag='text'></S_Selector>
+                                        <S_Selector id='select-sort-type' handleChange={this.hanldeSortChange} flex='col-9' placeholder='Mới nhất' data={sortType} value_tag='type' text_tag='text'></S_Selector>
                                     </div>
                                 </div>
                             </div>
@@ -350,9 +362,9 @@ class JobListComponent extends Component {
                                     <div className="pagination-container margin-top-30 margin-bottom-60">
                                         <nav className="pagination">
                                             <ul>
-                                                <li className={"pagination-arrow " + (page === 1 && 'd-none')}><div onClick={()=>{this.handlePagination(page - 1)}}><i className="icon-material-outline-keyboard-arrow-left" /></div></li>
+                                                <li className={"pagination-arrow " + ((page === 1 || totalPage - page < 3) && 'd-none')}><div className='cursor-pointer' onClick={()=>{this.handlePagination(page - 1)}}><i className="icon-material-outline-keyboard-arrow-left" /></div></li>
                                                 {this.renderPagination(page, totalPage)}
-                                                <li className={"pagination-arrow " + (totalPage - page < 3 && 'd-none')}><div onClick={()=>{this.handlePagination(page + 1)}}><i className="icon-material-outline-keyboard-arrow-right" /></div></li>
+                                                <li className={"pagination-arrow " + (totalPage - page < 3 && 'd-none')}><div className='cursor-pointer' onClick={()=>{this.handlePagination(page + 1)}}><i className="icon-material-outline-keyboard-arrow-right" /></div></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -373,8 +385,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLoadJobList: (page, take, query) => {
-            dispatch(loadJobList(page, take, query));
+        onLoadJobList: (page, take, isASC, query) => {
+            dispatch(loadJobList(page, take, isASC, query));
         }
     }
 }

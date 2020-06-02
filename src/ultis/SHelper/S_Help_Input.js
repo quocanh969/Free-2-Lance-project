@@ -28,7 +28,9 @@ class S_Selector extends Component {
     handleSelect(selected) {
         this.setState({ selected, }, () => {
             document.getElementById(this.props.id).value = selected[this.props.value_tag];
-        })
+            this.props.handleChange();
+        });
+        
     }
 
     initContent() {

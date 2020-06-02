@@ -8,4 +8,8 @@ function getUser() {
   })
 }
 
-export { getUser };
+function getTopUsers() {
+  return axios.get('/getTopUsers');
+}
+
+export { getUser, getTopUsers };

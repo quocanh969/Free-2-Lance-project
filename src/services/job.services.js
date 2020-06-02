@@ -8,10 +8,11 @@ function getAllTopics() {
     return axios.get('/allJobsTopics');
 }
 
-function getJobsList(page, take, query) {
+function getJobsList(page, take, isASC, query) {
     return axios.post('/getJobsList',{
         page,
         take,
+        isASC,
         query,
     })
 }

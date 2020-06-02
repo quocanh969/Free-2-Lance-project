@@ -8,23 +8,10 @@ import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
-import Logo2 from '../assets/images/logo2.png';
-import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
-import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';
-import UserAvatarSmall3 from '../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
 
-import HomeBackground2 from '../assets/images/home-background-02.jpg';
-import JobCategory1 from '../assets/images/job-category-01.jpg';
-import JobCategory2 from '../assets/images/job-category-02.jpg';
-import JobCategory3 from '../assets/images/job-category-03.jpg';
-import JobCategory4 from '../assets/images/job-category-04.jpg';
-import JobCategory5 from '../assets/images/job-category-05.jpg';
-import JobCategory6 from '../assets/images/job-category-06.jpg';
-import JobCategory7 from '../assets/images/job-category-07.jpg';
-import JobCategory8 from '../assets/images/job-category-08.jpg';
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
-import { loadProductionJobs, loadTemporalJobs } from '../actions/Home';
+import { loadProductionJobs, loadTemporalJobs, loadTopUsers } from '../actions/Home';
 
 class HomeComponent extends Component {
 
@@ -73,9 +60,10 @@ class HomeComponent extends Component {
     }
 
     componentWillMount() {
-        let {onLoadProductionJobs, onLoadTemporalJobs} = this.props;
+        let {onLoadProductionJobs, onLoadTemporalJobs, onLoadTopUsers} = this.props;
         onLoadProductionJobs(1, 5);
-        onLoadTemporalJobs(1,5); 
+        onLoadTemporalJobs(1,5);
+        onLoadTopUsers();
     }
 
     componentDidMount() {
@@ -300,15 +288,22 @@ class HomeComponent extends Component {
 
     renderTestimonials() {
         let content = [], count = 0;
-        for(let e of this.state.testimonials)
+        let {topUsers} = this.props.HomeReducer;
+
+        for(let e of topUsers)
         {
+            let userAvatar = UserAvatarPlaceholder;
+            if(e.avatarImg !== null)
+            {
+                userAvatar = 'data:image/png;base64,'+e.img;
+            }
             content.push(
                 <div className={"item carousel-item " + (count === 0 && 'active')} key={count}>
-                    <div className="img-box"><img src={e.avatarImg} alt="" /></div>
+                    <div className="img-box"><img src={userAvatar} alt="" /></div>
                     <br></br>
 
                     <p className="overview"><b>{e.fullname}</b></p>
-                    <p>Rating: {e.rate} <i className='icon-material-outline-star text-warning'></i></p>
+                    <p>Rating: {e.rating} <i className='icon-material-outline-star text-warning'></i></p>
                     <p><i className="icon-feather-mail" /> {e.email}</p>
                     <p><i className="icon-feather-phone" /> {e.dial}</p>
                 </div>
@@ -325,6 +320,7 @@ class HomeComponent extends Component {
                 {this.bannerSession()}
 
                 {/* Content ================================================== */}
+                
                 {/* Popular Job Categories */}
                 <div className="section margin-top-65 margin-bottom-30">
                     <div className="container">
@@ -454,6 +450,9 @@ const mapDispatchToProps = dispatch => {
         },
         onLoadTemporalJobs: (page, take) => {
             dispatch(loadTemporalJobs(page, take));
+        },
+        onLoadTopUsers: () => {
+            dispatch(loadTopUsers());
         }
     }
 }

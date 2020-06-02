@@ -1,5 +1,6 @@
 import {getAllTopics, getJobsList} from '../services/job.services';
 import { getAllAreas } from '../services/other.services';
+import { getTopUsers } from '../services/user.services';
 
 export const loadTopics = () => {
     return dispatch => {
@@ -45,7 +46,7 @@ export const loadProductionJobs = (page, take) => {
             job_type: '1',
         }
 
-        getJobsList(page, take, query)
+        getJobsList(page, take, 1, query)
         .then(res=>{
             dispatch(success(res.data.data.jobList));
         })
@@ -68,7 +69,7 @@ export const loadTemporalJobs = (page, take) => {
             job_type: '0',
         }
 
-        getJobsList(page, take, query)
+        getJobsList(page, take, 1, query)
         .then(res=>{
             dispatch(success(res.data.data.jobList));
         })
@@ -81,6 +82,25 @@ export const loadTemporalJobs = (page, take) => {
         return {
             type: 'LOAD_TEMPORAL_JOBS_LIST',
             temporalJoblist,
+        }
+    }
+}
+
+export const loadTopUsers = () => {
+    return dispatch => {
+        getTopUsers()
+        .then(res=>{
+            dispatch(success(res.data));
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }
+
+    function success(topUsers) {
+        return {
+            type: 'LOAD_TOP_USERS',
+            topUsers,
         }
     }
 }

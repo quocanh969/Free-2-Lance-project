@@ -28,6 +28,15 @@ import test from './components/test';
 import NotFoundComponent from './components/404';
 
 function App() {
+  // const appendScript = (scriptToAppend) => {
+  //   const script = document.createElement("script");
+  //   script.src = scriptToAppend;
+  //   script.type = 'text/jsx';
+  //   script.async = true;
+  //   document.body.appendChild(script);
+  // }
+  // appendScript('./assets/js/custom.js');
+
   return (
     <div>
         <Router history={history}>
