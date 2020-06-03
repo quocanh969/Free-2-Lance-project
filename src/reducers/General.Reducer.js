@@ -9,6 +9,11 @@ const HomeReducer = (state = initState, action) => {
                 ...state,
                 jobTopic: action.jobTopic,
             }
+        case 'LOAD_TAGS': 
+            return {
+                ...state,
+                jobTags: action.jobTag,
+            }
         default:
             return state
     }

@@ -1,16 +1,16 @@
-import {getAllTopics} from '../services/job.services';
+import { getAllTopics, getTags } from '../services/job.services';
 
 export const loadTopics = () => {
     return dispatch => {
 
         getAllTopics()
-        .then(res=>{
-            console.log(res.data.data);
-            dispatch(success(res.data.data));
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+            .then(res => {
+                console.log(res.data.data);
+                dispatch(success(res.data.data));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     function success(jobTopic) {

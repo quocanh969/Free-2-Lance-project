@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GoogleMapAutocomplete from '../../../Help/GoogleMapAutocomplete';
+import MultipleImageUploadComponent from '../../../Help/UploadImages';
 import { submitAddJobForm, loadResources } from '../../../../actions/PostJob';
 import { S_Selector } from '../../../../ultis/SHelper/S_Help_Input';
 
@@ -10,13 +11,17 @@ class PostJobComponent extends Component {
     constructor(props) {
         super(props);
 
+        this.runUploadFile = this.runUploadFile.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
-
+    runUploadFile() {
+        document.getElementById('uploadImg').click();
+    }
     componentDidMount() {
         window.scrollTo(0, 0);
-        console.log(this.props);
+
+        console.log(this.props.GeneralReducer); // Get topics to select from
         let { onSendLoadReq } = this.props;
         onSendLoadReq();
     }
@@ -30,7 +35,9 @@ class PostJobComponent extends Component {
         let { onUpdate } = this.props;
         let jobTitleValue = document.getElementById("inputJobTitle").value;
         onUpdate("jobTitle", jobTitleValue);
-        console.log(this.props.AddJobReducer.fields);
+
+        // console.log(this.props.AddJobReducer.fields.relatedImg); // addressString.address_components[2];
+        console.log(document.getElementById("uploadImg").value);
     }
 
     render() {
@@ -137,9 +144,16 @@ class PostJobComponent extends Component {
                                             <h5>Job Description</h5>
                                             <textarea cols={30} rows={5} className="with-border" defaultValue={""} />
                                             <div className="uploadButton margin-top-30">
-                                                <input className="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple />
-                                                <label className="uploadButton-button ripple-effect" htmlFor="upload">Upload Files</label>
-                                                <span className="uploadButton-file-name">Images or documents that might be helpful in describing your job</span>
+                                                {/* <input className="uploadButton-input" type="button" id="upload" onClick={this.runUploadFile} /> */}
+                                                <div>
+                                                    <MultipleImageUploadComponent value={this.props.AddJobReducer.fields.relatedImg} onChange={this.handleChange}></MultipleImageUploadComponent>
+                                                </div>
+                                                <div>
+                                                    <label className="uploadButton-button ripple-effect" onClick={this.runUploadFile}>Upload Files</label>
+                                                </div>
+                                                <div>
+                                                    <span className="uploadButton-file-name">Images or documents that might be helpful in describing your job</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

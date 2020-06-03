@@ -22,7 +22,7 @@ import MapContainer from './components/map_JobsList';
 import FindJob from './components/FindJob';
 import Profile from './components/Profile/Profile';
 
-import GoogleMapAutocomplete from './components/Help/GoogleMapAutocomplete';
+import MultipleImageUploadComponent from './components/Help/UploadImages';
 import test from './components/test';
 
 import NotFoundComponent from './components/404';
@@ -52,7 +52,7 @@ function App() {
 
             <SRoute path='/contact' exact component={Contact}></SRoute>
             
-            <SRoute path='/auto' exact component={GoogleMapAutocomplete}></SRoute>
+            <SRoute path='/upload' exact component={MultipleImageUploadComponent}></SRoute>
             
             <Redirect to='/not-found'></Redirect>
           </Switch>

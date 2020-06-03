@@ -8,4 +8,8 @@ function getAllTopics() {
     return axios.get('/allJobsTopics');
 }
 
+function getAllTags() {
+    return axios.get('');
+}
+
 export { postJob, getAllTopics };
