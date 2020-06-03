@@ -10,7 +10,7 @@ if (localStorage.getItem("user") && localStorage.getItem("user").token) {
 
 let axios = Axios.create({
   baseURL: "http://localhost:8000/",
-  headers: { "Content-Type": "application/json"},
+  headers: { "Content-Type": "application/json" },
 });
 
 axios.interceptors.response.use(
@@ -22,13 +22,13 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       console.log(error.response);
       // alert(error.response);
-      alert('Đăng nhập đi ba');
+      alert("Đăng nhập đi ba");
 
       localStorage.setItem("user", null);
       localStorage.setItem("token", null);
 
       // history.push("/login");
-      window.location.href = './login';
+      window.location.href = "./login";
       MyStore.dispatch({
         type: "USER_LOG_OUT",
       });
