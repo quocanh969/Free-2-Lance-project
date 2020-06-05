@@ -13,6 +13,8 @@ import { S_Selector } from '../ultis/SHelper/S_Help_Input';
 
 class JobListComponent extends Component {
 
+    query = {};
+
     constructor(props) {
         super(props);
 
@@ -20,9 +22,7 @@ class JobListComponent extends Component {
             isGridMode: true,
             isASC: 2,
         }
-
-        this.query = this.initQuery();
-
+        this.initQuery();
         this.hanldeSortChange = this.hanldeSortChange.bind(this);
     }
 
@@ -156,8 +156,6 @@ class JobListComponent extends Component {
     }
 
     initQuery() {
-        let query = {};
-
         if(this.props.location.state === null || this.props.location.state === undefined)
         {
             // navigate từ topic trên header
@@ -167,17 +165,15 @@ class JobListComponent extends Component {
             {
                 if(params !== '')
                 {
-                    query[e] = params[e];
+                    this.query[e] = params[e];
                 }
             }
         }
         else
         {
             // navigate từ search page
-            query = this.props.location.state;
+            this.query = this.props.location.state;
         }
-
-        return query;
     }
 
     loadJobListFunc(page, query) {
@@ -218,8 +214,7 @@ class JobListComponent extends Component {
     }
 
     renderFilter() {
-        let {areas, jobTopic} = this.props.GeneralReducer;
-        console.log(this.query);
+        let { jobTopic, areas } = this.props.GeneralReducer;
         return (
             <div className="sidebar-container">
                 <h2 className='font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4'>Bộ lọc</h2>
@@ -228,7 +223,7 @@ class JobListComponent extends Component {
                 <div className="sidebar-widget">
                     <h3>Khu vực</h3>
                     <div className="input-with-icon">
-                        <S_Selector id='select-area' disbaled={this.query['area_province'] !== undefined ? true : false} value={this.query['area_province']} className='with-border' placeholder='Chọn khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
+                        {/* <S_Selector id='select-area' disabled={this.query['area_province'] !== undefined ? true : false} value={this.query['area_province']} className='with-border' placeholder='Chọn khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector> */}
                     </div>
                 </div>
 
@@ -236,7 +231,7 @@ class JobListComponent extends Component {
                 <div className="sidebar-widget">
                     <h3>Chủ đề</h3>
                     <div className="input-with-icon">
-                        <S_Selector id='select-category' className='with-border' placeholder='Chọn chủ đề' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
+                        <S_Selector id='select-category' value={1} className='with-border' placeholder='Chọn chủ đề' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
                     </div>
                 </div>
                 
@@ -329,7 +324,7 @@ class JobListComponent extends Component {
                                     </div>
                                     <div className="col-6 row">
                                         <div className='col-3 my-auto'>Sort by:</div>
-                                        <S_Selector id='select-sort-type' handleChange={this.hanldeSortChange} flex='col-9' value={2} placeholder='Sắp xếp' data={sortType} value_tag='type' text_tag='text'></S_Selector>
+                                        {/* <S_Selector id='select-sort-type' handleChange={this.hanldeSortChange} flex='col-9' value={2} placeholder='Sắp xếp' data={sortType} value_tag='type' text_tag='text'></S_Selector> */}
                                     </div>
                                 </div>
                             </div>

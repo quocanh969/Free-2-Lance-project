@@ -27,6 +27,7 @@ class S_Selector extends Component {
     componentDidMount() {
         if(this.props.value)
         {
+            
             this.initValue();
         }
     }
@@ -35,9 +36,12 @@ class S_Selector extends Component {
         let value = Number.parseInt(this.props.value);
         for(let e of this.props.data)
         {
-            if(e[this.props.value_tag] === this.props.value)
+            if(e[this.props.value_tag] === value)
             {
-                this.setState({selected: e});
+                console.log('flag', this.props.value_tag);
+                this.setState({selected: e}, ()=>{
+                    console.log(this.state.selected);
+                });
                 return ;
             }
         }
