@@ -15,6 +15,11 @@ const GeneralReducer = (state = initState, action) => {
                 ...state,
                 areas: action.areas,
             }
+        case 'LOAD_TAGS': 
+            return {
+                ...state,
+                jobTags: action.jobTag,
+            }
         default:
             return state
     }

@@ -1,4 +1,4 @@
-import {getAllTopics, getJobsList} from '../services/job.services';
+import {getAllTopics, getJobsList, getTags} from '../services/job.services';
 import { getAllAreas, getStatistic } from '../services/other.services';
 import { getTopUsers } from '../services/user.services';
 

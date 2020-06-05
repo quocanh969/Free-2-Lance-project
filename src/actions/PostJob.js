@@ -1,4 +1,4 @@
-import { postJob } from '../services/job.services';
+import { postJob, getAllTopics } from '../services/job.services';
 
 export const submitAddJobForm = (address) => {
   return (dispatch) => {
@@ -44,3 +44,10 @@ export const submitAddJobForm = (address) => {
     };
   }
 };
+
+export const loadResources = () => {
+  return (dispatch => {
+  })
+
+
+}
