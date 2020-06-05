@@ -19,16 +19,37 @@ class S_Selector extends Component {
         super(props);
 
         this.state = {
-            selected: this.props.value,
+            selected: undefined,
         }
+        // this.handleSelect = this.handleSelect.bind(this);
+    }
 
-        //this.handleSelect = this.handleSelect.bind(this);
+    componentDidMount() {
+        if(this.props.value)
+        {
+            this.initValue();
+        }
+    }
+
+    initValue() {
+        let value = Number.parseInt(this.props.value);
+        for(let e of this.props.data)
+        {
+            if(e[this.props.value_tag] === this.props.value)
+            {
+                this.setState({selected: e});
+                return ;
+            }
+        }
     }
 
     handleSelect(selected) {
         this.setState({ selected, }, () => {
             document.getElementById(this.props.id).value = selected[this.props.value_tag];
-            this.props.handleChange();
+            if(this.props.handleChange)
+            {
+                this.props.handleChange();   
+            }            
         });
         
     }
@@ -74,22 +95,29 @@ class S_Selector extends Component {
         let flex = this.props.flex || '';
         return (
             // <div className='btn-group bootstrap-select'>
-            <div className={'w-100 ' + flex + ' ' + (this.props.disabled ? 'cursor-auto bg-F0F0F0' : '')}>
+            <div className={'w-100 ' + flex + ' ' + (this.props.disabled ? 'cursor-auto' : '')}>
                 <div className="dropdown">
-                    <button disabled={this.props.disabled}
-                        className={"btn btn-select dropdown-toggle w-100 d-flex justify-content-between " + (this.props.className)}
-                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span>{this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}</span>
-                        <span className="bs-caret">
-                            <span className="caret"></span>
-                        </span> 
-                    </button>
+                    {(
+                        this.props.disabled
+                        ?
+                        <div className={"s-btn-select bg-cloud w-100 d-flex justify-content-between " + (this.props.className)}>
+                            <span>{this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}</span>                        
+                        </div>
+                        :
+                        <button className={"btn btn-select dropdown-toggle w-100 d-flex justify-content-between mb-0 " + (this.props.className)}
+                            type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span>{this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}</span>
+                            <span className="bs-caret">
+                                <span className="caret"></span>
+                            </span> 
+                        </button>
+                    )}
                     <div className="dropdown-menu mt-1 w-100 selector-dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {this.initContent()}
                     </div>
                 </div>
 
-                <select id={this.props.id} style={{ display: 'none' }} defaultValue="0">
+                <select id={this.props.id} style={{ display: 'none' }} defaultValue={this.props.value || 0}>
                     {this.initOptions()}
                 </select>
             </div>

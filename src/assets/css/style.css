@@ -184,6 +184,7 @@ input[type="password"].with-border,
 input[type="email"].with-border,
 input[type="number"].with-border,
 .btn-select.with-border,
+.s-btn-select.with-border,
 textarea.with-border,
 select.with-border {
   border: 1px solid #e0e0e0;
@@ -195,6 +196,7 @@ input[type="password"].with-border:focus,
 input[type="email"].with-border:focus,
 input[type="number"].with-border:focus,
 .btn-select.with-border:focus,
+.s-btn-select.with-border:focus,
 textarea.with-border:focus {
   border: 1px solid #e0e0e0;
   box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0.08);
@@ -2860,7 +2862,7 @@ body #backtotop a {
 
 .sidebar-widget h3 {
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 /* ---------------------------------- */

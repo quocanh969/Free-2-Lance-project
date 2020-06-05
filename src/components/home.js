@@ -11,7 +11,7 @@ import '../assets/css/colors/blue.css';
 import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
 
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
-import { loadProductionJobs, loadTemporalJobs, loadTopUsers } from '../actions/Home';
+import { loadProductionJobs, loadTemporalJobs, loadTopUsers, loadStatistic } from '../actions/Home';
 
 class HomeComponent extends Component {
 
@@ -60,14 +60,15 @@ class HomeComponent extends Component {
     }
 
     componentWillMount() {
-        let {onLoadProductionJobs, onLoadTemporalJobs, onLoadTopUsers} = this.props;
+        let { onLoadProductionJobs, onLoadTemporalJobs, onLoadTopUsers, onLoadStatistic } = this.props;
         onLoadProductionJobs(1, 5);
-        onLoadTemporalJobs(1,5);
+        onLoadTemporalJobs(1, 5);
         onLoadTopUsers();
+        onLoadStatistic();
     }
 
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         console.log(this.props);
     }
 
@@ -98,8 +99,8 @@ class HomeComponent extends Component {
     }
 
     bannerSession() {
-        let {jobTopic, areas} = this.props.GeneralReducer;
-
+        let { jobTopic, areas } = this.props.GeneralReducer;
+        let { memberNum, finishedJobNum, applyingJobNum, proccessingJobNum } = this.props.HomeReducer;
         return (
             <div id='home'>
                 {/* Transparent Header Spacer */}
@@ -146,46 +147,47 @@ class HomeComponent extends Component {
                             </form>
                         </div>
                     </div>
-                    
-                    {/* Stats */}                    
+
+                    {/* Stats */}
                     <div className="row">
                         <div className="col-md-12">
                             <ul className="intro-stats margin-top-45 hide-under-992px">
                                 <li>
-                                    <strong className="counter text-white">{this.state.jobPost}</strong>
-                                    <span className='text-smoothing-breeze'>Công việc</span>
+                                    <strong className="counter text-white">{applyingJobNum + proccessingJobNum}</strong>
+                                    <span className='text-smoothing-breeze'>Công việc sẳn sàng</span>
                                 </li>
                                 <li>
-                                    <strong className="counter text-white">{this.state.finishedJob}</strong>
+                                    <strong className="counter text-white">{finishedJobNum}</strong>
                                     <span className='text-smoothing-breeze'>Công việc hoàn thành</span>
                                 </li>
                                 <li>
-                                    <strong className="counter text-white">{this.state.member}</strong>
+                                    <strong className="counter text-white">{memberNum}</strong>
                                     <span className='text-smoothing-breeze'>Thành viên</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                
+
                 </div>
 
             </div>
         )
     }
-    
+
     topicSession() {
-        let {jobTopic} = this.props.GeneralReducer;        
+        let { jobTopic } = this.props.GeneralReducer;
         let content = [];
         let count = 0;
+        let copyJobTopicList = [...jobTopic];
 
-        jobTopic = jobTopic.sort((a,b)=>{return b.count - a.count}).slice(0,8);
+        copyJobTopicList = copyJobTopicList.sort((a, b) => { return b.count - a.count }).slice(0, 8);
 
-        for (let e of jobTopic) {
+        for (let e of copyJobTopicList) {
             content.push(
                 <div className="col-xl-3 col-md-6" key={count}>
                     {/* Photo Box */}
                     <NavLink to="/job-list" className="photo-box small topic-box">
-                        <img src={'data:image/png;base64,'+e.img}></img>
+                        <img src={'data:image/png;base64,' + e.img}></img>
                         <div className="photo-box-content">
                             <h3>{e.name}</h3>
                             <span>{e.count}</span>
@@ -201,8 +203,8 @@ class HomeComponent extends Component {
 
     renderProductionJobsList() {
         let content = [], count = 0;
-        let {productionJobList} = this.props.HomeReducer;
-        
+        let { productionJobList } = this.props.HomeReducer;
+
         for (let e of productionJobList) {
             content.push(
                 <NavLink to="/job-detail" className="task-listing" key={count}>
@@ -239,8 +241,8 @@ class HomeComponent extends Component {
 
     renderTemporalJobsList() {
         let content = [], count = 0;
-        let {temporalJoblist} = this.props.HomeReducer;
-        
+        let { temporalJoblist } = this.props.HomeReducer;
+
         for (let e of temporalJoblist) {
             content.push(
                 <NavLink to="/job-detail" className="task-listing" key={count}>
@@ -288,14 +290,12 @@ class HomeComponent extends Component {
 
     renderTestimonials() {
         let content = [], count = 0;
-        let {topUsers} = this.props.HomeReducer;
+        let { topUsers } = this.props.HomeReducer;
 
-        for(let e of topUsers)
-        {
+        for (let e of topUsers) {
             let userAvatar = UserAvatarPlaceholder;
-            if(e.avatarImg !== null)
-            {
-                userAvatar = 'data:image/png;base64,'+e.img;
+            if (e.avatarImg !== null) {
+                userAvatar = 'data:image/png;base64,' + e.img;
             }
             content.push(
                 <div className={"item carousel-item " + (count === 0 && 'active')} key={count}>
@@ -313,6 +313,55 @@ class HomeComponent extends Component {
         return content;
     }
 
+    renderCounter() {
+        let { memberNum, finishedJobNum, applyingJobNum, proccessingJobNum } = this.props.HomeReducer;
+        return (
+            <div className="section padding-top-70 padding-bottom-75">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xl-12">
+                            <div className="counters-container">
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-hourglass-2" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{applyingJobNum}</span></h3>
+                                        <span className="counter-title">Công việc đang ứng tuyển</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-legal" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{proccessingJobNum}</span></h3>
+                                        <span className="counter-title">Công việc đang thực hiện</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-users" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{memberNum}</span></h3>
+                                        <span className="counter-title">Thành viên</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-trophy" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{finishedJobNum}</span></h3>
+                                        <span className="counter-title">Công việc hoàn thành</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div>
@@ -320,7 +369,7 @@ class HomeComponent extends Component {
                 {this.bannerSession()}
 
                 {/* Content ================================================== */}
-                
+
                 {/* Popular Job Categories */}
                 <div className="section margin-top-65 margin-bottom-30">
                     <div className="container">
@@ -344,7 +393,7 @@ class HomeComponent extends Component {
                             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                 {/* Section Headline */}
                                 <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
-                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc thời vụ gần đây</p>
+                                    <p className='font-weight-bold' style={{ fontSize: '18px' }}>Các công việc thời vụ gần đây</p>
                                 </div>
                                 {/* Jobs Container */}
                                 <div className="tasks-list-container compact-list margin-top-20">
@@ -355,7 +404,7 @@ class HomeComponent extends Component {
                             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                 {/* Section Headline */}
                                 <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
-                                    <p className='font-weight-bold' style={{fontSize: '18px'}}>Các công việc theo sản phẩm gần đây</p>
+                                    <p className='font-weight-bold' style={{ fontSize: '18px' }}>Các công việc theo sản phẩm gần đây</p>
                                 </div>
                                 {/* Jobs Container */}
                                 <div className="tasks-list-container compact-list margin-top-20">
@@ -398,39 +447,7 @@ class HomeComponent extends Component {
                 {/* Testimonials / End */}
 
                 {/* Counters */}
-                <div className="section padding-top-70 padding-bottom-75">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                <div className="counters-container">
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-suitcase" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">{this.state.jobPost}</span></h3>
-                                            <span className="counter-title">Công việc</span>
-                                        </div>
-                                    </div>                                    
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-user" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">{this.state.member}</span></h3>
-                                            <span className="counter-title">Thành viên</span>
-                                        </div>
-                                    </div>
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-trophy" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">{this.state.finishedJob}</span></h3>
-                                            <span className="counter-title">Công việc hoàn thành</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {this.renderCounter()}
                 {/* Counters / End */}
             </div>
         )
@@ -453,6 +470,9 @@ const mapDispatchToProps = dispatch => {
         },
         onLoadTopUsers: () => {
             dispatch(loadTopUsers());
+        },
+        onLoadStatistic: () => {
+            dispatch(loadStatistic());
         }
     }
 }

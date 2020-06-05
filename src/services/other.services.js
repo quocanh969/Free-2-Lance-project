@@ -6,4 +6,9 @@ function getAllAreas() {
 }
 
 
-export { getAllAreas };
+function getStatistic() {
+    return axios.get('/getStatistic');
+}
+
+
+export { getAllAreas, getStatistic };

@@ -21,11 +21,13 @@ class JobListComponent extends Component {
             isASC: 2,
         }
 
+        this.query = this.initQuery();
+
         this.hanldeSortChange = this.hanldeSortChange.bind(this);
     }
 
     componentWillMount() {
-        this.loadJobListFunc(1);
+        this.loadJobListFunc(1, this.query);
     }
 
     componentDidMount() {
@@ -143,20 +145,19 @@ class JobListComponent extends Component {
     handlePagination(pageNum) {
         if(pageNum !== this.props.JobsListReducer.page)
         {
-            this.loadJobListFunc(pageNum);
+            this.loadJobListFunc(pageNum, this.query);
         }        
     }
 
     hanldeSortChange() {
         this.setState({isASC: document.getElementById('select-sort-type').value},()=>{
-            this.loadJobListFunc(1);
+            this.loadJobListFunc(1, this.query);
         });
     }
 
-    loadJobListFunc(page) {
-        let {onLoadJobList} = this.props;
+    initQuery() {
         let query = {};
-        
+
         if(this.props.location.state === null || this.props.location.state === undefined)
         {
             // navigate từ topic trên header
@@ -175,8 +176,12 @@ class JobListComponent extends Component {
             // navigate từ search page
             query = this.props.location.state;
         }
-                  
-        
+
+        return query;
+    }
+
+    loadJobListFunc(page, query) {
+        let {onLoadJobList} = this.props;        
         onLoadJobList(page, 8, this.state.isASC, query);
     }
 
@@ -212,10 +217,87 @@ class JobListComponent extends Component {
         return content;
     }
 
+    renderFilter() {
+        let {areas, jobTopic} = this.props.GeneralReducer;
+        console.log(this.query);
+        return (
+            <div className="sidebar-container">
+                <h2 className='font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4'>Bộ lọc</h2>
+
+                {/* Khu vực */}
+                <div className="sidebar-widget">
+                    <h3>Khu vực</h3>
+                    <div className="input-with-icon">
+                        <S_Selector id='select-area' disbaled={this.query['area_province'] !== undefined ? true : false} value={this.query['area_province']} className='with-border' placeholder='Chọn khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
+                    </div>
+                </div>
+
+                {/* Chủ đề */}
+                <div className="sidebar-widget">
+                    <h3>Chủ đề</h3>
+                    <div className="input-with-icon">
+                        <S_Selector id='select-category' className='with-border' placeholder='Chọn chủ đề' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
+                    </div>
+                </div>
+                
+                {/* Tính chất công việc */}
+                <div className="sidebar-widget">
+                    <h3>Tính chất công việc</h3>
+                    <div className="switches-list">
+                        <div className="switch-container">
+                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Online</label>
+                        </div>
+                        <div className="switch-container">
+                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Việc công ty</label>
+                        </div>
+                        <div className="switch-container">
+                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Việc bán thời gian</label>
+                        </div>
+                        <div className="switch-container">
+                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Đấu giá</label>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Mức lương */}
+                <div className="sidebar-widget">
+                    <h3>Salary</h3>
+                    <div className="input-with-icon">
+                        <select className="btn dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={0}>
+                            <option value={0} disabled>Giá tiền</option>
+                            <option value={1}>Nhỏ hơn 100.000 đ</option>
+                            <option value={2}>100.000đ - 500.000đ</option>
+                            <option value={3}>500.000đ - 1.000.000đ</option>
+                            <option value={4}>1.000.000đ - 10.000.000đ</option>
+                            <option value={5}>Lớn hơn 10.000.000đ</option>
+                        </select>
+                    </div>
+                </div>
+
+                {/* Ngày hết hạn */}
+                <div className="sidebar-widget">
+                    <h3>Ngày hết hạn</h3>
+                    <div className="input-with-icon">
+                        <input id="expired-input" className='' type="date" min="2020-01-01" max="2050-12-31"/>
+                    </div>
+                </div>
+                        
+                {/* Số lượng tuyển ( ít nhất ) */}
+                <div className="sidebar-widget">
+                    <h3>Số lượng tuyển ( ít nhất )</h3>
+                    <div className="input-with-icon">
+                        <input id="vacancy-input" className='' type="number" min="1" />
+                    </div>
+                </div>
+            
+            </div>                        
+        )
+    }
+
     render() {
         let {areas, jobTopic} = this.props.GeneralReducer;
         let {page, total} = this.props.JobsListReducer;
-        let sortType = [{type: 1, text: 'Mới nhất'}, {type: 2, text: 'Đã đăng lâu nhất'}];
+        let sortType = [{type: 2, text: 'Mới nhất'}, {type: 1, text: 'Đã đăng lâu nhất'}];
         let totalPage = Math.ceil(total/8);        
 
         return (
@@ -225,98 +307,7 @@ class JobListComponent extends Component {
                     <div className="row">
 
                         <div className="col-xl-3 col-lg-4">
-                            <div className="sidebar-container">
-
-                                {/* Từ khóa */}
-                                <div className="sidebar-widget">
-                                    <h3>Keywords</h3>
-                                    <div className="keywords-container">
-                                        <div className="keyword-input-container">
-                                            <input type="text" className="keyword-input" placeholder="e.g. job title" />
-                                            <button className="keyword-input-button ripple-effect"><i className="icon-material-outline-add" /></button>
-                                        </div>
-                                        <div className="keywords-list">Hello mother fucker</div>
-                                        <div className="clearfix" />
-                                    </div>
-                                </div>
-
-                                {/* Khu vực */}
-                                <div className="sidebar-widget">
-                                    <h3>Khu vực</h3>
-                                    <div className="input-with-icon">
-                                        <S_Selector className='with-border' id='select-area' placeholder='Khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
-                                    </div>
-                                </div>
-
-                                {/* Category */}
-                                <div className="sidebar-widget">
-                                    <h3>Chủ đề</h3>
-                                    <S_Selector className='with-border' id='select-category' placeholder='Loại công việc' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
-                                </div>
-                                {/* Job Types */}
-                                <div className="sidebar-widget">
-                                    <h3>Job Type</h3>
-                                    <div className="switches-list">
-                                        <div className="switch-container">
-                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Freelance</label>
-                                        </div>
-                                        <div className="switch-container">
-                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Full Time</label>
-                                        </div>
-                                        <div className="switch-container">
-                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Part Time</label>
-                                        </div>
-                                        <div className="switch-container">
-                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Internship</label>
-                                        </div>
-                                        <div className="switch-container">
-                                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Temporary</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Salary */}
-                                <div className="sidebar-widget">
-                                    <h3>Salary</h3>
-                                    <div className="margin-top-55" />
-                                    {/* Range Slider */}
-                                    <input className="range-slider" type="text" defaultValue data-slider-currency="$" data-slider-min={1500} data-slider-max={15000} data-slider-step={100} data-slider-value="[1500,15000]" />
-                                </div>
-                                {/* Tags */}
-                                <div className="sidebar-widget">
-                                    <h3>Tags</h3>
-                                    <div className="tags-container">
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag1" />
-                                            <label htmlFor="tag1">front-end dev</label>
-                                        </div>
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag2" />
-                                            <label htmlFor="tag2">angular</label>
-                                        </div>
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag3" />
-                                            <label htmlFor="tag3">react</label>
-                                        </div>
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag4" />
-                                            <label htmlFor="tag4">vue js</label>
-                                        </div>
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag5" />
-                                            <label htmlFor="tag5">web apps</label>
-                                        </div>
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag6" />
-                                            <label htmlFor="tag6">design</label>
-                                        </div>
-                                        <div className="tag">
-                                            <input type="checkbox" id="tag7" />
-                                            <label htmlFor="tag7">wordpress</label>
-                                        </div>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                            </div>
+                            {this.renderFilter()}
                         </div>
                         
                         <div className="col-xl-9 col-lg-8 content-left-offset">
@@ -338,7 +329,7 @@ class JobListComponent extends Component {
                                     </div>
                                     <div className="col-6 row">
                                         <div className='col-3 my-auto'>Sort by:</div>
-                                        <S_Selector id='select-sort-type' handleChange={this.hanldeSortChange} flex='col-9' placeholder='Mới nhất' data={sortType} value_tag='type' text_tag='text'></S_Selector>
+                                        <S_Selector id='select-sort-type' handleChange={this.hanldeSortChange} flex='col-9' value={2} placeholder='Sắp xếp' data={sortType} value_tag='type' text_tag='text'></S_Selector>
                                     </div>
                                 </div>
                             </div>

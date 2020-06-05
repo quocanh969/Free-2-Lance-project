@@ -102,7 +102,7 @@ class SettingComponent extends Component {
                                             <div className="col-6">
                                                 <div className="submit-field">
                                                     <h5>Giới tính</h5>
-                                                    <S_Selector className="with-border" id="gender" placeholder='Giới tính' value={{gender: 1, text: 'Nam'}} data={genders} value_tag='gender' text_tag='text'></S_Selector>
+                                                    <S_Selector className="with-border" id="gender" placeholder='Giới tính' value={1} data={genders} value_tag='gender' text_tag='text'></S_Selector>
                                                 </div>
                                             </div>
                                             <div className="col-6">

@@ -1,5 +1,5 @@
 import {getAllTopics, getJobsList} from '../services/job.services';
-import { getAllAreas } from '../services/other.services';
+import { getAllAreas, getStatistic } from '../services/other.services';
 import { getTopUsers } from '../services/user.services';
 
 export const loadTopics = () => {
@@ -101,6 +101,29 @@ export const loadTopUsers = () => {
         return {
             type: 'LOAD_TOP_USERS',
             topUsers,
+        }
+    }
+}
+
+export const loadStatistic = () => {
+    return dispatch => {
+        getStatistic().then(res=>{
+            if(res.data.code === 1)
+            {
+                dispatch(success(res.data.data.memberNum, res.data.data.finishedJobNum, res.data.data.applyingJobNum, res.data.data.proccessingJobNum));
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    function success(memberNum, finishedJobNum, applyingJobNum, proccessingJobNum) {
+        return {
+            type: 'LOAD_STATISTIC',
+            memberNum,
+            finishedJobNum,
+            applyingJobNum,
+            proccessingJobNum,
         }
     }
 }

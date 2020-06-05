@@ -17,15 +17,18 @@
 }
 
 /* S_Selector */
-.btn-select {
+.s-btn-select {
     background-color: white;
     margin: 0;
     height: 48px;
     line-height: 48px;
     font-family: inherit;    
+    padding: 0 20px;
+    border-radius: 4px;
+    border: none;
 }
 
-.btn-select:hover {
+.s-btn-select:hover {
     background-color: white
 }
 

@@ -157,6 +157,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: #bdc3c7 !important;
 }
 
+.bg-cloud {
+  background-color: #ecf0f1 !important;
+}
+
 /* Dashboard css*/
 .dashboard {
   background-color: #fafafa;
@@ -212,4 +216,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .menu-child-item:hover {
   color: #293FE4 !important;
+}
+
+/* border */
+.border-293FE4 {
+  border-color: #293FE4 !important;
 }

@@ -36,6 +36,59 @@ function App() {
   //   document.body.appendChild(script);
   // }
   // appendScript('./assets/js/custom.js');
+  /*--------------------------------------------------*/
+	// const stickyHeader = () => {
+		
+
+	// 		if(window.innerWidth < '1099') { 
+	// 			document.getElementById("header-container").removeClass("cloned");
+	// 		}
+			
+	// 		if(window.innerWidth > '1099') {
+
+	// 			// CSS adjustment
+	// 			document.getElementById("header-container").css({
+	// 				position: 'fixed',
+	// 			});
+		
+	// 			var headerOffset = document.getElementById("header-container").height();
+
+	// 			if(window.scrollTop() >= headerOffset){
+	// 				document.getElementById("header-container").addClass('cloned');
+	// 				document.getElementsByClassName('wrapper-with-transparent-header').getElementById("header-container").addClass('cloned').removeClass("transparent-header unsticky");
+	// 			} else {
+	// 				document.getElementById("header-container").removeClass("cloned");
+	// 				document.getElementsByClassName('wrapper-with-transparent-header').getElementById("header-container").addClass('transparent-header unsticky').removeClass("cloned");
+	// 			}
+
+	// 			// Sticky Logo
+	// 			var transparentLogo = document.getElementsById('header-container').getElementById('logo').getElementsByClassName('img').attr('data-transparent-logo');
+	// 			var stickyLogo = document.getElementsById('header-container').getElementById('logo').getElementsByClassName('img').attr('data-sticky-logo');
+
+	// 			if( document.getElementsByClassName('wrapper-with-transparent-header').getElementById("header-container").hasClass('cloned')) {
+	// 				document.getElementById("header-container").getElementsByClassName('cloned').getElementById('logo').getElementsByClassName('img').attr("src", stickyLogo);
+	// 			} 
+
+	// 			if( document.getElementsByClassName('wrapper-with-transparent-header').getElementById("header-container").hasClass('transparent-header')) {
+	// 				document.getElementById("header-container").getElementById('logo').getElementsByClassName('img').attr("src", transparentLogo);
+	// 			} 
+
+  //       window.addEventListener('load', headerOffsetInit);
+  //       window.addEventListener('resize', headerOffsetInit);
+		
+  //     }
+  //   }
+  
+  // const headerOffsetInit = () => {
+  //   var headerOffset = document.getElementById("header-container").height();
+  //   document.getElementById("wrapper").css({'padding-top': headerOffset});
+  // }
+
+	// // Sticky Header Init
+	// // stickyHeader();
+
+  // window.addEventListener('scroll', stickyHeader);
+  // window.addEventListener('load', stickyHeader);
 
   return (
     <div>
