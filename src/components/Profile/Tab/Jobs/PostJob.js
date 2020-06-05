@@ -143,16 +143,18 @@ class PostJobComponent extends Component {
                                         <div className="submit-field">
                                             <h5>Job Description</h5>
                                             <textarea cols={30} rows={5} className="with-border" defaultValue={""} />
-                                            <div className="uploadButton margin-top-30">
+                                            <div className="margin-top-30">
                                                 {/* <input className="uploadButton-input" type="button" id="upload" onClick={this.runUploadFile} /> */}
                                                 <div>
                                                     <MultipleImageUploadComponent value={this.props.AddJobReducer.fields.relatedImg} onChange={this.handleChange}></MultipleImageUploadComponent>
                                                 </div>
-                                                <div>
-                                                    <label className="uploadButton-button ripple-effect" onClick={this.runUploadFile}>Upload Files</label>
-                                                </div>
-                                                <div>
-                                                    <span className="uploadButton-file-name">Images or documents that might be helpful in describing your job</span>
+                                                <div className='uploadButton mt-3'>
+                                                    <div>
+                                                        <label className="uploadButton-button ripple-effect" onClick={this.runUploadFile}>Upload Files</label>
+                                                    </div>
+                                                    <div>
+                                                        <span className="uploadButton-file-name">Images or documents that might be helpful in describing your job</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

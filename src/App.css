@@ -222,3 +222,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .border-293FE4 {
   border-color: #293FE4 !important;
 }
+
+.border-radius-4 {
+  border-radius: 4px;
+}

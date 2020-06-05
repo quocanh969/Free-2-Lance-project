@@ -10,11 +10,13 @@ export default class MultipleImageUploadComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            file: [null],
+            file: [],
             img: [],
         }
-        this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this)
-        this.uploadFiles = this.uploadFiles.bind(this)
+
+        this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
+        this.uploadFiles = this.uploadFiles.bind(this);
+        
     }
 
     uploadMultipleFiles(e) {
@@ -49,7 +51,10 @@ export default class MultipleImageUploadComponent extends Component {
                 }
             }
         }
-        this.setState({ img: this.imgArr, file: this.fileArray }, () => this.props.onChange("relatedImg", this.state.img));
+        this.setState({ img: this.imgArr, file: this.fileArray }, () => {
+            this.props.onChange("relatedImg", this.state.img);
+
+        });
     }
 
     uploadFiles(e) {
@@ -88,13 +93,11 @@ export default class MultipleImageUploadComponent extends Component {
     render() {
         return (
             <form>
-                <div className="form-group multi-preview">
+                <div className={"form-group multi-preview " + (this.state.file.length === 0 ? '' : 'bg-cloud p-3 border-radius-4')}>
                     {(this.fileArray || []).map((url, index) => (
-                        <cavnas>
-                            <button onClick={this.removeImg.bind(this, index)}>
-                                <img src={url} alt="..." width="128" height="128"></img>
-                            </button>
-                        </cavnas>
+                        <span key={index} onClick={this.removeImg.bind(this, index)}>
+                            <img  className='border border-dark mx-2' src={url} alt="..." width="128" height="128" style={{objectFit: 'contain'}}></img>
+                        </span>
                     ))}
                 </div>
 
