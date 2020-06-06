@@ -10,21 +10,19 @@ import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
 import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 
-import {loadTopics, loadAreas} from '../../actions/Home';
+import { loadTopics, loadAreas } from '../../actions/Home';
 
 class HeaderComponent extends Component {
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
     }
 
     componentWillMount() {
-        let {onUpdateUser, onLoadTopics, onLoadAreas} = this.props;
+        let { onUpdateUser, onLoadTopics, onLoadAreas } = this.props;
 
         // kiêm tra local storage
-        if(localStorage.getItem('user') && localStorage.getItem('token'))
-        {
+        if (localStorage.getItem('user') && localStorage.getItem('token')) {
             let user = JSON.parse(localStorage.getItem('user'));
             let token = JSON.parse(localStorage.getItem('token'));
             onUpdateUser(user, token);
@@ -37,7 +35,7 @@ class HeaderComponent extends Component {
     }
 
     handleLogOut() {
-        let {onLogOut} = this.props;
+        let { onLogOut } = this.props;
 
         localStorage.setItem('user', null);
         localStorage.setItem('token', null);
@@ -46,9 +44,8 @@ class HeaderComponent extends Component {
 
     generateRightSideContent() {
         let content = [];
-        let {user} = this.props.HeaderReducer;
-        if(user)
-        {
+        let { user } = this.props.HeaderReducer;
+        if (user) {
             content.push(
                 <div className="header-widget hide-on-mobile" key={1}>
                     {/* Notifications */}
@@ -167,7 +164,7 @@ class HeaderComponent extends Component {
                 </div>
             );
 
-            content.push(                
+            content.push(
                 <div className="header-widget" key={2}>
                     {/* Info */}
                     <div className="header-notifications user-menu">
@@ -191,7 +188,7 @@ class HeaderComponent extends Component {
                             <ul className="user-menu-small-nav">
                                 <li><NavLink to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</NavLink></li>
                                 <li><a href="dashboard.html"><i className="icon-material-outline-settings" /> Settings</a></li>
-                                <li><div className='cursor-pointer nav-link-simulate' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
+                                <li><div className='cursor-pointer nav-link-simulate' onClick={() => { this.handleLogOut() }}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
                             </ul>
                         </div>
                     </div>
@@ -211,11 +208,10 @@ class HeaderComponent extends Component {
                             </div>
                         </div>
                     </div>                 */}
-                </div>                
+                </div>
             );
         }
-        else
-        {
+        else {
             content.push(
                 <div className="header-widget" key={1}>
                     <div className='header-notifications padding-top-15'>
@@ -236,16 +232,15 @@ class HeaderComponent extends Component {
     }
 
     renderTopicsHeader() {
-        let {jobTopic} = this.props.GeneralReducer;
+        let { jobTopic } = this.props.GeneralReducer;
 
         let content = [], count = 0;
 
-        for(let e of jobTopic)
-        {
+        for (let e of jobTopic) {
             content.push(
                 <li key={count} className={'w-100 ' + (count !== 0 && 'border-top border-secondary pt-2 pb-1')}>
-                    <NavLink className='font-weight-bold menu-child-item h5' 
-                        to={'/job-list/topic='+e.id_jobtopic}>
+                    <NavLink className='font-weight-bold menu-child-item h5'
+                        to={'/job-list/topic=' + e.id_jobtopic}>
                         {e.name}
                     </NavLink>
                 </li>
@@ -268,21 +263,21 @@ class HeaderComponent extends Component {
                         </div>
                         {/* Main Navigation */}
                         <nav id="navigation">
-                            <ul id="responsive" style={{paddingTop:'5px'}}>
+                            <ul id="responsive" style={{ paddingTop: '5px' }}>
                                 <li>
                                     <NavLink to="/" className="font-weight-bold">Trang chủ</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>                                    
+                                    <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>
                                 </li>
                                 <li>
-                                    <a className='font-weight-bold mb-4 pt-0 mt-1' href='#' onClick={(e)=>{e.preventDefault()}}>Chủ đề</a>
-									<ul className="dropdown-nav mt-0" style={{backgroundColor: 'white', maxHeight: '70vh', width: '350px', overflowY: 'auto', overflowX: 'hidden'}}>
-										{this.renderTopicsHeader()}									
-									</ul>
+                                    <a className='font-weight-bold mb-4 pt-0 mt-1' href='#' onClick={(e) => { e.preventDefault() }}>Chủ đề</a>
+                                    <ul className="dropdown-nav mt-0" style={{ backgroundColor: 'white', maxHeight: '70vh', width: '350px', overflowY: 'auto', overflowX: 'hidden' }}>
+                                        {this.renderTopicsHeader()}
+                                    </ul>
                                 </li>
                                 <li>
-                                    <NavLink to="/contact" className="font-weight-bold">Liên hệ</NavLink>                                    
+                                    <NavLink to="/contact" className="font-weight-bold">Liên hệ</NavLink>
                                 </li>
                             </ul>
                         </nav>
@@ -298,10 +293,10 @@ class HeaderComponent extends Component {
                             {/* Language */}
                             <div className="header-notifications user-menu">
                                 <div className="header-notifications-trigger">
-                                    <a href="#"><i className="icon-brand-font-awesome-flag"/></a>
+                                    <a href="#"><i className="icon-brand-font-awesome-flag" /></a>
                                 </div>
                                 {/* Dropdown */}
-                                <div className="header-notifications-dropdown" style={{width:'150px'}}>                                   
+                                <div className="header-notifications-dropdown" style={{ width: '150px' }}>
                                     <ul className="user-menu-small-nav">
                                         <li>English</li>
                                         <li>Vietnamese</li>
@@ -310,7 +305,7 @@ class HeaderComponent extends Component {
                             </div>
                         </div>
                         {/* User Language / End */}
-                        
+
                         {this.generateRightSideContent()}
 
 
@@ -338,7 +333,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUpdateUser: (user, token) => {            
+        onUpdateUser: (user, token) => {
             dispatch({
                 type: 'UPDATE_USER',
                 user: user,

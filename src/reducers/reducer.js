@@ -12,7 +12,7 @@ import AddJobReducer from './JobReducers/AddJobForm.Reducer';
 
 import ContactUsReducer from './Contact.Reducer';
 import HomeReducer from './Home.reducer';
-import JobsListReducer from './JobReducers/JobsList.reducer';
+import JobsListReducer from './JobReducers/JobsList.Reducer';
 
 import GeneralReducer from './General.Reducer';
 
