@@ -1,9 +1,9 @@
 import { postJob, getAllTopics } from '../services/job.services';
 
-export const submitAddJobForm = (address) => {
+export const submitAddJobForm = (fields) => {
   return (dispatch) => {
     dispatch(request());
-    postJob(address)
+    postJob(fields)
       .then((res) => {
         console.log(res);
         if (res.data.code === 0) {

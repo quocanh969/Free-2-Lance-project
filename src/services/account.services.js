@@ -26,7 +26,6 @@ function verify() {
 }
 
 function register(account) {
-  console.log("hahahahhasdjashdkj");
   return axios.post("/signup", {
     ...account,
   });

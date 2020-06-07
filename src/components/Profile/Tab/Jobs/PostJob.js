@@ -7,7 +7,10 @@ import MultipleImageUploadComponent from '../../../Help/UploadImages';
 import { submitAddJobForm, loadResources } from '../../../../actions/PostJob';
 import { S_Selector } from '../../../../ultis/SHelper/S_Help_Input';
 import { loadTopics } from '../../../../actions/Home';
-import DatePicker from 'react-date-picker';
+import Calendar from 'react-calendar';
+import DatePicker from 'react-date-picker'
+
+// let initField = [];
 
 class PostJobComponent extends Component {
     constructor(props) {
@@ -18,17 +21,25 @@ class PostJobComponent extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.pushTopics = this.pushTopics.bind(this);
         this.getDate = this.getDate.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
     }
     runUploadFile() {
         document.getElementById('uploadImg').click();
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        // console.log(this.props.GeneralReducer); // Get topics to select from
+    }
+    onInputChange(e) {
+        let number = e.target.value;
+        if (Number(number) || number == "") {
+            let { onUpdate } = this.props;
+            onUpdate('salary', number);
+        } else {
+            return;
+        }
     }
 
     componentDidUpdate() {
-
     }
 
     pushTopics() {
@@ -39,7 +50,6 @@ class PostJobComponent extends Component {
                 <option value={jobTopic[i].id_jobtopic}>{jobTopic[i].name}</option>
             )
         }
-        // console.log(content);
         return content;
     }
 
@@ -49,7 +59,7 @@ class PostJobComponent extends Component {
     }
 
     onSubmit() {
-        let { onUpdate } = this.props;
+        let { onUpdate, onSend } = this.props;
         let jobTitleValue = document.getElementById("inputJobTitle").value;
         onUpdate("jobTitle", jobTitleValue);
         let jobTopicValue = document.getElementById("jobTopicsSelector").value;
@@ -61,8 +71,32 @@ class PostJobComponent extends Component {
         let exprValue = document.getElementById("exprDateSelector").value;
         onUpdate("exprDate", exprValue);
 
-        // console.log(this.props.AddJobReducer.fields.relatedImg); // addressString.address_components[2];
-        console.log(this.props.AddJobReducer.fields);
+        let employer = this.props.HeaderReducer.user;
+        let fields = this.props.AddJobReducer.fields;
+        
+        let header = {
+            employer: employer.id_user,
+            title: fields.jobTitle,
+            salary: fields.salary,
+            job_topic: fields.jobTopic,
+            address: fields.addressString.formatted_address,
+            area_province: fields.addressString.address_components[3].long_name,
+            area_district: fields.addressString.address_components[2].long_name,
+            lat: fields.addressString.geometry.location.lat(),
+            lng: fields.addressString.geometry.location.lng(),
+            description: fields.description,
+            expire_date: fields.exprDate,
+            dealable: 0,
+            job_type: fields.jobType,
+            vacancy: 2,
+            isOnline: 0,
+            isCompany: (employer.isBusinessUser ? 1 : 0),
+            requirement: fields.requirements,
+            tag: [],
+            images: fields.relatedImg, 
+        }
+        console.log(header);
+        onSend(header);
     }
 
     getDate() {
@@ -122,33 +156,17 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Type</h5>
-                                            <select className="selectpicker with-border" data-size={7} title="Select Job Type">
-                                                <option>Full Time</option>
-                                                <option>Freelance</option>
-                                                <option>Part Time</option>
-                                                <option>Internship</option>
-                                                <option>Temporary</option>
+                                            <select className="selectpicker with-border" defaultValue={0} title="Select Job Type">
+                                                <option value={0}>Thời vụ</option>
+                                                <option value={1}>Sản phẩm</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Category</h5>
-                                            <select id="jobTopicsSelector" className="selectpicker with-border" onMouseDown="if(this.options.length>5){this.size=5}" title="Select Category">
-                                                {/* <option>Accounting and Finance</option>
-                                                <option>Clerical &amp; Data Entry</option>
-                                                <option>Counseling</option>
-                                                <option>Court Administration</option>
-                                                <option>Human Resources</option>
-                                                <option>Investigative</option>
-                                                <option>IT and Computers</option>
-                                                <option>Law Enforcement</option>
-                                                <option>Management</option>
-                                                <option>Miscellaneous</option>
-                                                <option>Public Relations</option> */}
-                                                {this.pushTopics()}
-                                            </select>
-                                            {/* <S_Selector  placeholder="select some shit"></S_Selector> */}
+                                            {/* <select id="jobTopicsSelector" className="selectpicker with-border" onMouseDown="if(this.options.length>5){this.size=5}" title="Select Category"> */}
+                                            <S_Selector className="with-border" id="jobTopicsSelector" data={this.props.GeneralReducer.jobTopic} value_tag={"id_jobtopic"} text_tag={"name"} placeholder={"Chọn chủ đề"}></S_Selector>
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
@@ -166,19 +184,9 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Salary</h5>
-                                            {/* <div className="row">
-                                                <div className="col-xl-6"> */}
                                             <div className="input-with-icon">
-                                                <input className="with-border" type="text" placeholder="Min" />
-                                                <i className="currency">USD</i>
-                                                {/* </div>
-                                                </div> */}
-                                                {/* <div className="col-xl-6">
-                                                    <div className="input-with-icon">
-                                                        <input className="with-border" type="text" placeholder="Max" />
-                                                        <i className="currency">USD</i>
-                                                    </div>
-                                                </div> */}
+                                                <input className="with-border" type="text" value={this.props.AddJobReducer.fields.salary} onChange={this.onInputChange} placeholder={"Nhập thù lao"} />
+                                                <i className="currency">VND</i>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +208,6 @@ class PostJobComponent extends Component {
 
                                             {/* <div className="input-with-icon"> */}
                                             <h5>Expired date</h5>
-
                                             <input id="exprDateSelector" type="date" min={this.getDate().today} max={this.getDate().maxExprDate} defaultValue={this.getDate().today}></input>
                                             {/* </div> */}
                                         </div>
@@ -249,8 +256,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSend: () => {
-            dispatch(submitAddJobForm);
+        onSend: (header) => {
+            dispatch(submitAddJobForm(header));
         },
         onUpdate: (key, value) => {
             dispatch({
@@ -259,12 +266,6 @@ const mapDispatchToProps = dispatch => {
                 value,
             }
             );
-        },
-        onSendLoadReq: () => {
-            dispatch(loadResources);
-        },
-        onLoadTopics: () => {
-            dispatch(loadTopics());
         },
     }
 }
