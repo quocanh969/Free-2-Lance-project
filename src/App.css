@@ -113,7 +113,31 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .nav-link-simulate:hover {
-  color: #2a41e8;
+  color: #2a41e8 !important;
+}
+
+.logo-brand {
+  max-height: 50px;
+}
+
+.bg-transparent .nav-link-header {
+  color: white !important;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bg-transparent .nav-link-header:hover {
+  color: grey !important;
+}
+
+.bg-light .nav-link-header {
+  color: black !important;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bg-light .nav-link-header:hover {
+  color: #2a41e8 !important;
 }
 
 /* Font size */
@@ -159,6 +183,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .bg-cloud {
   background-color: #ecf0f1 !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
 }
 
 /* Dashboard css*/

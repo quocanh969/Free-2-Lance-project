@@ -10,45 +10,79 @@ import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
 import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 
-import {loadTopics, loadAreas} from '../../actions/Home';
+import { loadTopics, loadAreas } from '../../actions/Home';
+import { loadJobList } from '../../actions/Job';
 
 class HeaderComponent extends Component {
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
+
+        this.state = {
+            isTopicHover: false,
+            isCurrentTop: true,
+        }
+
+        // window.onscroll = this.handleScroll();
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     componentWillMount() {
-        let {onUpdateUser, onLoadTopics, onLoadAreas} = this.props;
+        let { onUpdateUser, onLoadTopics, onLoadAreas } = this.props;
 
         // kiêm tra local storage
-        if(localStorage.getItem('user') && localStorage.getItem('token'))
-        {
+        if (localStorage.getItem('user') && localStorage.getItem('token')) {
             let user = JSON.parse(localStorage.getItem('user'));
             let token = JSON.parse(localStorage.getItem('token'));
             onUpdateUser(user, token);
         }
 
-        // loadTopics
-        console.log('hello from header');
+        // loadTopics        
         onLoadTopics();
         onLoadAreas();
     }
 
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll() {
+        if(window.scrollY === 0)
+        {
+            this.setState({isCurrentTop: true});
+        }
+        else
+        {
+            if(this.state.isCurrentTop === true)
+            {
+                this.setState({isCurrentTop: false})
+            }
+        }
+    }
+
     handleLogOut() {
-        let {onLogOut} = this.props;
+        let { onLogOut } = this.props;
 
         localStorage.setItem('user', null);
         localStorage.setItem('token', null);
         onLogOut();
     }
 
+    handleTopicNavClick(e, topic) {
+        let currentTopic = Number.parseInt(this.props.match.params.job_topic);
+        if (currentTopic !== topic) {
+            let { onLoadJobByJob } = this.props;
+            onLoadJobByJob({ job_topic: topic });
+        }
+        else {
+            e.preventDefault();
+        }
+    }
+
     generateRightSideContent() {
         let content = [];
-        let {user} = this.props.HeaderReducer;
-        if(user)
-        {
+        let { user } = this.props.HeaderReducer;
+        if (user) {
             content.push(
                 <div className="header-widget hide-on-mobile" key={1}>
                     {/* Notifications */}
@@ -167,7 +201,7 @@ class HeaderComponent extends Component {
                 </div>
             );
 
-            content.push(                
+            content.push(
                 <div className="header-widget" key={2}>
                     {/* Info */}
                     <div className="header-notifications user-menu">
@@ -191,7 +225,7 @@ class HeaderComponent extends Component {
                             <ul className="user-menu-small-nav">
                                 <li><NavLink to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</NavLink></li>
                                 <li><a href="dashboard.html"><i className="icon-material-outline-settings" /> Settings</a></li>
-                                <li><div className='cursor-pointer nav-link-simulate' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
+                                <li><div className='cursor-pointer nav-link-simulate' onClick={() => { this.handleLogOut() }}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
                             </ul>
                         </div>
                     </div>
@@ -211,11 +245,10 @@ class HeaderComponent extends Component {
                             </div>
                         </div>
                     </div>                 */}
-                </div>                
+                </div>
             );
         }
-        else
-        {
+        else {
             content.push(
                 <div className="header-widget" key={1}>
                     <div className='header-notifications padding-top-15'>
@@ -236,16 +269,15 @@ class HeaderComponent extends Component {
     }
 
     renderTopicsHeader() {
-        let {jobTopic} = this.props.GeneralReducer;
+        let { jobTopic } = this.props.GeneralReducer;
 
         let content = [], count = 0;
 
-        for(let e of jobTopic)
-        {
+        for (let e of jobTopic) {
             content.push(
                 <li key={count} className={'w-100 ' + (count !== 0 && 'border-top border-secondary pt-2 pb-1')}>
-                    <NavLink className='font-weight-bold menu-child-item h5' 
-                        to={'/job-list/topic='+e.id_jobtopic}>
+                    <NavLink className='font-weight-bold menu-child-item h5' onClick={(element) => { this.handleTopicNavClick(element, e.id_jobtopic) }}
+                        to={'/job-list/topic=' + e.id_jobtopic}>
                         {e.name}
                     </NavLink>
                 </li>
@@ -258,74 +290,42 @@ class HeaderComponent extends Component {
 
     render() {
         return (
-            <div id="header">
-                <div className="container">
-                    {/* Left Side Content */}
-                    <div className="left-side">
-                        {/* Logo */}
-                        <div id="logo">
-                            <NavLink to="/"><img src={Logo2} data-sticky-logo={Logo2} data-transparent-logo={Logo2} alt="" /></NavLink>
-                        </div>
-                        {/* Main Navigation */}
-                        <nav id="navigation">
-                            <ul id="responsive" style={{paddingTop:'5px'}}>
-                                <li>
-                                    <NavLink to="/" className="font-weight-bold">Trang chủ</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/search" className="font-weight-bold">Tìm việc</NavLink>                                    
-                                </li>
-                                <li>
-                                    <a className='font-weight-bold mb-4 pt-0 mt-1' href='#' onClick={(e)=>{e.preventDefault()}}>Chủ đề</a>
-									<ul className="dropdown-nav mt-0" style={{backgroundColor: 'white', maxHeight: '70vh', width: '350px', overflowY: 'auto', overflowX: 'hidden'}}>
-										{this.renderTopicsHeader()}									
-									</ul>
-                                </li>
-                                <li>
-                                    <NavLink to="/contact" className="font-weight-bold">Liên hệ</NavLink>                                    
-                                </li>
-                            </ul>
-                        </nav>
-                        <div className="clearfix" />
-                        {/* Main Navigation / End */}
-                    </div>
-                    {/* Left Side Content / End */}
-
-                    {/* Right Side Content */}
-                    <div className="right-side">
-                        {/* User Language */}
-                        <div className="header-widget">
-                            {/* Language */}
-                            <div className="header-notifications user-menu">
-                                <div className="header-notifications-trigger">
-                                    <a href="#"><i className="icon-brand-font-awesome-flag"/></a>
-                                </div>
-                                {/* Dropdown */}
-                                <div className="header-notifications-dropdown" style={{width:'150px'}}>                                   
-                                    <ul className="user-menu-small-nav">
-                                        <li>English</li>
-                                        <li>Vietnamese</li>
-                                    </ul>
-                                </div>
+            <nav className={"navbar fixed-top navbar-expand-lg px-5 py-3 " + (this.state.isCurrentTop ? 'bg-transparent':'bg-light')} onScroll={()=>{this.handleScroll()}}>
+                <NavLink to='/' className="navbar-brand mr-4"><img src={Logo2} className='logo-brand'></img></NavLink>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon" />
+                </button>
+                <div className="collapse navbar-collapse mt-2" id="navbarSupportedContent">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item mx-2">
+                            <a className="nav-link nav-link-header" href="#">Home</a>
+                        </li>
+                        <li className="nav-item mx-2">
+                            <a className="nav-link nav-link-header" href="#">Link</a>
+                        </li>
+                        <li onMouseLeave={()=>{this.setState({isTopicHover: false})}}
+                            className={"nav-item dropdown mx-2 "+(this.state.isTopicHover ? 'show':'')}>
+                            <a className="nav-link-header nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+                                onMouseEnter={()=>{this.setState({isTopicHover: true})}} >
+                                Dropdown
+                            </a>
+                            <div className={"dropdown-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
+                                <a className="dropdown-item" href="#">Action</a>
+                                <a className="dropdown-item" href="#">Another action</a>
+                                <div className="dropdown-divider" />
+                                <a className="dropdown-item" href="#">Something else here</a>
                             </div>
-                        </div>
-                        {/* User Language / End */}
-                        
-                        {this.generateRightSideContent()}
-
-
-                        {/* Mobile Navigation Button */}
-                        <span className="mmenu-trigger">
-                            <button className="hamburger hamburger--collapse" type="button">
-                                <span className="hamburger-box">
-                                    <span className="hamburger-inner" />
-                                </span>
-                            </button>
-                        </span>
+                        </li>
+                        <li className="nav-item mx-2">
+                            <a className="nav-link nav-link-header" href="#">Link</a>
+                        </li>
+                    </ul>
+                    <div>
+                        <span className='btn btn-primary border-left border-dark'>Hello</span>
+                        <span className='btn btn-success'>Hello</span>
                     </div>
-                    {/* Right Side Content / End */}
                 </div>
-            </div>
+            </nav>
         )
     }
 }
@@ -338,7 +338,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUpdateUser: (user, token) => {            
+        onUpdateUser: (user, token) => {
             dispatch({
                 type: 'UPDATE_USER',
                 user: user,
@@ -355,6 +355,9 @@ const mapDispatchToProps = dispatch => {
         },
         onLoadAreas: () => {
             dispatch(loadAreas());
+        },
+        onLoadJobByJob: (query) => {
+            dispatch(loadJobList(1, 8, 2, query));
         }
     }
 }
