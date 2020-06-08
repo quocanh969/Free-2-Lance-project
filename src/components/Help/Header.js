@@ -43,6 +43,7 @@ class HeaderComponent extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         window.addEventListener('scroll', this.handleScroll);
     }
 
@@ -274,13 +275,11 @@ class HeaderComponent extends Component {
         let content = [], count = 0;
 
         for (let e of jobTopic) {
-            content.push(
-                <li key={count} className={'w-100 ' + (count !== 0 && 'border-top border-secondary pt-2 pb-1')}>
-                    <NavLink className='font-weight-bold menu-child-item h5' onClick={(element) => { this.handleTopicNavClick(element, e.id_jobtopic) }}
-                        to={'/job-list/topic=' + e.id_jobtopic}>
-                        {e.name}
-                    </NavLink>
-                </li>
+            content.push(                
+                <NavLink onClick={(element) => { this.handleTopicNavClick(element, e.id_jobtopic) }}
+                    to={'/job-list/topic=' + e.id_jobtopic}>
+                    {e.name}
+                </NavLink>
             );
             count++;
         }
@@ -288,42 +287,106 @@ class HeaderComponent extends Component {
         return content;
     }
 
-    render() {
+    renderUserLoginContent(user) {
         return (
-            <nav className={"navbar fixed-top navbar-expand-lg px-5 py-3 " + (this.state.isCurrentTop ? 'bg-transparent':'bg-light')} onScroll={()=>{this.handleScroll()}}>
+            <ul className="navbar-nav ml-auto">                        
+                <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
+                    <button className="nav-link nav-link-header mt-0 dropdown-toggle px-0" href="#" id="NotiMenuDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i className='icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25'></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="NotiMenuDropdown">
+                        <a className="dropdown-item" href="#">Action</a>
+                        <a className="dropdown-item" href="#">Another action</a>
+                        <div className="dropdown-divider" />
+                        <a className="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 ml-2 mr-3">
+                    <a className="nav-link-header nav-link dropdown-toggle px-0" href="#" id="MessMenuDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i className='icon-material-baseline-notifications-none mx-0 p-2 font-size-25'></i>
+                    </a>
+                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="MessMenuDropdown">
+                        <a className="dropdown-item" href="#">Action</a>
+                        <a className="dropdown-item" href="#">Another action</a>
+                        <div className="dropdown-divider" />
+                        <a className="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>                        
+                <li className={"nav-item dropdown pt-3 pb-2 px-3 mr-2 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
+                    <a className="nav-link dropdown-toggle rounded-pill bg-secondary mt-1 px-2 py-1" href="#" 
+                        id="UserMenuDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img height='25' className='rounded-circle' src={UserAvatarPlaceholder}></img>
+                        &nbsp;
+                        <span style={{color: 'white'}}>{user.fullname}</span>
+                    </a>
+                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="UserMenuDropdown">
+                        <a className="dropdown-item" href="#">Action</a>
+                        <a className="dropdown-item" href="#">Another action</a>
+                        <div className="dropdown-divider" />
+                        <a className="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+        );
+    }
+
+    renderUserNotLoginContent() {
+        return (
+            <ul className="navbar-nav ml-auto my-0 py-0">    
+                <li className={"nav-item pt-2 pb-2 pr-3 pl-4 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
+                    <NavLink className={"btn font-weight-bold border-width-3 my-2 px-2 py-1 " + (this.state.isCurrentTop ? ' btn-outline-light' : ' btn-outline-dark')} to='/register'>
+                        <i className='icon-feather-lock font-weight-bold pt-2'></i>&nbsp;Register
+                    </NavLink>
+                </li>
+                <li className="nav-item pt-2 pb-2 px-3 mr-3">
+                    <NavLink className={"btn font-weight-bold border-width-3 my-2 px-2 py-1 " + (this.state.isCurrentTop ? ' btn-outline-light' : ' btn-outline-dark')} to='/log-in'>
+                        <i className='icon-line-awesome-sign-in font-weight-bold pt-2'></i>&nbsp;Login
+                    </NavLink>
+                </li> 
+            </ul>
+        );
+    }
+
+    render() {
+        let {user} = this.props.HeaderReducer;
+        return (
+            <nav className={"navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " + (this.state.isCurrentTop ? 'border-light bg-transparent':'border-secondary bg-light')} onScroll={()=>{this.handleScroll()}}>
                 <NavLink to='/' className="navbar-brand mr-4"><img src={Logo2} className='logo-brand'></img></NavLink>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
-                </button>
-                <div className="collapse navbar-collapse mt-2" id="navbarSupportedContent">
+                </button> */}
+                <div className="collapse navbar-collapse my-0 py-0" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
-                        <li className="nav-item mx-2">
-                            <a className="nav-link nav-link-header" href="#">Home</a>
+                        <li className="nav-item mx-2 pt-3 pb-2">
+                            <NavLink className="nav-link nav-link-header" to='/'>Trang chủ</NavLink>
                         </li>
-                        <li className="nav-item mx-2">
-                            <a className="nav-link nav-link-header" href="#">Link</a>
+                        <li className="nav-item mx-2 pt-3 pb-2">
+                            <NavLink className="nav-link nav-link-header" to='/search'>Tìm việc</NavLink>
                         </li>
                         <li onMouseLeave={()=>{this.setState({isTopicHover: false})}}
-                            className={"nav-item dropdown mx-2 "+(this.state.isTopicHover ? 'show':'')}>
-                            <a className="nav-link-header nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+                            className={"nav-item dropdown mx-2 pt-3 pb-2 "+(this.state.isTopicHover ? 'show':'')}>
+                            <NavLink className="nav-link-header nav-link dropdown-toggle" to='/job-list' id="navbarDropdown" 
                                 onMouseEnter={()=>{this.setState({isTopicHover: true})}} >
-                                Dropdown
-                            </a>
+                                Chủ đề
+                            </NavLink>
                             <div className={"dropdown-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
-                                <a className="dropdown-item" href="#">Action</a>
-                                <a className="dropdown-item" href="#">Another action</a>
-                                <div className="dropdown-divider" />
-                                <a className="dropdown-item" href="#">Something else here</a>
+                                {this.renderTopicsHeader()}
                             </div>
                         </li>
-                        <li className="nav-item mx-2">
-                            <a className="nav-link nav-link-header" href="#">Link</a>
+                        <li className="nav-item mx-2 pt-3 pb-2">
+                            <NavLink className="nav-link nav-link-header" to='/contact'>Liên lạc</NavLink>
                         </li>
                     </ul>
-                    <div>
-                        <span className='btn btn-primary border-left border-dark'>Hello</span>
-                        <span className='btn btn-success'>Hello</span>
-                    </div>
+                    {(
+                        user === null
+                        ?
+                        this.renderUserNotLoginContent()
+                        :
+                        this.renderUserLoginContent(user)
+                    )}
                 </div>
             </nav>
         )
