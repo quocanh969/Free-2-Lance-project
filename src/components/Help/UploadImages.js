@@ -79,8 +79,6 @@ export default class MultipleImageUploadComponent extends Component {
         imgArr.splice(index, 1);
         fileArr.splice(index, 1);
         this.fileObj.splice(index, 1);
-        console.log("FLAG");
-        console.log(this.fileObj.length);
         if (this.fileObj.length === 0) {
             console.log("Empty already")
             document.getElementById('uploadImg').value = null;
@@ -96,7 +94,7 @@ export default class MultipleImageUploadComponent extends Component {
                 <div className={"form-group multi-preview " + (this.state.file.length === 0 ? '' : 'bg-cloud p-3 border-radius-4')}>
                     {(this.fileArray || []).map((url, index) => (
                         <span key={index} onClick={this.removeImg.bind(this, index)}>
-                            <img  className='border border-dark mx-2' src={url} alt="..." width="128" height="128" style={{objectFit: 'contain'}}></img>
+                            <img  className='border border-dark m-2' src={url} alt="..." width="128" height="128" style={{objectFit: 'contain'}}></img>
                         </span>
                     ))}
                 </div>
