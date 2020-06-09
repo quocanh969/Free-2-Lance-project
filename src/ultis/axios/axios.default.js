@@ -25,7 +25,7 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       console.log(error.response);
       // alert(error.response);
-      alert('Đăng nhập đi ba');
+      // alert('Đăng nhập đi ba');
 
       localStorage.setItem("user", null);
       localStorage.setItem("token", null);
