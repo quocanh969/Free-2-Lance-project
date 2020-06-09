@@ -260,7 +260,7 @@ class FindJobComponent extends Component {
         return (
             <form id='s-find-job-form' className='py-5' onSubmit={this.handleSubmit}>
 
-                <div id='s-find-job' className="container">                    
+                <div id='s-find-job' className="container pt-5">                    
                     {/* Search Bar */}
                     <div className="row">
                         <div className="col-md-12 margin-bottom-40">

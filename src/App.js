@@ -33,7 +33,7 @@ function App() {
     <div>
         <Router history={history}>
           <Switch>
-            <Route path='/test' exact component={test}></Route>            
+            <SRoute path='/test' exact component={test}></SRoute>            
             <SRoute path='/' exact component={Home}></SRoute>
             <SRoute path='/search' exact component={FindJob}></SRoute>
             <SRoute path='/not-found' exact component={NotFoundComponent}></SRoute>

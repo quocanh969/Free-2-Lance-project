@@ -140,6 +140,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #2a41e8 !important;
 }
 
+.header-menu {
+  max-height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 /* Font size */
 .font-size-50 {
   font-size: 50px;
@@ -161,6 +167,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .font-size-13 {
   font-size: 13px;
+}
+.font-size-8 {
+  font-size: 8px;
 }
 
 /* button */

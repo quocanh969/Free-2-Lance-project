@@ -5,10 +5,8 @@ import '../../assets/css/style.css';
 import '../../assets/css/colors/blue.css';
 
 import Logo2 from '../../assets/images/logo2.png';
-import UserAvatarSmall1 from '../../assets/images/user-avatar-small-01.jpg';
-import UserAvatarSmall2 from '../../assets/images/user-avatar-small-02.jpg';
-import UserAvatarSmall3 from '../../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
+import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt.png';
 
 import { loadTopics, loadAreas } from '../../actions/Home';
 import { loadJobList } from '../../actions/Job';
@@ -20,7 +18,57 @@ class HeaderComponent extends Component {
 
         this.state = {
             isTopicHover: false,
-            isCurrentTop: true,
+            isCurrentTop: false,
+            messages: [
+                {
+                    id_user: 1,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'John Cena',
+                    message: 'All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time.',                    
+                },
+                {
+                    id_user: 2,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Triple H',
+                    message: 'All music used in the creation of this video are t',                    
+                },
+                {
+                    id_user: 3,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Garen',
+                    message: 'All music used in the creation of this video are the intellectual property of those who owns it. ',                    
+                },
+            ],
+            notices: [
+                {
+                    id_user: 1,
+                    jobTopicImg: JobImgePlaceholder,
+                    fullname: 'John Cena',  
+                    type: 1, // nhận
+                    job: 'Đấm nhau',
+                },
+                {
+                    id_user: 2,
+                    jobTopicImg: JobImgePlaceholder,
+                    fullname: 'Triple H',
+                    type: 0, // ko nhận
+                    job: 'Đấm nhau',
+                },
+                {
+                    id_user: 3,
+                    jobTopicImg: JobImgePlaceholder,
+                    fullname: 'Garen',
+                    type: 2, // kết thúc công việc
+                    job: 'Cày rank LOL',
+                },
+                {
+                    id_user: 4,
+                    jobTopicImg: JobImgePlaceholder,
+                    fullname: 'Ronaldo',
+                    type: 3, // nhận thanh toán
+                    job: 'Đá bóng',
+                },
+            ]
         }
 
         // window.onscroll = this.handleScroll();
@@ -43,12 +91,18 @@ class HeaderComponent extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    handleScroll() {
-        if(window.scrollY === 0)
+    componentDidUpdate() {        
+    }
+
+    componentWillReceiveProps() {
+        this.handleScroll();  
+    }
+   
+    handleScroll() {        
+        if(window.scrollY === 0 && (this.props.history.location.pathname === '/' || this.props.history.location.pathname === '/search'))
         {
             this.setState({isCurrentTop: true});
         }
@@ -80,195 +134,6 @@ class HeaderComponent extends Component {
         }
     }
 
-    generateRightSideContent() {
-        let content = [];
-        let { user } = this.props.HeaderReducer;
-        if (user) {
-            content.push(
-                <div className="header-widget hide-on-mobile" key={1}>
-                    {/* Notifications */}
-                    <div className="header-notifications">
-                        {/* Trigger */}
-                        <div className="header-notifications-trigger">
-                            <a href="#"><i className="icon-feather-bell" /><span>4</span></a>
-                        </div>
-                        {/* Dropdown */}
-                        <div className="header-notifications-dropdown">
-                            <div className="header-notifications-headline">
-                                <h4>Notifications</h4>
-                                <button className="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                    <i className="icon-feather-check-square" />
-                                </button>
-                            </div>
-                            <div className="header-notifications-content">
-                                <div className="header-notifications-scroll" data-simplebar>
-                                    <ul>
-                                        {/* Notification */}
-                                        <li className="notifications-not-read">
-                                            <a href="dashboard-manage-candidates.html">
-                                                <span className="notification-icon"><i className="icon-material-outline-group" /></span>
-                                                <span className="notification-text">
-                                                    <strong>Michael Shannah</strong> applied for a job <span className="color">Full Stack Software Engineer</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                        {/* Notification */}
-                                        <li>
-                                            <a href="dashboard-manage-bidders.html">
-                                                <span className="notification-icon"><i className=" icon-material-outline-gavel" /></span>
-                                                <span className="notification-text">
-                                                    <strong>Gilbert Allanis</strong> placed a bid on your <span className="color">iOS App Development</span> project
-                </span>
-                                            </a>
-                                        </li>
-                                        {/* Notification */}
-                                        <li>
-                                            <a href="dashboard-manage-jobs.html">
-                                                <span className="notification-icon"><i className="icon-material-outline-autorenew" /></span>
-                                                <span className="notification-text">
-                                                    Your job listing <span className="color">Full Stack PHP Developer</span> is expiring.
-                </span>
-                                            </a>
-                                        </li>
-                                        {/* Notification */}
-                                        <li>
-                                            <a href="dashboard-manage-candidates.html">
-                                                <span className="notification-icon"><i className="icon-material-outline-group" /></span>
-                                                <span className="notification-text">
-                                                    <strong>Sindy Forrest</strong> applied for a job <span className="color">Full Stack Software Engineer</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Messages */}
-                    <div className="header-notifications">
-                        <div className="header-notifications-trigger">
-                            <a href="#"><i className="icon-feather-mail" /><span>3</span></a>
-                        </div>
-                        {/* Dropdown */}
-                        <div className="header-notifications-dropdown">
-                            <div className="header-notifications-headline">
-                                <h4>Messages</h4>
-                                <button className="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                    <i className="icon-feather-check-square" />
-                                </button>
-                            </div>
-                            <div className="header-notifications-content">
-                                <div className="header-notifications-scroll" data-simplebar>
-                                    <ul>
-                                        {/* Notification */}
-                                        <li className="notifications-not-read">
-                                            <a href="dashboard-messages.html">
-                                                <span className="notification-avatar status-online"><img src={UserAvatarSmall3} alt="" /></span>
-                                                <div className="notification-text">
-                                                    <strong>David Peterson</strong>
-                                                    <p className="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
-                                                    <span className="color">4 hours ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        {/* Notification */}
-                                        <li className="notifications-not-read">
-                                            <a href="dashboard-messages.html">
-                                                <span className="notification-avatar status-offline"><img src={UserAvatarSmall2} alt="" /></span>
-                                                <div className="notification-text">
-                                                    <strong>Sindy Forest</strong>
-                                                    <p className="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
-                                                    <span className="color">Yesterday</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        {/* Notification */}
-                                        <li className="notifications-not-read">
-                                            <a href="dashboard-messages.html">
-                                                <span className="notification-avatar status-online"><img src={UserAvatarPlaceholder} alt="" /></span>
-                                                <div className="notification-text">
-                                                    <strong>Marcin Kowalski</strong>
-                                                    <p className="notification-msg-text">I received payment. Thanks for cooperation!</p>
-                                                    <span className="color">Yesterday</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <a href="dashboard-messages.html" className="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i className="icon-material-outline-arrow-right-alt" /></a>
-                        </div>
-                    </div>
-                </div>
-            );
-
-            content.push(
-                <div className="header-widget" key={2}>
-                    {/* Info */}
-                    <div className="header-notifications user-menu">
-                        <div className="header-notifications-trigger">
-                            <a href="#"><div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div></a>
-                        </div>
-                        <div className="header-notifications-dropdown">
-                            <div className="user-status">
-                                <div className="user-details">
-                                    <div className="user-avatar status-online"><img src={UserAvatarSmall1} alt="" /></div>
-                                    <div className="user-name">
-                                        Tom Smith <span>Freelancer</span>
-                                    </div>
-                                </div>
-                                <div className="status-switch" id="snackbar-user-status">
-                                    <label className="user-online current-status">Online</label>
-                                    <label className="user-invisible">Invisible</label>
-                                    <span className="status-indicator" aria-hidden="true" />
-                                </div>
-                            </div>
-                            <ul className="user-menu-small-nav">
-                                <li><NavLink to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</NavLink></li>
-                                <li><a href="dashboard.html"><i className="icon-material-outline-settings" /> Settings</a></li>
-                                <li><div className='cursor-pointer nav-link-simulate' onClick={() => { this.handleLogOut() }}><i className="icon-material-outline-power-settings-new" /> Logout</div></li>
-                            </ul>
-                        </div>
-                    </div>
-                    {/* <div className="header-notifications user-menu">
-                        <div className="dropdown header-notifications-trigger">
-                            <div className="user-avatar status-online" type="button" id="userMenuDropdown" 
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src={UserAvatarSmall1} alt="" />
-                            </div>
-                            <div className="dropdown-menu mt-2" aria-labelledby="userMenuDropdown" onClick={(e)=>{e.stopPropagation()}}>
-                                <div className="dropdown-header">
-                                    Tom Smith
-                                </div>
-                                <div className='cursor-pointer nav-link-simulate dropdown-item' to="/dashboard"><i className="icon-material-outline-dashboard" /> Dashboard</div>
-                                <div className='cursor-pointer nav-link-simulate dropdown-item' onClick={()=>{this.handleLogOut()}}><i className="icon-material-outline-power-settings-new" /> Logout</div>
-                                
-                            </div>
-                        </div>
-                    </div>                 */}
-                </div>
-            );
-        }
-        else {
-            content.push(
-                <div className="header-widget" key={1}>
-                    <div className='header-notifications padding-top-15'>
-                        <NavLink className="btn btn-outline-header-login" to='/register'>
-                            Đăng ký
-                        </NavLink>
-                    </div>
-                    <div className='header-notifications padding-top-15'>
-                        <NavLink className="btn btn-outline-header-login" to='/login'>
-                            Đăng nhập
-                        </NavLink>
-                    </div>
-                </div>
-            );
-        }
-
-        return content;
-    }
-
     renderTopicsHeader() {
         let { jobTopic } = this.props.GeneralReducer;
 
@@ -276,57 +141,148 @@ class HeaderComponent extends Component {
 
         for (let e of jobTopic) {
             content.push(                
-                <NavLink onClick={(element) => { this.handleTopicNavClick(element, e.id_jobtopic) }}
-                    to={'/job-list/topic=' + e.id_jobtopic}>
+                // <NavLink onClick={(element) => { this.handleTopicNavClick(element, e.id_jobtopic) }}
+                <a key={count} className='dropdown-item' href={'/job-list/topic='+e.id_jobtopic}>
                     {e.name}
-                </NavLink>
+                </a>
             );
             count++;
         }
 
         return content;
     }
+    
+    renderMessageContent() {
+        let content = [], count = 0;
+        let {messages} = this.state;
+        for(let e of messages)
+        {
+            content.push(
+                <NavLink key={count} to='/dashboard' className='dropdown-item px-1 border-top border-secondary'>
+                    <div className='container-fluid px-3'>
+                        <div className='row p-1'>
+                            {/* avatar */}
+                            <div className='col-2 p-0'>
+                                <img className='rounded-circle' style={{height: 'auto'}} src={e.avatarImg}></img>
+                            </div>                            
+                            {/* message */}
+                            <div className='col-10 px-3'>
+                                <div className='text-293FE4 font-weight-bold'>{e.fullname}</div>
+                                <div className='text-secondary d-inline-block text-truncate' style={{width: '200px'}}>{e.message}</div>
+                            </div>
+                        </div>                
+                    </div>                    
+                </NavLink>
+            );
+            count++;
+        }
+        return content;
+    }
+    
+    renderNotice(notice) {
+        switch(notice.type)
+        {
+            case 0:
+                {
+                    return (
+                    <span className='text-wrap'><span className='text-293FE4'>{notice.fullname}</span> đã từ chối bạn trong công việc <span className='text-293FE4'>{notice.job}</span></span>
+                    )
+                }
+            case 1:
+            {
+                return (
+                    <span className='text-wrap'>Bạn đã được nhận công việc <span className='text-293FE4'>{notice.job}</span> từ <span className='text-293FE4'>{notice.fullname}</span></span>
+                )
+            }
+            case 2:
+            {
+                return (
+                    <span className='text-wrap'><span className='text-293FE4'>{notice.job}</span> giữa bạn và <span className='text-293FE4'>{notice.fullname}</span> đã kết thúc</span>
+                )
+            }
+            case 3:
+            {
+                return (
+                    <span className='text-wrap'><span className='text-293FE4'>{notice.fullname}</span> đã thanh toán cho bạn về công việc <span className='text-293FE4'>{notice.job}</span></span>
+                )
+            }
+            default: return '';
+        }
+    }
+
+    renderNotiContent() {
+        let content = [], count = 0;
+        let {notices} = this.state;
+        for(let e of notices)
+        {
+            content.push(
+                <NavLink key={count} to='/job-detail' className='dropdown-item px-1 border-top border-secondary'>
+                    <div className='container-fluid px-3'>
+                        <div className='row p-1'>
+                            {/* avatar */}
+                            <div className='col-2 p-0'>
+                                <img style={{height: 'auto'}} src={e.jobTopicImg}></img>
+                            </div>                            
+                            {/* message */}
+                            <div className='col-10 px-3'>
+                                {this.renderNotice(e)}
+                            </div>
+                        </div>                
+                    </div>                    
+                </NavLink>
+            );
+            count++;
+        }
+        return content;
+    }
 
     renderUserLoginContent(user) {
         return (
-            <ul className="navbar-nav ml-auto">                        
+            <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
-                    <button className="nav-link nav-link-header mt-0 dropdown-toggle px-0" href="#" id="NotiMenuDropdown"
-                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i className='icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25'></i>
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="NotiMenuDropdown">
-                        <a className="dropdown-item" href="#">Action</a>
-                        <a className="dropdown-item" href="#">Another action</a>
-                        <div className="dropdown-divider" />
-                        <a className="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-                <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 ml-2 mr-3">
-                    <a className="nav-link-header nav-link dropdown-toggle px-0" href="#" id="MessMenuDropdown"
+                    <a className="nav-link-header nav-link dropdown-toggle px-0" href="#" id="NotiMenuDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className='icon-material-baseline-notifications-none mx-0 p-2 font-size-25'></i>
                     </a>
-                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="MessMenuDropdown">
-                        <a className="dropdown-item" href="#">Action</a>
-                        <a className="dropdown-item" href="#">Another action</a>
-                        <div className="dropdown-divider" />
-                        <a className="dropdown-item" href="#">Something else here</a>
+                    <div className="shadow dropdown-menu dropdown-menu-right mt-1" style={{width: '300px'}} aria-labelledby="NotiMenuDropdown">
+                        <h5 className='dropddown-header font-weight-bold mb-2 px-2' key={1}>Notifications</h5>
+                        <div className='header-menu'>
+                            {this.renderNotiContent()}
+                        </div>
                     </div>
-                </li>                        
-                <li className={"nav-item dropdown pt-3 pb-2 px-3 mr-2 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
+                </li>   
+                <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 ml-2 mr-3">
+                    <button className="nav-link nav-link-header mt-0 dropdown-toggle px-0" href="#" id="MessMenuDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i className='icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25'></i>
+                    </button>
+                    <div className="shadow dropdown-menu dropdown-menu-right mt-1" style={{width: '300px'}} aria-labelledby="MessMenuDropdown">
+                        <h5 className='dropddown-header font-weight-bold mb-2 px-2' key={1}>Messages</h5>  
+                        <div className='header-menu'>
+                            {this.renderMessageContent()}
+                        </div>
+                    </div>
+                </li>                     
+                <li className={"nav-item dropdown pt-3 pb-2 pr-3 pl-4 mr-2 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
                     <a className="nav-link dropdown-toggle rounded-pill bg-secondary mt-1 px-2 py-1" href="#" 
                         id="UserMenuDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img height='25' className='rounded-circle' src={UserAvatarPlaceholder}></img>
-                        &nbsp;
+                        &nbsp;&nbsp;
                         <span style={{color: 'white'}}>{user.fullname}</span>
                     </a>
                     <div className="dropdown-menu dropdown-menu-right" aria-labelledby="UserMenuDropdown">
-                        <a className="dropdown-item" href="#">Action</a>
-                        <a className="dropdown-item" href="#">Another action</a>
+                        <NavLink className="dropdown-item" to='/dashboard'>
+                            <i className='icon-material-outline-dashboard'></i>
+                            &nbsp;&nbsp;
+                            Tài khoản của bạn
+                        </NavLink>
                         <div className="dropdown-divider" />
-                        <a className="dropdown-item" href="#">Something else here</a>
+                        <a className="dropdown-item" href="#" onClick={(e)=>{e.preventDefault(); this.handleLogOut()}}>
+                            <i className='icon-line-awesome-sign-out'></i>
+                            &nbsp;&nbsp;
+                            Đăng xuất
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -355,9 +311,9 @@ class HeaderComponent extends Component {
         return (
             <nav className={"navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " + (this.state.isCurrentTop ? 'border-light bg-transparent':'border-secondary bg-light')} onScroll={()=>{this.handleScroll()}}>
                 <NavLink to='/' className="navbar-brand mr-4"><img src={Logo2} className='logo-brand'></img></NavLink>
-                {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
-                </button> */}
+                </button>
                 <div className="collapse navbar-collapse my-0 py-0" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item mx-2 pt-3 pb-2">
@@ -372,7 +328,7 @@ class HeaderComponent extends Component {
                                 onMouseEnter={()=>{this.setState({isTopicHover: true})}} >
                                 Chủ đề
                             </NavLink>
-                            <div className={"dropdown-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
+                            <div className={"dropdown-menu mt-1 header-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
                                 {this.renderTopicsHeader()}
                             </div>
                         </li>

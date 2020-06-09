@@ -27,23 +27,37 @@ class S_Selector extends Component {
     componentDidMount() {
         if(this.props.value)
         {
-            
             this.initValue();
         }
     }
 
-    initValue() {
-        let value = Number.parseInt(this.props.value);
+    componentDidUpdate() {
+        if(this.state.selected === undefined && this.props.value)
+        {
+            this.initValue();
+        }        
+    }
+    // componentDidUpdate() {
+    //     console.log(this.props);
+    // }
+
+    findeValueObject(value) {
         for(let e of this.props.data)
         {
             if(e[this.props.value_tag] === value)
             {
-                console.log('flag', this.props.value_tag);
-                this.setState({selected: e}, ()=>{
-                    console.log(this.state.selected);
-                });
-                return ;
+                return e;
             }
+        }
+        return null;
+    }
+
+    initValue() {
+        let value = Number.parseInt(this.props.value);
+        let selected = this.findeValueObject(value);
+        if(selected !== null)
+        {
+            this.setState({selected,});
         }
     }
 
@@ -66,8 +80,7 @@ class S_Selector extends Component {
             content.push(
                 <div key={count} className={'dropdown-item cursor-pointer d-flex justify-content-between ' + (this.state.selected === e ? 'selected' : '')}
                     onClick={() => { this.handleSelect(e) }}>
-                    <span className="text">{e[this.props.text_tag]}</span>
-                    {(this.state.selected === e ? <i className='icon-feather-check pt-2'></i> : '')}
+                    <span className={(this.state.selected === e ? 'text-293FE4' : '')}>{e[this.props.text_tag]}</span>                    
                 </div>
             );
             count++;

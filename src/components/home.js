@@ -69,7 +69,6 @@ class HomeComponent extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        console.log(this.props);
     }
 
     areaSession(areas) {
@@ -204,22 +203,19 @@ class HomeComponent extends Component {
     renderProductionJobsList() {
         let content = [], count = 0;
         let { productionJobList } = this.props.HomeReducer;
-
+        
         for (let e of productionJobList) {
+            let postDate = new Date(e.post_date);
             content.push(
                 <NavLink to="/job-detail" className="task-listing" key={count}>
                     <div className="task-listing-details">
                         <div className="task-listing-description">
                             <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
                             <ul className="task-icons">
-                                <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
-                                <li><i className='icon-material-outline-my-location'> {e.area_district}</i></li>
-                                <li><i className="icon-material-outline-access-time" /> {e.post_date}</li>
+                                <li><i className="icon-material-outline-location-on" /> {e.province}</li>
+                                <li><i className="icon-material-outline-access-time" /> {postDate.getDate()+ '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
                             </ul>
-                            <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>
-                            <div className="task-tags margin-top-15">
-                                {/* {this.renderTagsOfJob(e)} */}
-                            </div>
+                            <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>                            
                         </div>
                     </div>
                     <div className="task-listing-bid">
@@ -244,20 +240,17 @@ class HomeComponent extends Component {
         let { temporalJoblist } = this.props.HomeReducer;
 
         for (let e of temporalJoblist) {
+            let postDate = new Date(e.post_date);
             content.push(
                 <NavLink to="/job-detail" className="task-listing" key={count}>
                     <div className="task-listing-details">
                         <div className="task-listing-description">
                             <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
                             <ul className="task-icons">
-                                <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
-                                <li><i className='icon-material-outline-my-location'> {e.area_district}</i></li>
-                                <li><i className="icon-material-outline-access-time" /> {e.post_date}</li>
+                                <li><i className="icon-material-outline-location-on" /> {e.province}</li>                               
+                                <li><i className="icon-material-outline-access-time" /> {postDate.getDate()+ '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
                             </ul>
                             <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>
-                            <div className="task-tags margin-top-15">
-                                {/* {this.renderTagsOfJob(e)} */}
-                            </div>
                         </div>
                     </div>
                     <div className="task-listing-bid">
@@ -274,17 +267,6 @@ class HomeComponent extends Component {
             count++;
         }
 
-        return content;
-    }
-
-    renderTagsOfJob(job) {
-        let content = [], count = 0;
-        for (let e of job.tags) {
-            content.push(
-                <span key={count}>{e.tag}</span>
-            );
-            count++;
-        }
         return content;
     }
 
