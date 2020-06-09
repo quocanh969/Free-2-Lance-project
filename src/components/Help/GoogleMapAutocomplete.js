@@ -59,7 +59,7 @@ class GoogleMapAutocomplete extends Component {
                     addrObj: addressObject,
                 },
                 () => {
-                    this.props.onChange("addressString" ,this.state.addrObj);
+                    this.props.onChange("addressString", this.state.addrObj);
                 }
             );
         }
