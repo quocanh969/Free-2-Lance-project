@@ -24,7 +24,7 @@ class PostJobComponent extends Component {
         this.onInputChange = this.onInputChange.bind(this);
     }
     runUploadFile() {
-        document.getElementById('uploadImg').click();
+        document.getElementById('uploadImgSingle').click();
     }
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -79,11 +79,11 @@ class PostJobComponent extends Component {
             title: fields.jobTitle,
             salary: fields.salary,
             job_topic: fields.jobTopic,
-            address: fields.addressString.formatted_address,
-            area_province: fields.addressString.address_components[3].long_name,
-            area_district: fields.addressString.address_components[2].long_name,
-            lat: fields.addressString.geometry.location.lat(),
-            lng: fields.addressString.geometry.location.lng(),
+            // address: fields.addressString.formatted_address,
+            // area_province: fields.addressString.address_components[3].long_name,
+            // area_district: fields.addressString.address_components[2].long_name,
+            // lat: fields.addressString.geometry.location.lat(),
+            // lng: fields.addressString.geometry.location.lng(),
             description: fields.description,
             expire_date: fields.exprDate,
             dealable: 0,
@@ -95,8 +95,8 @@ class PostJobComponent extends Component {
             tag: [],
             images: fields.relatedImg, 
         }
-        console.log(header);
-        onSend(header);
+        console.log(header.images);
+        // onSend(header);
     }
 
     getDate() {
@@ -221,7 +221,7 @@ class PostJobComponent extends Component {
                                             <div className="margin-top-30">
                                                 {/* <input className="uploadButton-input" type="button" id="upload" onClick={this.runUploadFile} /> */}
                                                 <div>
-                                                    <MultipleImageUploadComponent value={this.props.AddJobReducer.fields.relatedImg} onChange={this.handleChange}></MultipleImageUploadComponent>
+                                                    <MultipleImageUploadComponent value={this.props.AddJobReducer.fields.relatedImg} onChange={this.handleChange} ></MultipleImageUploadComponent>
                                                 </div>
                                                 <div className='uploadButton mt-3'>
                                                     <div>

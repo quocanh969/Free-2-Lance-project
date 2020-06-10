@@ -16,11 +16,10 @@ export default class MultipleImageUploadComponent extends Component {
 
         this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
-        
+
     }
 
     uploadMultipleFiles(e) {
-        console.log(e.target.files.length);
         let length = e.target.files.length;
         if (length == 1) {
             let b64 = '';
@@ -59,7 +58,23 @@ export default class MultipleImageUploadComponent extends Component {
 
     uploadFiles(e) {
         e.preventDefault()
-        console.log(this.state.img)
+        console.log("FLAG");
+        console.log(e.target.files);
+        let b64 = '';
+        let urlObj = URL.createObjectURL(e.target.files[0]);
+        console.log(this.fileObj);
+        if (this.fileObj.includes(e.target.files[0].name)) {
+            console.log("DUBBED")
+        }
+        this.fileArray[0] = (urlObj);
+        this.fileObj[0] = (e.target.files[0].name);
+        this.getBase64(e.target.files[0], (result) => {
+            b64 = result;
+            this.imgArr[0] = (b64);
+        });
+        this.setState({ img: this.imgArr, file: this.fileArray }, () => {
+            this.props.onChange("relatedImg", this.state.img);
+        });
     }
 
     getBase64(file, cb) {
@@ -79,11 +94,10 @@ export default class MultipleImageUploadComponent extends Component {
         imgArr.splice(index, 1);
         fileArr.splice(index, 1);
         this.fileObj.splice(index, 1);
-        console.log("FLAG");
         console.log(this.fileObj.length);
         if (this.fileObj.length === 0) {
             console.log("Empty already")
-            document.getElementById('uploadImg').value = null;
+            document.getElementById('uploadImgMultiple').value = null;
         } else {
             // document.getElementById('uploadImg').value = this.fileObj.length;
         }
@@ -96,13 +110,14 @@ export default class MultipleImageUploadComponent extends Component {
                 <div className={"form-group multi-preview " + (this.state.file.length === 0 ? '' : 'bg-cloud p-3 border-radius-4')}>
                     {(this.fileArray || []).map((url, index) => (
                         <span key={index} onClick={this.removeImg.bind(this, index)}>
-                            <img  className='border border-dark mx-2' src={url} alt="..." width="128" height="128" style={{objectFit: 'contain'}}></img>
+                            <img className='border border-dark mx-2' src={url} alt="..." width="128" height="128" style={{ objectFit: 'contain' }}></img>
                         </span>
                     ))}
                 </div>
 
                 <div className="form-group">
-                    <input id="uploadImg" type="file" accept="image/*" className="form-control" onChange={this.uploadMultipleFiles} style={{display: 'none'}} multiple />
+                    <input id="uploadImgMultiple" type="file" accept="image/*" className="form-control" onChange={this.uploadMultipleFiles} style={{ display: 'none' }} multiple />
+                    <input id="uploadImgSingle" type="file" accept="image/*" className="form-control" onChange={this.uploadFiles} style={{ display: 'none' }} single />
                 </div>
                 {/* <button type="button" className="btn btn-danger btn-block" onClick={this.uploadFiles}>Upload</button> */}
             </form >
