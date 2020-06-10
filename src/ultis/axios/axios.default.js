@@ -2,17 +2,10 @@ import Axios from "axios";
 import { MyStore } from "../..";
 import { history } from "../../ultis/history/history";
 
-let token = "";
-if (localStorage.getItem("user")) {
-  token = "Bearer " + JSON.stringify(JSON.parse(localStorage.getItem("user")).currentToken);
-  console.log("token: ", token);
-}
-
 let axios = Axios.create({
   baseURL: "http://localhost:8000/",
   headers: { 
-    "Content-Type": "application/json", 
-    "Authorization": token,
+    "Content-Type": "application/json",
   },
 });
 

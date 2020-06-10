@@ -10,6 +10,8 @@ import ReadLocationReducer from './JobReducers/ReadLocation.Reducer';
 import JobDetailReducer from './JobReducers/JobDetail.Reducer';
 import AddJobReducer from './JobReducers/AddJobForm.Reducer';
 
+import SettingReducer from './Dashboard/Setting.Reducer';
+
 import ContactUsReducer from './Contact.Reducer';
 import HomeReducer from './Home.reducer';
 import JobsListReducer from './JobReducers/JobsList.Reducer';
@@ -38,9 +40,10 @@ const reducer = combineReducers(
         ActivationReducer,
         ResendActivationReducer,
 
-        // Add job reducer
-        AddJobReducer,
-
+        //Dashboard        
+        AddJobReducer,// Add job reducer
+        SettingReducer, // Setting reducer
+        
         // Map reducer
         ReadLocationReducer,
 

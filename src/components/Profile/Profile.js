@@ -24,7 +24,7 @@ class ProfileComponent extends Component {
         super(props);
 
         this.state = {
-            tab: 7,
+            tab: 11,
         }
 
         this.moveToTab = this.moveToTab.bind(this);
@@ -185,7 +185,7 @@ class ProfileComponent extends Component {
                                         <ul data-submenu-title="Tài khoản">
                                             <li className={(this.state.tab === 11 ? 'active' : '')}>
                                                 <div className='cursor-pointer' onClick={() => { this.setState({ tab: 11 }) }}>
-                                                    <i className="icon-material-outline-settings" /> Thiết lập
+                                                    <i className="icon-material-outline-settings" /> Thông tin tài khoản
                                                 </div> 
                                             </li>
                                             <li className={(this.state.tab === 12 ? 'active' : '')}>

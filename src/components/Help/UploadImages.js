@@ -20,7 +20,6 @@ export default class MultipleImageUploadComponent extends Component {
     }
 
     uploadMultipleFiles(e) {
-        console.log(e.target.files.length);
         let length = e.target.files.length;
         if (length == 1) {
             let b64 = '';
@@ -53,7 +52,6 @@ export default class MultipleImageUploadComponent extends Component {
         }
         this.setState({ img: this.imgArr, file: this.fileArray }, () => {
             this.props.onChange("relatedImg", this.state.img);
-
         });
     }
 
