@@ -10,11 +10,11 @@ export const SRoute = ({ component: Component, ...rest }) => {
     return (
         <Route {...rest} render={
             (props) => {
-                if (window.location.href.endsWith('/')) {
+                if (window.location.href.endsWith('/') || window.location.href.endsWith('search')) {
                     return (
                         <div id="wrapper" className="wrapper-with-transparent-header">
-                            <header id="header-container" className='fullwidth transparent-header'>
-                                <Header></Header>
+                            <header id="header-container" className='fullwidth'>
+                                <Header home={true}></Header>
                             </header>
                             <div className="clearfix" />
 
@@ -29,8 +29,8 @@ export const SRoute = ({ component: Component, ...rest }) => {
                 else {
                     return (
                         <div id="wrapper">
-                            <header id="header-container" className='fullwidth'>
-                                <Header></Header>
+                            <header id="header-container">
+                                <Header home={false}></Header>
                             </header>
                             <div className="clearfix" />
 

@@ -3,14 +3,17 @@ import { MyStore } from "../..";
 import { history } from "../../ultis/history/history";
 
 let token = "";
-if (localStorage.getItem("user") && localStorage.getItem("user").token) {
-  token = "Bearer " + JSON.stringify(localStorage.getItem("user").token);
-  console.log("token");
+if (localStorage.getItem("user")) {
+  token = "Bearer " + JSON.stringify(JSON.parse(localStorage.getItem("user")).currentToken);
+  console.log("token: ", token);
 }
 
 let axios = Axios.create({
   baseURL: "http://localhost:8000/",
-  headers: { "Content-Type": "application/json"},
+  headers: { 
+    "Content-Type": "application/json", 
+    "Authorization": token,
+  },
 });
 
 axios.interceptors.response.use(

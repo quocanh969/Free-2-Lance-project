@@ -18,11 +18,7 @@ function login(email, password) {
 }
 
 function verify() {
-  return axios.get("/users/", {
-    headers: {
-      "Authorization": "Bearer " + JSON.parse(localStorage.getItem("token")),
-    }
-  })
+  return axios.get("/users/")
 }
 
 function register(account) {
