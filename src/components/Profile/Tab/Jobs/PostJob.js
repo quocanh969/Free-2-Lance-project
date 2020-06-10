@@ -24,7 +24,7 @@ class PostJobComponent extends Component {
         this.onInputChange = this.onInputChange.bind(this);
     }
     runUploadFile() {
-        document.getElementById('uploadImgSingle').click();
+        document.getElementById('uploadImgMultiple').click();
     }
     componentDidMount() {
         window.scrollTo(0, 0);

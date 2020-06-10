@@ -27,6 +27,7 @@ export default class MultipleImageUploadComponent extends Component {
             console.log(this.fileObj);
             if (this.fileObj.includes(e.target.files[0].name)) {
                 console.log("DUBBED")
+                return;
             }
             this.fileArray.push(urlObj);
             this.fileObj.push(e.target.files[0].name);
@@ -46,7 +47,7 @@ export default class MultipleImageUploadComponent extends Component {
                         this.imgArr.push(b64);
                     })
                 } else {
-
+                    console.log("DUBBED")
                 }
             }
         }
