@@ -72,7 +72,7 @@ class accountActivationComponent extends Component {
                                 <nav id="breadcrumbs" className="dark">
                                     <ul>
                                         <li>
-                                            <NavLink to="/home">Home</NavLink>
+                                            <NavLink to="/">Home</NavLink>
                                         </li>
                                         <li>Account Activation</li>
                                     </ul>

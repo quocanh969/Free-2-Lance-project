@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import {history} from '../ultis/history/history';
+
 import {S_Selector} from '../ultis/SHelper/S_Help_Input';
 
 class FindJobComponent extends Component {
@@ -19,34 +21,6 @@ class FindJobComponent extends Component {
 
     componentDidMount() {
         window.scrollTo(0,0);
-    }
-
-    areaSession(areas) {        
-        let content = [];
-        let count = 1;
-        for(let i of areas)
-        {
-            content.push(
-                <option value={count} key={count}>{i}</option>
-            )
-            count++;
-        }
-
-        return content;
-    }
-
-    categorySession(categories) {
-        let content = [];
-        let count = 1;
-        for(let i of categories)
-        {
-            content.push(
-                <option value={count} key={count}>{i}</option>
-            )
-            count++;
-        }
-
-        return content;
     }
 
     typeSession() {
@@ -106,6 +80,8 @@ class FindJobComponent extends Component {
         return content;
     }
 
+
+
     moreOptionSession() {
         if(!this.state.isMoreOption)
         {
@@ -131,29 +107,16 @@ class FindJobComponent extends Component {
                             <label className='col-5 font-weight-bold pt-3'>Mức lương mong đợi:</label>
                             <select className="col-7 btn dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={0}>
                                 <option value={0} disabled>Giá tiền</option>
-                                <option value={1}>50.000đ - 100.000đ</option>
+                                <option value={1}>Nhỏ hơn 100.000 đ</option>
                                 <option value={2}>100.000đ - 500.000đ</option>
                                 <option value={3}>500.000đ - 1.000.000đ</option>
                                 <option value={4}>1.000.000đ - 10.000.000đ</option>
                                 <option value={5}>Lớn hơn 10.000.000đ</option>
                             </select>
-                        </div>
-                        <div className='row px-5'>
-                            <label className='col-5 font-weight-bold pt-3'>Chi tiết khu vực (Quận):</label>
-                            <select className="col-7" id='district-select' defaultValue={0}>
-                                <option value={0} disabled>Quận</option>
-                                <option value={1}>Quận 1</option>
-                                <option value={2}>Quận 2</option>
-                                <option value={3}>Quận 3</option>
-                                <option value={4}>Quận 4</option>
-                                <option value={5}>Quận 5</option>
-                                <option value={6}>Quận 6</option>
-                                <option value={7}>Quận 7</option>                                
-                            </select>
-                        </div>
+                        </div>                        
                         <div className='row px-5'>
                             <label className='col-5 font-weight-bold pt-3'>Ngày hết hạn:</label>
-                            <input id="expired-input" className='col-7' type="date" min="2020-01-01" max="2022-12-31"/>
+                            <input id="expired-input" className='col-7' type="date" min="2020-01-01" max="2050-12-31"/>
                         </div>
                         <div className='row px-5'>
                             <label className='col-5 font-weight-bold pt-3'>Số lượng tuyển ( ít nhất ):</label>
@@ -171,61 +134,133 @@ class FindJobComponent extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log('submit nè');
+
+        let QueryObject = {};
 
         // Search bar field
         let title = document.getElementById('input-title').value;
+        if(title !== '') QueryObject['title'] = title;
+
         let area = document.getElementById('select-area').value;
+        if(area !== '0') QueryObject['area_province'] = area;
+
         let category = document.getElementById('select-category').value;
+        if(category !== '0') QueryObject['job_topic'] = category;
         
         // Type Chechbox Field
-        // let dealableJob = document.getElementById('co-dau-gia').checked;
-        // let undealableJob = document.getElementById('khong-dau-gia').checked;
-        // let companyJob = document.getElementById('cong-ty').checked;
-        // let personalJob = document.getElementById('ca-nhan').checked;        
-        // let workByTime = document.getElementById('viec-lam-thoi-vu').checked;
-        // let workByProduct = document.getElementById('viec-theo-san-pham').checked;
-        // let onlineJob = document.getElementById('viec-lam-online').checked;
-        // let offlineJob = document.getElementById('viec-theo-san-pham').checked;        
+        let dealableJob = document.getElementById('co-dau-gia').checked;
+        let undealableJob = document.getElementById('khong-dau-gia').checked;
+        if(dealableJob ^ undealableJob === true)
+        {
+            if(dealableJob === true)
+            {
+                QueryObject['dealable'] = 1;
+            }
+            else
+            {
+                QueryObject['dealable'] = 0;
+            }
+        }
 
+        let companyJob = document.getElementById('cong-ty').checked;
+        let personalJob = document.getElementById('ca-nhan').checked;        
+        if(companyJob ^ personalJob === true)
+        {
+            if(companyJob === true)
+            {
+                QueryObject['isCompany'] = 1;
+            }
+            else
+            {
+                QueryObject['isCompany'] = 0;
+            }
+        }
+
+        let workByTime = document.getElementById('viec-lam-thoi-vu').checked;
+        let workByProduct = document.getElementById('viec-theo-san-pham').checked;
+        if(workByTime ^ workByProduct === true)
+        {
+            if(workByTime === true)
+            {
+                QueryObject['job_type'] = 1;
+            }
+            else
+            {
+                QueryObject['job_type'] = 0;
+            }
+        }
+
+        let onlineJob = document.getElementById('viec-lam-online').checked;
+        let offlineJob = document.getElementById('viec-theo-san-pham').checked;        
+        if(onlineJob ^ offlineJob === true)
+        {
+            if(onlineJob === true)
+            {
+                QueryObject['isOnline'] = 1;
+            }
+            else
+            {
+                QueryObject['isOnline'] = 0;
+            }
+        }
 
         // More option field
-        // if(this.state.isMoreOption)
-        // {
-        //     let employer = document.getElementById('employer-input').value;
-        //     let salary = document.getElementById('salary-select').value;
-        //     let district = document.getElementById('district-select').value;
-        //     let expiredDate = document.getElementById('expired-input').value;
-        //     let vacancy = document.getElementById('vacancy-input').value;
-        // }
+        if(this.state.isMoreOption)
+        {
+            let employer = document.getElementById('employer-input').value;
+            if(employer !== '') QueryObject['employer'] = employer;
 
-        console.log('Title: ', title);
-        console.log('Area: ', area);
-        console.log('Category: ', category);
-        // console.log('Dealable Job: ', dealableJob);
-        // console.log('Undealable Job: ', undealableJob);
-        // console.log('Company Job: ', companyJob);
-        // console.log('Personal Job: ', personalJob);
-        // console.log('Work By Time: ', workByTime);
-        // console.log('Work By Product: ', workByProduct);
-        // console.log('Online Job: ', onlineJob);
-        // console.log('Offline Job: ', offlineJob);
-        // console.log('Employer: ', employer);
-        // console.log('Salary: ', salary);
-        // console.log('District: ', district);
-        // console.log('Expired Date: ', expiredDate);
-        // console.log('Vacancy: ', vacancy);
+            let salary = Number.parseInt(document.getElementById('salary-select').value);
+            if(salary !== 0)
+            {
+                switch(salary)
+                {
+                    case 1:
+                    {
+                        QueryObject['salary'] = {top: 100000, bot: 0};
+                        break;
+                    }
+                    case 2:
+                    {
+                        QueryObject['salary'] = {top: 500000, bot: 100000};
+                        break;
+                    }
+                    case 3:
+                    {
+                        QueryObject['salary'] = {top: 1000000, bot: 500000};
+                        break;
+                    }
+                    case 4:
+                    {
+                        QueryObject['salary'] = {top: 10000000, bot: 1000000};
+                        break;
+                    }
+                    case 5:
+                    {
+                        QueryObject['salary'] = {top: 0, bot: 10000000};
+                        break;
+                    }
+                }
+            }
 
+            let expiredDate = document.getElementById('expired-input').value;
+            if(expiredDate !== '') QueryObject['expire_date'] = expiredDate;
+
+            let vacancy = document.getElementById('vacancy-input').value;
+            if(vacancy !== '') QueryObject['vacancy'] = vacancy;            
+        }
+        
+        // console.log(QueryObject);
+        history.push('/job-list',QueryObject);
     }
 
     render() {
-        let areas = ['TPHCM', 'Hà Nội', 'Hải Phòng', 'Đà Nẵng', 'Nghệ An'];
-        let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];        
+        let {jobTopic, areas} = this.props.GeneralReducer;
 
         return (
-            <form className='bg-secondary py-5' onSubmit={this.handleSubmit}>
+            <form id='s-find-job-form' className='py-5' onSubmit={this.handleSubmit}>
 
-                <div className="container s-find-job">                    
+                <div id='s-find-job' className="container pt-5">                    
                     {/* Search Bar */}
                     <div className="row">
                         <div className="col-md-12 margin-bottom-40">
@@ -240,22 +275,13 @@ class FindJobComponent extends Component {
                                 {/* Area Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
-                                    {/* <select id='select-area' className="selectpicker default" defaultValue={0}>
-                                        <option value={0} disabled>Khu vực</option>
-                                        {this.areaSession(areas)}
-                                    </select> */}
-                                    
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
                                 </div>
                                 
                                 {/* Category Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
-                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
-                                    {/* <select className="selectpicker default" id='select-category' defaultValue={0}>
-                                        <option value={0} disabled>Loại công việc</option>
-                                        {this.categorySession(categories)}
-                                    </select> */}
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
                                 </div>
                                 
                             </div>
@@ -291,7 +317,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
     }
 }
 

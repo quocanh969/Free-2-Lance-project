@@ -68,7 +68,7 @@ class ForgetPasswordComponent extends Component {
                 <nav id="breadcrumbs" className="dark">
                   <ul>
                     <li>
-                      <NavLink to="/home">Home</NavLink>
+                      <NavLink to="/">Home</NavLink>
                     </li>
                     <li>Forgot Password</li>
                   </ul>

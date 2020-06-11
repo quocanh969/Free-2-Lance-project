@@ -3,26 +3,15 @@ import React, { Component } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import '../assets/css/testimonial.css';
 import '../assets/css/style.css';
 import '../assets/css/colors/blue.css';
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
-import Logo2 from '../assets/images/logo2.png';
-import UserAvatarSmall1 from '../assets/images/user-avatar-small-01.jpg';
-import UserAvatarSmall2 from '../assets/images/user-avatar-small-02.jpg';
-import UserAvatarSmall3 from '../assets/images/user-avatar-small-03.jpg';
 import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png';
 
-import HomeBackground2 from '../assets/images/home-background-02.jpg';
-import JobCategory1 from '../assets/images/job-category-01.jpg';
-import JobCategory2 from '../assets/images/job-category-02.jpg';
-import JobCategory3 from '../assets/images/job-category-03.jpg';
-import JobCategory4 from '../assets/images/job-category-04.jpg';
-import JobCategory5 from '../assets/images/job-category-05.jpg';
-import JobCategory6 from '../assets/images/job-category-06.jpg';
-import JobCategory7 from '../assets/images/job-category-07.jpg';
-import JobCategory8 from '../assets/images/job-category-08.jpg';
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
+import { loadProductionJobs, loadTemporalJobs, loadTopUsers, loadStatistic } from '../actions/Home';
 
 class HomeComponent extends Component {
 
@@ -30,57 +19,56 @@ class HomeComponent extends Component {
         super(props);
 
         this.state = {
-            jobPost: 1586,
-            taskPost: 3543,
-            freelancer: 1232,
-            topics: [
+            finishedJob: 1586,
+            jobPost: 3543,
+            member: 1232,
+            testimonials: [
                 {
-                    title: 'Web/Software Dev',
-                    post: 612,
-                    bgURL: '',
+                    id_user: 1,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Katarina',
+                    rate: 4,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
                 {
-                    title: 'Data Science/Analitycs',
-                    post: 113,
-                    bgURL: '',
+                    id_user: 2,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Garen',
+                    rate: 3,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
                 {
-                    title: 'Accounting/Consulting',
-                    post: 186,
-                    bgURL: '',
+                    id_user: 3,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Ryze',
+                    rate: 5,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
                 {
-                    title: 'Writting & Translations',
-                    post: 298,
-                    bgURL: '',
+                    id_user: 4,
+                    avatarImg: UserAvatarPlaceholder,
+                    fullname: 'Sylas',
+                    rate: 4.5,
+                    email: 'hello@gmail.com',
+                    dial: '0152684975',
                 },
-                {
-                    title: 'Sales & Marketing',
-                    post: 549,
-                    bgURL: '',
-                },
-                {
-                    title: 'Graphics & Design',
-                    post: 873,
-                    bgURL: '',
-                },
-                {
-                    title: 'Digital Marketing',
-                    post: 125,
-                    bgURL: '',
-                },
-                {
-                    title: 'Education & Training',
-                    post: 445,
-                    bgURL: '',
-                },
-
             ]
         }
     }
 
     componentWillMount() {
-        console.log(this.props.HeaderReducer);
+        let { onLoadProductionJobs, onLoadTemporalJobs, onLoadTopUsers, onLoadStatistic } = this.props;
+        onLoadProductionJobs(1, 5);
+        onLoadTemporalJobs(1, 5);
+        onLoadTopUsers();
+        onLoadStatistic();
+    }
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
     }
 
     areaSession(areas) {
@@ -110,31 +98,31 @@ class HomeComponent extends Component {
     }
 
     bannerSession() {
-        let areas = ['TPHCM', 'Hà Nội', 'Hải Phòng', 'Đà Nẵng', 'Nghệ An'];
-        let categories = ['Lau nhà', 'Rửa chén', 'Nấu cơm', 'Bơm xe đạp', 'Đạp xích lô'];
-
+        let { jobTopic, areas } = this.props.GeneralReducer;
+        let { memberNum, finishedJobNum, applyingJobNum, proccessingJobNum } = this.props.HomeReducer;
         return (
-            <div className="intro-banner dark-overlay" data-background-image={HomeBackground2}>
+            <div id='home'>
                 {/* Transparent Header Spacer */}
                 <div className="transparent-header-spacer" />
 
-                <div className="container">
+                <div className="container margin-top-40">
                     {/* Intro Headline */}
                     <div className="row">
                         <div className="col-md-12">
                             <div className="banner-headline">
                                 <h3>
-                                    <strong>Công việc dành cho các cá nhân có nhu cầu làm việc thêm</strong>
+                                    <strong className='text-white'>Công việc dành cho các cá nhân có nhu cầu làm việc thêm</strong>
                                     <br />
-                                    <span>Số lượng công việc nhiều, phù hợp với nhu cầu và khả năng của người ứng tuyển.</span>
+                                    <span className='text-smoothing-breeze'>Số lượng công việc nhiều, phù hợp với nhu cầu và khả năng của người ứng tuyển.</span>
                                 </h3>
                             </div>
                         </div>
                     </div>
+
                     {/* Search Bar */}
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="intro-banner-search-form margin-top-95">
+                            <form className="intro-banner-search-form margin-top-95">
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="input-title" className="field-title ripple-effect">Bạn cần trợ giúp việc gì?</label>
@@ -144,45 +132,41 @@ class HomeComponent extends Component {
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-area" className="field-title ripple-effect">Tại nơi nào?</label>
-
-                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas}></S_Selector>
-                                    {/* <select id='select-area' className="" defaultValue={0}>
-                                        <option value={0} disabled>Khu vực</option>
-                                        {this.areaSession(areas)}
-                                    </select> */}
-
+                                    <S_Selector id='select-area' placeholder='Khu vực' data={areas} value_tag='id_province' text_tag='name'></S_Selector>
                                 </div>
                                 {/* Search Field */}
                                 <div className="intro-search-field">
                                     <label htmlFor="select-category" className="field-title ripple-effect">Nhóm cộng việc là gì?</label>
-                                    <S_Selector id='select-category' placeholder='Loại công việc' data={categories}></S_Selector>
-                                    {/* <select id='select-category' className="selectpicker default" defaultValue={0}>
-                                        <option value={0} disabled>Loại công việc</option>
-                                        {this.categorySession(categories)}
-                                    </select> */}
+                                    <S_Selector id='select-category' placeholder='Loại công việc' data={jobTopic} value_tag='id_jobtopic' text_tag='name'></S_Selector>
                                 </div>
-                            </div>
+
+                                <div className="intro-search-button">
+                                    <button className="btn btn-293FE4" type='submit'>Search</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
+
                     {/* Stats */}
                     <div className="row">
                         <div className="col-md-12">
                             <ul className="intro-stats margin-top-45 hide-under-992px">
                                 <li>
-                                    <strong className="counter">{this.state.jobPost}</strong>
-                                    <span>Công việc</span>
+                                    <strong className="counter text-white">{applyingJobNum + proccessingJobNum}</strong>
+                                    <span className='text-smoothing-breeze'>Công việc sẳn sàng</span>
                                 </li>
                                 <li>
-                                    <strong className="counter">{this.state.taskPost}</strong>
-                                    <span>Bài đăng</span>
+                                    <strong className="counter text-white">{finishedJobNum}</strong>
+                                    <span className='text-smoothing-breeze'>Công việc hoàn thành</span>
                                 </li>
                                 <li>
-                                    <strong className="counter">{this.state.freelancer}</strong>
-                                    <span>Ứng viên</span>
+                                    <strong className="counter text-white">{memberNum}</strong>
+                                    <span className='text-smoothing-breeze'>Thành viên</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -190,19 +174,24 @@ class HomeComponent extends Component {
     }
 
     topicSession() {
+        let { jobTopic } = this.props.GeneralReducer;
         let content = [];
         let count = 0;
+        let copyJobTopicList = [...jobTopic];
 
-        for (let e of this.state.topics) {
+        copyJobTopicList = copyJobTopicList.sort((a, b) => { return b.count - a.count }).slice(0, 8);
+
+        for (let e of copyJobTopicList) {
             content.push(
                 <div className="col-xl-3 col-md-6" key={count}>
                     {/* Photo Box */}
-                    <a href="jobs-list-layout-2.html" className="photo-box small" data-background-image={JobCategory8}>
+                    <NavLink to="/job-list" className="photo-box small topic-box">
+                        <img src={'data:image/png;base64,' + e.img}></img>
                         <div className="photo-box-content">
-                            <h3>{e.title}</h3>
-                            <span>{e.post}</span>
+                            <h3>{e.name}</h3>
+                            <span>{e.count}</span>
                         </div>
-                    </a>
+                    </NavLink>
                 </div>
             );
             count++;
@@ -211,14 +200,158 @@ class HomeComponent extends Component {
         return content;
     }
 
+    renderProductionJobsList() {
+        let content = [], count = 0;
+        let { productionJobList } = this.props.HomeReducer;
+        
+        for (let e of productionJobList) {
+            let postDate = new Date(e.post_date);
+            content.push(
+                <NavLink to="/job-detail" className="task-listing" key={count}>
+                    <div className="task-listing-details">
+                        <div className="task-listing-description">
+                            <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
+                            <ul className="task-icons">
+                                <li><i className="icon-material-outline-location-on" /> {e.province}</li>
+                                <li><i className="icon-material-outline-access-time" /> {postDate.getDate()+ '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
+                            </ul>
+                            <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>                            
+                        </div>
+                    </div>
+                    <div className="task-listing-bid">
+                        <div className="task-listing-bid-inner">
+                            <div className="task-offers">
+                                <strong>{e.salary} VNĐ</strong>
+                                <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
+                            </div>
+                            <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
+                        </div>
+                    </div>
+                </NavLink>
+            );
+            count++;
+        }
+
+        return content;
+    }
+
+    renderTemporalJobsList() {
+        let content = [], count = 0;
+        let { temporalJoblist } = this.props.HomeReducer;
+
+        for (let e of temporalJoblist) {
+            let postDate = new Date(e.post_date);
+            content.push(
+                <NavLink to="/job-detail" className="task-listing" key={count}>
+                    <div className="task-listing-details">
+                        <div className="task-listing-description">
+                            <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
+                            <ul className="task-icons">
+                                <li><i className="icon-material-outline-location-on" /> {e.province}</li>                               
+                                <li><i className="icon-material-outline-access-time" /> {postDate.getDate()+ '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
+                            </ul>
+                            <p className="d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.description}</p>
+                        </div>
+                    </div>
+                    <div className="task-listing-bid">
+                        <div className="task-listing-bid-inner">
+                            <div className="task-offers">
+                                <strong>{e.salary} VNĐ</strong>
+                                <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
+                            </div>
+                            <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
+                        </div>
+                    </div>
+                </NavLink>
+            );
+            count++;
+        }
+
+        return content;
+    }
+
+    renderTestimonials() {
+        let content = [], count = 0;
+        let { topUsers } = this.props.HomeReducer;
+
+        for (let e of topUsers) {
+            let userAvatar = UserAvatarPlaceholder;
+            if (e.avatarImg !== null) {
+                userAvatar = 'data:image/png;base64,' + e.img;
+            }
+            content.push(
+                <div className={"item carousel-item " + (count === 0 && 'active')} key={count}>
+                    <div className="img-box"><img src={userAvatar} alt="" /></div>
+                    <br></br>
+
+                    <p className="overview"><b>{e.fullname}</b></p>
+                    <p>Rating: {e.rating} <i className='icon-material-outline-star text-warning'></i></p>
+                    <p><i className="icon-feather-mail" /> {e.email}</p>
+                    <p><i className="icon-feather-phone" /> {e.dial}</p>
+                </div>
+            );
+            count++;
+        }
+        return content;
+    }
+
+    renderCounter() {
+        let { memberNum, finishedJobNum, applyingJobNum, proccessingJobNum } = this.props.HomeReducer;
+        return (
+            <div className="section padding-top-70 padding-bottom-75">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xl-12">
+                            <div className="counters-container">
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-hourglass-2" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{applyingJobNum}</span></h3>
+                                        <span className="counter-title">Công việc đang ứng tuyển</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-legal" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{proccessingJobNum}</span></h3>
+                                        <span className="counter-title">Công việc đang thực hiện</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-users" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{memberNum}</span></h3>
+                                        <span className="counter-title">Thành viên</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                                <div className="single-counter">
+                                    <i className="icon-line-awesome-trophy" />
+                                    <div className="counter-inner">
+                                        <h3><span className="counter">{finishedJobNum}</span></h3>
+                                        <span className="counter-title">Công việc hoàn thành</span>
+                                    </div>
+                                </div>
+                                {/* ==== */}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div>
 
                 {this.bannerSession()}
 
-                {/* Content
-================================================== */}
+                {/* Content ================================================== */}
+
                 {/* Popular Job Categories */}
                 <div className="section margin-top-65 margin-bottom-30">
                     <div className="container">
@@ -234,158 +367,30 @@ class HomeComponent extends Component {
                     </div>
                 </div>
                 {/* Features Cities / End */}
+
                 {/* Features Jobs */}
                 <div className="section gray margin-top-45 padding-top-65 padding-bottom-75">
                     <div className="container">
                         <div className="row">
-                            <div className="col-xl-12">
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                                 {/* Section Headline */}
-                                <div className="section-headline margin-top-0 margin-bottom-35">
-                                    <h3>Recent Tasks</h3>
-                                    <a href="tasks-list-layout-1.html" className="headline-link">Browse All Tasks</a>
+                                <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
+                                    <p className='font-weight-bold' style={{ fontSize: '18px' }}>Các công việc thời vụ gần đây</p>
                                 </div>
                                 {/* Jobs Container */}
-                                <div className="tasks-list-container compact-list margin-top-35">
-                                    {/* Task */}
-                                    <NavLink to="/job-detail" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">Food Delviery Mobile App</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-on" /> San Francisco</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 2 minutes ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>iOS</span>
-                                                    <span>Android</span>
-                                                    <span>mobile apps</span>
-                                                    <span>design</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$1,000 - $2,500</strong>
-                                                    <span>Fixed Price</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </NavLink>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">2000 Words English to German</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 5 minutes ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>copywriting</span>
-                                                    <span>translating</span>
-                                                    <span>editing</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$75</strong>
-                                                    <span>Fixed Price</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">Fix Python Selenium Code</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 30 minutes ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>Python</span>
-                                                    <span>Flask</span>
-                                                    <span>API Development</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$100 - $150</strong>
-                                                    <span>Hourly Rate</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">WordPress Theme Installation</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 1 hour ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>WordPress</span>
-                                                    <span>Theme Installation</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$100</strong>
-                                                    <span>Fixed Price</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    {/* Task */}
-                                    <a href="single-task-page.html" className="task-listing">
-                                        {/* Job Listing Details */}
-                                        <div className="task-listing-details">
-                                            {/* Details */}
-                                            <div className="task-listing-description">
-                                                <h3 className="task-listing-title">PHP Core Website Fixes</h3>
-                                                <ul className="task-icons">
-                                                    <li><i className="icon-material-outline-location-off" /> Online Job</li>
-                                                    <li><i className="icon-material-outline-access-time" /> 1 hour ago</li>
-                                                </ul>
-                                                <div className="task-tags margin-top-15">
-                                                    <span>PHP</span>
-                                                    <span>MySQL Administration</span>
-                                                    <span>API Development</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="task-listing-bid">
-                                            <div className="task-listing-bid-inner">
-                                                <div className="task-offers">
-                                                    <strong>$50 - $80</strong>
-                                                    <span>Hourly Rate</span>
-                                                </div>
-                                                <span className="button button-sliding-icon ripple-effect">Bid Now <i className="icon-material-outline-arrow-right-alt" /></span>
-                                            </div>
-                                        </div>
-                                    </a>
+                                <div className="tasks-list-container compact-list margin-top-20">
+                                    {this.renderTemporalJobsList()}
+                                </div>
+                                {/* Jobs Container / End */}
+                            </div>
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                {/* Section Headline */}
+                                <div className="section-headline pl-3 margin-top-0 margin-bottom-35">
+                                    <p className='font-weight-bold' style={{ fontSize: '18px' }}>Các công việc theo sản phẩm gần đây</p>
+                                </div>
+                                {/* Jobs Container */}
+                                <div className="tasks-list-container compact-list margin-top-20">
+                                    {this.renderProductionJobsList()}
                                 </div>
                                 {/* Jobs Container / End */}
                             </div>
@@ -393,190 +398,38 @@ class HomeComponent extends Component {
                     </div>
                 </div>
                 {/* Featured Jobs / End */}
-                {/* Icon Boxes */}
-                <div className="section padding-top-65 padding-bottom-65">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                {/* Section Headline */}
-                                <div className="section-headline centered margin-top-0 margin-bottom-5">
-                                    <h3>How It Works?</h3>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-md-4">
-                                {/* Icon Box */}
-                                <div className="icon-box with-line">
-                                    {/* Icon */}
-                                    <div className="icon-box-circle">
-                                        <div className="icon-box-circle-inner">
-                                            <i className="icon-line-awesome-lock" />
-                                            <div className="icon-box-check"><i className="icon-material-outline-check" /></div>
-                                        </div>
-                                    </div>
-                                    <h3>Create an Account</h3>
-                                    <p>Bring to the table win-win survival strategies to ensure proactive domination going forward.</p>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-md-4">
-                                {/* Icon Box */}
-                                <div className="icon-box with-line">
-                                    {/* Icon */}
-                                    <div className="icon-box-circle">
-                                        <div className="icon-box-circle-inner">
-                                            <i className="icon-line-awesome-legal" />
-                                            <div className="icon-box-check"><i className="icon-material-outline-check" /></div>
-                                        </div>
-                                    </div>
-                                    <h3>Post a Task</h3>
-                                    <p>Efficiently unleash cross-media information without. Quickly maximize return on investment.</p>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-md-4">
-                                {/* Icon Box */}
-                                <div className="icon-box">
-                                    {/* Icon */}
-                                    <div className="icon-box-circle">
-                                        <div className="icon-box-circle-inner">
-                                            <i className=" icon-line-awesome-trophy" />
-                                            <div className="icon-box-check"><i className="icon-material-outline-check" /></div>
-                                        </div>
-                                    </div>
-                                    <h3>Choose an Expert</h3>
-                                    <p>Nanotechnology immersion along the information highway will close the loop on focusing solely.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Icon Boxes / End */}
+
                 {/* Testimonials */}
-                <div className="section gray padding-top-65 padding-bottom-55">
+                <div className="section gray padding-top-10 padding-bottom-55">
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-12">
                                 {/* Section Headline */}
                                 <div className="section-headline centered margin-top-0 margin-bottom-5">
-                                    <h3>Testimonials</h3>
+                                    <h3>Những người dùng nổi bật</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* Categories Carousel */}
-                    <div className="fullwidth-carousel-container margin-top-20">
-                        <div className="testimonial-carousel testimonials">
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarSmall2} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Sindy Forest</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarSmall1} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Tom Smith</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarPlaceholder} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Sebastiano Piccio</h4>
-                                        <span>Employer</span>
-                                    </div>
-                                    <div className="testimonial">Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarSmall3} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>David Peterson</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Collaboratively administrate turnkey channels whereas virtual e-tailers. Objectively seize scalable metrics whereas proactive e-services. Seamlessly empower fully researched growth strategies and interoperable sources.</div>
-                                </div>
-                            </div>
-                            {/* Item */}
-                            <div className="fw-carousel-review">
-                                <div className="testimonial-box">
-                                    <div className="testimonial-avatar">
-                                        <img src={UserAvatarPlaceholder} alt="" />
-                                    </div>
-                                    <div className="testimonial-author">
-                                        <h4>Marcin Kowalski</h4>
-                                        <span>Freelancer</span>
-                                    </div>
-                                    <div className="testimonial">Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.</div>
-                                </div>
-                            </div>
+
+                    <div id="myCarousel" className="carousel slide w-50 task-listing p-5" data-ride="carousel">
+                        {/* Wrapper for carousel items */}
+                        <div className="carousel-inner">
+                            {this.renderTestimonials()}
                         </div>
+                        {/* Carousel controls */}
+                        <a className="carousel-control left carousel-control-prev ml-4" href="#myCarousel" data-slide="prev">
+                            <i className="icon-line-awesome-angle-left" />
+                        </a>
+                        <a className="carousel-control right carousel-control-next mr-4" href="#myCarousel" data-slide="next">
+                            <i className="icon-line-awesome-angle-right" />
+                        </a>
                     </div>
-                    {/* Categories Carousel / End */}
                 </div>
                 {/* Testimonials / End */}
+
                 {/* Counters */}
-                <div className="section padding-top-70 padding-bottom-75">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xl-12">
-                                <div className="counters-container">
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-suitcase" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">1,586</span></h3>
-                                            <span className="counter-title">Jobs Posted</span>
-                                        </div>
-                                    </div>
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-legal" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">3,543</span></h3>
-                                            <span className="counter-title">Tasks Posted</span>
-                                        </div>
-                                    </div>
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-user" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">2,413</span></h3>
-                                            <span className="counter-title">Active Members</span>
-                                        </div>
-                                    </div>
-                                    {/* Counter */}
-                                    <div className="single-counter">
-                                        <i className="icon-line-awesome-trophy" />
-                                        <div className="counter-inner">
-                                            <h3><span className="counter">99</span>%</h3>
-                                            <span className="counter-title">Satisfaction Rate</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {this.renderCounter()}
                 {/* Counters / End */}
             </div>
         )
@@ -591,7 +444,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onLoadProductionJobs: (page, take) => {
+            dispatch(loadProductionJobs(page, take));
+        },
+        onLoadTemporalJobs: (page, take) => {
+            dispatch(loadTemporalJobs(page, take));
+        },
+        onLoadTopUsers: () => {
+            dispatch(loadTopUsers());
+        },
+        onLoadStatistic: () => {
+            dispatch(loadStatistic());
+        }
     }
 }
 

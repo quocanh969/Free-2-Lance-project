@@ -4,10 +4,17 @@ const initState = {
     sending: false,
     fields: {
         jobTitle: "",
-        addressString: "", // Address Object
-        googleMapLink: "",
-        jobTopic: "",
-
+        addressString: "", // Address Object => geometry.location => lat/lng
+        jobTopic: 0,
+        jobType: 0,
+        vacancy: 0,
+        salary: 0,
+        isDealable: 0,
+        exprDate: "",
+        requirements: "",
+        description: "",
+        relatedImg: [],
+        tags: [],
     }
 }
 
@@ -46,6 +53,22 @@ const AddJobReducer = (state = initState, action) => {
             };
         case "ADD_JOB_RESET":
             return initState;
+        case "LOAD_RESOURCES_REQUEST":
+            return {
+                ...state,
+                message: action.message,
+            }
+        case "LOAD_RESOURCES_SUCCESS":
+            return {
+                ...state,
+                jobTopics: action.data,
+                message: action.message,
+            }
+        case "LOAD_RESOURCES_FAILURE":
+            return {
+                ...state,
+                message: action.message,
+            }
         default:
             return state;
     }

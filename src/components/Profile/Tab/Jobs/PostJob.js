@@ -3,24 +3,130 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GoogleMapAutocomplete from '../../../Help/GoogleMapAutocomplete';
-import { submitAddJobForm } from '../../../../actions/PostJob';
+import MultipleImageUploadComponent from '../../../Help/UploadImages';
+import { submitAddJobForm, loadResources } from '../../../../actions/PostJob';
+import { S_Selector } from '../../../../ultis/SHelper/S_Help_Input';
+import { loadTopics } from '../../../../actions/Home';
+import Calendar from 'react-calendar';
+import DatePicker from 'react-date-picker'
+
+// let initField = [];
 
 class PostJobComponent extends Component {
     constructor(props) {
         super(props);
 
+        this.runUploadFile = this.runUploadFile.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.pushTopics = this.pushTopics.bind(this);
+        this.getDate = this.getDate.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
     }
-
+    runUploadFile() {
+        document.getElementById('uploadImg').click();
+    }
     componentDidMount() {
         window.scrollTo(0, 0);
-        console.log(this.props);
-
+    }
+    onInputChange(e) {
+        let number = e.target.value;
+        if (Number(number) || number == "") {
+            let { onUpdate } = this.props;
+            onUpdate('salary', number);
+        } else {
+            return;
+        }
     }
 
-    handleChange(addrObj) {
+    componentDidUpdate() {
+    }
+
+    pushTopics() {
+        let content = [];
+        let { jobTopic } = this.props.GeneralReducer;
+        for (let i = 0; i < jobTopic.length; i++) {
+            content.push(
+                <option value={jobTopic[i].id_jobtopic}>{jobTopic[i].name}</option>
+            )
+        }
+        return content;
+    }
+
+    handleChange(fieldKey, fieldValue) {
         let { onUpdate } = this.props;
-        onUpdate("addressString", addrObj);
+        onUpdate(fieldKey, fieldValue);
+    }
+
+    onSubmit() {
+        let { onUpdate, onSend } = this.props;
+        let jobTitleValue = document.getElementById("inputJobTitle").value;
+        onUpdate("jobTitle", jobTitleValue);
+        let jobTopicValue = document.getElementById("jobTopicsSelector").value;
+        onUpdate("jobTopic", jobTopicValue);
+        let jobDescriptionValue = document.getElementById("description").value;
+        onUpdate("description", jobDescriptionValue);
+        let jobRequirementsValue = document.getElementById("requirements").value;
+        onUpdate("requirements", jobRequirementsValue);
+        let exprValue = document.getElementById("exprDateSelector").value;
+        onUpdate("exprDate", exprValue);
+
+        let employer = this.props.HeaderReducer.user;
+        let fields = this.props.AddJobReducer.fields;
+        
+        let header = {
+            employer: employer.id_user,
+            title: fields.jobTitle,
+            salary: fields.salary,
+            job_topic: fields.jobTopic,
+            address: fields.addressString.formatted_address,
+            area_province: fields.addressString.address_components[3].long_name,
+            area_district: fields.addressString.address_components[2].long_name,
+            lat: fields.addressString.geometry.location.lat(),
+            lng: fields.addressString.geometry.location.lng(),
+            description: fields.description,
+            expire_date: fields.exprDate,
+            dealable: 0,
+            job_type: fields.jobType,
+            vacancy: 2,
+            isOnline: 0,
+            isCompany: (employer.isBusinessUser ? 1 : 0),
+            requirement: fields.requirements,
+            tag: [],
+            images: fields.relatedImg, 
+        }
+        console.log(header);
+        onSend(header);
+    }
+
+    getDate() {
+        let today = new Date();
+        let maxExprDate = new Date();
+        maxExprDate.setDate(maxExprDate.getDate() + 30);
+
+        var td_dd = today.getDate();
+        var td_mm = today.getMonth() + 1;
+        var td_yyyy = today.getFullYear();
+        if (td_dd < 10) {
+            td_dd = '0' + td_dd
+        }
+        if (td_mm < 10) {
+            td_mm = '0' + td_mm
+        }
+
+        var ft_dd = maxExprDate.getDate();
+        var ft_mm = maxExprDate.getMonth() + 1;
+        var ft_yyyy = maxExprDate.getFullYear();
+        if (ft_dd < 10) {
+            ft_dd = '0' + ft_dd
+        }
+        if (ft_mm < 10) {
+            ft_mm = '0' + ft_mm
+        }
+
+        today = td_yyyy + '-' + td_mm + '-' + td_dd
+        maxExprDate = ft_yyyy + '-' + ft_mm + '-' + ft_dd
+        return { today, maxExprDate };
     }
 
     render() {
@@ -44,37 +150,23 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Title</h5>
-                                            <input type="text" className="with-border" />
+                                            <input id="inputJobTitle" type="text" className="with-border" required />
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Type</h5>
-                                            <select className="selectpicker with-border" data-size={7} title="Select Job Type">
-                                                <option>Full Time</option>
-                                                <option>Freelance</option>
-                                                <option>Part Time</option>
-                                                <option>Internship</option>
-                                                <option>Temporary</option>
+                                            <select className="selectpicker with-border" defaultValue={0} title="Select Job Type">
+                                                <option value={0}>Thời vụ</option>
+                                                <option value={1}>Sản phẩm</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Category</h5>
-                                            <select className="selectpicker with-border" data-size={7} title="Select Category">
-                                                <option>Accounting and Finance</option>
-                                                <option>Clerical &amp; Data Entry</option>
-                                                <option>Counseling</option>
-                                                <option>Court Administration</option>
-                                                <option>Human Resources</option>
-                                                <option>Investigative</option>
-                                                <option>IT and Computers</option>
-                                                <option>Law Enforcement</option>
-                                                <option>Management</option>
-                                                <option>Miscellaneous</option>
-                                                <option>Public Relations</option>
-                                            </select>
+                                            {/* <select id="jobTopicsSelector" className="selectpicker with-border" onMouseDown="if(this.options.length>5){this.size=5}" title="Select Category"> */}
+                                            <S_Selector className="with-border" id="jobTopicsSelector" data={this.props.GeneralReducer.jobTopic} value_tag={"id_jobtopic"} text_tag={"name"} placeholder={"Chọn chủ đề"}></S_Selector>
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
@@ -92,19 +184,9 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Salary</h5>
-                                            <div className="row">
-                                                <div className="col-xl-6">
-                                                    <div className="input-with-icon">
-                                                        <input className="with-border" type="text" placeholder="Min" />
-                                                        <i className="currency">USD</i>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xl-6">
-                                                    <div className="input-with-icon">
-                                                        <input className="with-border" type="text" placeholder="Max" />
-                                                        <i className="currency">USD</i>
-                                                    </div>
-                                                </div>
+                                            <div className="input-with-icon">
+                                                <input className="with-border" type="text" value={this.props.AddJobReducer.fields.salary} onChange={this.onInputChange} placeholder={"Nhập thù lao"} />
+                                                <i className="currency">VND</i>
                                             </div>
                                         </div>
                                     </div>
@@ -123,12 +205,32 @@ class PostJobComponent extends Component {
                                     </div>
                                     <div className="col-xl-12">
                                         <div className="submit-field">
+
+                                            {/* <div className="input-with-icon"> */}
+                                            <h5>Expired date</h5>
+                                            <input id="exprDateSelector" type="date" min={this.getDate().today} max={this.getDate().maxExprDate} defaultValue={this.getDate().today}></input>
+                                            {/* </div> */}
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-12">
+                                        <div className="submit-field">
                                             <h5>Job Description</h5>
-                                            <textarea cols={30} rows={5} className="with-border" defaultValue={""} />
-                                            <div className="uploadButton margin-top-30">
-                                                <input className="uploadButton-input" type="file" accept="image/*, application/pdf" id="upload" multiple />
-                                                <label className="uploadButton-button ripple-effect" htmlFor="upload">Upload Files</label>
-                                                <span className="uploadButton-file-name">Images or documents that might be helpful in describing your job</span>
+                                            <textarea id="description" cols={30} rows={5} className="with-border" defaultValue={""} placeholder="Description (required)" />
+                                            <h5>Job Requirements</h5>
+                                            <textarea id="requirements" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Your requirements (optional)" />
+                                            <div className="margin-top-30">
+                                                {/* <input className="uploadButton-input" type="button" id="upload" onClick={this.runUploadFile} /> */}
+                                                <div>
+                                                    <MultipleImageUploadComponent value={this.props.AddJobReducer.fields.relatedImg} onChange={this.handleChange}></MultipleImageUploadComponent>
+                                                </div>
+                                                <div className='uploadButton mt-3'>
+                                                    <div>
+                                                        <label className="uploadButton-button ripple-effect" onClick={this.runUploadFile}>Upload Files</label>
+                                                    </div>
+                                                    <div>
+                                                        <span className="uploadButton-file-name">Images or documents that might be helpful in describing your job</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,7 +239,7 @@ class PostJobComponent extends Component {
                         </div>
                     </div>
                     <div className="col-xl-12">
-                        <a href="#" className="button ripple-effect big margin-top-30" onClick={() => { console.log(this.props.AddJobReducer.fields.addressString.geometry.location.lat()) }}><i className="icon-feather-plus" /> Post a Job</a>
+                        <a href="#" className="button ripple-effect big margin-top-30" onClick={this.onSubmit}><i className="icon-feather-plus" /> Post a Job</a>
                     </div>
                 </div>
                 {/* Row / End */}
@@ -154,8 +256,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSend: () => {
-            dispatch(submitAddJobForm);
+        onSend: (header) => {
+            dispatch(submitAddJobForm(header));
         },
         onUpdate: (key, value) => {
             dispatch({
@@ -164,7 +266,7 @@ const mapDispatchToProps = dispatch => {
                 value,
             }
             );
-        }
+        },
     }
 }
 
