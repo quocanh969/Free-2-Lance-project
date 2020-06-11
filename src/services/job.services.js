@@ -48,6 +48,8 @@ function postJob(header) {
             requirement: header.requirement,
             tag: header.tag,
             images: header.images,
+            start_date: header.start_date,
+            end_date: header.end_date,
         },
         headers: {
             "Authorization": "Bearer " + JSON.parse(localStorage.getItem("token")),

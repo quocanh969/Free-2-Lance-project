@@ -64,6 +64,7 @@ class PostJobComponent extends Component {
         onUpdate("jobTitle", jobTitleValue);
         let jobTopicValue = document.getElementById("jobTopicsSelector").value;
         onUpdate("jobTopic", jobTopicValue);
+
         let jobDescriptionValue = document.getElementById("description").value;
         onUpdate("description", jobDescriptionValue);
         let jobRequirementsValue = document.getElementById("requirements").value;
@@ -73,17 +74,17 @@ class PostJobComponent extends Component {
 
         let employer = this.props.HeaderReducer.user;
         let fields = this.props.AddJobReducer.fields;
-        
+
         let header = {
             employer: employer.id_user,
             title: fields.jobTitle,
             salary: fields.salary,
             job_topic: fields.jobTopic,
-            // address: fields.addressString.formatted_address,
-            // area_province: fields.addressString.address_components[3].long_name,
-            // area_district: fields.addressString.address_components[2].long_name,
-            // lat: fields.addressString.geometry.location.lat(),
-            // lng: fields.addressString.geometry.location.lng(),
+            address: fields.addressString.formatted_address,
+            area_province: fields.addressString.address_components[3].long_name,
+            area_district: fields.addressString.address_components[2].long_name,
+            lat: fields.addressString.geometry.location.lat(),
+            lng: fields.addressString.geometry.location.lng(),
             description: fields.description,
             expire_date: fields.exprDate,
             dealable: 0,
@@ -93,10 +94,12 @@ class PostJobComponent extends Component {
             isCompany: (employer.isBusinessUser ? 1 : 0),
             requirement: fields.requirements,
             tag: [],
-            images: fields.relatedImg, 
+            images: fields.relatedImg,
+            start_date: this.getDate().today,
+            end_date: this.getDate().maxExprDate,
         }
-        console.log(header.images);
-        // onSend(header);
+        console.log(header);
+        onSend(header);
     }
 
     getDate() {
@@ -156,7 +159,11 @@ class PostJobComponent extends Component {
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Job Type</h5>
-                                            <select className="selectpicker with-border" defaultValue={0} title="Select Job Type">
+                                            <select className="selectpicker with-border" id="jobTypeSelector" onChange={() => {
+                                                let { onUpdate } = this.props;
+                                                let jobTypeValue = document.getElementById("jobTypeSelector").value;
+                                                onUpdate("jobType", jobTypeValue);
+                                            }} defaultValue={0} title="Select Job Type">
                                                 <option value={0}>Thời vụ</option>
                                                 <option value={1}>Sản phẩm</option>
                                             </select>
@@ -203,13 +210,29 @@ class PostJobComponent extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-xl-12">
+                                    <div className="col-xl-4">
                                         <div className="submit-field">
 
                                             {/* <div className="input-with-icon"> */}
                                             <h5>Expired date</h5>
                                             <input id="exprDateSelector" type="date" min={this.getDate().today} max={this.getDate().maxExprDate} defaultValue={this.getDate().today}></input>
                                             {/* </div> */}
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-4" style={{ visibility: ((this.props.AddJobReducer.fields.jobType == 1) ? 'hidden' : 'visible') }}>
+                                        <div className="submit-field">
+                                            <h5>Start date</h5>
+                                            <div className="input-with-icon">
+                                                <input id="exprDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-4">
+                                        <div className="submit-field">
+                                            <h5>End date</h5>
+                                            <div className="input-with-icon">
+                                                <input id="exprDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-xl-12">
