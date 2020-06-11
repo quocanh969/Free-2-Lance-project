@@ -1,14 +1,14 @@
 import { combineReducers } from "redux";
 
-import ForgetPWReducer from './AccountReducers/ForgetPassword';
-import LoginReducer from './AccountReducers/Login.reducer';
-import RegisterReducer from './AccountReducers/Register.reducer';
+import ForgetPWReducer from "./AccountReducers/ForgetPassword";
+import LoginReducer from "./AccountReducers/Login.reducer";
+import RegisterReducer from "./AccountReducers/Register.reducer";
 import ActivationReducer from "./AccountReducers/Activation.reducer";
-import ResendActivationReducer from './AccountReducers/ResendActivation.reducer';
+import ResendActivationReducer from "./AccountReducers/ResendActivation.reducer";
 
-import ReadLocationReducer from './JobReducers/ReadLocation.Reducer';
-import JobDetailReducer from './JobReducers/JobDetail.Reducer';
-import AddJobReducer from './JobReducers/AddJobForm.Reducer';
+import ReadLocationReducer from "./JobReducers/ReadLocation.Reducer";
+import JobDetailReducer from "./JobReducers/JobDetail.Reducer";
+import AddJobReducer from "./JobReducers/AddJobForm.Reducer";
 
 import SettingReducer from './Dashboard/Setting.Reducer';
 
@@ -16,40 +16,43 @@ import ContactUsReducer from './Contact.Reducer';
 import HomeReducer from './Home.reducer';
 import JobsListReducer from './JobReducers/JobsList.Reducer';
 
-import GeneralReducer from './General.Reducer';
+import ChangePWReducer from "./ProfileReducers/ChangePassword.reducer";
 
-import HeaderReducer from './Header.Reducer';
+import GeneralReducer from "./General.Reducer";
 
-const reducer = combineReducers(
-    {
-        // Header reducer
-        HeaderReducer,
+import HeaderReducer from "./Header.Reducer";
 
-        // Big Component reducer        
-        ContactUsReducer,
-        HomeReducer,
-        JobsListReducer,
+const reducer = combineReducers({
+  // Header reducer
+  HeaderReducer,
 
-        // General reducer
-        GeneralReducer,
+  // Big Component reducer
+  ContactUsReducer,
+  HomeReducer,
+  JobsListReducer,
 
-        // Account reducer
-        ForgetPWReducer,
-        LoginReducer,
-        RegisterReducer,
-        ActivationReducer,
-        ResendActivationReducer,
+  // General reducer
+  GeneralReducer,
 
-        //Dashboard        
-        AddJobReducer,// Add job reducer
-        SettingReducer, // Setting reducer
-        
-        // Map reducer
-        ReadLocationReducer,
+  // Account reducer
+  ForgetPWReducer,
+  LoginReducer,
+  RegisterReducer,
+  ActivationReducer,
+  ResendActivationReducer,
 
-        // Job detail reducer
-        JobDetailReducer,
-    }
-)
+  //Dashboard        
+  AddJobReducer,// Add job reducer
+  SettingReducer, // Setting reducer
+  
+  // Map reducer
+  ReadLocationReducer,
+
+  // Job detail reducer
+  JobDetailReducer,
+
+  // Profile reducer
+  ChangePWReducer,
+});
 
 export default reducer;
