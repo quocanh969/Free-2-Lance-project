@@ -17,6 +17,10 @@ function login(email, password) {
   });
 }
 
+function getUserInfo() {
+  return axios.get('/users/me');
+}
+
 function verify() {
   return axios.get("/users/")  
 }
@@ -52,4 +56,4 @@ function editPersonalInfo(personal) {
     });
 }
 
-export { login, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo };
+export { login, getUserInfo, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo };

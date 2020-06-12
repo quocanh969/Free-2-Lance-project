@@ -1,4 +1,4 @@
-import { login } from "../services/account.services";
+import { login, getUserInfo } from "../services/account.services";
 
 import axios from "axios";
 import { history } from "../ultis/history/history";
@@ -35,19 +35,29 @@ export const sendLogin = (email, password) => {
 
     login(email, password)
       .then((res) => {
-        console.log(res);
-
         if (res.data.code === "-101") {
           // thất bại
           dispatch(failure(res.data.message));
         } else {
           // thành công
           dispatch(success(res.data.message));
-          dispatch(updateUser(res.data.data.user));
-          // Lưu token vào localstorage
-          localStorage.setItem("user", JSON.stringify(res.data.data.user));
           localStorage.setItem("token", JSON.stringify(res.data.data.token));
-          window.history.back();
+          
+          // lấy thông tin user
+          getUserInfo().then(res=>{
+            if(res.data.code === '200')
+            {
+              dispatch(updateUser(res.data.data.personal))
+              window.history.back();
+            }
+            else
+            {
+              alert('Cập nhật thông tin user thật bại');
+            }            
+          }).catch(err=>{
+            console.log(err);
+          })
+          
           // history.push('/home');
         }
       })

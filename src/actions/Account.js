@@ -1,4 +1,4 @@
-import {editPersonalInfo} from '../services/account.services';
+import {editPersonalInfo, getUserInfo} from '../services/account.services';
 
 export const updatePersonalInfo = (personal) => {
     return dispatch => {
@@ -32,5 +32,25 @@ export const updatePersonalInfo = (personal) => {
         return {
             type: 'PERSONAL_UPDATE_FAILURE',
         }
+    }
+}
+
+export const updateUserState = () => {
+    return dispatch => {
+        getUserInfo().then(res=>{
+            if(res.data.code === '200')
+            {
+                dispatch({
+                    type: 'UPDATE_USER',
+                    user: res.data.data.personal,
+                })
+            }
+            else
+            {
+                alert('Cập nhật thông tin user thật bại');
+            }            
+        }).catch(err=>{
+        console.log(err);
+        })
     }
 }

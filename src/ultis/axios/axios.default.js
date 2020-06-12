@@ -9,9 +9,8 @@ let axios = Axios.create({
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  //get token
-  let token = JSON.parse(localStorage.getItem("user")).currentToken;
-  // if (token) token = token.slice(1, -1);
+  //get token  
+  let token = JSON.parse(localStorage.getItem("token"));
   config.headers.Authorization = token ? `Bearer ${token}` : "";
   return config;
 });

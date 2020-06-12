@@ -10,6 +10,7 @@ import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt
 
 import { loadTopics, loadAreas } from '../../actions/Home';
 import { loadJobList } from '../../actions/Job';
+import { updateUserState } from '../../actions/Account';
 
 class HeaderComponent extends Component {
 
@@ -79,10 +80,8 @@ class HeaderComponent extends Component {
         let { onUpdateUser, onLoadTopics, onLoadAreas } = this.props;
 
         // kiêm tra local storage
-        if (localStorage.getItem('user') && localStorage.getItem('token')) {
-            let user = JSON.parse(localStorage.getItem('user'));
-            let token = JSON.parse(localStorage.getItem('token'));
-            onUpdateUser(user, token);
+        if (localStorage.getItem('token')) {            
+            onUpdateUser();
         }
 
         // loadTopics        
@@ -117,9 +116,7 @@ class HeaderComponent extends Component {
 
     handleLogOut() {
         let { onLogOut } = this.props;
-
-        localStorage.setItem('user', null);
-        localStorage.setItem('token', null);
+        localStorage.clear();
         onLogOut();
     }
 
@@ -237,6 +234,7 @@ class HeaderComponent extends Component {
     }
 
     renderUserLoginContent(user) {
+        let userAvatar = 'data:image/png;base64,' + user.avatarImg || UserAvatarPlaceholder;
         return (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
@@ -264,10 +262,10 @@ class HeaderComponent extends Component {
                     </div>
                 </li>                     
                 <li className={"nav-item dropdown pt-3 pb-2 pr-3 pl-4 mr-2 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
-                    <a className="nav-link dropdown-toggle rounded-pill bg-secondary mt-1 px-2 py-1" href="#" 
+                    <a className="nav-link dropdown-toggle rounded-pill bg-secondary mt-1 pl-2 pr-3 py-1" href="#" 
                         id="UserMenuDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img height='25' className='rounded-circle' src={UserAvatarPlaceholder}></img>
+                        <img height='25' className='rounded-circle' src={userAvatar}></img>
                         &nbsp;&nbsp;
                         <span style={{color: 'white'}}>{user.fullname}</span>
                     </a>
@@ -298,7 +296,7 @@ class HeaderComponent extends Component {
                     </NavLink>
                 </li>
                 <li className="nav-item pt-2 pb-2 px-3 mr-3">
-                    <NavLink className={"btn font-weight-bold border-width-3 my-2 px-2 py-1 " + (this.state.isCurrentTop ? ' btn-outline-light' : ' btn-outline-dark')} to='/log-in'>
+                    <NavLink className={"btn font-weight-bold border-width-3 my-2 px-2 py-1 " + (this.state.isCurrentTop ? ' btn-outline-light' : ' btn-outline-dark')} to='/login'>
                         <i className='icon-line-awesome-sign-in font-weight-bold pt-2'></i>&nbsp;Login
                     </NavLink>
                 </li> 
@@ -357,12 +355,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUpdateUser: (user, token) => {
-            dispatch({
-                type: 'UPDATE_USER',
-                user: user,
-                token: token,
-            });
+        onUpdateUser: () => {
+            dispatch(updateUserState());
         },
         onLogOut: () => {
             dispatch({
