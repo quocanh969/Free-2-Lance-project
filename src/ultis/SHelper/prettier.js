@@ -12,6 +12,17 @@ export const prettierNumber = (number) => {
 export const prettierDate = (date) => {
   let newDate = new Date(date);
   return (
-    newDate.getDate() + "-" + newDate.getMonth() + "-" + newDate.getFullYear()
+    newDate.getDate() + "/" + newDate.getMonth() + "/" + newDate.getFullYear()
   );
+};
+
+export const prettierDateAgo = (date) => {
+  let postDate = new Date(date);
+  let today = new Date();
+  const diffTime = Math.abs(today - postDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (diffDays <= 30) return diffDays + " ngày trước";
+  else if (diffDays < 365)
+    return Math.ceil(diffDays / 30.4375) - 1 + " tháng trước";
+  else return Math.ceil(diffDays / 365.25) - 1 + " năm trước";
 };

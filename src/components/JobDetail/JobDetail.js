@@ -4,7 +4,11 @@ import "../../assets/css/colors/blue.css";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { prettierNumber, prettierDate } from "../../ultis/SHelper/prettier";
+import {
+  prettierNumber,
+  prettierDate,
+  prettierDateAgo,
+} from "../../ultis/SHelper/prettier";
 import { loadJobDetail } from "../../actions/Job";
 
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
@@ -67,6 +71,43 @@ class JobDetailComponent extends Component {
     });
 
     return <div className="text-center">{content}</div>;
+  }
+
+  renderAuctionTab(dealable) {
+    if (dealable) {
+      return (
+        <li className="nav-item">
+          <h4
+            className={
+              "nav-link cursor-pointer mb-0 " +
+              (this.state.tab === 5 ? "active" : "")
+            }
+            onClick={() => {
+              this.setState({ tab: 5 });
+            }}
+          >
+            Đấu giá
+          </h4>
+        </li>
+      );
+    } else return [];
+  }
+
+  renderApplicants(applicants) {
+    //applicant = {dial, email, fullname, id_job, id_user, proposed_price}
+
+    let content = [];
+    applicants.forEach((applicant, i) => {
+      content.push(
+        <div className="row" key={i}>
+          <div className="col-md-6">{applicant.fullname}</div>
+          <div className="col-md-6">
+            {prettierNumber(applicant.proposed_price)} VNĐ
+          </div>
+        </div>
+      );
+    });
+    return content;
   }
 
   render() {
@@ -189,19 +230,7 @@ class JobDetailComponent extends Component {
                       Hình ảnh
                     </h4>
                   </li>
-                  <li className="nav-item">
-                    <h4
-                      className={
-                        "nav-link cursor-pointer mb-0 " +
-                        (this.state.tab === 5 ? "active" : "")
-                      }
-                      onClick={() => {
-                        this.setState({ tab: 5 });
-                      }}
-                    >
-                      Đấu giá
-                    </h4>
-                  </li>
+                  {this.renderAuctionTab(jobDetail.dealable)}
                 </ul>
 
                 <div className="mt-0 p-4 tab-component">
@@ -223,8 +252,10 @@ class JobDetailComponent extends Component {
                                             </div> */}
                       {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
                     </div>
-                  ) : (
+                  ) : this.state.tab === 4 ? (
                     this.renderPhoto(jobDetail.imgs)
+                  ) : (
+                    this.renderApplicants(jobDetail.dealers)
                   )}
                 </div>
               </div>
@@ -329,34 +360,39 @@ class JobDetailComponent extends Component {
                   data-toggle="modal"
                   data-target="#myModal"
                 >
-                  Apply Now{" "}
+                  Đăng kí ứng cử{" "}
                   <i className="icon-material-outline-arrow-right-alt" />
                 </button>
                 {/* Sidebar Widget */}
                 <div className="sidebar-widget">
                   <div className="job-overview">
-                    <div className="job-overview-headline">Job Summary</div>
+                    <div className="job-overview-headline">Tóm tắt</div>
                     <div className="job-overview-inner">
                       <ul>
                         <li>
                           <i className="icon-material-outline-location-on" />
-                          <span>Location</span>
-                          <h5>London, United Kingdom</h5>
+                          <span>Vị trí</span>
+                          <h5>
+                            {jobDetail.area_district}, {jobDetail.area_province}
+                          </h5>
                         </li>
                         <li>
                           <i className="icon-material-outline-business-center" />
-                          <span>Job Type</span>
-                          <h5>Full Time</h5>
+                          <span>Tính chất</span>
+                          <h5>
+                            {jobDetail.isCompany ? "Công ty" : "Cá nhân"},{" "}
+                            {jobDetail.isOnline ? "Online" : "Offline"}
+                          </h5>
                         </li>
                         <li>
                           <i className="icon-material-outline-local-atm" />
-                          <span>Salary</span>
-                          <h5>$35k - $38k</h5>
+                          <span>Tiền công</span>
+                          <h5>{prettierNumber(jobDetail.salary)}</h5>
                         </li>
                         <li>
                           <i className="icon-material-outline-access-time" />
-                          <span>Date Posted</span>
-                          <h5>2 days ago</h5>
+                          <span>Ngày đăng</span>
+                          <h5>{prettierDateAgo(jobDetail.post_date)}</h5>
                         </li>
                       </ul>
                     </div>
@@ -404,7 +440,7 @@ class JobDetailComponent extends Component {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h4 className="modal-title">Apply Now</h4>
+                <h4 className="modal-title">Đăng kí ứng cử</h4>
                 <button type="button" className="close" data-dismiss="modal">
                   &times;
                 </button>
