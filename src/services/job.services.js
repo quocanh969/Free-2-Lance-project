@@ -72,4 +72,12 @@ function getJobsDetail(id) {
   return axios.get("/getJobById/" + id);
 }
 
-export { postJob, getAllTopics, getJobsList, getJobsDetail };
+function doApplyJob(id_user, id_job, proposed_price, attachment) {
+  return axios.post("/applicants/addApplicant", {
+    id_user,
+    id_job,
+    proposed_price,
+    attachment,
+  });
+}
+export { postJob, getAllTopics, getJobsList, getJobsDetail, doApplyJob };
