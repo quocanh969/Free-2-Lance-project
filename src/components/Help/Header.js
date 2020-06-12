@@ -8,7 +8,7 @@ import Logo2 from '../../assets/images/logo2.png';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt.png';
 
-import { loadTopics, loadAreas } from '../../actions/Home';
+import { loadTopics, loadAreas, loadTags } from '../../actions/Home';
 import { loadJobList } from '../../actions/Job';
 
 class HeaderComponent extends Component {
@@ -76,7 +76,7 @@ class HeaderComponent extends Component {
     }
 
     componentWillMount() {
-        let { onUpdateUser, onLoadTopics, onLoadAreas } = this.props;
+        let { onUpdateUser, onLoadTopics, onLoadAreas, onLoadTags } = this.props;
 
         // kiêm tra local storage
         if (localStorage.getItem('user') && localStorage.getItem('token')) {
@@ -88,6 +88,7 @@ class HeaderComponent extends Component {
         // loadTopics        
         onLoadTopics();
         onLoadAreas();
+        onLoadTags();
     }
 
     componentDidMount() {
@@ -374,6 +375,9 @@ const mapDispatchToProps = dispatch => {
         },
         onLoadAreas: () => {
             dispatch(loadAreas());
+        },
+        onLoadTags: () => {
+          dispatch(loadTags());  
         },
         onLoadJobByJob: (query) => {
             dispatch(loadJobList(1, 8, 2, query));

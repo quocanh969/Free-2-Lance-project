@@ -44,6 +44,7 @@ export default class MultipleImageUploadComponent extends Component {
                     this.fileObj.push(e.target.files[i].name);
                     this.getBase64(e.target.files[i], (result) => {
                         b64 = result;
+                        b64 = b64.split(',')[1];
                         this.imgArr.push(b64);
                     })
                 } else {
@@ -71,6 +72,7 @@ export default class MultipleImageUploadComponent extends Component {
         this.fileObj[0] = (e.target.files[0].name);
         this.getBase64(e.target.files[0], (result) => {
             b64 = result;
+            b64 = b64.split(',')[1];
             this.imgArr[0] = (b64);
         });
         this.setState({ img: this.imgArr, file: this.fileArray }, () => {

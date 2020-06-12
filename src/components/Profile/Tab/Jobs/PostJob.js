@@ -40,6 +40,7 @@ class PostJobComponent extends Component {
     }
 
     componentDidUpdate() {
+        // console.log("GENERAL"); console.log(this.props.GeneralReducer);
     }
 
     pushTopics() {
@@ -95,8 +96,8 @@ class PostJobComponent extends Component {
             requirement: fields.requirements,
             tag: [],
             images: fields.relatedImg,
-            start_date: this.getDate().today,
-            end_date: this.getDate().maxExprDate,
+            start_date: document.getElementById('startDateSelector').value,
+            end_date: document.getElementById('endDateSelector').value,
         }
         console.log(header);
         onSend(header);
@@ -205,7 +206,7 @@ class PostJobComponent extends Component {
                                                     <input type="text" className="keyword-input with-border" placeholder="e.g. job title, responsibilites" />
                                                     <button className="keyword-input-button ripple-effect"><i className="icon-material-outline-add" /></button>
                                                 </div>
-                                                <div className="keywords-list">{/* keywords go here */}</div>
+                                                <div className="keywords-list">{/* Keywords */}</div>
                                                 <div className="clearfix" />
                                             </div>
                                         </div>
@@ -223,7 +224,7 @@ class PostJobComponent extends Component {
                                         <div className="submit-field">
                                             <h5>Start date</h5>
                                             <div className="input-with-icon">
-                                                <input id="exprDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
+                                                <input id="startDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
                                             </div>
                                         </div>
                                     </div>
@@ -231,7 +232,7 @@ class PostJobComponent extends Component {
                                         <div className="submit-field">
                                             <h5>End date</h5>
                                             <div className="input-with-icon">
-                                                <input id="exprDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
+                                                <input id="endDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
                                             </div>
                                         </div>
                                     </div>

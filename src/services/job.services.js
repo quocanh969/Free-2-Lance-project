@@ -70,4 +70,8 @@ function getJobsList(page, take, isASC, query) {
     })
 }
 
-export { postJob, getAllTopics, getJobsList };
+function getTags() {
+    return axios.get('/getAllTags');
+}
+
+export { postJob, getAllTopics, getJobsList, getTags };

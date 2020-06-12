@@ -7,13 +7,21 @@ import '../assets/css/colors/blue.css';
 
 import CompanyLogoPlaceholder from '../assets/images/company-logo-placeholder.png';
 
-import {loadJobList} from '../actions/Job';
+import { loadJobList } from '../actions/Job';
 
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
+import { loadDistricts } from '../actions/Home';
 
 class JobListComponent extends Component {
 
-    originalQuery = {};
+    originalQuery = {
+        area_province: undefined,
+        area_district: undefined,
+        job_topic: undefined,
+        salary: undefined,
+        expire_date: undefined,
+        vacancy: undefined,
+    };
 
     constructor(props) {
         super(props);
@@ -35,12 +43,17 @@ class JobListComponent extends Component {
         window.scrollTo(0, 0);
     }
 
+    // componentDidUpdate() {
+    //     let { onLoadDistricts } = this.props;
+    //     let provinceId = document.getElementById('select-area-province').value;
+    //     onLoadDistricts(provinceId);
+    // }
+
     renderTags(tags) {
         let content = [], count = 0;
-        for(let e of tags)
-        {
+        for (let e of tags) {
             content.push(
-                <span key={count}><span style={{textDecoration: 'underline', color: 'blue'}}>{e.tag_name},</span>&nbsp;</span>
+                <span key={count}><span style={{ textDecoration: 'underline', color: 'blue' }}>{e.tag_name},</span>&nbsp;</span>
             );
             count++;
         }
@@ -50,17 +63,16 @@ class JobListComponent extends Component {
 
     generateJobListGridMode() {
         let content = [], count = 0;
-        let {jobList} = this.props.JobsListReducer;
-              
+        let { jobList } = this.props.JobsListReducer;
+
 
         for (let e of jobList) {
             let postDate = new Date(e.post_date);
             let expireDate = new Date(e.expire_date);
             let logo = CompanyLogoPlaceholder;
-            if(e.img !== null)
-            {
+            if (e.img !== null) {
                 logo = 'data:image/png;base64,' + e.img;
-            }    
+            }
             content.push(
                 <NavLink to='/job-detail' className="job-listing" key={count}>
                     {/* Job Listing Details */}
@@ -78,11 +90,11 @@ class JobListComponent extends Component {
                     <div className="job-listing-footer">
                         <span className="bookmark-icon" />
                         <ul>
-                            <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>                            
+                            <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
                             <li><i className="icon-material-outline-account-balance-wallet" /> {e.salary} đ</li>
                             <br></br>
-                            <li><i className="icon-material-outline-business-center" /> {postDate.getDate()+ '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
-                            <li><i className="icon-material-outline-access-time" /> {expireDate.getDate()+ '/' + expireDate.getMonth() + '/' + expireDate.getFullYear()}</li>
+                            <li><i className="icon-material-outline-business-center" /> {postDate.getDate() + '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
+                            <li><i className="icon-material-outline-access-time" /> {expireDate.getDate() + '/' + expireDate.getMonth() + '/' + expireDate.getFullYear()}</li>
                         </ul>
                     </div>
                 </NavLink>
@@ -94,15 +106,14 @@ class JobListComponent extends Component {
 
     generateJobListListMode() {
         let content = [], count = 0;
-        let {jobList} = this.props.JobsListReducer;  
+        let { jobList } = this.props.JobsListReducer;
 
         for (let e of jobList) {
             let postDate = new Date(e.post_date);
             let expireDate = new Date(e.expire_date);
             let logo = CompanyLogoPlaceholder;
-            if(e.img !== null)
-            {
-                logo = 'data:image/png;base64,'+ e.img;
+            if (e.img !== null) {
+                logo = 'data:image/png;base64,' + e.img;
             }
             content.push(
                 <div className="job-listing container" key={count}>
@@ -117,25 +128,25 @@ class JobListComponent extends Component {
                             {/* <h4 className="job-listing-company">{e.company} <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4> */}
                             <NavLink to='/job-detail' className="d-block font-weight-bold text-dark">{e.title}</NavLink>
                             {this.renderTags(e.tags)}
-                            <div className="d-inline-block text-truncate text-dark" style={{maxWidth: "50vh", maxHeight: '50%'}}>{e.description}</div>
+                            <div className="d-inline-block text-truncate text-dark" style={{ maxWidth: "50vh", maxHeight: '50%' }}>{e.description}</div>
                             {/* Job Listing Footer */}
                             <div className="job-listing-footer">
                                 <ul>
-                                    <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>                                    
+                                    <li><i className="icon-material-outline-location-on" /> {e.area_province}</li>
                                     <li><i className="icon-material-outline-account-balance-wallet" /> {e.salary} đ</li>
                                 </ul>
                             </div>
                             <div className="job-listing-footer">
-                                <ul>                                    
-                                    <li><i className="icon-material-outline-business-center" /> {postDate.getDate()+ '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
-                                    <li><i className="icon-material-outline-access-time" /> {expireDate.getDate()+ '/' + expireDate.getMonth() + '/' + expireDate.getFullYear()}</li>
+                                <ul>
+                                    <li><i className="icon-material-outline-business-center" /> {postDate.getDate() + '/' + postDate.getMonth() + '/' + postDate.getFullYear()}</li>
+                                    <li><i className="icon-material-outline-access-time" /> {expireDate.getDate() + '/' + expireDate.getMonth() + '/' + expireDate.getFullYear()}</li>
                                 </ul>
                             </div>
                         </div>
                         {/* Bookmark */}
-                        <span className="bookmark-icon col-2"/>
+                        <span className="bookmark-icon col-2" />
                     </div>
-                    
+
                 </div>
             );
             count++;
@@ -144,136 +155,126 @@ class JobListComponent extends Component {
     }
 
     handlePagination(pageNum) {
-        if(pageNum !== this.props.JobsListReducer.page)
-        {
+        if (pageNum !== this.props.JobsListReducer.page) {
             this.loadJobListFunc(pageNum, this.query);
-        }        
+        }
     }
 
     handleSortChange() {
-        this.setState({isASC: document.getElementById('select-sort-type').value},()=>{
+        this.setState({ isASC: document.getElementById('select-sort-type').value }, () => {
             this.loadJobListFunc(1, this.query);
         });
     }
 
     handleFilter() {
+        console.log(this.props.GeneralReducer.districts);
         let query = this.originalQuery;
+        if (query['area_province'] !== undefined) {
+            let area_province = document.getElementById('select-area-province').value;
+            if (area_province !== '0') {
+                query['area_province'] = area_province;
+            }
+        }
 
-        if(query['area_province'] !== undefined)
-        {
-            let area = document.getElementById('select-area').value;
-            if(area !== '0') query['area_province'] = area;   
-        }        
+        if (query['area_district'] !== undefined) {
+            let area_district = document.getElementById('select-area-district').value;
+            if (area_district !== '0') query['area_district'] = area_district;
+        }
 
-        if(query['job_topic'] !== undefined)
-        {
+        if (query['job_topic'] !== undefined) {
             let category = document.getElementById('select-category').value;
-            if(category !== '0') query['job_topic'] = category;
-        }        
-        
-        if(query['salary'] !== undefined)
-        {
+            if (category !== '0') query['job_topic'] = category;
+        }
+
+        if (query['salary'] !== undefined) {
             let salary = Number.parseInt(document.getElementById('salary-select').value);
-            if(salary !== 0)
-            {
-                switch(salary)
-                {
+            if (salary !== 0) {
+                switch (salary) {
                     case 1:
-                    {
-                        query['salary'] = {top: 100000, bot: 0};
-                        break;
-                    }
+                        {
+                            query['salary'] = { top: 100000, bot: 0 };
+                            break;
+                        }
                     case 2:
-                    {
-                        query['salary'] = {top: 500000, bot: 100000};
-                        break;
-                    }
+                        {
+                            query['salary'] = { top: 500000, bot: 100000 };
+                            break;
+                        }
                     case 3:
-                    {
-                        query['salary'] = {top: 1000000, bot: 500000};
-                        break;
-                    }
+                        {
+                            query['salary'] = { top: 1000000, bot: 500000 };
+                            break;
+                        }
                     case 4:
-                    {
-                        query['salary'] = {top: 10000000, bot: 1000000};
-                        break;
-                    }
+                        {
+                            query['salary'] = { top: 10000000, bot: 1000000 };
+                            break;
+                        }
                     case 5:
-                    {
-                        query['salary'] = {top: 0, bot: 10000000};
-                        break;
-                    }
+                        {
+                            query['salary'] = { top: 0, bot: 10000000 };
+                            break;
+                        }
                 }
             }
-        }            
+        }
 
-        if(query['expire_date'] !== undefined)
-        {
+        if (query['expire_date'] !== undefined) {
             let expiredDate = document.getElementById('expired-input').value;
-            if(expiredDate !== '') query['expire_date'] = expiredDate;
-        }            
+            if (expiredDate !== '') query['expire_date'] = expiredDate;
+        }
 
-        if(query['vacancy'] !== undefined)
-        {
+        if (query['vacancy'] !== undefined) {
             let vacancy = document.getElementById('vacancy-input').value;
-            if(vacancy !== '') query['vacancy'] = vacancy;
+            if (vacancy !== '') query['vacancy'] = vacancy;
         }
 
         console.log(query);
     }
-    
+
     initQuery() {
-        if(this.props.location.state === null || this.props.location.state === undefined)
-        {
+        if (this.props.location.state === null || this.props.location.state === undefined) {
             // navigate từ topic trên header
-            let {params} = this.props.match;
+            let { params } = this.props.match;
             // Tiền xử lý params
-            for(let e in params)
-            {
-                if(params !== '')
-                {
+            for (let e in params) {
+                if (params !== '') {
                     this.originalQuery[e] = params[e];
                 }
             }
         }
-        else
-        {
+        else {
             // navigate từ search page
             this.originalQuery = this.props.location.state;
         }
     }
 
     loadJobListFunc(page, query) {
-        let {onLoadJobList} = this.props;        
+        let { onLoadJobList } = this.props;
         onLoadJobList(page, 8, this.state.isASC, query);
     }
 
     renderPagination(page, totalPage) {
         let content = [];
         let start = 1, end = 4;
-        if(totalPage - 4 < page)
-        {
-            if(totalPage - 4 < 0)
-            {
+        if (totalPage - 4 < page) {
+            if (totalPage - 4 < 0) {
                 start = 1;
             }
-            else
-            {
+            else {
                 start = totalPage - 4;
-            }            
+            }
             end = totalPage;
         }
-        else
-        {
+        else {
             start = page;
             end = page + 3;
         }
 
-        for(let e = start; e <= end; e++)
-        {
+        for (let e = start; e <= end; e++) {
             content.push(
-                <li key={e}><div className={'cursor-pointer ' + (page === e ? "current-page" : undefined)} onClick={()=>{this.handlePagination(e)}}>{e}</div></li>
-            );            
+                <li key={e}><div className={'cursor-pointer ' + (page === e ? "current-page" : undefined)} onClick={() => { this.handlePagination(e) }}>{e}</div></li>
+            );
         }
 
 
@@ -281,29 +282,47 @@ class JobListComponent extends Component {
     }
 
     renderFilter() {
-        let { jobTopic, areas } = this.props.GeneralReducer;
+        let { jobTopic, areas, districts } = this.props.GeneralReducer;
         return (
             <div className="sidebar-container">
                 <h2 className='font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4'>Bộ lọc</h2>
                 <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100 mb-3"
-                    onClick={()=>{this.handleFilter()}}>
+                    onClick={() => { this.handleFilter() }}>
                     Lọc&nbsp;&nbsp;&nbsp;<i className="icon-line-awesome-search pt-1" />
                 </div>
                 {/* Khu vực */}
                 <div className="sidebar-widget">
-                    <h3>Khu vực</h3>
+                    <h3>Tỉnh, thành phố</h3>
                     <div className="input-with-icon">
                         {(
                             this.originalQuery['area_province'] !== undefined
-                            ?
-                            <S_Selector id='select-area' className='with-border' placeholder='Chọn khu vực'
-                                disabled={true} value={this.originalQuery['area_province']}                
-                                data={areas} value_tag='id_province' text_tag='name'>
-                            </S_Selector>
-                            :
-                            <S_Selector id='select-area' className='with-border' placeholder='Chọn khu vực'                          
-                                data={areas} value_tag='id_province' text_tag='name'>
-                            </S_Selector>
+                                ?
+                                <S_Selector id='select-area-province' className='with-border' placeholder='Chọn khu vực'
+                                    disabled={true} value={this.originalQuery['area_province']}
+                                    data={areas} value_tag='id_province' text_tag='name'>
+                                </S_Selector>
+                                :
+                                <S_Selector id='select-area-province' className='with-border' placeholder='Chọn khu vực'
+                                    data={areas} value_tag='id_province' text_tag='name'>
+                                </S_Selector>
+                        )}
+                    </div>
+                </div>
+
+                <div className="sidebar-widget">
+                    <h3>Quận, huyện</h3>
+                    <div className="input-with-icon">
+                        {(
+                            this.originalQuery['area_district'] !== undefined
+                                ?
+                                <S_Selector id='select-area-district' className='with-border' placeholder='Chọn khu vực'
+                                    disabled={true} value={this.originalQuery['area_district']}
+                                    data={districts} value_tag='id_district' text_tag='name'>
+                                </S_Selector>
+                                :
+                                <S_Selector id='select-area' className='with-border' placeholder='Chọn khu vực'
+                                    data={areas} value_tag='id_district' text_tag='name'>
+                                </S_Selector>
                         )}
                     </div>
                 </div>
@@ -314,21 +333,21 @@ class JobListComponent extends Component {
                     <div className="input-with-icon">
                         {(
                             this.originalQuery['job_topic'] !== undefined
-                            ?
-                            <S_Selector id='select-category' className='with-border' placeholder='Chọn chủ đề'
-                                disabled={true} value={this.originalQuery['job_topic']}
-                                data={jobTopic} value_tag='id_jobtopic' text_tag='name'>                            
-                            </S_Selector>
-                            :
-                            <S_Selector id='select-category' className='with-border' placeholder='Chọn chủ đề'
-                                data={jobTopic} value_tag='id_jobtopic' text_tag='name'>                            
-                            </S_Selector>
+                                ?
+                                <S_Selector id='select-category' className='with-border' placeholder='Chọn chủ đề'
+                                    disabled={true} value={this.originalQuery['job_topic']}
+                                    data={jobTopic} value_tag='id_jobtopic' text_tag='name'>
+                                </S_Selector>
+                                :
+                                <S_Selector id='select-category' className='with-border' placeholder='Chọn chủ đề'
+                                    data={jobTopic} value_tag='id_jobtopic' text_tag='name'>
+                                </S_Selector>
                         )}
                     </div>
                 </div>
-                
+
                 {/* Tính chất công việc */}
-{/*                 
+                {/*                 
                 <div className="sidebar-widget">
                     <h3>Tính chất công việc</h3>
                     <div className="switches-list">
@@ -347,31 +366,31 @@ class JobListComponent extends Component {
                     </div>
                 </div> */}
 
-                {/* Mức lương */}                
+                {/* Mức lương */}
                 <div className="sidebar-widget">
                     <h3>Salary</h3>
                     <div className="input-with-icon">
-                    {(
-                        this.originalQuery['salary'] !== undefined
-                        ?
-                        <select disabled className="btn bg-cloud with-border dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={this.originalQuery['salary'].top}>
-                            <option value={1} disabled>Giá tiền</option>
-                            <option value={100000}>Nhỏ hơn 100.000 đ</option>
-                            <option value={500000}>100.000đ - 500.000đ</option>
-                            <option value={1000000}>500.000đ - 1.000.000đ</option>
-                            <option value={10000000}>1.000.000đ - 10.000.000đ</option>
-                            <option value={0}>Lớn hơn 10.000.000đ</option>
-                        </select>
-                        :
-                        <select className="btn with-border dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={0}>
-                            <option value={0} disabled>Giá tiền</option>
-                            <option value={1}>Nhỏ hơn 100.000 đ</option>
-                            <option value={2}>100.000đ - 500.000đ</option>
-                            <option value={3}>500.000đ - 1.000.000đ</option>
-                            <option value={4}>1.000.000đ - 10.000.000đ</option>
-                            <option value={5}>Lớn hơn 10.000.000đ</option>
-                        </select>
-                    )} 
+                        {(
+                            this.originalQuery['salary'] !== undefined
+                                ?
+                                <select disabled className="btn bg-cloud with-border dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={this.originalQuery['salary'].top}>
+                                    <option value={1} disabled>Giá tiền</option>
+                                    <option value={100000}>Nhỏ hơn 100.000 đ</option>
+                                    <option value={500000}>100.000đ - 500.000đ</option>
+                                    <option value={1000000}>500.000đ - 1.000.000đ</option>
+                                    <option value={10000000}>1.000.000đ - 10.000.000đ</option>
+                                    <option value={0}>Lớn hơn 10.000.000đ</option>
+                                </select>
+                                :
+                                <select className="btn with-border dropdown-toggle bs-placeholder btn-default" id='salary-select' defaultValue={0}>
+                                    <option value={0} disabled>Giá tiền</option>
+                                    <option value={1}>Nhỏ hơn 100.000 đ</option>
+                                    <option value={2}>100.000đ - 500.000đ</option>
+                                    <option value={3}>500.000đ - 1.000.000đ</option>
+                                    <option value={4}>1.000.000đ - 10.000.000đ</option>
+                                    <option value={5}>Lớn hơn 10.000.000đ</option>
+                                </select>
+                        )}
                     </div>
                 </div>
 
@@ -381,36 +400,36 @@ class JobListComponent extends Component {
                     <div className="input-with-icon">
                         {(
                             this.originalQuery['expire_date'] !== undefined
-                            ?
-                            <input id="expired-input" className='bg-cloud with-border' disabled value={this.originalQuery['expire_date']} type="date" min="2020-01-01" max="2050-12-31"/>
-                            :
-                            <input id="expired-input" className='with-border' type="date" min="2020-01-01" max="2050-12-31"/>
-                        )}                        
+                                ?
+                                <input id="expired-input" className='bg-cloud with-border' disabled value={this.originalQuery['expire_date']} type="date" min="2020-01-01" max="2050-12-31" />
+                                :
+                                <input id="expired-input" className='with-border' type="date" min="2020-01-01" max="2050-12-31" />
+                        )}
                     </div>
                 </div>
-                        
+
                 {/* Số lượng tuyển ( ít nhất ) */}
                 <div className="sidebar-widget">
                     <h3>Số lượng tuyển ( ít nhất )</h3>
                     <div className="input-with-icon">
                         {(
                             this.originalQuery['vacancy'] !== undefined
-                            ?
-                            <input id="vacancy-input" className='bg-cloud with-border' disabled value={this.originalQuery['vacancy']} type="number" min="1" />
-                            :
-                            <input id="vacancy-input" className='with-border' type="number" min="1" />
+                                ?
+                                <input id="vacancy-input" className='bg-cloud with-border' disabled value={this.originalQuery['vacancy']} type="number" min="1" />
+                                :
+                                <input id="vacancy-input" className='with-border' type="number" min="1" />
                         )}
                     </div>
                 </div>
-            </div>                        
+            </div>
         )
     }
 
     render() {
-        let {areas, jobTopic} = this.props.GeneralReducer;
-        let {page, total} = this.props.JobsListReducer;
-        let sortType = [{type: 2, text: 'Mới nhất'}, {type: 1, text: 'Đã đăng lâu nhất'}];
-        let totalPage = Math.ceil(total/8);        
+        let { areas, jobTopic } = this.props.GeneralReducer;
+        let { page, total } = this.props.JobsListReducer;
+        let sortType = [{ type: 2, text: 'Mới nhất' }, { type: 1, text: 'Đã đăng lâu nhất' }];
+        let totalPage = Math.ceil(total / 8);
 
         return (
             <div>
@@ -421,7 +440,7 @@ class JobListComponent extends Component {
                         <div className="col-xl-3 col-lg-4">
                             {this.renderFilter()}
                         </div>
-                        
+
                         <div className="col-xl-9 col-lg-8 content-left-offset">
 
                             <h3 className="page-title">Danh sách công việc</h3>
@@ -465,9 +484,9 @@ class JobListComponent extends Component {
                                     <div className="pagination-container margin-top-30 margin-bottom-60">
                                         <nav className="pagination">
                                             <ul>
-                                                <li className={"pagination-arrow " + ((page === 1 || totalPage - page < 3) && 'd-none')}><div className='cursor-pointer' onClick={()=>{this.handlePagination(page - 1)}}><i className="icon-material-outline-keyboard-arrow-left" /></div></li>
+                                                <li className={"pagination-arrow " + ((page === 1 || totalPage - page < 3) && 'd-none')}><div className='cursor-pointer' onClick={() => { this.handlePagination(page - 1) }}><i className="icon-material-outline-keyboard-arrow-left" /></div></li>
                                                 {this.renderPagination(page, totalPage)}
-                                                <li className={"pagination-arrow " + (totalPage - page < 3 && 'd-none')}><div className='cursor-pointer' onClick={()=>{this.handlePagination(page + 1)}}><i className="icon-material-outline-keyboard-arrow-right" /></div></li>
+                                                <li className={"pagination-arrow " + (totalPage - page < 3 && 'd-none')}><div className='cursor-pointer' onClick={() => { this.handlePagination(page + 1) }}><i className="icon-material-outline-keyboard-arrow-right" /></div></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -490,6 +509,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onLoadJobList: (page, take, isASC, query) => {
             dispatch(loadJobList(page, take, isASC, query));
+        },
+        onLoadDistricts: (id) => {
+            dispatch(loadDistricts(id));
         }
     }
 }

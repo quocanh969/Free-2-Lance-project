@@ -1,16 +1,16 @@
-import {getAllTopics, getJobsList, getTags} from '../services/job.services';
-import { getAllAreas, getStatistic } from '../services/other.services';
+import { getAllTopics, getJobsList, getTags } from '../services/job.services';
+import { getAllAreas, getStatistic, getAllDistrictsFromArea } from '../services/other.services';
 import { getTopUsers } from '../services/user.services';
 
 export const loadTopics = () => {
     return dispatch => {
         getAllTopics()
-        .then(res=>{
-            dispatch(success(res.data.data));
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+            .then(res => {
+                dispatch(success(res.data.data));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     function success(jobTopic) {
@@ -21,21 +21,59 @@ export const loadTopics = () => {
     }
 }
 
+export const loadTags = () => {
+    return dispatch => {
+        getTags()
+            .then(res => {
+                dispatch(success(res.data.data));
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    function success(jobTag) {
+        return {
+            type: 'LOAD_JOB_TAGS',
+            jobTag,
+        }
+    }
+}
+
 export const loadAreas = () => {
     return dispatch => {
         getAllAreas()
-        .then(res=>{
-            dispatch(success(res.data.data));
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+            .then(res => {
+                dispatch(success(res.data.data));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     function success(areas) {
         return {
             type: 'LOAD_AREAS',
             areas,
+        }
+    }
+}
+
+export const loadDistricts = (id_province) => {
+    return dispatch => {
+        getAllDistrictsFromArea(id_province)
+            .then(res => {
+                dispatch(success(res.data.data));
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    function success(districts) {
+        return {
+            type: 'LOAD_DISTRICTS',
+            districts,
         }
     }
 }
@@ -47,12 +85,12 @@ export const loadProductionJobs = (page, take) => {
         }
 
         getJobsList(page, take, 1, query)
-        .then(res=>{
-            dispatch(success(res.data.data.jobList));
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+            .then(res => {
+                dispatch(success(res.data.data.jobList));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     function success(productionJobList) {
@@ -70,12 +108,12 @@ export const loadTemporalJobs = (page, take) => {
         }
 
         getJobsList(page, take, 1, query)
-        .then(res=>{
-            dispatch(success(res.data.data.jobList));
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+            .then(res => {
+                dispatch(success(res.data.data.jobList));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     function success(temporalJoblist) {
@@ -89,12 +127,12 @@ export const loadTemporalJobs = (page, take) => {
 export const loadTopUsers = () => {
     return dispatch => {
         getTopUsers()
-        .then(res=>{
-            dispatch(success(res.data));
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+            .then(res => {
+                dispatch(success(res.data));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     function success(topUsers) {
@@ -107,12 +145,11 @@ export const loadTopUsers = () => {
 
 export const loadStatistic = () => {
     return dispatch => {
-        getStatistic().then(res=>{
-            if(res.data.code === 1)
-            {
+        getStatistic().then(res => {
+            if (res.data.code === 1) {
                 dispatch(success(res.data.data.memberNum, res.data.data.finishedJobNum, res.data.data.applyingJobNum, res.data.data.proccessingJobNum));
             }
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
         })
     }
