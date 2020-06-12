@@ -18,11 +18,7 @@ function login(email, password) {
 }
 
 function verify() {
-  return axios.get("/users/",{
-    headers: {
-      "Authorization": "Bearer " + JSON.stringify(JSON.parse(localStorage.getItem("user")).currentToken),
-    }
-  })  
+  return axios.get("/users/")  
 }
 
 function register(account) {
@@ -53,11 +49,6 @@ function editPersonalInfo(personal) {
   return axios.post('/users/editPersonalInfo',
     {
       personal,
-    },
-    {
-      headers: {
-        "Authorization": "Bearer " + JSON.stringify(JSON.parse(localStorage.getItem("user")).currentToken),
-      },
     });
 }
 

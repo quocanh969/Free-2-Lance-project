@@ -206,7 +206,7 @@ class S_Tag_Autocomplete extends Component {
 
     componentWillMount() {
         document.addEventListener('mousedown', this.handleClick, false);
-        this.setState({ suggestions: this.props.suggestions || [], chosen: this.props.chosen || [{id:1, tag: 'America'}, {id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},{id:1, tag: 'England'},] })
+        this.setState({ suggestions: this.props.suggestions || [], chosen: this.props.chosen || [{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},] })
     }
 
     componentWillUnmount() {
@@ -255,7 +255,7 @@ class S_Tag_Autocomplete extends Component {
     }
 
     handleChange() {
-        let inputValue = document.getElementById(this.props.id).value;
+        let inputValue = document.getElementById(this.props.id).value.toLowerCase();
 
         let tagSuggestions = this.props.suggestions.filter((eachTag) => {
             return eachTag.tag.toLowerCase().startsWith(inputValue);
@@ -266,10 +266,21 @@ class S_Tag_Autocomplete extends Component {
 
     selectTag(tag) {
         let temp = this.state.chosen;
-        temp.push(tag);
-        this.setState({chosen: temp, isFocus: false});
+        let arr = temp.filter(function(e){
+            return e === tag;
+        });
+
+        if(arr.length === 0)
+        {
+            temp.push(tag);
+            this.setState({suggestions: this.props.suggestions || [], chosen: temp, isFocus: false});            
+        }
+        else
+        {
+            this.setState({suggestions: this.props.suggestions || [], isFocus: false});
+        }
+        
         document.getElementById(this.props.id).value = '';
-        // this.setState({isFocus: false})
     }
 
     removeTag(tag) {
@@ -282,27 +293,36 @@ class S_Tag_Autocomplete extends Component {
         return (
             <div>
                 <div id='auto_complete' className='input-tag'>
-                    <div className='keyword-input-container'>
-                        <input id={this.props.id} type='text' className='mb-0 keyword-input with-border'                            
-                            onFocus={()=>{this.setState({isFocus: true})}}
-                            onChange={this.handleChange}>
-                        </input>
-                        <button className='keyword-input-button ripple-effect' onClick={()=>{this.selectTag({id: this.props.suggestions.length, tag: document.getElementById(this.props.id).value})}}>
+                    <div>
+                        <div className='border border-dark d-flex flex-wrap'>
+                            {(
+                                this.state.chosen.length > 0 
+                                &&                                
+                                this.renderChosen()
+                            )}
+                            <input id={this.props.id} type='text' className='mb-0 mt-1 pt-1'
+                                autoComplete='off'
+                                style={{border: '0', outline: 'none', boxShadow: 'none', width: 'auto',}}
+                                onFocus={()=>{this.setState({isFocus: true})}}
+                                onChange={this.handleChange}>
+                            </input>
+                        </div>
+                        {/* <button className='keyword-input-button ripple-effect' onClick={()=>{this.selectTag({id: this.props.suggestions.length, tag: document.getElementById(this.props.id).value})}}>
                             <i className='icon-material-outline-add'></i>
-                        </button>
+                        </button> */}
                     </div>
 
                     <div className={'suggestion ' + (this.state.isFocus && 'suggestion-show')}>
                         {this.renderSuggestions()}
                     </div>
                 </div>
-                {(
+                {/* {(
                     this.state.chosen.length > 0 
                     &&
                     <div className='mt-2 p-1 bg-silver d-flex flex-wrap rounded'>
                         {this.renderChosen()}
                     </div>
-                )}
+                )} */}
                 
             </div>
         )
