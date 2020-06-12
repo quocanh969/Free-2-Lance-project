@@ -4,6 +4,7 @@ import "../../assets/css/colors/blue.css";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import { prettierNumber, prettierDate } from "../../ultis/SHelper/prettier";
 import { loadJobDetail } from "../../actions/Job";
 
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
@@ -44,17 +45,6 @@ class JobDetailComponent extends Component {
     document.body.appendChild(script);
   }
 
-  formatNumber = (number) => {
-    let formetedNumber = Number(number)
-      .toFixed(2)
-      .replace(/\d(?=(\d{3})+\.)/g, "$&,");
-    let splitArray = formetedNumber.split(".");
-    if (splitArray.length > 1) {
-      formetedNumber = splitArray[0];
-    }
-    return formetedNumber;
-  };
-
   renderLogo(images) {
     //get logo
     let logo = CompanyLogoPlaceholder;
@@ -82,7 +72,6 @@ class JobDetailComponent extends Component {
   render() {
     let { places } = this.props.JobDetailReducer;
     let { jobDetail } = this.props.JobDetailReducer;
-    let postDate = new Date(jobDetail.post_date);
 
     return (
       <div>
@@ -123,8 +112,7 @@ class JobDetailComponent extends Component {
                       </ul>
                       <div className="font-weight-bold">
                         <i className="icon-line-awesome-calendar"></i>{" "}
-                        {postDate.getDate()}-{postDate.getMonth()}-
-                        {postDate.getFullYear()}
+                        {prettierDate(jobDetail.post_date)}
                       </div>
                     </div>
                   </div>
@@ -132,7 +120,7 @@ class JobDetailComponent extends Component {
                     <div className="salary-box">
                       <div className="salary-type">Tiền công</div>
                       <div className="salary-amount">
-                        {this.formatNumber(jobDetail.salary)} VNĐ
+                        {prettierNumber(jobDetail.salary)} VNĐ
                       </div>
                     </div>
                   </div>
