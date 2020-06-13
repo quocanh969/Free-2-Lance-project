@@ -11,6 +11,7 @@ import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt
 import { loadTopics, loadAreas } from '../../actions/Home';
 import { loadJobList } from '../../actions/Job';
 import { updateUserState } from '../../actions/Account';
+import { history } from '../../ultis/history/history';
 
 class HeaderComponent extends Component {
 
@@ -118,6 +119,7 @@ class HeaderComponent extends Component {
         let { onLogOut } = this.props;
         localStorage.clear();
         onLogOut();
+        history.push('/login');
     }
 
     handleTopicNavClick(e, topic) {
@@ -292,12 +294,12 @@ class HeaderComponent extends Component {
             <ul className="navbar-nav ml-auto my-0 py-0">    
                 <li className={"nav-item pt-2 pb-2 pr-3 pl-4 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
                     <NavLink className={"btn font-weight-bold border-width-3 my-2 px-2 py-1 " + (this.state.isCurrentTop ? ' btn-outline-light' : ' btn-outline-dark')} to='/register'>
-                        <i className='icon-feather-lock font-weight-bold pt-2'></i>&nbsp;Register
+                        <i className='icon-feather-lock font-weight-bold pt-2'></i>&nbsp;Đăng ký
                     </NavLink>
                 </li>
                 <li className="nav-item pt-2 pb-2 px-3 mr-3">
                     <NavLink className={"btn font-weight-bold border-width-3 my-2 px-2 py-1 " + (this.state.isCurrentTop ? ' btn-outline-light' : ' btn-outline-dark')} to='/login'>
-                        <i className='icon-line-awesome-sign-in font-weight-bold pt-2'></i>&nbsp;Login
+                        <i className='icon-line-awesome-sign-in font-weight-bold pt-2'></i>&nbsp;Đăng nhập
                     </NavLink>
                 </li> 
             </ul>
@@ -358,7 +360,7 @@ const mapDispatchToProps = dispatch => {
         onUpdateUser: () => {
             dispatch(updateUserState());
         },
-        onLogOut: () => {
+        onLogOut: () => {            
             dispatch({
                 type: 'USER_LOG_OUT',
             })
