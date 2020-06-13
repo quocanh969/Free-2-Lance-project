@@ -53,4 +53,8 @@ function editPersonalInfo(personal) {
   return axios.put('/users/editPersonalInfo',personal);
 }
 
-export { login, getUserInfo, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo };
+function editCompanyInfo(company) {
+  return axios.put('/users/editCompanyInfo',company);
+}
+
+export { login, getUserInfo, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo, editCompanyInfo};

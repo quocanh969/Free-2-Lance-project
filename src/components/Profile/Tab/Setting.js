@@ -8,7 +8,7 @@ import { S_Selector } from '../../../ultis/SHelper/S_Help_Input';
 import avatarPlaceholder from '../../../assets/images/portrait_placeholder.png';
 import imagePlaceholder from '../../../assets/images/image-placeholder.jpg';
 
-import { updatePersonalInfo, updateUserState } from '../../../actions/Account';
+import { updatePersonalInfo, updateUserState, updateCompanyInfo } from '../../../actions/Account';
 
 class SettingComponent extends Component {
     constructor(props) {
@@ -24,15 +24,12 @@ class SettingComponent extends Component {
     }
 
     componentWillUpdate() {
-        let {updatePersonalStatus} = this.props.SettingReducer;
-        console.log(updatePersonalStatus);
-        if(updatePersonalStatus === 2)
-        {
-            let {onRegetUser} =  this.props;
+        let { updatePersonalStatus, updateCompanyStatus } = this.props.SettingReducer;
+        if (updatePersonalStatus === 2 || updateCompanyStatus === 2) {
+            let { onRegetUser } = this.props;
             onRegetUser();
         }
     }
-
 
     getBase64(file, cb) {
         let reader = new FileReader();
@@ -70,7 +67,7 @@ class SettingComponent extends Component {
         updateInfo['dial'] = dial;
 
         let avtInput = document.getElementById('avt-img-input');
-        if (avtInput.files.length > 0) {            
+        if (avtInput.files.length > 0) {
             updateInfo['avatarImg'] = document.getElementById('avt-img').src.split(',')[1];
         }
 
@@ -90,16 +87,35 @@ class SettingComponent extends Component {
         }
 
         // --------- cal API -------------
-        let { onUpdatePersonal } = this.props; 
+        let { onUpdatePersonal } = this.props;
         onUpdatePersonal(updateInfo);
     }
 
     handleChangeCompanyInfoSubmit() {
-        console.log('Company submit');
+        let updateInfo = {};
+
+        let companyName = document.getElementById('company_name').value;
+        updateInfo['company_name'] = companyName;
+
+        let companyAddress = document.getElementById('company_address').value;
+        updateInfo['company_address'] = companyAddress;
+
+        let companyEmail = document.getElementById('company_email').value;
+        updateInfo['company_email'] = companyEmail;
+
+        let numberOfEmployees = document.getElementById('number_of_employees').value;
+        updateInfo['number_of_employees'] = numberOfEmployees;
+
+        let position = document.getElementById('position').value;
+        updateInfo['position'] = position;
+
+        // --------- cal API -------------
+        let { onUpdateCompany } = this.props;
+        onUpdateCompany(updateInfo);
     }
 
     handleImageChange(e, id_img) {
-        let img = document.getElementById(id_img);        
+        let img = document.getElementById(id_img);
         this.getBase64(e.target.files[0], (result) => {
             img.src = result;
         });
@@ -133,7 +149,7 @@ class SettingComponent extends Component {
                         <div className="headline">
                             <h3><i className="icon-material-outline-account-circle" />Thông tin cá nhân</h3>
                         </div>
-                        
+
                         <div className="dashboard-content with-padding text-center">
                             <div className="spinner-border text-primary" role="status">
                                 <span className="sr-only">Loading...</span>
@@ -297,60 +313,88 @@ class SettingComponent extends Component {
         }
     }
 
-    renderCompanyInfo(user) {
-        return (
-            <form onSubmit={(e) => { e.preventDefault(); this.handleChangeCompanyInfoSubmit() }}>
-                <div className="col-12">
-                    <div className="dashboard-box">
-                        <div className="headline">
-                            <h3><i className="icon-material-outline-business" />Thông tin công ty</h3>
-                        </div>
-                        <div className="dashboard-content with-padding padding-bottom-0">
-                            <div className="row">
-                                <div className="col-12">
-                                    <div className="submit-field">
-                                        <h5>Công ty</h5>
-                                        <input type="text" className="with-border" /*defaultValue={user.fullname}*/ defaultValue='Công ty TNHH Tin học Bambi' />
-                                    </div>
-                                </div>
-                                <div className="col-12">
-                                    <div className="submit-field">
-                                        <h5>Địa chỉ công ty</h5>
-                                        <input type="text" className="with-border" defaultValue={user.address} />
-                                    </div>
-                                </div>
-                                <div className='col-12'>
-                                    <div className="submit-field">
-                                        <h5>Email công ty</h5>
-                                        <input type="email" className="with-border" defaultValue={user.email} />
-                                    </div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="submit-field">
-                                        <h5>Số nhân viên</h5>
-                                        <input type="number" min={1} className="with-border" defaultValue={2} />
-                                    </div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="submit-field">
-                                        <h5>Vai trò của bạn trong công ty</h5>
-                                        <input type="text" className="with-border" defaultValue='CEO' />
-                                    </div>
+    renderCompanyInfo(company) {
+        if (company !== null) {
+            let { updateCompanyStatus } = this.props.SettingReducer;
+
+            if (updateCompanyStatus === 1) {
+                return (
+                    <div className="col-12">
+                        <div className="dashboard-box margin-top-0">
+                            <div className="headline">
+                                <h3><i className="icon-material-outline-account-circle" />Thông tin công ty</h3>
+                            </div>
+
+                            <div className="dashboard-content with-padding text-center">
+                                <div className="spinner-border text-primary" role="status">
+                                    <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {/* Button */}
-                <div className="col-xl-12">
-                    <button className="button button-sliding-icon ripple-effect big margin-top-30" type='submit'>Cập nhật thông tin công ty <i className="icon-feather-save" /></button>
-                </div>
-            </form>
-        );
+                );
+            }
+            else {
+                return (
+                    <form onSubmit={(e) => { e.preventDefault(); this.handleChangeCompanyInfoSubmit() }}>
+                        <div className="col-12">
+                            <div className="dashboard-box">
+                                <div className="headline">
+                                    <h3><i className="icon-material-outline-business" />Thông tin công ty</h3>
+                                </div>
+                                <div className="dashboard-content with-padding padding-bottom-0">
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <div className="submit-field">
+                                                <h5>Công ty</h5>
+                                                <input type="text" id='company_name' className="with-border" defaultValue={company.company_name} />
+                                            </div>
+                                        </div>
+                                        <div className="col-12">
+                                            <div className="submit-field">
+                                                <h5>Địa chỉ công ty</h5>
+                                                <input type="text" id='company_address' className="with-border" defaultValue={company.company_address} />
+                                            </div>
+                                        </div>
+                                        <div className='col-12'>
+                                            <div className="submit-field">
+                                                <h5>Email công ty</h5>
+                                                <input type="email" id='company_email' className="with-border" defaultValue={company.company_email} />
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="submit-field">
+                                                <h5>Số nhân viên</h5>
+                                                <input type="number" id='number_of_employees' min={1} className="with-border" defaultValue={company.number_of_employees} />
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="submit-field">
+                                                <h5>Vai trò của bạn trong công ty</h5>
+                                                <input type="text" id='position' className="with-border" defaultValue={company.position} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Button */}
+                        <div className="col-xl-12">
+                            <button className="button button-sliding-icon ripple-effect big margin-top-30" type='submit'>Cập nhật thông tin công ty <i className="icon-feather-save" /></button>
+                        </div>
+                    </form>
+                );
+            }
+        }
+        else {
+            return (
+                <div></div>
+            )
+        }
     }
 
     render() {
-        let { user } = this.props.HeaderReducer;
+        let { user, company } = this.props.HeaderReducer;
 
         return (
             <div className="dashboard-content-inner">
@@ -397,7 +441,7 @@ class SettingComponent extends Component {
                     {(
                         user.isBusinessUser
                             ?
-                            this.renderCompanyInfo(user)
+                            this.renderCompanyInfo(company)
                             : ''
                     )}
                 </div>
@@ -417,6 +461,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onUpdatePersonal: (personal) => {
             dispatch(updatePersonalInfo(personal));
+        },
+        onUpdateCompany: (company) => {
+            dispatch(updateCompanyInfo(company));
         },
         onRegetUser: () => {
             dispatch(updateUserState());

@@ -61,7 +61,6 @@ class ChangePasswordComponent extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log("askldjaskld");
     let { onSendChangePW } = this.props;
     let oldPW = this.refs.oldPW.value;
     let newPW = this.refs.newPW.value;
@@ -85,10 +84,10 @@ class ChangePasswordComponent extends Component {
       );
     } else if (!sending && status === -1) {
       // failure ...
-      content = [];
+      // do nothing
     } else {
       /// success ...
-      content = [];
+      // do nothing
     }
     return content;
   }
@@ -103,66 +102,42 @@ class ChangePasswordComponent extends Component {
 
         {/* Row */}
         <div className="row">
-          <form
-            method="post"
-            id="change-password-form"
-            onSubmit={this.handleSubmit}
-          >
+          <form className="col-xl-12" method="post" id="change-password-form" onSubmit={this.handleSubmit}>
             {/* Đổi mật khẩu */}
-            <div className="col-xl-12">
-              <div id="test1" className="dashboard-box">
-                {/* Headline */}
-                <div className="headline">
-                  <h3>
-                    <i className="icon-material-outline-lock" /> Mật khẩu &amp;
-                    Bảo mật
-                  </h3>
-                </div>
-                <div className="dashboard-content with-padding">
-                  <div className="row">
-                    <div className="col-xl-4">
-                      <div className="submit-field">
-                        <h5>Mật khẩu hiện tại</h5>
-                        <input
-                          type="password"
-                          id="old-change-password"
-                          ref="oldPW"
-                          className="with-border"
-                          required
-                        />
-                      </div>
+            <div id="test1" className="dashboard-box">
+              {/* Headline */}
+              <div className="headline">
+                <h3>
+                  <i className="icon-material-outline-lock" /> Mật khẩu &amp;
+                  Bảo mật
+                </h3>
+              </div>
+              <div className="dashboard-content with-padding">
+                <div className="row">
+                  <div className="col-4">
+                    <div className="submit-field">
+                      <h5>Mật khẩu hiện tại</h5>
+                      <input type="password" id="old-change-password" className="with-border" required/>
                     </div>
-                    <div className="col-xl-4">
-                      <div className="submit-field">
-                        <h5>Mật khẩu mới</h5>
-                        <input
-                          type="password"
-                          id="new-change-password"
-                          ref="newPW"
-                          className="with-border"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xl-4">
-                      <div className="submit-field">
-                        <h5>Nhập lại mật khẩu mới</h5>
-                        <input
-                          type="password"
-                          id="repeat-change-password"
-                          ref="confirmNewPW"
-                          className="with-border"
-                          required
-                        />
-                      </div>
-                    </div>
-                    {/* <div className="col-xl-12">
-                                        <div className="checkbox">
-                                            <input type="checkbox" id="two-step" defaultChecked />
-                                            <label htmlFor="two-step"><span className="checkbox-icon" /> Enable Two-Step Verification via Email</label>
-                                        </div>
-                                    </div> */}
                   </div>
+                  <div className="col-4">
+                    <div className="submit-field">
+                      <h5>Mật khẩu mới</h5>
+                      <input type="password" id="new-change-password" className="with-border" required/>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="submit-field">
+                      <h5>Nhập lại mật khẩu mới</h5>
+                      <input type="password" id="repeat-change-password" className="with-border" required/>
+                    </div>
+                  </div>
+                  {/* <div className="col-xl-12">
+                        <div className="checkbox">
+                            <input type="checkbox" id="two-step" defaultChecked />
+                            <label htmlFor="two-step"><span className="checkbox-icon" /> Enable Two-Step Verification via Email</label>
+                        </div>
+                    </div> */}
                 </div>
               </div>
             </div>
@@ -170,11 +145,8 @@ class ChangePasswordComponent extends Component {
           {this.spinnerLoadingNotification()}
           {/* Button */}
           <div className="col-xl-12">
-            <button
-              form="change-password-form"
-              className="button ripple-effect big margin-top-30"
-            >
-              Lưu thay đổi
+            <button form="change-password-form" type='submit' className="button button-sliding-icon ripple-effect big margin-top-30">
+              Lưu thay đổi <i className="icon-feather-save" />
             </button>
           </div>
         </div>

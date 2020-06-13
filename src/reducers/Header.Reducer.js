@@ -1,6 +1,7 @@
 
 const initState = {
     user: null,
+    company: null,
 }
 
 const HeaderReducer = (state = initState, action) => {
@@ -10,11 +11,13 @@ const HeaderReducer = (state = initState, action) => {
                 ...state,
                 user: action.user,
             };
-        case 'USER_LOG_OUT':                        
+        case 'UPDATE_COMPANY':
             return {
                 ...state,
-                user: null,
-            }
+                company: action.company,
+            };
+        case 'USER_LOG_OUT':                        
+            return initState;
         default:
             return state
     }
