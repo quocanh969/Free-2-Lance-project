@@ -19,7 +19,7 @@ const SettingReducer = (state = initState, action) => {
                 ...state,
                 updatePersonalStatus: 3,
             };
-        case 'PERSONAL_UPDATE_REQUEST':
+        case 'PERSONAL_UPDATE_RESET':
             return initState;
         default:
             return state

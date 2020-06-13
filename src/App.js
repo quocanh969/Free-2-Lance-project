@@ -28,7 +28,6 @@ import test from './components/test';
 import NotFoundComponent from './components/404';
 
 function App() {
-  
   return (
     <div>
         <Router history={history}>

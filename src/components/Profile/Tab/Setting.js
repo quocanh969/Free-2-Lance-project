@@ -8,8 +8,7 @@ import { S_Selector } from '../../../ultis/SHelper/S_Help_Input';
 import avatarPlaceholder from '../../../assets/images/portrait_placeholder.png';
 import imagePlaceholder from '../../../assets/images/image-placeholder.jpg';
 
-import { getUser } from '../../../services/user.services';
-import { updatePersonalInfo } from '../../../actions/Account';
+import { updatePersonalInfo, updateUserState } from '../../../actions/Account';
 
 class SettingComponent extends Component {
     constructor(props) {
@@ -24,15 +23,16 @@ class SettingComponent extends Component {
         window.scrollTo(0, 0);
     }
 
-    initData() {
-        getUser()
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+    componentWillUpdate() {
+        let {updatePersonalStatus} = this.props.SettingReducer;
+        console.log(updatePersonalStatus);
+        if(updatePersonalStatus === 2)
+        {
+            let {onRegetUser} =  this.props;
+            onRegetUser();
+        }
     }
+
 
     getBase64(file, cb) {
         let reader = new FileReader();
@@ -70,36 +70,27 @@ class SettingComponent extends Component {
         updateInfo['dial'] = dial;
 
         let avtInput = document.getElementById('avt-img-input');
-        if (avtInput.files.length > 0) {
-            this.getBase64(avtInput.files[0], (result) => {
-                updateInfo['avatarImg'] = result;
-            });
+        if (avtInput.files.length > 0) {            
+            updateInfo['avatarImg'] = document.getElementById('avt-img').src.split(',')[1];
         }
 
         let portraitInput = document.getElementById('portrait');
         if (portraitInput.files.length > 0) {
-            this.getBase64(portraitInput.files[0], (result) => {
-                updateInfo['portrait'] = result;
-            });
+            updateInfo['portrait'] = document.getElementById('portrait-img').src.split(',')[1];
         }
 
         let frontIdInput = document.getElementById('frontID');
         if (frontIdInput.files.length > 0) {
-            this.getBase64(frontIdInput.files[0], (result) => {
-                updateInfo['frontIdPaper'] = result;
-            });
+            updateInfo['frontIdPaper'] = document.getElementById('front-img').src.split(',')[1];
         }
 
         let backIdInput = document.getElementById('backID');
         if (backIdInput.files.length > 0) {
-            this.getBase64(backIdInput.files[0], (result) => {
-                updateInfo['backIdPaper'] = result;
-            });
+            updateInfo['backIdPaper'] = document.getElementById('back-img').src.split(',')[1];
         }
 
-        console.log(updateInfo);
         // --------- cal API -------------
-        let { onUpdatePersonal } = this.props;
+        let { onUpdatePersonal } = this.props; 
         onUpdatePersonal(updateInfo);
     }
 
@@ -108,8 +99,10 @@ class SettingComponent extends Component {
     }
 
     handleImageChange(e, id_img) {
-        let img = document.getElementById(id_img);
-        img.src = URL.createObjectURL(e.target.files[0]);
+        let img = document.getElementById(id_img);        
+        this.getBase64(e.target.files[0], (result) => {
+            img.src = result;
+        });
     }
 
     renderPersonalInfo(user) {
@@ -122,7 +115,7 @@ class SettingComponent extends Component {
         let backId = imagePlaceholder;
 
         if (user.avatarImg !== null) {
-            avtImg = 'data:image/png;base64,' + user.img;
+            avtImg = 'data:image/png;base64,' + user.avatarImg;
         }
         if (user.portrait !== null) {
             portrait = 'data:image/png;base64,' + user.portrait;
@@ -425,6 +418,9 @@ const mapDispatchToProps = dispatch => {
         onUpdatePersonal: (personal) => {
             dispatch(updatePersonalInfo(personal));
         },
+        onRegetUser: () => {
+            dispatch(updateUserState());
+        }
     }
 }
 

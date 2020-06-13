@@ -50,10 +50,7 @@ function resendActivationMail(email) {
 }
 
 function editPersonalInfo(personal) {
-  return axios.post('/users/editPersonalInfo',
-    {
-      personal,
-    });
+  return axios.put('/users/editPersonalInfo',personal);
 }
 
 export { login, getUserInfo, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo };

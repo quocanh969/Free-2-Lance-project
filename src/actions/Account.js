@@ -3,16 +3,18 @@ import {editPersonalInfo, getUserInfo} from '../services/account.services';
 export const updatePersonalInfo = (personal) => {
     return dispatch => {
         dispatch(request());
+        console.log(personal);
         editPersonalInfo(personal)
         .then(res => {
             if (res.data.code === '106') {                
-                dispatch(success());
+                dispatch(success());                
                 alert('Cập nhật thành công');
                 // cập nhật lại user trên HeaderReducer
             } else {
                 dispatch(failure());
                 alert('Cập nhật thất bại');
             }
+            dispatch(reset());
         }).catch(err => {
             console.log(err);
         })
@@ -33,6 +35,11 @@ export const updatePersonalInfo = (personal) => {
             type: 'PERSONAL_UPDATE_FAILURE',
         }
     }
+    function reset() {
+        return {
+            type: 'PERSONAL_UPDATE_RESET',
+        }
+    }
 }
 
 export const updateUserState = () => {
@@ -47,7 +54,7 @@ export const updateUserState = () => {
             }
             else
             {
-                alert('Cập nhật thông tin user thật bại');
+                alert('Cập nhật thông tin user thất bại');
             }            
         }).catch(err=>{
         console.log(err);

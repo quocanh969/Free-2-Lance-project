@@ -81,20 +81,20 @@ export class PrivateRoute extends Component {
                 </div>
             )
         }
-        else if(this.state.isAuthorized) {
+        else if(this.state.isAuthorized) {            
             return (            
                 <Route {...rest} render={
-                    (props) => {
+                    (props) => {                        
                         return (                        
                             <div id="wrapper">
                                 <header id="header-container" className='fullwidth'>
                                     <Header></Header>
                                 </header>
                                 <div className="clearfix" />
-
+                                
                                 <div className='content'>
                                     <Component {...props}></Component>
-                                </div>
+                                </div>                                              
 
                                 <Footer></Footer>
                             </div>
