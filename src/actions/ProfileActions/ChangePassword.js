@@ -1,4 +1,4 @@
-import { changePassword } from "../services/profile.services";
+import { changePassword } from "../../services/profile.services";
 
 export const sendchangePassword = (oldPW, newPW) => {
   return (dispatch) => {
@@ -9,9 +9,11 @@ export const sendchangePassword = (oldPW, newPW) => {
         if (res.data.code === "-105") {
           // thất bại
           dispatch(failure(res.data.message));
+          alert(res.data.message);
         } else {
           // thành công
           dispatch(success(res.data.message));
+          alert(res.data.message);
         }
       })
       .catch((err) => {

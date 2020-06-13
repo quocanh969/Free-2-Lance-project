@@ -26,8 +26,7 @@ axios.interceptors.response.use(
       // alert(error.response);
       alert("Đăng nhập đi ba");
 
-      localStorage.setItem("user", null);
-      localStorage.setItem("token", null);
+      localStorage.clear();
 
       // history.push("/login");
       window.location.href = "./login";

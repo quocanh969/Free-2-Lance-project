@@ -2,13 +2,13 @@ import React, { Component } from "react";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { changePassword } from "../../../services/profile.services";
 import Swal from "sweetalert2";
 
 import { S_Selector } from "../../../ultis/SHelper/S_Help_Input";
 
 import avatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
 import browseCompoanies from "../../../assets/images/browse-companies-03.png";
+import { sendchangePassword } from "../../../actions/ProfileActions/ChangePassword";
 
 class ChangePasswordComponent extends Component {
   constructor(props) {
@@ -117,19 +117,19 @@ class ChangePasswordComponent extends Component {
                   <div className="col-4">
                     <div className="submit-field">
                       <h5>Mật khẩu hiện tại</h5>
-                      <input type="password" id="old-change-password" className="with-border" required/>
+                      <input type="password" id="old-change-password" ref='oldPW' className="with-border" required/>
                     </div>
                   </div>
                   <div className="col-4">
                     <div className="submit-field">
                       <h5>Mật khẩu mới</h5>
-                      <input type="password" id="new-change-password" className="with-border" required/>
+                      <input type="password" id="new-change-password" ref='newPW' className="with-border" required/>
                     </div>
                   </div>
                   <div className="col-4">
                     <div className="submit-field">
                       <h5>Nhập lại mật khẩu mới</h5>
-                      <input type="password" id="repeat-change-password" className="with-border" required/>
+                      <input type="password" id="repeat-change-password" ref='confirmNewPW' className="with-border" required/>
                     </div>
                   </div>
                   {/* <div className="col-xl-12">
@@ -165,7 +165,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSendChangePW: (oldPW, newPW) => {
-      dispatch(changePassword(oldPW, newPW));
+      dispatch(sendchangePassword(oldPW, newPW));
     },
   };
 };

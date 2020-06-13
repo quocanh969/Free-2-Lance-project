@@ -28,7 +28,6 @@ const ChangePWReducer = (state = initState, action) => {
         sending: false,
       };
     case "CHANGE_PW_RESET":
-      console.log("reset");
       return initState;
     default:
       return state;
