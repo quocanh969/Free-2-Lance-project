@@ -66,7 +66,7 @@ class JobListComponent extends Component {
       }
       content.push(
         <NavLink
-          to={{ pathname: "/job-detail", props: { id: e.id_job } }}
+          to={"/job-detail?" + e.id_job}
           className="job-listing"
           key={count}
         >
@@ -143,7 +143,7 @@ class JobListComponent extends Component {
             <div className="col-6">
               {/* <h4 className="job-listing-company">{e.company} <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4> */}
               <NavLink
-                to="/job-detail"
+                to={"/job-detail?" + e.id_job}
                 className="d-block font-weight-bold text-dark"
               >
                 {e.title}

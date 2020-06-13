@@ -25,7 +25,9 @@ class JobDetailComponent extends Component {
     super(props);
 
     let jobId = 121;
-    if (this.props.location.props) jobId = this.props.location.props.id;
+    if (this.props.location && this.props.location.search) {
+      jobId = this.props.location.search.substring(1);
+    }
     this.state = {
       tab: 1,
       jobId: jobId,
