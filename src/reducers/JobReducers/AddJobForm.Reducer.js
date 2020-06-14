@@ -2,6 +2,9 @@ const initState = {
     status: 0,
     message: "",
     sending: false,
+    jobTypes: [
+        {value: 0, name: 'Thời vụ'}, {value: 1, name: 'Sản phẩm'}
+    ],
     fields: {
         jobTitle: "",
         addressString: "", // Address Object => geometry.location => lat/lng
@@ -9,6 +12,7 @@ const initState = {
         jobType: 0,
         vacancy: 0,
         salary: 0,
+        isOnline: 0,
         isDealable: 0,
         exprDate: "",
         requirements: "",
