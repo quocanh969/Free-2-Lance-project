@@ -90,13 +90,19 @@ class DashboardComponent extends Component {
           </div>
         </div>
 
-        <div>
-          <div> Kế hoạch</div>
+        <div>          
           <div className="row">
-            <div className="col-xl-6">
-              <div id="full_calendar"></div>
+            <div className="col-xl-7 dashboard-box px-5 pb-3 ml-4 mr-2">   
+              <div className="headline">
+                <h3><i className="icon-line-awesome-calendar"/>Lịch trình cá nhân</h3>
+              </div>
+              <div id="full_calendar" className='mt-4'></div>
             </div>
-            <div className="col-xl-6">Ngày hôm nay làm gì</div>
+            <div className="col-xl-4 dashboard-box ml-2 mr-4">
+              <div className="headline">
+                <h3><i className="icon-line-awesome-list-ul"/>Công việc cụ thể</h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>

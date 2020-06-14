@@ -74,16 +74,7 @@ class LoginComponent extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h2>Log In</h2>
-                {/* Breadcrumbs */}
-                <nav id="breadcrumbs" className="dark">
-                  <ul>
-                    <li>
-                      <NavLink to="/">Home</NavLink>
-                    </li>
-                    <li>Log In</li>
-                  </ul>
-                </nav>
+                <h2>Đăng nhập</h2>
               </div>
             </div>
           </div>
@@ -95,10 +86,10 @@ class LoginComponent extends Component {
               <div className="login-register-page">
                 {/* Welcome Text */}
                 <div className="welcome-text">
-                  <h3>We're glad to see you again!</h3>
+                  <h3>Chào mừng bạn đến với website của chúng tôi!</h3>
                   <span>
-                    Don't have an account?{" "}
-                    <NavLink to="/register">Sign Up!</NavLink>
+                    Chưa có tài khoản?{" "}
+                    <NavLink to="/register">Tạo mới!</NavLink>
                   </span>
                 </div>
                 {/* Form */}
@@ -115,7 +106,7 @@ class LoginComponent extends Component {
                       className="input-text with-border"
                       name="emailaddress"
                       id="emailaddress"
-                      placeholder="Email Address"
+                      placeholder="Email"
                       required
                     />
                   </div>
@@ -132,11 +123,11 @@ class LoginComponent extends Component {
                     />
                   </div>
                   <NavLink to="/forgot-password" className="forgot-password">
-                    Forgot password?
+                    Quên mật khẩu?
                   </NavLink>
                   <br/>
                   <NavLink to="/resendActivation" className="forgot-password">
-                    Have not activated your account yet?
+                    Tài khoản của bạn không kích hoạt được?
                   </NavLink>
                 </form>
                 {/*spinner loading notification */}
@@ -147,10 +138,10 @@ class LoginComponent extends Component {
                   className="button full-width button-sliding-icon ripple-effect margin-top-10"
                   form="login-form"
                 >
-                  Log In <i className="icon-material-outline-arrow-right-alt" />
+                  Đăng nhập <i className="icon-material-outline-arrow-right-alt" />
                 </button>
                 {/* Social Login */}
-                <div className="social-login-separator">
+                {/* <div className="social-login-separator">
                   <span>or</span>
                 </div>
                 <div className="social-login-buttons">
@@ -161,7 +152,7 @@ class LoginComponent extends Component {
                     <i className="icon-brand-google-plus-g" /> Log In via
                     Google+
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ export const sendRegister = (account) => {
     register(account)
       .then((res) => {
         console.log(res);
-        if (res.data.code === 0) {
+        if (res.data.code === "-103") {
           // thất bại
           dispatch(failure(res.data.message));
         } else {

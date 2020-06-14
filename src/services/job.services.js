@@ -58,20 +58,32 @@ function postJob(header) {
 }
 
 function getAllTopics() {
-    return axios.get('/allJobsTopics');
+  return axios.get("/allJobsTopics");
 }
 
 function getJobsList(page, take, isASC, query) {
-    return axios.post('/getJobsList', {
-        page,
-        take,
-        isASC,
-        query,
-    })
+  return axios.post("/getJobsList", {
+    page,
+    take,
+    isASC,
+    query,
+  });
 }
 
 function getTags() {
     return axios.get('/getAllTags');
 }
 
-export { postJob, getAllTopics, getJobsList, getTags };
+function getJobsDetail(id) {
+  return axios.get("/getJobById/" + id);
+}
+
+function doApplyJob(id_user, id_job, proposed_price, attachment) {
+  return axios.post("/applicants/addApplicant", {
+    id_user,
+    id_job,
+    proposed_price,
+    attachment,
+  });
+}
+export { postJob, getAllTopics, getJobsList, getJobsDetail, doApplyJob, getTags };

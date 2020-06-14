@@ -2,18 +2,17 @@ import Axios from "axios";
 import { MyStore } from "../..";
 import { history } from "../../ultis/history/history";
 
-let token = "";
-if (localStorage.getItem("user")) {
-  token = "Bearer " + JSON.stringify(JSON.parse(localStorage.getItem("user")).currentToken);
-  console.log("token: ", token);
-}
-
 let axios = Axios.create({
   baseURL: "http://localhost:8000/",
-  headers: { 
-    "Content-Type": "application/json", 
-    "Authorization": token,
-  },
+  headers: { "Content-Type": "application/json" },
+});
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  //get token  
+  let token = JSON.parse(localStorage.getItem("token"));
+  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  return config;
 });
 
 axios.interceptors.response.use(
@@ -25,13 +24,12 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       console.log(error.response);
       // alert(error.response);
-      // alert('Đăng nhập đi ba');
+      alert("Đăng nhập đi ba");
 
-      localStorage.setItem("user", null);
-      localStorage.setItem("token", null);
+      localStorage.clear();
 
       // history.push("/login");
-      window.location.href = './login';
+      window.location.href = "./login";
       MyStore.dispatch({
         type: "USER_LOG_OUT",
       });

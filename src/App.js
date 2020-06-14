@@ -28,7 +28,6 @@ import test from './components/test';
 import NotFoundComponent from './components/404';
 
 function App() {
-  
   return (
     <div>
         <Router history={history}>
@@ -40,11 +39,10 @@ function App() {
 
             <SRoute path='/dashboard' exact component={Profile}></SRoute>
 
-            <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
+            <SRoute path='/job-detail/:id_job' exact component={JobDetail}></SRoute>
 
             <SRoute path='/job-list' exact component={JobList}></SRoute>
-            <SRoute path='/job-list/topic=:job_topic' exact component={JobList}></SRoute>
-            <SRoute path='/job-list/title=:title&area=:area_province&topic=:job_topic' exact component={JobList}></SRoute>
+            <SRoute path='/job-list/topic=:job_topic' exact component={JobList}></SRoute>            
 
             <SRoute path='/user-detail' exact component={UserDetail}></SRoute>
 

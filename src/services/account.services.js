@@ -17,8 +17,12 @@ function login(email, password) {
   });
 }
 
+function getUserInfo() {
+  return axios.get('/users/me');
+}
+
 function verify() {
-  return axios.get("/users/")
+  return axios.get("/users/")  
 }
 
 function register(account) {
@@ -45,21 +49,12 @@ function resendActivationMail(email) {
   });
 }
 
-function handleResponse(response) {
-  return response.text().then((text) => {
-    const data = text && JSON.parse(text);
-    if (!response.ok) {
-      if (response.status === 401) {
-        //logout();
-        //window.location.reload(true);
-        alert("code: 401");
-      }
-
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-    }
-    return data;
-  });
+function editPersonalInfo(personal) {
+  return axios.put('/users/editPersonalInfo',personal);
 }
 
-export { login, register, forgetPassword, activateAccount, resendActivationMail, verify };
+function editCompanyInfo(company) {
+  return axios.put('/users/editCompanyInfo',company);
+}
+
+export { login, getUserInfo, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo, editCompanyInfo};

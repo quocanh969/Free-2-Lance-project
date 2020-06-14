@@ -185,7 +185,7 @@ class HomeComponent extends Component {
             content.push(
                 <div className="col-xl-3 col-md-6" key={count}>
                     {/* Photo Box */}
-                    <NavLink to="/job-list" className="photo-box small topic-box">
+                    <NavLink to={"/job-list/topic="+e.id_jobtopic} className="photo-box small topic-box">
                         <img src={'data:image/png;base64,' + e.img}></img>
                         <div className="photo-box-content">
                             <h3>{e.name}</h3>
@@ -207,7 +207,7 @@ class HomeComponent extends Component {
         for (let e of productionJobList) {
             let postDate = new Date(e.post_date);
             content.push(
-                <NavLink to="/job-detail" className="task-listing" key={count}>
+                <NavLink to={"/job-detail/"+e.id_job} className="task-listing" key={count}>
                     <div className="task-listing-details">
                         <div className="task-listing-description">
                             <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>
@@ -242,7 +242,7 @@ class HomeComponent extends Component {
         for (let e of temporalJoblist) {
             let postDate = new Date(e.post_date);
             content.push(
-                <NavLink to="/job-detail" className="task-listing" key={count}>
+                <NavLink to={"/job-detail/"+e.id_job} className="task-listing" key={count}>
                     <div className="task-listing-details">
                         <div className="task-listing-description">
                             <h3 className="task-listing-title d-inline-block text-truncate" style={{ maxWidth: "40vh" }}>{e.title}</h3>

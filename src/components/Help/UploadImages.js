@@ -54,7 +54,6 @@ export default class MultipleImageUploadComponent extends Component {
         }
         this.setState({ img: this.imgArr, file: this.fileArray }, () => {
             this.props.onChange("relatedImg", this.state.img);
-
         });
     }
 
@@ -113,7 +112,7 @@ export default class MultipleImageUploadComponent extends Component {
                 <div className={"form-group multi-preview " + (this.state.file.length === 0 ? '' : 'bg-cloud p-3 border-radius-4')}>
                     {(this.fileArray || []).map((url, index) => (
                         <span key={index} onClick={this.removeImg.bind(this, index)}>
-                            <img className='border border-dark mx-2' src={url} alt="..." width="128" height="128" style={{ objectFit: 'contain' }}></img>
+                            <img  className='border border-dark m-2' src={url} alt="..." width="128" height="128" style={{objectFit: 'contain'}}></img>
                         </span>
                     ))}
                 </div>
