@@ -25,18 +25,29 @@ class JobDetailComponent extends Component {
     super(props);
 
     let jobId = 121;
-    if (this.props.location && this.props.location.search) {
-      jobId = this.props.location.search.substring(1);
+    let { id_job } = this.props.match.params;
+    if(id_job) {
+      jobId = id_job;
     }
     this.state = {
       tab: 1,
       jobId: jobId,
+      applicantSortType: 1,
     };
+
+    // applicantSortType:
+    // 1 - Giá giảm dần
+    // -1 - Giá tăng dần
+    // 2 - Tên giảm dần abc
+    // -2 - Tên tăng dần abc
+    // 3 - Email giảm dần abc
+    // -3 - Email tăng dần abc
 
     //redirect to other page if jobId === -1
   }
 
   componentWillMount() {
+    console.log('cai lon què gì vậy');
     let { onLoadJobDetail } = this.props;
     let { jobId } = this.state;
     onLoadJobDetail(jobId);
@@ -44,11 +55,6 @@ class JobDetailComponent extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-
-    const script = document.createElement("script");
-    script.src = "./assets/maps.js";
-    script.async = true;
-    document.body.appendChild(script);
   }
 
   renderLogo(images) {
@@ -99,21 +105,40 @@ class JobDetailComponent extends Component {
     //applicant = {dial, email, fullname, id_job, id_user, proposed_price}
 
     let content = [];
+    content.push(
+      <div className="row bg-293FE4 text-white" key={0} style={{height: '50px'}}>
+        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+          Họ tên người ứng tuyển
+        </div>
+        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+          Email
+        </div>
+        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+          Mức lương ứng tuyển
+        </div>
+      </div>
+    )
     applicants.forEach((applicant, i) => {
       content.push(
-        <div className="row" key={i}>
-          <div className="col-md-6">{applicant.fullname}</div>
-          <div className="col-md-6">
+        <div className="row task-listing" key={i} style={{height: '50px'}}>
+          <div className="col-md-4">{applicant.fullname}</div>
+          <div className="col-md-4">
+            {applicant.email}
+          </div>
+          <div className="col-md-4">
             {prettierNumber(applicant.proposed_price)} VNĐ
           </div>
         </div>
       );
     });
-    return content;
+    return (
+      <div className="tasks-list-container compact-list p-0">
+        {content}
+      </div>
+    )
   }
 
   render() {
-    let { places } = this.props.JobDetailReducer;
     let { jobDetail } = this.props.JobDetailReducer;
 
     return (

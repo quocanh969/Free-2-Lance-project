@@ -34,8 +34,10 @@ export const loadJobList = (page, take, isASC, query) => {
 
 export const loadJobDetail = (jobId) => {
   return (dispatch) => {
+    console.log('hello');
     getJobsDetail(jobId)
       .then((res) => {
+        console.log(res);
         dispatch(success(res.data.data));
       })
       .catch((err) => {

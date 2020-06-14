@@ -39,7 +39,7 @@ function App() {
 
             <SRoute path='/dashboard' exact component={Profile}></SRoute>
 
-            <SRoute path='/job-detail' exact component={JobDetail}></SRoute>
+            <SRoute path='/job-detail/:id_job' exact component={JobDetail}></SRoute>
 
             <SRoute path='/job-list' exact component={JobList}></SRoute>
             <SRoute path='/job-list/topic=:job_topic' exact component={JobList}></SRoute>            
