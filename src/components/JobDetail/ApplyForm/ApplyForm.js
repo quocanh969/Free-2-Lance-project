@@ -37,12 +37,12 @@ class ApplyFormConponent extends Component {
     e.preventDefault();
     let selectedFile = document.getElementById("upload-cv").files[0];
     if (selectedFile) {
-      let user = JSON.parse(localStorage.getItem("user"));
+      //let user = JSON.parse(localStorage.getItem("user"));
 
       let { jobDetail } = this.props.JobDetailReducer;
       let proposed_price = this.refs.proposed_price.value;
       let { doApplyJob } = this.props;
-      doApplyJob(user.id_user, jobDetail.id_job, proposed_price, selectedFile);
+      doApplyJob(121, jobDetail.id_job, proposed_price, selectedFile);
     } else {
       Swal.fire({
         title: "Vui lòng chọn CV",

@@ -63,7 +63,8 @@ class PostJobComponent extends Component {
         onUpdate(fieldKey, fieldValue);
     }
 
-    onSubmit() {
+    onSubmit(e) {
+        e.preventDefault();
         let { onUpdate, onSend } = this.props;
         let jobTitleValue = document.getElementById("inputJobTitle").value;
         onUpdate("jobTitle", jobTitleValue);
@@ -88,7 +89,9 @@ class PostJobComponent extends Component {
 
         let employer = this.props.HeaderReducer.user;
         let fields = this.props.AddJobReducer.fields;
-        // console.log(this.props.GeneralReducer.jobTags);
+        console.log(this.props.AddJobReducer.fields.tags);
+
+        return
         let header = {
             employer: employer.id_user,
             title: fields.jobTitle,
@@ -155,7 +158,7 @@ class PostJobComponent extends Component {
                     <h3>Post a Job</h3>
                 </div>
                 {/* Row */}
-                <div className="row">
+                <form className="row" onSubmit={this.onSubmit}>
                     {/* Dashboard Box */}
                     <div className="col-xl-12">
                         <div className="dashboard-box margin-top-0">
@@ -197,92 +200,98 @@ class PostJobComponent extends Component {
                                             <S_Selector className="with-border" id="jobTopicsSelector" data={this.props.GeneralReducer.jobTopic} value_tag={"id_jobtopic"} text_tag={"name"} placeholder={"Chọn chủ đề"}></S_Selector>
                                         </div>
                                     </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Location</h5>
-                                            {/* <div className="input-with-icon">
-                                                <div id="autocomplete-container"> */}
-                                            {/* <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" /> */}
-                                            <GoogleMapAutocomplete value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
-                                            {/* </div>
-                                                <i className="icon-material-outline-location-on" /> */}
-                                            {/* </div> */}
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Salary</h5>
-                                            <div className="input-with-icon">
-                                                <input className="with-border" id="salary" type="text" value={this.state.salary} onChange={this.onHandleTextChange} placeholder={"Nhập thù lao"} />
-                                                <i className="currency">VND</i>
+                                    <div className="col-xl-8">
+                                        <div className='row'>
+                                            <div className='col-xl-6'>
+                                                <div className="submit-field">
+                                                    <h5>Location</h5>
+                                                    {/* <div className="input-with-icon">
+                                                        <div id="autocomplete-container"> */}
+                                                    {/* <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" /> */}
+                                                    <GoogleMapAutocomplete value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
+                                                    {/* </div>
+                                                        <i className="icon-material-outline-location-on" /> */}
+                                                    {/* </div> */}
+                                                </div>
                                             </div>
+                                            <div className="col-xl-6">
+                                                <div className="submit-field">
+                                                    <h5>Salary</h5>
+                                                    <div className="input-with-icon">
+                                                        <input className="with-border" id="salary" type="text" value={this.state.salary} onChange={this.onHandleTextChange} placeholder={"Nhập thù lao"} />
+                                                        <i className="currency">VND</i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6">
+                                                <div className="submit-field">
+                                                    {/* <div className="input-with-icon"> */}
+                                                    <h5>Expired date</h5>
+                                                    <input id="exprDateSelector" type="date" min={this.getDate().today} max={this.getDate().maxExprDate} defaultValue={this.getDate().today}></input>
+                                                    {/* </div> */}
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6" style={{ visibility: ((this.props.AddJobReducer.fields.jobType == 1) ? 'hidden' : 'visible') }}>
+                                                <div className="submit-field">
+                                                    <h5>Start date</h5>
+                                                    <div className="input-with-icon">
+                                                        <input id="startDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6">
+                                                <div className="submit-field">
+                                                    <h5>End date</h5>
+                                                    <div className="input-with-icon">
+                                                        <input id="endDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6">
+                                                <div className="submit-field">
+                                                    <h5>Số lượng vị trí</h5>
+                                                    <div className="input-with-icon">
+                                                        <input id="vacancy" className="with-border" type="text" placeholder={"Nhập số lượng cần tuyển"} value={this.state.vacancy} onChange={this.onHandleTextChange} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6">
+                                                <div className="submit-field">
+                                                    <h5>Tính chất công việc</h5>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="isOnlineCheck" />
+                                                        <label class="custom-control-label" for="isOnlineCheck">Việc làm online</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6">
+                                                <div className="submit-field">
+                                                    <h5 style={{ visibility: 'hidden' }}>Tính chất công việc</h5>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="isDealableCheck" />
+                                                        <label class="custom-control-label" for="isDealableCheck">Cho phép thỏa thuận</label>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
                                         </div>
+                                        
                                     </div>
+                                    
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Tags <span>(optional)</span>  <i className="help-icon" data-tippy-placement="right" title="Maximum of 10 tags" /></h5>
                                             <div className="keywords-container">
-                                                <div className="keyword-input-container">
+                                                {/* <div className="keyword-input-container">
                                                     <input type="text" className="keyword-input with-border" placeholder="e.g. job title, responsibilites" />
                                                     <button className="keyword-input-button ripple-effect"><i className="icon-material-outline-add" /></button>
-                                                </div>
-                                                <div className="keywords-list">{}</div>
-                                                <div className="clearfix" />
+                                                </div> */}
+                                                <S_Tag_Autocomplete id="tagAutocomplete" handleChange={this.handleChange} suggestions={this.props.GeneralReducer.jobTags}></S_Tag_Autocomplete>
+                                                {/* <div className="keywords-list">{}</div>                                                
+                                                <div className="clearfix" /> */}
                                             </div>
-                                            {/* <S_Tag_Autocomplete id="tagAutocomplete" suggestion={this.props.GeneralReducer.jobTags}></S_Tag_Autocomplete> */}
+                                            
                                         </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-
-                                            {/* <div className="input-with-icon"> */}
-                                            <h5>Expired date</h5>
-                                            <input id="exprDateSelector" type="date" min={this.getDate().today} max={this.getDate().maxExprDate} defaultValue={this.getDate().today}></input>
-                                            {/* </div> */}
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4" style={{ visibility: ((this.props.AddJobReducer.fields.jobType == 1) ? 'hidden' : 'visible') }}>
-                                        <div className="submit-field">
-                                            <h5>Start date</h5>
-                                            <div className="input-with-icon">
-                                                <input id="startDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>End date</h5>
-                                            <div className="input-with-icon">
-                                                <input id="endDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Tính chất công việc</h5>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="isOnlineCheck" />
-                                                <label class="custom-control-label" for="isOnlineCheck">Việc làm online</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5 style={{ visibility: 'hidden' }}>Tính chất công việc</h5>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="isDealableCheck" />
-                                                <label class="custom-control-label" for="isDealableCheck">Cho phép thỏa thuận</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4">
-                                        <div className="submit-field">
-                                            <h5>Số lượng vị trí</h5>
-                                            <div className="input-with-icon">
-                                                <input id="vacancy" className="with-border" type="text" placeholder={"Nhập số lượng cần tuyển"} value={this.state.vacancy} onChange={this.onHandleTextChange} />
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div>                                    
                                     <div className="col-xl-12">
                                         <div className="submit-field">
                                             <h5>Job Description</h5>
@@ -310,9 +319,10 @@ class PostJobComponent extends Component {
                         </div>
                     </div>
                     <div className="col-xl-12">
-                        <a href="#" className="button ripple-effect big margin-top-30" onClick={this.onSubmit}><i className="icon-feather-plus" /> Post a Job</a>
+                        {/* <a href="#" className="button ripple-effect big margin-top-30" onClick={this.onSubmit}><i className="icon-feather-plus" /> Post a Job</a> */}
+                        <button className="button ripple-effect big margin-top-30" type="submit">Post a Job</button>
                     </div>
-                </div>
+                </form>
                 {/* Row / End */}
             </div>
         )

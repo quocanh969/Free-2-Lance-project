@@ -190,13 +190,152 @@ class S_Drag_Drop extends Component {
     }
 }
 
+// class S_Tag_Autocomplete extends Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             suggestions: null,
+//             isFocus: false,
+//             chosen: null,
+//         }
+
+//         this.handleChange = this.handleChange.bind(this);
+//         this.selectTag = this.selectTag.bind(this);
+//         this.removeTag = this.removeTag.bind(this);
+//     }
+
+//     componentWillMount() {
+//         document.addEventListener('mousedown', this.handleClick, false);
+//         this.setState({ suggestions: this.props.suggestions || [], chosen: this.props.chosen || [] })
+//     }
+
+//     componentWillUnmount() {
+//         document.removeEventListener('mousedown', this.handleClick, false);
+//     }
+
+//     renderSuggestions() {
+//         let content = [];
+//         let count = 0;
+//         /* onClick={()=>{document.getElementById(this.props.id).value = e.tag}}> */
+//         for (let e of this.state.suggestions) {            
+//             content.push(
+//                 <div className='border border-dark rounded my-1 px-3 cursor-pointer' key={count}
+//                     onClick={()=>this.selectTag(e)}>
+//                     {e.name}
+//                 </div>
+//             );
+//             count++;
+//         }
+
+//         return content;
+//     }
+
+//     renderChosen() {
+//         let content = [];
+//         let count = 0;
+//         for(let e of this.state.chosen)
+//         {
+//             content.push(
+//                 <span className='m-2 p-2 bg-293FE4 text-white rounded' key={count}>
+//                     <span className='pr-2'>{e.name}</span>    
+//                     <i className='icon-line-awesome-times pl-1 border-left border-white cursor-pointer' onClick={()=>{this.removeTag(e)}}></i>
+//                 </span>
+//             );
+//             count++;
+//         }
+
+//         return content;
+//     }
+
+//     handleClick = (e) => {
+//         if(!document.getElementById('auto_complete').contains(e.target)) {
+//             this.setState({isFocus: false});
+//             // console.log('địt mẹ cuộc đời');
+//         }
+//     }
+
+//     handleChange() {
+//         let inputValue = document.getElementById(this.props.id).value.toLowerCase();
+
+//         let tagSuggestions = this.props.suggestions.filter((eachTag) => {
+//             return eachTag.tag.toLowerCase().startsWith(inputValue);
+//         });
+
+//         this.setState({ suggestions: tagSuggestions, isFocus: true });
+//     }
+
+//     selectTag(tag) {
+//         let temp = this.state.chosen;
+//         let arr = temp.filter(function(e){
+//             return e === tag;
+//         });
+
+//         if(arr.length === 0)
+//         {
+//             temp.push(tag);
+//             this.setState({suggestions: this.props.suggestions || [], chosen: temp, isFocus: false});            
+//         }
+//         else
+//         {
+//             this.setState({suggestions: this.props.suggestions || [], isFocus: false});
+//         }
+        
+//         document.getElementById(this.props.id).value = '';
+//     }
+
+//     removeTag(tag) {
+//         let temp = this.state.chosen;
+//         temp = temp.filter((eachTag) => {return eachTag!==tag});
+//         this.setState({chosen: temp});        
+//     }
+
+//     render() {
+//         return (
+//             <div>
+//                 <div id='auto_complete' className='input-tag'>
+//                     <div>
+//                         <div className='border border-dark d-flex flex-wrap'>
+//                             {(
+//                                 this.state.chosen.length > 0 
+//                                 &&                                
+//                                 this.renderChosen()
+//                             )}
+//                             <input id={this.props.id} type='text' className='mb-0 mt-1 pt-1'
+//                                 autoComplete='off'
+//                                 style={{border: '0', outline: 'none', boxShadow: 'none', width: 'auto',}}
+//                                 onFocus={()=>{this.setState({isFocus: true})}}
+//                                 onChange={this.handleChange}>
+//                             </input>
+//                         </div>
+//                         {/* <button className='keyword-input-button ripple-effect' onClick={()=>{this.selectTag({id: this.props.suggestions.length, tag: document.getElementById(this.props.id).value})}}>
+//                             <i className='icon-material-outline-add'></i>
+//                         </button> */}
+//                     </div>
+
+//                     <div className={'suggestion ' + (this.state.isFocus && 'suggestion-show')}>
+//                         {this.renderSuggestions()}
+//                     </div>
+//                 </div>
+//                 {/* {(
+//                     this.state.chosen.length > 0 
+//                     &&
+//                     <div className='mt-2 p-1 bg-silver d-flex flex-wrap rounded'>
+//                         {this.renderChosen()}
+//                     </div>
+//                 )} */}
+                
+//             </div>
+//         )
+//     }
+// }
+
 class S_Tag_Autocomplete extends Component {
     constructor(props) {
         super(props);
         this.state = {
             suggestions: null,
             isFocus: false,
-            chosen: null,
+            chosen: [],
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -206,7 +345,7 @@ class S_Tag_Autocomplete extends Component {
 
     componentWillMount() {
         document.addEventListener('mousedown', this.handleClick, false);
-        this.setState({ suggestions: this.props.suggestions || [], chosen: this.props.chosen || [{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},{id:1, tag: 'America'},] })
+        this.setState({ suggestions: this.props.suggestions || [], chosen: this.props.chosen || [] })
     }
 
     componentWillUnmount() {
@@ -221,7 +360,7 @@ class S_Tag_Autocomplete extends Component {
             content.push(
                 <div className='border border-dark rounded my-1 px-3 cursor-pointer' key={count}
                     onClick={()=>this.selectTag(e)}>
-                    {e.tag}
+                    {e.name}
                 </div>
             );
             count++;
@@ -237,7 +376,7 @@ class S_Tag_Autocomplete extends Component {
         {
             content.push(
                 <span className='m-2 p-2 bg-293FE4 text-white rounded' key={count}>
-                    <span className='pr-2'>{e.tag}</span>    
+                    <span className='pr-2'>{e.name}</span>    
                     <i className='icon-line-awesome-times pl-1 border-left border-white cursor-pointer' onClick={()=>{this.removeTag(e)}}></i>
                 </span>
             );
@@ -258,7 +397,7 @@ class S_Tag_Autocomplete extends Component {
         let inputValue = document.getElementById(this.props.id).value.toLowerCase();
 
         let tagSuggestions = this.props.suggestions.filter((eachTag) => {
-            return eachTag.tag.toLowerCase().startsWith(inputValue);
+            return eachTag.name.toLowerCase().startsWith(inputValue);
         });
 
         this.setState({ suggestions: tagSuggestions, isFocus: true });
@@ -279,7 +418,7 @@ class S_Tag_Autocomplete extends Component {
         {
             this.setState({suggestions: this.props.suggestions || [], isFocus: false});
         }
-        
+        this.props.handleChange("tags", this.state.chosen);
         document.getElementById(this.props.id).value = '';
     }
 
@@ -293,37 +432,26 @@ class S_Tag_Autocomplete extends Component {
         return (
             <div>
                 <div id='auto_complete' className='input-tag'>
-                    <div>
-                        <div className='border border-dark d-flex flex-wrap'>
-                            {(
-                                this.state.chosen.length > 0 
-                                &&                                
-                                this.renderChosen()
-                            )}
-                            <input id={this.props.id} type='text' className='mb-0 mt-1 pt-1'
-                                autoComplete='off'
-                                style={{border: '0', outline: 'none', boxShadow: 'none', width: 'auto',}}
-                                onFocus={()=>{this.setState({isFocus: true})}}
-                                onChange={this.handleChange}>
-                            </input>
-                        </div>
-                        {/* <button className='keyword-input-button ripple-effect' onClick={()=>{this.selectTag({id: this.props.suggestions.length, tag: document.getElementById(this.props.id).value})}}>
-                            <i className='icon-material-outline-add'></i>
-                        </button> */}
+                    <div className='keyword-input-container'>
+                        <input id={this.props.id} type='text' className='mb-0 keyword-input with-border'  
+                            autoComplete='off'                          
+                            onFocus={()=>{this.setState({isFocus: true})}}
+                            onChange={this.handleChange}>
+                        </input>
                     </div>
 
                     <div className={'suggestion ' + (this.state.isFocus && 'suggestion-show')}>
                         {this.renderSuggestions()}
                     </div>
                 </div>
-                {/* {(
+                {(
                     this.state.chosen.length > 0 
                     &&
                     <div className='mt-2 p-1 bg-silver d-flex flex-wrap rounded'>
                         {this.renderChosen()}
                     </div>
-                )} */}
-                
+                )}
+
             </div>
         )
     }
