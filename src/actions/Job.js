@@ -3,6 +3,7 @@ import {
   getJobsDetail,
   doApplyJob,
 } from "../services/job.services";
+import Swal from "sweetalert2";
 
 export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
@@ -55,22 +56,28 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
   return (dispatch) => {
     doApplyJob(id_user, id_job, proposed_price, attachment)
       .then((res) => {
-        dispatch(success());
+        //reload data
+        // loadJobDetail(id_job);
+        //show success
+        Swal.fire({
+          title: "Đăng kí thành công, xin vui lòng đợi duyệt",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.value) {
+            //close form and reload data :(
+            window.location.reload();
+          }
+        });
       })
       .catch((err) => {
         console.log(err);
-        dispatch(failure());
+        //show error;
+        Swal.fire({
+          title: "Đã xảy ra lỗi, vui lòng thử lại sau",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       });
   };
-
-  function success() {
-    return {
-      type: "APPLY_JOB_SUCCESS",
-    };
-  }
-  function failure() {
-    return {
-      type: "APPLY_JOB_FAILURE",
-    };
-  }
 };

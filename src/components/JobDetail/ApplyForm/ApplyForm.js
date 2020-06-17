@@ -33,16 +33,35 @@ class ApplyFormConponent extends Component {
     };
   }
 
+  getBase64(file, cb) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log("Error: ", error);
+    };
+  }
+
   applyJob(e) {
     e.preventDefault();
     let selectedFile = document.getElementById("upload-cv").files[0];
-    if (selectedFile) {
-      let user = JSON.parse(localStorage.getItem("user"));
+    // get base64 of selectedFile
 
-      let { jobDetail } = this.props.JobDetailReducer;
-      let proposed_price = this.refs.proposed_price.value;
-      let { doApplyJob } = this.props;
-      doApplyJob(user.id_user, jobDetail.id_job, proposed_price, selectedFile);
+    if (selectedFile) {
+      this.getBase64(selectedFile, (fileInBase64) => {
+        let { user } = this.props.HeaderReducer;
+        let { jobDetail } = this.props.JobDetailReducer;
+        let proposed_price = this.refs.proposed_price.value;
+        let { doApplyJob } = this.props;
+        doApplyJob(
+          user.id_user,
+          jobDetail.id_job,
+          proposed_price,
+          fileInBase64
+        );
+      });
     } else {
       Swal.fire({
         title: "Vui lòng chọn CV",
