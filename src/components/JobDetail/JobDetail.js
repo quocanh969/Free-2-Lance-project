@@ -149,7 +149,7 @@ class JobDetailComponent extends Component {
                         </li> */}
                         <li>
                           <i className="icon-material-outline-location-city" />{" "}
-                          {jobDetail.area_district}, {jobDetail.area_province}
+                          {jobDetail.district_name}, {jobDetail.province_name}
                         </li>
                         {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
                       </ul>
@@ -375,7 +375,7 @@ class JobDetailComponent extends Component {
                           <i className="icon-material-outline-location-on" />
                           <span>Vị trí</span>
                           <h5>
-                            {jobDetail.area_district}, {jobDetail.area_province}
+                            {jobDetail.district_name}, {jobDetail.province_name}
                           </h5>
                         </li>
                         <li>
