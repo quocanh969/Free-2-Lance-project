@@ -121,9 +121,10 @@ class SettingComponent extends Component {
         });
     }
 
-    renderPersonalInfo(user) {
+    renderPersonalInfo() {        
         let genders = [{ gender: 1, text: 'Nam' }, { gender: 0, text: 'Nữ' }];
         let { updatePersonalStatus } = this.props.SettingReducer;
+        let {user} = this.props.HeaderReducer;
 
         let avtImg = '';
         let portrait = avatarPlaceholder;
@@ -143,6 +144,7 @@ class SettingComponent extends Component {
             backId = 'data:image/png;base64,' + user.backIdPaper;
         }
         if (updatePersonalStatus === 1) {
+            window.scrollTo(0,0);
             return (
                 <div className="col-12">
                     <div className="dashboard-box margin-top-0">
@@ -162,6 +164,7 @@ class SettingComponent extends Component {
         else {
             return (
                 <form onSubmit={(e) => { e.preventDefault(); this.handleChangePersonalInfoSubmit() }}>
+                    
                     {/* Thông tin nhân */}
                     <div className="col-12">
                         <div className="dashboard-box margin-top-0">
@@ -304,7 +307,7 @@ class SettingComponent extends Component {
                         </div>
                     </div>
 
-                    <div className="col-xl-12">
+                    <div className="col-12">
                         <button className="button button-sliding-icon ripple-effect big margin-top-30" type='submit'>Cập nhật thông tin cá nhân <i className="icon-feather-save" /></button>
                     </div>
 
@@ -313,7 +316,8 @@ class SettingComponent extends Component {
         }
     }
 
-    renderCompanyInfo(company) {
+    renderCompanyInfo() {
+        let{company} = this.props.HeaderReducer;
         if (company !== null) {
             let { updateCompanyStatus } = this.props.SettingReducer;
 
@@ -394,9 +398,8 @@ class SettingComponent extends Component {
     }
 
     render() {
-        let { user, company } = this.props.HeaderReducer;
-
-        return (
+        let {user} = this.props.HeaderReducer;
+        return (            
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline d-flex justify-content-between">
@@ -435,13 +438,13 @@ class SettingComponent extends Component {
                 <div className="row">
 
                     {/* Thông tin cá nhân */}
-                    {this.renderPersonalInfo(user)}
+                    {this.renderPersonalInfo()}
 
                     {/* Thông tin của công ty ( nếu có ) */}
                     {(
                         user.isBusinessUser
                             ?
-                            this.renderCompanyInfo(company)
+                            this.renderCompanyInfo()
                             : ''
                     )}
                 </div>
