@@ -23,14 +23,6 @@ class SettingComponent extends Component {
         window.scrollTo(0, 0);
     }
 
-    componentWillUpdate() {
-        let { updatePersonalStatus, updateCompanyStatus } = this.props.SettingReducer;
-        if (updatePersonalStatus === 2 || updateCompanyStatus === 2) {
-            let { onRegetUser } = this.props;
-            onRegetUser();
-        }
-    }
-
     getBase64(file, cb) {
         let reader = new FileReader();
         reader.readAsDataURL(file);
@@ -144,7 +136,7 @@ class SettingComponent extends Component {
             backId = 'data:image/png;base64,' + user.backIdPaper;
         }
         if (updatePersonalStatus === 1) {
-            window.scrollTo(0,0);
+            document.getElementById('personal-info-flag').scrollIntoView({top: 80})
             return (
                 <div className="col-12">
                     <div className="dashboard-box margin-top-0">
@@ -319,9 +311,9 @@ class SettingComponent extends Component {
     renderCompanyInfo() {
         let{company} = this.props.HeaderReducer;
         if (company !== null) {
-            let { updateCompanyStatus } = this.props.SettingReducer;
-
+            let { updateCompanyStatus } = this.props.SettingReducer;            
             if (updateCompanyStatus === 1) {
+                document.getElementById("company-info-flag").scrollIntoView();
                 return (
                     <div className="col-12">
                         <div className="dashboard-box margin-top-0">
@@ -435,18 +427,22 @@ class SettingComponent extends Component {
                 </div>
 
                 {/* Row */}
-                <div className="row">
-
+                <div>
+                    
                     {/* Thông tin cá nhân */}
-                    {this.renderPersonalInfo()}
+                    <div id='personal-info-flag' className='row'>                    
+                        {this.renderPersonalInfo()}
+                    </div>
 
                     {/* Thông tin của công ty ( nếu có ) */}
-                    {(
-                        user.isBusinessUser
-                            ?
-                            this.renderCompanyInfo()
-                            : ''
-                    )}
+                    <div id='company-info-flag' className='row'>
+                        {(
+                            user.isBusinessUser
+                                ?
+                                this.renderCompanyInfo()
+                                : ''
+                        )}
+                    </div>
                 </div>
                 {/* Row / End */}
             </div>
