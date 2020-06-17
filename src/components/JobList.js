@@ -66,7 +66,7 @@ class JobListComponent extends Component {
       }
       content.push(
         <NavLink
-          to={"/job-detail?" + e.id_job}
+          to={"/job-detail/" + e.id_job}
           className="job-listing"
           key={count}
         >
@@ -96,19 +96,11 @@ class JobListComponent extends Component {
               <br></br>
               <li>
                 <i className="icon-material-outline-business-center" />{" "}
-                {postDate.getDate() +
-                  "/" +
-                  postDate.getMonth() +
-                  "/" +
-                  postDate.getFullYear()}
+                {postDate.getDate() + "/" + postDate.getMonth() + "/" + postDate.getFullYear()}
               </li>
               <li>
                 <i className="icon-material-outline-access-time" />{" "}
-                {expireDate.getDate() +
-                  "/" +
-                  expireDate.getMonth() +
-                  "/" +
-                  expireDate.getFullYear()}
+                {expireDate.getDate() + "/" + expireDate.getMonth() + "/" + expireDate.getFullYear()}
               </li>
             </ul>
           </div>
@@ -143,7 +135,7 @@ class JobListComponent extends Component {
             <div className="col-6">
               {/* <h4 className="job-listing-company">{e.company} <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4> */}
               <NavLink
-                to={"/job-detail?" + e.id_job}
+                to={"/job-detail/" + e.id_job}
                 className="d-block font-weight-bold text-dark"
               >
                 {e.title}
@@ -172,19 +164,11 @@ class JobListComponent extends Component {
                 <ul>
                   <li>
                     <i className="icon-material-outline-business-center" />{" "}
-                    {postDate.getDate() +
-                      "/" +
-                      postDate.getMonth() +
-                      "/" +
-                      postDate.getFullYear()}
+                    {postDate.getDate() + "/" + postDate.getMonth() + "/" + postDate.getFullYear()}
                   </li>
                   <li>
                     <i className="icon-material-outline-access-time" />{" "}
-                    {expireDate.getDate() +
-                      "/" +
-                      expireDate.getMonth() +
-                      "/" +
-                      expireDate.getFullYear()}
+                    {expireDate.getDate() + "/" + expireDate.getMonth() + "/" + expireDate.getFullYear()}
                   </li>
                 </ul>
               </div>
@@ -362,15 +346,15 @@ class JobListComponent extends Component {
                 text_tag="name"
               ></S_Selector>
             ) : (
-              <S_Selector
-                id="select-area"
-                className="with-border"
-                placeholder="Chọn khu vực"
-                data={areas}
-                value_tag="id_province"
-                text_tag="name"
-              ></S_Selector>
-            )}
+                <S_Selector
+                  id="select-area"
+                  className="with-border"
+                  placeholder="Chọn khu vực"
+                  data={areas}
+                  value_tag="id_province"
+                  text_tag="name"
+                ></S_Selector>
+              )}
           </div>
         </div>
 
@@ -390,15 +374,15 @@ class JobListComponent extends Component {
                 text_tag="name"
               ></S_Selector>
             ) : (
-              <S_Selector
-                id="select-category"
-                className="with-border"
-                placeholder="Chọn chủ đề"
-                data={jobTopic}
-                value_tag="id_jobtopic"
-                text_tag="name"
-              ></S_Selector>
-            )}
+                <S_Selector
+                  id="select-category"
+                  className="with-border"
+                  placeholder="Chọn chủ đề"
+                  data={jobTopic}
+                  value_tag="id_jobtopic"
+                  text_tag="name"
+                ></S_Selector>
+              )}
           </div>
         </div>
 
@@ -443,21 +427,21 @@ class JobListComponent extends Component {
                 <option value={0}>Lớn hơn 10.000.000đ</option>
               </select>
             ) : (
-              <select
-                className="btn with-border dropdown-toggle bs-placeholder btn-default"
-                id="salary-select"
-                defaultValue={0}
-              >
-                <option value={0} disabled>
-                  Giá tiền
+                <select
+                  className="btn with-border dropdown-toggle bs-placeholder btn-default"
+                  id="salary-select"
+                  defaultValue={0}
+                >
+                  <option value={0} disabled>
+                    Giá tiền
                 </option>
-                <option value={1}>Nhỏ hơn 100.000 đ</option>
-                <option value={2}>100.000đ - 500.000đ</option>
-                <option value={3}>500.000đ - 1.000.000đ</option>
-                <option value={4}>1.000.000đ - 10.000.000đ</option>
-                <option value={5}>Lớn hơn 10.000.000đ</option>
-              </select>
-            )}
+                  <option value={1}>Nhỏ hơn 100.000 đ</option>
+                  <option value={2}>100.000đ - 500.000đ</option>
+                  <option value={3}>500.000đ - 1.000.000đ</option>
+                  <option value={4}>1.000.000đ - 10.000.000đ</option>
+                  <option value={5}>Lớn hơn 10.000.000đ</option>
+                </select>
+              )}
           </div>
         </div>
 
@@ -476,14 +460,14 @@ class JobListComponent extends Component {
                 max="2050-12-31"
               />
             ) : (
-              <input
-                id="expired-input"
-                className="with-border"
-                type="date"
-                min="2020-01-01"
-                max="2050-12-31"
-              />
-            )}
+                <input
+                  id="expired-input"
+                  className="with-border"
+                  type="date"
+                  min="2020-01-01"
+                  max="2050-12-31"
+                />
+              )}
           </div>
         </div>
 
@@ -501,13 +485,13 @@ class JobListComponent extends Component {
                 min="1"
               />
             ) : (
-              <input
-                id="vacancy-input"
-                className="with-border"
-                type="number"
-                min="1"
-              />
-            )}
+                <input
+                  id="vacancy-input"
+                  className="with-border"
+                  type="number"
+                  min="1"
+                />
+              )}
           </div>
         </div>
       </div>

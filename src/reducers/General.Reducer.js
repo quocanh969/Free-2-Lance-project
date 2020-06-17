@@ -1,6 +1,8 @@
 const initState = {
     jobTopic: [],
     areas: [],
+    jobTags: [],
+    districts: [],
 }
 
 const GeneralReducer = (state = initState, action) => {
@@ -15,7 +17,12 @@ const GeneralReducer = (state = initState, action) => {
                 ...state,
                 areas: action.areas,
             }
-        case 'LOAD_TAGS': 
+        case 'LOAD_DISTRICTS':
+            return {
+                ...state,
+                districts: action.districts,
+            }
+        case 'LOAD_JOB_TAGS':
             return {
                 ...state,
                 jobTags: action.jobTag,

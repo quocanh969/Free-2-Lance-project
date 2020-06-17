@@ -16,7 +16,7 @@ export default class MultipleImageUploadComponent extends Component {
 
         this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
-        
+
     }
 
     uploadMultipleFiles(e) {
@@ -27,6 +27,7 @@ export default class MultipleImageUploadComponent extends Component {
             console.log(this.fileObj);
             if (this.fileObj.includes(e.target.files[0].name)) {
                 console.log("DUBBED")
+                return;
             }
             this.fileArray.push(urlObj);
             this.fileObj.push(e.target.files[0].name);
@@ -43,10 +44,11 @@ export default class MultipleImageUploadComponent extends Component {
                     this.fileObj.push(e.target.files[i].name);
                     this.getBase64(e.target.files[i], (result) => {
                         b64 = result;
+                        b64 = b64.split(',')[1];
                         this.imgArr.push(b64);
                     })
                 } else {
-
+                    console.log("DUBBED")
                 }
             }
         }
@@ -57,7 +59,24 @@ export default class MultipleImageUploadComponent extends Component {
 
     uploadFiles(e) {
         e.preventDefault()
-        console.log(this.state.img)
+        console.log("FLAG");
+        console.log(e.target.files);
+        let b64 = '';
+        let urlObj = URL.createObjectURL(e.target.files[0]);
+        console.log(this.fileObj);
+        if (this.fileObj.includes(e.target.files[0].name)) {
+            console.log("DUBBED")
+        }
+        this.fileArray[0] = (urlObj);
+        this.fileObj[0] = (e.target.files[0].name);
+        this.getBase64(e.target.files[0], (result) => {
+            b64 = result;
+            b64 = b64.split(',')[1];
+            this.imgArr[0] = (b64);
+        });
+        this.setState({ img: this.imgArr, file: this.fileArray }, () => {
+            this.props.onChange("relatedImg", this.state.img);
+        });
     }
 
     getBase64(file, cb) {
@@ -77,9 +96,10 @@ export default class MultipleImageUploadComponent extends Component {
         imgArr.splice(index, 1);
         fileArr.splice(index, 1);
         this.fileObj.splice(index, 1);
+        console.log(this.fileObj.length);
         if (this.fileObj.length === 0) {
             console.log("Empty already")
-            document.getElementById('uploadImg').value = null;
+            document.getElementById('uploadImgMultiple').value = null;
         } else {
             // document.getElementById('uploadImg').value = this.fileObj.length;
         }
@@ -98,7 +118,8 @@ export default class MultipleImageUploadComponent extends Component {
                 </div>
 
                 <div className="form-group">
-                    <input id="uploadImg" type="file" accept="image/*" className="form-control" onChange={this.uploadMultipleFiles} style={{display: 'none'}} multiple />
+                    <input id="uploadImgMultiple" type="file" accept="image/*" className="form-control" onChange={this.uploadMultipleFiles} style={{ display: 'none' }} multiple />
+                    <input id="uploadImgSingle" type="file" accept="image/*" className="form-control" onChange={this.uploadFiles} style={{ display: 'none' }} single />
                 </div>
                 {/* <button type="button" className="btn btn-danger btn-block" onClick={this.uploadFiles}>Upload</button> */}
             </form >
