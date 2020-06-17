@@ -128,7 +128,7 @@ export const loadTopUsers = () => {
     return dispatch => {
         getTopUsers()
             .then(res => {
-                dispatch(success(res.data));
+                dispatch(success(res.data.data));
             })
             .catch(err => {
                 console.log(err);
@@ -147,6 +147,10 @@ export const loadStatistic = () => {
     return dispatch => {
         getStatistic().then(res => {
             if (res.data.code === 1) {
+                // let memberNum = Number.parseInt(res.data.data.memberNum);
+                // let finishedJobNum = Number.parseInt(res.data.data.finishedJobNum);
+                // let applyingJobNum = Number.parseInt(res.data.data.applyingJobNum);
+                // let proccessingJobNum = Number.parseInt(res.data.data.proccessingJobNum);
                 dispatch(success(res.data.data.memberNum, res.data.data.finishedJobNum, res.data.data.applyingJobNum, res.data.data.proccessingJobNum));
             }
         }).catch(err => {

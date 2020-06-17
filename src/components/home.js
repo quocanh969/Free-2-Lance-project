@@ -17,46 +17,6 @@ class HomeComponent extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            finishedJob: 1586,
-            jobPost: 3543,
-            member: 1232,
-            testimonials: [
-                {
-                    id_user: 1,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Katarina',
-                    rate: 4,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-                {
-                    id_user: 2,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Garen',
-                    rate: 3,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-                {
-                    id_user: 3,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Ryze',
-                    rate: 5,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-                {
-                    id_user: 4,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Sylas',
-                    rate: 4.5,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-            ]
-        }
     }
 
     componentWillMount() {
