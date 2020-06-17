@@ -1,4 +1,5 @@
 import {editPersonalInfo, getUserInfo, editCompanyInfo} from '../services/account.services';
+import Swal from 'sweetalert2';
 
 export const updatePersonalInfo = (personal) => {
     return dispatch => {
@@ -7,10 +8,19 @@ export const updatePersonalInfo = (personal) => {
         .then(res => {
             if (res.data.code === '106') {                
                 dispatch(success());                
-                alert('Cập nhật thành công');
+                Swal.fire({
+                    title: "Cập nhật thông tin cá nhân thành công",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             } else {
                 dispatch(failure());
-                alert('Cập nhật thất bại');
+                Swal.fire({
+                    title: "Cập nhật thông tin cá nhân thất bại",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
             }
             dispatch(reset());
         }).catch(err => {
@@ -47,10 +57,19 @@ export const updateCompanyInfo = (company) => {
         .then(res => {
             if (res.data.code === '107') {                
                 dispatch(success());                
-                alert('Cập nhật thành công');
+                Swal.fire({
+                    title: "Cập nhật thông tin công ty thành công",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             } else {
                 dispatch(failure());
-                alert('Cập nhật thất bại');
+                Swal.fire({
+                    title: "Cập nhật thông tin cá nhân thất bại",
+                    icon: "error",
+                    confirmButtonText: 'OK'
+                });                
             }
             dispatch(reset());
         }).catch(err => {
@@ -100,7 +119,11 @@ export const updateUserState = () => {
             }
             else
             {
-                alert('Cập nhật thông tin user thất bại');
+                Swal.fire({
+                    title: "Tải dữ liệu cá nhân thất bại",
+                    icon: "error",
+                    confirmButtonText: 'OK'
+                });
             }            
         }).catch(err=>{
         console.log(err);

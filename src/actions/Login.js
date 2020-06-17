@@ -1,6 +1,6 @@
 import { login, getUserInfo } from "../services/account.services";
+import Swal from 'sweetalert2';
 
-import axios from "axios";
 import { history } from "../ultis/history/history";
 
 export const sendForgetPassword = (email) => {
@@ -14,14 +14,12 @@ export const sendForgetPassword = (email) => {
     };
   }
   function success(message) {
-    console.log("success");
     return {
       type: "FORGET_PW_SUCCESS",
       message,
     };
   }
   function failure(message) {
-    console.log("failure");
     return {
       type: "FORGET_PW_FAILURE",
       message,
@@ -32,7 +30,6 @@ export const sendForgetPassword = (email) => {
 export const sendLogin = (email, password) => {
   return (dispatch) => {
     dispatch(request());
-
     login(email, password)
       .then((res) => {
         if (res.data.code === "-101") {
@@ -40,7 +37,7 @@ export const sendLogin = (email, password) => {
           dispatch(failure(res.data.message));
         } else {
           // thành công
-          dispatch(success(res.data.message));
+          
           localStorage.setItem("token", JSON.stringify(res.data.data.token));
           
           // lấy thông tin user
@@ -48,22 +45,29 @@ export const sendLogin = (email, password) => {
             if(res.data.code === '200')
             {
               dispatch(updateUser(res.data.data.personal))
-              window.history.back();
+              dispatch(success(res.data.message));
+              history.push('/'); // quay về trang chủ
             }
             else
             {
-              alert('Cập nhật thông tin user thật bại');
+              Swal.fire({
+                title: "Tải dữ liệu cá nhân thất bại",
+                icon: "error",
+                confirmButtonText: 'OK'
+              });
             }            
           }).catch(err=>{
             console.log(err);
           })
-          
-          // history.push('/home');
         }
       })
       .catch((err) => {
         console.log(err);
-        //dispatch(failure("There was error with server connection. Error log on console"));
+        Swal.fire({
+          title: "Có lỗi trong quá trình đăng nhập",
+          icon: "error",
+          confirmButtonText: 'OK'
+        });
       });
   };
 
@@ -94,7 +98,6 @@ export const sendLogin = (email, password) => {
 
 export const reset = () => {
   return (dispatch) => {
-    console.log("reset in action");
     dispatch(callAction());
   };
 

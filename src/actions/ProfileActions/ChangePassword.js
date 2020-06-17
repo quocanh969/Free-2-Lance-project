@@ -1,4 +1,5 @@
 import { changePassword } from "../../services/profile.services";
+import Swal from "sweetalert2";
 
 export const sendchangePassword = (oldPW, newPW) => {
   return (dispatch) => {
@@ -9,11 +10,20 @@ export const sendchangePassword = (oldPW, newPW) => {
         if (res.data.code === "-105") {
           // thất bại
           dispatch(failure(res.data.message));
-          alert(res.data.message);
+          Swal.fire({
+            title: "Cập nhật mật khẩu thất bại",
+            icon: "error",
+            confirmButtonText: "OK",
+          });          
         } else {
           // thành công
           dispatch(success(res.data.message));
-          alert(res.data.message);
+          Swal.fire({
+            icon: 'success',
+            title: 'Cập nhật mật khẩu thành công',
+            showConfirmButton: false,
+            timer: 1500
+          })
         }
       })
       .catch((err) => {
@@ -39,7 +49,6 @@ export const sendchangePassword = (oldPW, newPW) => {
     };
   }
   function failure(message) {
-    console.log("failure");
     return {
       type: "CHANGE_PW_FAILURE",
       message,
