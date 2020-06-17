@@ -142,9 +142,9 @@ class HeaderComponent extends Component {
         for (let e of jobTopic) {
             content.push(                
                 // <NavLink onClick={(element) => { this.handleTopicNavClick(element, e.id_jobtopic) }}
-                <a key={count} className='dropdown-item' href={'/job-list/topic='+e.id_jobtopic}>
+                <NavLink key={count} className='dropdown-item' to={'/job-list/topic='+e.id_jobtopic}>
                     {e.name}
-                </a>
+                </NavLink>
             );
             count++;
         }
@@ -241,10 +241,10 @@ class HeaderComponent extends Component {
         return (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
-                    <a className="nav-link-header nav-link dropdown-toggle px-0" href="#" id="NotiMenuDropdown"
+                    <button className="nav-link-header nav-link dropdown-toggle px-0 pt-1 pb-0" id="NotiMenuDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className='icon-material-baseline-notifications-none mx-0 p-2 font-size-25'></i>
-                    </a>
+                    </button>
                     <div className="shadow dropdown-menu dropdown-menu-right mt-1" style={{width: '300px'}} aria-labelledby="NotiMenuDropdown">
                         <h5 className='dropddown-header font-weight-bold mb-2 px-2' key={1}>Notifications</h5>
                         <div className='header-menu'>
@@ -253,7 +253,7 @@ class HeaderComponent extends Component {
                     </div>
                 </li>   
                 <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 ml-2 mr-3">
-                    <button className="nav-link nav-link-header mt-0 dropdown-toggle px-0" href="#" id="MessMenuDropdown"
+                    <button className="nav-link nav-link-header mt-0 dropdown-toggle px-0 pt-1 pb-0" id="MessMenuDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className='icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25'></i>
                     </button>
@@ -263,7 +263,7 @@ class HeaderComponent extends Component {
                             {this.renderMessageContent()}
                         </div>
                     </div>
-                </li>                     
+                </li>
                 <li className={"nav-item dropdown pt-3 pb-2 pr-3 pl-4 mr-2 border-left " + (this.state.isCurrentTop ? 'border-light' : 'border-secondary')}>
                     <a className="nav-link dropdown-toggle rounded-pill bg-secondary mt-1 pl-2 pr-3 py-1" href="#" 
                         id="UserMenuDropdown"
@@ -316,25 +316,25 @@ class HeaderComponent extends Component {
                     <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse my-0 py-0" id="navbarSupportedContent">
-                    <ul className="navbar-nav mr-auto">
+                    <ul className="navbar-nav mr-auto ">
                         <li className="nav-item mx-2 pt-3 pb-2">
-                            <NavLink className="nav-link nav-link-header" to='/'>Trang chủ</NavLink>
+                            <NavLink className="nav-link nav-link-header" to='/'><div>Trang chủ</div></NavLink>
                         </li>
                         <li className="nav-item mx-2 pt-3 pb-2">
-                            <NavLink className="nav-link nav-link-header" to='/search'>Tìm việc</NavLink>
+                            <NavLink className="nav-link nav-link-header" to='/search'><div>Tìm việc</div></NavLink>
                         </li>
                         <li onMouseLeave={()=>{this.setState({isTopicHover: false})}}
                             className={"nav-item dropdown mx-2 pt-3 pb-2 "+(this.state.isTopicHover ? 'show':'')}>
                             <NavLink className="nav-link-header nav-link dropdown-toggle" to='/job-list' id="navbarDropdown" 
                                 onMouseEnter={()=>{this.setState({isTopicHover: true})}} >
-                                Chủ đề
+                                <div>Chủ đề</div>
                             </NavLink>
-                            <div className={"dropdown-menu mt-1 header-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
+                            <div className={"dropdown-menu mt-0 header-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
                                 {this.renderTopicsHeader()}
                             </div>
                         </li>
                         <li className="nav-item mx-2 pt-3 pb-2">
-                            <NavLink className="nav-link nav-link-header" to='/contact'>Liên lạc</NavLink>
+                            <NavLink className="nav-link nav-link-header" to='/contact'><div>Liên lạc</div></NavLink>
                         </li>
                     </ul>
                     {(

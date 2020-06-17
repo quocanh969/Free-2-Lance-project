@@ -12,6 +12,7 @@ import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png'
 
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
 import { loadProductionJobs, loadTemporalJobs, loadTopUsers, loadStatistic } from '../actions/Home';
+import { prettierNumber } from '../ultis/SHelper/prettier';
 
 class HomeComponent extends Component {
 
@@ -181,7 +182,7 @@ class HomeComponent extends Component {
                     <div className="task-listing-bid">
                         <div className="task-listing-bid-inner">
                             <div className="task-offers">
-                                <strong>{e.salary} VNĐ</strong>
+                                <strong>{prettierNumber(e.salary)} VNĐ</strong>
                                 <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
                             </div>
                             <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
@@ -216,7 +217,7 @@ class HomeComponent extends Component {
                     <div className="task-listing-bid">
                         <div className="task-listing-bid-inner">
                             <div className="task-offers">
-                                <strong>{e.salary} VNĐ</strong>
+                                <strong>{prettierNumber(e.salary)} VNĐ</strong>
                                 <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
                             </div>
                             <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
