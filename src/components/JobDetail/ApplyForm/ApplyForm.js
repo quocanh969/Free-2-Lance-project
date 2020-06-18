@@ -9,7 +9,9 @@ const maxSize = 52428800;
 class ApplyFormConponent extends Component {
   constructor(props) {
     super(props);
+    this.state = { isEditing: false, proposed_price: null };
     this.applyJob = this.applyJob.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -54,8 +56,8 @@ class ApplyFormConponent extends Component {
         let { user } = this.props.HeaderReducer;
         let { jobDetail } = this.props.JobDetailReducer;
         let proposed_price = jobDetail.dealable
-          ? this.refs.proposed_price.value
-          : 0;
+          ? this.state.proposed_price
+          : jobDetail.salary;
         let { doApplyJob } = this.props;
         doApplyJob(
           user.id_user,
@@ -78,7 +80,7 @@ class ApplyFormConponent extends Component {
       return (
         <div className="input-with-icon-left">
           <i className="icon-material-outline-account-circle" />
-          <input
+          {/* <input
             type="number"
             className="input-text with-border"
             name="proposed_price"
@@ -86,10 +88,48 @@ class ApplyFormConponent extends Component {
             placeholder="Mức lương mong muốn (VNĐ)"
             required
             ref="proposed_price"
-          />
+          /> */}
+          {this.state.isEditing ? (
+            <input
+              type="number"
+              className="input-text with-border"
+              name="proposed_price"
+              value={this.state.proposed_price}
+              onChange={this.onChange.bind(this)}
+              onBlur={this.toggleEditing.bind(this)}
+              required
+            />
+          ) : (
+            <input
+              type="text"
+              className="input-text with-border"
+              name="proposed_price"
+              value={this.toCurrency(this.state.proposed_price)}
+              onFocus={this.toggleEditing.bind(this)}
+              readOnly
+            />
+          )}
         </div>
       );
     } else return [];
+  }
+
+  onChange(event) {
+    this.setState({ proposed_price: event.target.value });
+  }
+
+  toCurrency(number) {
+    if (number === null) return "Mức lương mong muốn (VNĐ)";
+    const formatter = new Intl.NumberFormat("sv-SE", {
+      style: "decimal",
+      currency: "SEK",
+    });
+
+    return formatter.format(number) + " VND";
+  }
+
+  toggleEditing() {
+    this.setState({ isEditing: !this.state.isEditing });
   }
 
   render() {
@@ -152,7 +192,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     doApplyJob: (id_user, id_job, proposed_price, attachment) => {
-      console.log(id_user, id_job, proposed_price, attachment);
       dispatch(applyJob(id_user, id_job, proposed_price, attachment));
     },
   };
