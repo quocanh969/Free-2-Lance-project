@@ -146,6 +146,44 @@ class JobDetailComponent extends Component {
     );
   }
 
+  renderApplyButton() {
+    let { user } = this.props.HeaderReducer;
+    if (user && !user.isBusinessUser) {
+      return (
+        <button
+          className="apply-now-button popup-with-zoom-anim w-100"
+          data-toggle="modal"
+          data-target="#myModal"
+        >
+          Đăng kí ứng cử <i className="icon-material-outline-arrow-right-alt" />
+        </button>
+      );
+    } else return [];
+  }
+
+  renderApplyFormPopup() {
+    let { user } = this.props.HeaderReducer;
+    if (user && !user.isBusinessUser) {
+      return (
+        <div id="myModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4 className="modal-title">Đăng kí ứng cử</h4>
+                <button type="button" className="close" data-dismiss="modal">
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <ApplyForm></ApplyForm>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else return [];
+  }
+
   render() {
     let { jobDetail } = this.props.JobDetailReducer;
 
@@ -390,14 +428,8 @@ class JobDetailComponent extends Component {
             {/* Sidebar */}
             <div className="col-xl-4 col-lg-4">
               <div className="sidebar-container">
-                <button
-                  className="apply-now-button popup-with-zoom-anim w-100"
-                  data-toggle="modal"
-                  data-target="#myModal"
-                >
-                  Đăng kí ứng cử{" "}
-                  <i className="icon-material-outline-arrow-right-alt" />
-                </button>
+                {this.renderApplyButton()}
+
                 {/* Sidebar Widget */}
                 <div className="sidebar-widget">
                   <div className="job-overview">
@@ -471,21 +503,7 @@ class JobDetailComponent extends Component {
         {/* Wrapper / End */}
 
         {/* Apply for a job popup */}
-        <div id="myModal" className="modal fade" role="dialog">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title">Đăng kí ứng cử</h4>
-                <button type="button" className="close" data-dismiss="modal">
-                  &times;
-                </button>
-              </div>
-              <div className="modal-body">
-                <ApplyForm></ApplyForm>
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.renderApplyFormPopup()}
         {/* Apply for a job popup / End */}
       </div>
     );
