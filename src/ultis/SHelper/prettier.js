@@ -11,9 +11,8 @@ export const prettierNumber = (number) => {
 
 export const prettierDate = (date) => {
   let newDate = new Date(date);
-  return (
-    newDate.getDate() + "/" + newDate.getMonth() + "/" + newDate.getFullYear()
-  );
+  let month = newDate.getMonth() + 1;
+  return newDate.getDate() + "/" + month + "/" + newDate.getFullYear();
 };
 
 export const prettierDateAgo = (date) => {
