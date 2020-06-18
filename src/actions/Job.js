@@ -2,6 +2,7 @@ import {
   getJobsList,
   getJobsDetail,
   doApplyJob,
+  getEmployerDetail,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 
@@ -35,7 +36,6 @@ export const loadJobList = (page, take, isASC, query) => {
 
 export const loadJobDetail = (jobId) => {
   return (dispatch) => {
-    console.log('hello');
     getJobsDetail(jobId)
       .then((res) => {
         console.log(res);
@@ -50,6 +50,26 @@ export const loadJobDetail = (jobId) => {
     return {
       type: "JOB_DETAIL_LOAD",
       jobDetail,
+    };
+  }
+};
+
+export const loadEmployer = (employerId) => {
+  return (dispatch) => {
+    getEmployerDetail(employerId)
+      .then((res) => {
+        console.log(res);
+        dispatch(success(res.data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(employerDetail) {
+    return {
+      type: "JOB_DETAIL_EMPLOYER_LOAD",
+      employerDetail,
     };
   }
 };
