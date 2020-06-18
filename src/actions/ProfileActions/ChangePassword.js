@@ -9,15 +9,17 @@ export const sendchangePassword = (oldPW, newPW) => {
         console.log(res);
         if (res.data.code === "-105") {
           // thất bại
+          dispatch(failure(res.data.message));
           Swal.fire({
             title: "Đổi mật khẩu không thành công",
             text: res.data.message,
             icon: "error",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Ok!",
-          });
+          });        
         } else {
           // thành công
+          dispatch(success(res.data.message));
           Swal.fire({
             title: "Đổi mật khẩu thành công",
             text: "Vui lòng đăng nhập lại",
@@ -27,8 +29,6 @@ export const sendchangePassword = (oldPW, newPW) => {
           }).then((result) => {
             if (result.value) {
               localStorage.clear();
-
-              // history.push("/login");
               window.location.href = "./login";
             }
           });
@@ -49,6 +49,23 @@ export const sendchangePassword = (oldPW, newPW) => {
   function request() {
     return {
       type: "CHANGE_PW_REQUEST",
+    };
+  }
+  function success(message) {
+    return {
+      type: "CHANGE_PW_SUCCESS",
+      message,
+    };
+  }
+  function failure(message) {
+    return {
+      type: "CHANGE_PW_FAILURE",
+      message,
+    };
+  }
+  function reset() {
+    return {
+      type: "CHANGE_PW_RESET",
     };
   }
 };

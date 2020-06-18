@@ -15,7 +15,7 @@ export const loadJobList = (page, take, isASC, query) => {
           success(
             res.data.data.jobList,
             res.data.data.page,
-            res.data.data.count
+            res.data.data.total
           )
         );
       })

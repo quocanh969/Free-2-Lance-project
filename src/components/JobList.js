@@ -10,6 +10,7 @@ import CompanyLogoPlaceholder from "../assets/images/company-logo-placeholder.pn
 import { loadJobList } from "../actions/Job";
 
 import { S_Selector } from "../ultis/SHelper/S_Help_Input";
+import {prettierNumber} from "../ultis/SHelper/prettier";
 
 class JobListComponent extends Component {
   originalQuery = {};
@@ -32,6 +33,17 @@ class JobListComponent extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+  }
+
+  componentWillReceiveProps() {
+    if(this.props.history.location.pathname !== this.props.location.pathname) // khác path
+    {      
+      let splitted = this.props.history.location.pathname.split('=',2);
+      let newTopic = Number.parseInt(splitted[1]);      
+      this.originalQuery.job_topic = newTopic;
+
+      this.loadJobListFunc(1, this.originalQuery);
+    }
   }
 
   renderTags(tags) {
@@ -91,7 +103,7 @@ class JobListComponent extends Component {
               </li>
               <li>
                 <i className="icon-material-outline-account-balance-wallet" />{" "}
-                {e.salary} đ
+                {prettierNumber(e.salary)} đ
               </li>
               <br></br>
               <li>
@@ -156,7 +168,7 @@ class JobListComponent extends Component {
                   </li>
                   <li>
                     <i className="icon-material-outline-account-balance-wallet" />{" "}
-                    {e.salary} đ
+                    {prettierNumber(e.salary)} đ
                   </li>
                 </ul>
               </div>

@@ -37,7 +37,6 @@ class ForgetPasswordComponent extends Component {
       );
     } else if (!sending && status === -1) {
       // failure ...
-      console.log("flag failure");
       content.push(
         <div className="alert alert-login alert-danger" key={1} role="alert">
           {message}

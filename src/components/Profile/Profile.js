@@ -24,7 +24,7 @@ class ProfileComponent extends Component {
         super(props);
 
         this.state = {
-            tab: 7,
+            tab: 11,
         }
 
         this.moveToTab = this.moveToTab.bind(this);

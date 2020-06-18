@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { MyStore } from "../..";
+import Swal from 'sweetalert2';
 import { history } from "../../ultis/history/history";
 
 let axios = Axios.create({
@@ -24,8 +25,12 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       console.log(error.response);
       // alert(error.response);
-      alert("Đăng nhập đi ba");
-
+      Swal.fire({
+        title: 'Tài khoản của bạn đã hết hạn đăng nhập',
+        text: 'Vui lòng đăng nhập lại',
+        icon: "warning",
+        confirmButtonText: 'OK'
+      });
       localStorage.clear();
 
       // history.push("/login");

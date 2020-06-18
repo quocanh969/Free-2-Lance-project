@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import Swal from "sweetalert2";
 
 import { S_Selector } from "../../../ultis/SHelper/S_Help_Input";
 

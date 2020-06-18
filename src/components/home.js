@@ -12,51 +12,12 @@ import UserAvatarPlaceholder from '../assets/images/user-avatar-placeholder.png'
 
 import { S_Selector } from '../ultis/SHelper/S_Help_Input';
 import { loadProductionJobs, loadTemporalJobs, loadTopUsers, loadStatistic } from '../actions/Home';
+import { prettierNumber } from '../ultis/SHelper/prettier';
 
 class HomeComponent extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            finishedJob: 1586,
-            jobPost: 3543,
-            member: 1232,
-            testimonials: [
-                {
-                    id_user: 1,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Katarina',
-                    rate: 4,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-                {
-                    id_user: 2,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Garen',
-                    rate: 3,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-                {
-                    id_user: 3,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Ryze',
-                    rate: 5,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-                {
-                    id_user: 4,
-                    avatarImg: UserAvatarPlaceholder,
-                    fullname: 'Sylas',
-                    rate: 4.5,
-                    email: 'hello@gmail.com',
-                    dial: '0152684975',
-                },
-            ]
-        }
     }
 
     componentWillMount() {
@@ -221,7 +182,7 @@ class HomeComponent extends Component {
                     <div className="task-listing-bid">
                         <div className="task-listing-bid-inner">
                             <div className="task-offers">
-                                <strong>{e.salary} VNĐ</strong>
+                                <strong>{prettierNumber(e.salary)} VNĐ</strong>
                                 <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
                             </div>
                             <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
@@ -256,7 +217,7 @@ class HomeComponent extends Component {
                     <div className="task-listing-bid">
                         <div className="task-listing-bid-inner">
                             <div className="task-offers">
-                                <strong>{e.salary} VNĐ</strong>
+                                <strong>{prettierNumber(e.salary)} VNĐ</strong>
                                 <span>{(e.dealable ? 'Có đấu giá' : 'Giá cố định')}</span>
                             </div>
                             <span className="button button-sliding-icon ripple-effect">Xem thêm <i className="icon-material-outline-arrow-right-alt" /></span>
