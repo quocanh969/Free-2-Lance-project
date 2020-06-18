@@ -258,18 +258,18 @@ class PostJobComponent extends Component {
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
                                                     <h5>Tính chất công việc</h5>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="isOnlineCheck" />
-                                                        <label class="custom-control-label" for="isOnlineCheck">Việc làm online</label>
+                                                    <div className="custom-control custom-checkbox">
+                                                        <input type="checkbox" className="custom-control-input" id="isOnlineCheck" />
+                                                        <label className="custom-control-label" htmlFor="isOnlineCheck">Việc làm online</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
                                                     <h5 style={{ visibility: 'hidden' }}>Tính chất công việc</h5>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="isDealableCheck" />
-                                                        <label class="custom-control-label" for="isDealableCheck">Cho phép thỏa thuận</label>
+                                                    <div className="custom-control custom-checkbox">
+                                                        <input type="checkbox" className="custom-control-input" id="isDealableCheck" />
+                                                        <label className="custom-control-label" htmlFor="isDealableCheck">Cho phép thỏa thuận</label>
                                                     </div>
                                                 </div>
                                             </div>                                            

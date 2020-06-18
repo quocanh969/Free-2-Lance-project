@@ -116,6 +116,34 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #2a41e8 !important;
 }
 
+/* Chỉnh sửa custom cho cái input MUI*/
+.SearchBar-root-1 {
+  height: auto !important;
+}
+
+.MuiPaper-root {
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 
+.MuiPaper-root button {
+  display: none !important;
+} */
+
+.MuiPaper-root input {
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+}
+
+.MuiPaper-root input:focus {
+  box-shadow: none !important;
+}
+
+.SearchBar-searchContainer-8 {
+  margin: 0 !important;
+}
+
 .logo-brand {
   max-height: 50px;
 }
