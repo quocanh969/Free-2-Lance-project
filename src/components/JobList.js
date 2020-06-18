@@ -36,7 +36,14 @@ class JobListComponent extends Component {
   }
 
   componentWillReceiveProps() {
-    console.log(this.props);
+    if(this.props.history.location.pathname !== this.props.location.pathname) // khác path
+    {      
+      let splitted = this.props.history.location.pathname.split('=',2);
+      let newTopic = Number.parseInt(splitted[1]);      
+      this.originalQuery.job_topic = newTopic;
+
+      this.loadJobListFunc(1, this.originalQuery);
+    }
   }
 
   renderTags(tags) {
