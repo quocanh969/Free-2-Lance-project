@@ -38,7 +38,6 @@ export const loadJobDetail = (jobId) => {
   return (dispatch) => {
     getJobsDetail(jobId)
       .then((res) => {
-        console.log(res);
         dispatch(success(res.data.data));
       })
       .catch((err) => {
@@ -58,7 +57,6 @@ export const loadEmployer = (employerId) => {
   return (dispatch) => {
     getEmployerDetail(employerId)
       .then((res) => {
-        console.log(res);
         dispatch(success(res.data.data));
       })
       .catch((err) => {
