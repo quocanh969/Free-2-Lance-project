@@ -26,7 +26,7 @@ class JobDetailComponent extends Component {
 
     let jobId = 121;
     let { id_job } = this.props.match.params;
-    if(id_job) {
+    if (id_job) {
       jobId = id_job;
     }
     this.state = {
@@ -47,7 +47,6 @@ class JobDetailComponent extends Component {
   }
 
   componentWillMount() {
-    console.log('cai lon què gì vậy');
     let { onLoadJobDetail } = this.props;
     let { jobId } = this.state;
     onLoadJobDetail(jobId);
@@ -106,25 +105,36 @@ class JobDetailComponent extends Component {
 
     let content = [];
     content.push(
-      <div className="row bg-293FE4 text-white" key={0} style={{height: '50px'}}>
-        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+      <div
+        className="row bg-293FE4 text-white"
+        key={0}
+        style={{ height: "50px" }}
+      >
+        <div
+          className="col-md-4 font-weight-bold cursor-pointer"
+          style={{ lineHeight: "50px" }}
+        >
           Họ tên người ứng tuyển
         </div>
-        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+        <div
+          className="col-md-4 font-weight-bold cursor-pointer"
+          style={{ lineHeight: "50px" }}
+        >
           Email
         </div>
-        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+        <div
+          className="col-md-4 font-weight-bold cursor-pointer"
+          style={{ lineHeight: "50px" }}
+        >
           Mức lương ứng tuyển
         </div>
       </div>
-    )
+    );
     applicants.forEach((applicant, i) => {
       content.push(
-        <div className="row task-listing" key={i} style={{height: '50px'}}>
+        <div className="row task-listing" key={i} style={{ height: "50px" }}>
           <div className="col-md-4">{applicant.fullname}</div>
-          <div className="col-md-4">
-            {applicant.email}
-          </div>
+          <div className="col-md-4">{applicant.email}</div>
           <div className="col-md-4">
             {prettierNumber(applicant.proposed_price)} VNĐ
           </div>
@@ -132,10 +142,8 @@ class JobDetailComponent extends Component {
       );
     });
     return (
-      <div className="tasks-list-container compact-list p-0">
-        {content}
-      </div>
-    )
+      <div className="tasks-list-container compact-list p-0">{content}</div>
+    );
   }
 
   render() {
@@ -167,14 +175,14 @@ class JobDetailComponent extends Component {
                             {jobDetail.name_employer}
                           </a>
                         </li>
-                        {/* <li>
+                        <li>
                           <div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">
                             {4.9}
                           </div>
-                        </li> */}
+                        </li>
                         <li>
                           <i className="icon-material-outline-location-city" />{" "}
-                          {jobDetail.area_district}, {jobDetail.area_province}
+                          {jobDetail.district_name}, {jobDetail.province_name}
                         </li>
                         {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
                       </ul>
@@ -400,7 +408,7 @@ class JobDetailComponent extends Component {
                           <i className="icon-material-outline-location-on" />
                           <span>Vị trí</span>
                           <h5>
-                            {jobDetail.area_district}, {jobDetail.area_province}
+                            {jobDetail.district_name}, {jobDetail.province_name}
                           </h5>
                         </li>
                         <li>

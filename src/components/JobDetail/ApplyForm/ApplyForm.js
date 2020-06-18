@@ -33,16 +33,37 @@ class ApplyFormConponent extends Component {
     };
   }
 
+  getBase64(file, cb) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log("Error: ", error);
+    };
+  }
+
   applyJob(e) {
     e.preventDefault();
     let selectedFile = document.getElementById("upload-cv").files[0];
-    if (selectedFile) {
-      //let user = JSON.parse(localStorage.getItem("user"));
+    // get base64 of selectedFile
 
-      let { jobDetail } = this.props.JobDetailReducer;
-      let proposed_price = this.refs.proposed_price.value;
-      let { doApplyJob } = this.props;
-      doApplyJob(121, jobDetail.id_job, proposed_price, selectedFile);
+    if (selectedFile) {
+      this.getBase64(selectedFile, (fileInBase64) => {
+        let { user } = this.props.HeaderReducer;
+        let { jobDetail } = this.props.JobDetailReducer;
+        let proposed_price = jobDetail.dealable
+          ? this.refs.proposed_price.value
+          : 0;
+        let { doApplyJob } = this.props;
+        doApplyJob(
+          user.id_user,
+          jobDetail.id_job,
+          proposed_price,
+          fileInBase64
+        );
+      });
     } else {
       Swal.fire({
         title: "Vui lòng chọn CV",
@@ -51,8 +72,28 @@ class ApplyFormConponent extends Component {
       });
     }
   }
+  renderProposedPrice() {
+    let { jobDetail } = this.props.JobDetailReducer;
+    if (jobDetail.dealable) {
+      return (
+        <div className="input-with-icon-left">
+          <i className="icon-material-outline-account-circle" />
+          <input
+            type="number"
+            className="input-text with-border"
+            name="proposed_price"
+            id="proposed_price"
+            placeholder="Mức lương mong muốn (VNĐ)"
+            required
+            ref="proposed_price"
+          />
+        </div>
+      );
+    } else return [];
+  }
 
   render() {
+    let { jobDetail } = this.props.JobDetailReducer;
     return (
       <div className="sign-in-form">
         <div className="popup-tabs-container">
@@ -60,23 +101,15 @@ class ApplyFormConponent extends Component {
           <div className="popup-tab-content" id="tab">
             {/* Welcome Text */}
             <div className="welcome-text">
-              <h3>Chọn mức lương mong muốn và CV</h3>
+              <h3>
+                {jobDetail.dealable
+                  ? "Chọn mức lương mong muốn và CV"
+                  : "Chọn CV của bạn"}
+              </h3>
             </div>
             {/* Form */}
             <form method="post" id="apply-now-form" onSubmit={this.applyJob}>
-              <div className="input-with-icon-left">
-                <i className="icon-material-outline-account-circle" />
-                <input
-                  type="number"
-                  className="input-text with-border"
-                  name="proposed_price"
-                  id="proposed_price"
-                  placeholder="Mức lương mong muốn (VNĐ)"
-                  required
-                  ref="proposed_price"
-                />
-              </div>
-
+              {this.renderProposedPrice()}
               <div className="uploadButton">
                 <input
                   className="uploadButton-input"

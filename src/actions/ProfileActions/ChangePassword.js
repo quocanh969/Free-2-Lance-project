@@ -11,28 +11,38 @@ export const sendchangePassword = (oldPW, newPW) => {
           // thất bại
           dispatch(failure(res.data.message));
           Swal.fire({
-            title: "Cập nhật mật khẩu thất bại",
+            title: "Đổi mật khẩu không thành công",
+            text: res.data.message,
             icon: "error",
-            confirmButtonText: "OK",
-          });          
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          });        
         } else {
           // thành công
           dispatch(success(res.data.message));
           Swal.fire({
-            icon: 'success',
-            title: 'Cập nhật mật khẩu thành công',
-            showConfirmButton: false,
-            timer: 1500
-          })
+            title: "Đổi mật khẩu thành công",
+            text: "Vui lòng đăng nhập lại",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          }).then((result) => {
+            if (result.value) {
+              localStorage.clear();
+              window.location.href = "./login";
+            }
+          });
         }
       })
       .catch((err) => {
         console.log(err);
-        dispatch(
-          failure(
-            "There was error with server connection. Error log on console"
-          )
-        );
+        Swal.fire({
+          title: "Đổi mật khẩu không thành công",
+          text: "Đã xảy ra lỗi kết nối",
+          icon: "error",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok!",
+        });
       });
   };
 
@@ -42,7 +52,6 @@ export const sendchangePassword = (oldPW, newPW) => {
     };
   }
   function success(message) {
-    console.log("success");
     return {
       type: "CHANGE_PW_SUCCESS",
       message,
@@ -52,6 +61,11 @@ export const sendchangePassword = (oldPW, newPW) => {
     return {
       type: "CHANGE_PW_FAILURE",
       message,
+    };
+  }
+  function reset() {
+    return {
+      type: "CHANGE_PW_RESET",
     };
   }
 };

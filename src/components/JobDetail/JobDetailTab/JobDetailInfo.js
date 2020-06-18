@@ -37,9 +37,9 @@ class JobDetailInfoComponent extends Component {
 
         <div className="row my-3">
           <div className="col-3 font-weight-bold">Thành phố:</div>
-          <div className="col-3">{jobDetail.area_province}</div>
+          <div className="col-3">{jobDetail.province_name}</div>
           <div className="col-3 font-weight-bold">Khu vực:</div>
-          <div className="col-3">{jobDetail.area_district}</div>
+          <div className="col-3">{jobDetail.district_name}</div>
         </div>
 
         <div className="row my-3">
