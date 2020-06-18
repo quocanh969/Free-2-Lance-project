@@ -28,6 +28,8 @@ class PostJobComponent extends Component {
             salary: '',
             regex: /^[0-9\b]+$/,
         }
+
+        this.addrRef = React.createRef();
     }
 
     runUploadFile() {
@@ -76,6 +78,8 @@ class PostJobComponent extends Component {
         onUpdate("description", jobDescriptionValue);
         let jobRequirementsValue = document.getElementById("requirements").value;
         onUpdate("requirements", jobRequirementsValue);
+        let benefitValue = document.getElementById("benefit").value;
+        onUpdate("benefit", benefitValue);
         let exprValue = document.getElementById("exprDateSelector").value;
         onUpdate("exprDate", exprValue);
         let isOnline = document.getElementById("isOnlineCheck").checked;
@@ -91,7 +95,13 @@ class PostJobComponent extends Component {
         let fields = this.props.AddJobReducer.fields;
         console.log(this.props.AddJobReducer.fields.tags);
 
-        return
+        if (!fields.addressString) {
+            window.scrollTo(0, this.addrRef.current);
+            alert('Xin vui lòng chọn địa chỉ được đề xuất trong khung gợi ý');
+            return;
+        } 
+
+        // return
         let header = {
             employer: employer.id_user,
             title: fields.jobTitle,
@@ -115,9 +125,10 @@ class PostJobComponent extends Component {
             images: fields.relatedImg,
             start_date: document.getElementById('startDateSelector').value,
             end_date: document.getElementById('endDateSelector').value,
+            benefit: fields.benefit,
         }
         console.log(header);
-        onSend(header);
+        // onSend(header);
     }
 
     getDate() {
@@ -185,10 +196,10 @@ class PostJobComponent extends Component {
                                                 <option value={0}>Thời vụ</option>
                                                 <option value={1}>Sản phẩm</option>
                                             </select> */}
-                                            <S_Selector className="with-border" id="jobTypeSelector" data={this.props.AddJobReducer.jobTypes} value_tag={"value"} text_tag={"name"} placeholder={"Phân loại công việc"} 
-                                            handleChange={() => {
-                                                this.handleChange("jobType", document.getElementById('jobTypeSelector').value);
-                                            }}>
+                                            <S_Selector className="with-border" id="jobTypeSelector" data={this.props.AddJobReducer.jobTypes} value_tag={"value"} text_tag={"name"} placeholder={"Phân loại công việc"}
+                                                handleChange={() => {
+                                                    this.handleChange("jobType", document.getElementById('jobTypeSelector').value);
+                                                }} required>
 
                                             </S_Selector>
                                         </div>
@@ -208,7 +219,7 @@ class PostJobComponent extends Component {
                                                     {/* <div className="input-with-icon">
                                                         <div id="autocomplete-container"> */}
                                                     {/* <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" /> */}
-                                                    <GoogleMapAutocomplete value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
+                                                    <GoogleMapAutocomplete ref={this.addrRef} value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
                                                     {/* </div>
                                                         <i className="icon-material-outline-location-on" /> */}
                                                     {/* </div> */}
@@ -272,11 +283,11 @@ class PostJobComponent extends Component {
                                                         <label class="custom-control-label" for="isDealableCheck">Cho phép thỏa thuận</label>
                                                     </div>
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                         </div>
-                                        
+
                                     </div>
-                                    
+
                                     <div className="col-xl-4">
                                         <div className="submit-field">
                                             <h5>Tags <span>(optional)</span>  <i className="help-icon" data-tippy-placement="right" title="Maximum of 10 tags" /></h5>
@@ -289,15 +300,17 @@ class PostJobComponent extends Component {
                                                 {/* <div className="keywords-list">{}</div>                                                
                                                 <div className="clearfix" /> */}
                                             </div>
-                                            
+
                                         </div>
-                                    </div>                                    
+                                    </div>
                                     <div className="col-xl-12">
                                         <div className="submit-field">
                                             <h5>Job Description</h5>
                                             <textarea id="description" cols={30} rows={5} className="with-border" defaultValue={""} placeholder="Description (required)" />
                                             <h5>Job Requirements</h5>
                                             <textarea id="requirements" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Your requirements (optional)" />
+                                            <h5>Benefit</h5>
+                                            <textarea id="benefit" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Benefit (optional)"/>
                                             <div className="margin-top-30">
                                                 {/* <input className="uploadButton-input" type="button" id="upload" onClick={this.runUploadFile} /> */}
                                                 <div>

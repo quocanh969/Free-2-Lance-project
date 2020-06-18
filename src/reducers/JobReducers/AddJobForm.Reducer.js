@@ -19,6 +19,7 @@ const initState = {
         description: "",
         relatedImg: [],
         tags: [],
+        benefit: "",
     }
 }
 
