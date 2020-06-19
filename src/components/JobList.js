@@ -10,7 +10,11 @@ import CompanyLogoPlaceholder from "../assets/images/company-logo-placeholder.pn
 import { loadJobList } from "../actions/Job";
 
 import { S_Selector } from "../ultis/SHelper/S_Help_Input";
-import { prettierNumber, prettierDate } from "../ultis/SHelper/helperFunctions";
+import {
+  prettierNumber,
+  prettierDate,
+  getImageSrc,
+} from "../ultis/SHelper/helperFunctions";
 
 class JobListComponent extends Component {
   originalQuery = {};
@@ -70,10 +74,7 @@ class JobListComponent extends Component {
     let { jobList } = this.props.JobsListReducer;
 
     for (let e of jobList) {
-      let logo = CompanyLogoPlaceholder;
-      if (e.img !== null) {
-        logo = "data:image/png;base64," + e.img;
-      }
+      let logo = getImageSrc(e.img, CompanyLogoPlaceholder);
       content.push(
         <NavLink
           to={"/job-detail/" + e.id_job}
@@ -127,10 +128,7 @@ class JobListComponent extends Component {
     let { jobList } = this.props.JobsListReducer;
 
     for (let e of jobList) {
-      let logo = CompanyLogoPlaceholder;
-      if (e.img !== null) {
-        logo = "data:image/png;base64," + e.img;
-      }
+      let logo = getImageSrc(e.img, CompanyLogoPlaceholder);
       content.push(
         <div className="job-listing container" key={count}>
           {/* Job Listing Details */}

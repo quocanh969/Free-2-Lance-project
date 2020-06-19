@@ -8,11 +8,10 @@ import {
   prettierNumber,
   prettierDate,
   prettierDateAgo,
+  getImageSrc,
 } from "../../ultis/SHelper/helperFunctions";
 import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
-
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
-
 import BackgroundSingleJob from "../../assets/images/single-job.jpg";
 
 import MapContainer from "../map_JobsList";
@@ -71,7 +70,7 @@ class JobDetailComponent extends Component {
     //get logo
     let logo = CompanyLogoPlaceholder;
     if (images != null && images.length !== 0) {
-      logo = "data:image/png;base64," + images[0];
+      logo = getImageSrc(images[0], CompanyLogoPlaceholder);
     }
 
     return <img src={logo} className="my-2" key={0} alt=""></img>;
@@ -81,10 +80,7 @@ class JobDetailComponent extends Component {
     let content = [];
 
     images.forEach((image, i) => {
-      let logo = CompanyLogoPlaceholder;
-      if (image !== null) {
-        logo = "data:image/png;base64," + image;
-      }
+      let logo = getImageSrc(image, CompanyLogoPlaceholder);
       content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
     });
 
@@ -119,10 +115,7 @@ class JobDetailComponent extends Component {
       let { jobId } = this.state;
       jobList.forEach((job, i) => {
         if (job.id_job == jobId) return;
-        let logo = CompanyLogoPlaceholder;
-        if (job.img !== null) {
-          logo = "data:image/png;base64," + job.img;
-        }
+        let logo = getImageSrc(job.img, CompanyLogoPlaceholder);
         listSimilarJobs.push(
           <NavLink
             to={"/job-detail/" + job.id_job}

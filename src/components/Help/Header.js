@@ -12,6 +12,7 @@ import { loadTopics, loadAreas, loadTags } from "../../actions/Home";
 import { loadJobList } from "../../actions/Job";
 import { updateUserState } from "../../actions/Account";
 import { history } from "../../ultis/history/history";
+import { getImageSrc } from "../../ultis/SHelper/helperFunctions";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -267,8 +268,7 @@ class HeaderComponent extends Component {
   }
 
   renderUserLoginContent(user) {
-    let userAvatar =
-      "data:image/png;base64," + user.avatarImg || UserAvatarPlaceholder;
+    let userAvatar = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
     return (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">

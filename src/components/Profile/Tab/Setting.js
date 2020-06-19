@@ -4,9 +4,11 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { S_Selector } from "../../../ultis/SHelper/S_Help_Input";
+import { getImageSrc } from "../../../ultis/SHelper/helperFunctions";
 
 import avatarPlaceholder from "../../../assets/images/portrait_placeholder.png";
 import imagePlaceholder from "../../../assets/images/image-placeholder.jpg";
+import UserAvatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
 
 import {
   updatePersonalInfo,
@@ -134,23 +136,11 @@ class SettingComponent extends Component {
     let { updatePersonalStatus } = this.props.SettingReducer;
     let { user } = this.props.HeaderReducer;
 
-    let avtImg = "";
-    let portrait = avatarPlaceholder;
-    let frontId = imagePlaceholder;
-    let backId = imagePlaceholder;
+    let avtImg = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
+    let portrait = getImageSrc(user.portrait, avatarPlaceholder);
+    let frontId = getImageSrc(user.frontIdPaper, imagePlaceholder);
+    let backId = getImageSrc(user.backIdPaper, imagePlaceholder);
 
-    if (user.avatarImg !== null) {
-      avtImg = "data:image/png;base64," + user.avatarImg;
-    }
-    if (user.portrait !== null) {
-      portrait = "data:image/png;base64," + user.portrait;
-    }
-    if (user.frontIdPaper !== null) {
-      frontId = "data:image/png;base64," + user.frontIdPaper;
-    }
-    if (user.backIdPaper !== null) {
-      backId = "data:image/png;base64," + user.backIdPaper;
-    }
     if (updatePersonalStatus === 1) {
       document.getElementById("personal-info-flag").scrollIntoView({ top: 80 });
       return (

@@ -17,7 +17,11 @@ import {
   loadTopUsers,
   loadStatistic,
 } from "../actions/Home";
-import { prettierNumber, prettierDate } from "../ultis/SHelper/helperFunctions";
+import {
+  prettierNumber,
+  prettierDate,
+  getImageSrc,
+} from "../ultis/SHelper/helperFunctions";
 
 class HomeComponent extends Component {
   constructor(props) {
@@ -216,7 +220,7 @@ class HomeComponent extends Component {
             to={"/job-list/topic=" + e.id_jobtopic}
             className="photo-box small topic-box"
           >
-            <img src={"data:image/png;base64," + e.img}></img>
+            <img src={getImageSrc(e.img, UserAvatarPlaceholder)} alt=""></img>
             <div className="photo-box-content">
               <h3>{e.name}</h3>
               <span>{e.count}</span>
@@ -350,10 +354,7 @@ class HomeComponent extends Component {
     let { topUsers } = this.props.HomeReducer;
 
     for (let e of topUsers) {
-      let userAvatar = UserAvatarPlaceholder;
-      if (e.avatarImg !== null) {
-        userAvatar = "data:image/png;base64," + e.img;
-      }
+      let userAvatar = getImageSrc(e.avatarImg, UserAvatarPlaceholder);
       content.push(
         <div
           className={"item carousel-item " + (count === 0 && "active")}
