@@ -6,7 +6,7 @@ export const submitAddJobForm = (fields) => {
     postJob(fields)
       .then((res) => {
         console.log(res);
-        if (res.data.code === 0) {
+        if (res.data.code === '-204') {
           // thất bại
           dispatch(failure(res.data.message));
         } else {
