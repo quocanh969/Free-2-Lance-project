@@ -9,7 +9,7 @@ import {
   prettierDate,
   prettierDateAgo,
 } from "../../ultis/SHelper/prettier";
-import { loadJobDetail } from "../../actions/Job";
+import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
 
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
 
@@ -47,9 +47,10 @@ class JobDetailComponent extends Component {
   }
 
   componentWillMount() {
-    let { onLoadJobDetail } = this.props;
+    let { onLoadJobDetail, onLoadSimilarJobs } = this.props;
     let { jobId } = this.state;
     onLoadJobDetail(jobId);
+    onLoadSimilarJobs(jobId, 2);
   }
 
   componentDidMount() {
@@ -100,6 +101,68 @@ class JobDetailComponent extends Component {
     } else return [];
   }
 
+  renderSimilarJobs() {
+    let { similarJobs } = this.props.JobDetailReducer;
+    let jobList = similarJobs.jobList;
+    if (jobList && jobList.length > 0) {
+      let listSimilarJobs = [];
+      jobList.forEach((job, i) => {
+        let logo = CompanyLogoPlaceholder;
+        if (job.img !== null) {
+          logo = "data:image/png;base64," + job.img;
+        }
+        listSimilarJobs.push(
+          <a href="#" className="job-listing" key={i}>
+            {/* Job Listing Details */}
+            <div className="job-listing-details">
+              {/* Logo */}
+              <div className="job-listing-company-logo">
+                <img src={logo} alt="" />
+              </div>
+              {/* Details */}
+              <div className="job-listing-description">
+                <h3 className="job-listing-title">{job.title}</h3>
+              </div>
+            </div>
+            {/* Job Listing Footer */}
+            <div className="job-listing-footer">
+              <span className="bookmark-icon" />
+              <ul>
+                <li>
+                  <i className="icon-material-outline-location-on" />{" "}
+                  {job.area_province}
+                </li>
+                <li>
+                  <i className="icon-material-outline-account-balance-wallet" />{" "}
+                  {prettierNumber(job.salary)} VNĐ
+                </li>
+                <br></br>
+                <li>
+                  <i className="icon-material-outline-business-center" />{" "}
+                  {prettierDate(job.post_date)}
+                </li>
+                <li>
+                  <i className="icon-material-outline-access-time" />{" "}
+                  {prettierDate(job.expire_date)}
+                </li>
+              </ul>
+            </div>
+          </a>
+        );
+      });
+      return (
+        <div className="single-page-section">
+          <h3 className="margin-bottom-25">Công việc liên quan</h3>
+          {/* Listings Container */}
+          <div className="listings-container grid-layout">
+            {listSimilarJobs}
+          </div>
+          {/* Listings Container / End */}
+        </div>
+      );
+    } else return [];
+  }
+
   renderApplicants(applicants) {
     //applicant = {dial, email, fullname, id_job, id_user, proposed_price}
 
@@ -144,6 +207,44 @@ class JobDetailComponent extends Component {
     return (
       <div className="tasks-list-container compact-list p-0">{content}</div>
     );
+  }
+
+  renderApplyButton() {
+    let { user } = this.props.HeaderReducer;
+    if (user && !user.isBusinessUser) {
+      return (
+        <button
+          className="apply-now-button popup-with-zoom-anim w-100"
+          data-toggle="modal"
+          data-target="#myModal"
+        >
+          Đăng kí ứng cử <i className="icon-material-outline-arrow-right-alt" />
+        </button>
+      );
+    } else return [];
+  }
+
+  renderApplyFormPopup() {
+    let { user } = this.props.HeaderReducer;
+    if (user && !user.isBusinessUser) {
+      return (
+        <div id="myModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4 className="modal-title">Đăng kí ứng cử</h4>
+                <button type="button" className="close" data-dismiss="modal">
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <ApplyForm></ApplyForm>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else return [];
   }
 
   render() {
@@ -292,110 +393,14 @@ class JobDetailComponent extends Component {
                   )}
                 </div>
               </div>
-
-              <div className="single-page-section">
-                <h3 className="margin-bottom-25">Similar Jobs</h3>
-                {/* Listings Container */}
-                <div className="listings-container grid-layout">
-                  {/* Job Listing */}
-                  <a href="#" className="job-listing">
-                    {/* Job Listing Details */}
-                    <div className="job-listing-details">
-                      {/* Logo */}
-                      <div className="job-listing-company-logo">
-                        <img src={CompanyLogoPlaceholder} alt="" />
-                      </div>
-                      {/* Details */}
-                      <div className="job-listing-description">
-                        <h4 className="job-listing-company">Coffee</h4>
-                        <h3 className="job-listing-title">
-                          Barista and Cashier
-                        </h3>
-                      </div>
-                    </div>
-                    {/* Job Listing Footer */}
-                    <div className="job-listing-footer">
-                      <ul>
-                        <li>
-                          <i className="icon-material-outline-location-on" />{" "}
-                          San Francisco
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-business-center" />{" "}
-                          Full Time
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-account-balance-wallet" />{" "}
-                          $35000-$38000
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-access-time" /> 2
-                          days ago
-                        </li>
-                      </ul>
-                    </div>
-                  </a>
-                  {/* Job Listing */}
-                  <a href="#" className="job-listing">
-                    {/* Job Listing Details */}
-                    <div className="job-listing-details">
-                      {/* Logo */}
-                      <div className="job-listing-company-logo">
-                        <img src={CompanyLogoPlaceholder} alt="" />
-                      </div>
-                      {/* Details */}
-                      <div className="job-listing-description">
-                        <h4 className="job-listing-company">
-                          King{" "}
-                          <span
-                            className="verified-badge"
-                            title="Verified Employer"
-                            data-tippy-placement="top"
-                          />
-                        </h4>
-                        <h3 className="job-listing-title">
-                          Restaurant Manager
-                        </h3>
-                      </div>
-                    </div>
-                    {/* Job Listing Footer */}
-                    <div className="job-listing-footer">
-                      <ul>
-                        <li>
-                          <i className="icon-material-outline-location-on" />{" "}
-                          San Francisco
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-business-center" />{" "}
-                          Full Time
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-account-balance-wallet" />{" "}
-                          $35000-$38000
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-access-time" /> 2
-                          days ago
-                        </li>
-                      </ul>
-                    </div>
-                  </a>
-                </div>
-                {/* Listings Container / End */}
-              </div>
+              {this.renderSimilarJobs()}
             </div>
 
             {/* Sidebar */}
             <div className="col-xl-4 col-lg-4">
               <div className="sidebar-container">
-                <button
-                  className="apply-now-button popup-with-zoom-anim w-100"
-                  data-toggle="modal"
-                  data-target="#myModal"
-                >
-                  Đăng kí ứng cử{" "}
-                  <i className="icon-material-outline-arrow-right-alt" />
-                </button>
+                {this.renderApplyButton()}
+
                 {/* Sidebar Widget */}
                 <div className="sidebar-widget">
                   <div className="job-overview">
@@ -469,21 +474,7 @@ class JobDetailComponent extends Component {
         {/* Wrapper / End */}
 
         {/* Apply for a job popup */}
-        <div id="myModal" className="modal fade" role="dialog">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title">Đăng kí ứng cử</h4>
-                <button type="button" className="close" data-dismiss="modal">
-                  &times;
-                </button>
-              </div>
-              <div className="modal-body">
-                <ApplyForm></ApplyForm>
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.renderApplyFormPopup()}
         {/* Apply for a job popup / End */}
       </div>
     );
@@ -500,6 +491,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoadJobDetail: (jobId) => {
       dispatch(loadJobDetail(jobId));
+    },
+    onLoadSimilarJobs: (jobId, take) => {
+      dispatch(loadSimilarJobs(jobId, take));
     },
   };
 };
