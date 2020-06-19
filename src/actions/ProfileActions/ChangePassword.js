@@ -1,4 +1,5 @@
 import { changePassword } from "../../services/profile.services";
+import Swal from "sweetalert2";
 
 export const sendchangePassword = (oldPW, newPW) => {
   return (dispatch) => {
@@ -9,20 +10,39 @@ export const sendchangePassword = (oldPW, newPW) => {
         if (res.data.code === "-105") {
           // thất bại
           dispatch(failure(res.data.message));
-          alert(res.data.message);
+          Swal.fire({
+            title: "Đổi mật khẩu không thành công",
+            text: res.data.message,
+            icon: "error",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          });        
         } else {
           // thành công
           dispatch(success(res.data.message));
-          alert(res.data.message);
+          Swal.fire({
+            title: "Đổi mật khẩu thành công",
+            text: "Vui lòng đăng nhập lại",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          }).then((result) => {
+            if (result.value) {
+              localStorage.clear();
+              window.location.href = "./login";
+            }
+          });
         }
       })
       .catch((err) => {
         console.log(err);
-        dispatch(
-          failure(
-            "There was error with server connection. Error log on console"
-          )
-        );
+        Swal.fire({
+          title: "Đổi mật khẩu không thành công",
+          text: "Đã xảy ra lỗi kết nối",
+          icon: "error",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok!",
+        });
       });
   };
 
@@ -32,17 +52,20 @@ export const sendchangePassword = (oldPW, newPW) => {
     };
   }
   function success(message) {
-    console.log("success");
     return {
       type: "CHANGE_PW_SUCCESS",
       message,
     };
   }
   function failure(message) {
-    console.log("failure");
     return {
       type: "CHANGE_PW_FAILURE",
       message,
+    };
+  }
+  function reset() {
+    return {
+      type: "CHANGE_PW_RESET",
     };
   }
 };

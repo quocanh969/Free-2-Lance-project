@@ -1,5 +1,7 @@
 const initState = {
   jobDetail: {},
+  employer: {},
+  similarJobs: [],
   places: [
     {
       name: "Dud location 1",
@@ -17,6 +19,16 @@ const JobDetailReducer = (state = initState, action) => {
         ...state,
         appliedStatus: 0,
         jobDetail: action.jobDetail,
+      };
+    case "JOB_DETAIL_EMPLOYER_LOAD":
+      return {
+        ...state,
+        employer: action.employerDetail,
+      };
+    case "SIMILAR_JOB_LOAD":
+      return {
+        ...state,
+        similarJobs: action.similarJobs,
       };
     case "APPLY_JOB_SUCCESS":
       return {

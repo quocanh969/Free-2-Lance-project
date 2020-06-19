@@ -108,7 +108,7 @@ export default class MultipleImageUploadComponent extends Component {
 
     render() {
         return (
-            <form>
+            <div>
                 <div className={"form-group multi-preview " + (this.state.file.length === 0 ? '' : 'bg-cloud p-3 border-radius-4')}>
                     {(this.fileArray || []).map((url, index) => (
                         <span key={index} onClick={this.removeImg.bind(this, index)}>
@@ -119,10 +119,10 @@ export default class MultipleImageUploadComponent extends Component {
 
                 <div className="form-group">
                     <input id="uploadImgMultiple" type="file" accept="image/*" className="form-control" onChange={this.uploadMultipleFiles} style={{ display: 'none' }} multiple />
-                    <input id="uploadImgSingle" type="file" accept="image/*" className="form-control" onChange={this.uploadFiles} style={{ display: 'none' }} single />
+                    <input id="uploadImgSingle" type="file" accept="image/*" className="form-control" onChange={this.uploadFiles} style={{ display: 'none' }} single="true" />
                 </div>
                 {/* <button type="button" className="btn btn-danger btn-block" onClick={this.uploadFiles}>Upload</button> */}
-            </form >
+            </div >
         )
     }
 }

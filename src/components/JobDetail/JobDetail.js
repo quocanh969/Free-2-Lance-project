@@ -8,11 +8,10 @@ import {
   prettierNumber,
   prettierDate,
   prettierDateAgo,
-} from "../../ultis/SHelper/prettier";
-import { loadJobDetail } from "../../actions/Job";
-
+  getImageSrc,
+} from "../../ultis/SHelper/helperFunctions";
+import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
-
 import BackgroundSingleJob from "../../assets/images/single-job.jpg";
 
 import MapContainer from "../map_JobsList";
@@ -26,7 +25,7 @@ class JobDetailComponent extends Component {
 
     let jobId = 121;
     let { id_job } = this.props.match.params;
-    if(id_job) {
+    if (id_job) {
       jobId = id_job;
     }
     this.state = {
@@ -47,7 +46,6 @@ class JobDetailComponent extends Component {
   }
 
   componentWillMount() {
-    console.log('cai lon què gì vậy');
     let { onLoadJobDetail } = this.props;
     let { jobId } = this.state;
     onLoadJobDetail(jobId);
@@ -57,11 +55,22 @@ class JobDetailComponent extends Component {
     window.scrollTo(0, 0);
   }
 
+  componentWillReceiveProps() {
+    if (this.props.history.location.pathname !== this.props.location.pathname) {
+      let splitted = this.props.history.location.pathname.split("/", 3);
+      let newJobDetail = Number.parseInt(splitted[2]);
+      this.setState({ tab: 1, jobId: newJobDetail, applicantSortType: 1 });
+      let { onLoadJobDetail } = this.props;
+      onLoadJobDetail(newJobDetail);
+      window.scrollTo(0, 0);
+    }
+  }
+
   renderLogo(images) {
     //get logo
     let logo = CompanyLogoPlaceholder;
     if (images != null && images.length !== 0) {
-      logo = "data:image/png;base64," + images[0];
+      logo = getImageSrc(images[0], CompanyLogoPlaceholder);
     }
 
     return <img src={logo} className="my-2" key={0} alt=""></img>;
@@ -71,10 +80,7 @@ class JobDetailComponent extends Component {
     let content = [];
 
     images.forEach((image, i) => {
-      let logo = CompanyLogoPlaceholder;
-      if (image !== null) {
-        logo = "data:image/png;base64," + image;
-      }
+      let logo = getImageSrc(image, CompanyLogoPlaceholder);
       content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
     });
 
@@ -101,30 +107,106 @@ class JobDetailComponent extends Component {
     } else return [];
   }
 
+  renderSimilarJobs() {
+    let { similarJobs } = this.props.JobDetailReducer;
+    let jobList = similarJobs.jobList;
+    if (jobList && jobList.length > 0) {
+      let listSimilarJobs = [];
+      let { jobId } = this.state;
+      jobList.forEach((job, i) => {
+        if (job.id_job == jobId) return;
+        let logo = getImageSrc(job.img, CompanyLogoPlaceholder);
+        listSimilarJobs.push(
+          <NavLink
+            to={"/job-detail/" + job.id_job}
+            className="job-listing"
+            key={i}
+          >
+            {/* Job Listing Details */}
+            <div className="job-listing-details">
+              {/* Logo */}
+              <div className="job-listing-company-logo">
+                <img src={logo} alt="" />
+              </div>
+              {/* Details */}
+              <div className="job-listing-description">
+                <h3 className="job-listing-title">{job.title}</h3>
+              </div>
+            </div>
+            {/* Job Listing Footer */}
+            <div className="job-listing-footer">
+              <span className="bookmark-icon" />
+              <ul>
+                <li>
+                  <i className="icon-material-outline-location-on" />{" "}
+                  {job.area_province}
+                </li>
+                <li>
+                  <i className="icon-material-outline-account-balance-wallet" />{" "}
+                  {prettierNumber(job.salary)} VNĐ
+                </li>
+                <br></br>
+                <li>
+                  <i className="icon-material-outline-business-center" />{" "}
+                  {prettierDate(job.post_date)}
+                </li>
+                <li>
+                  <i className="icon-material-outline-access-time" />{" "}
+                  {prettierDate(job.expire_date)}
+                </li>
+              </ul>
+            </div>
+          </NavLink>
+        );
+      });
+      return (
+        <div className="single-page-section">
+          <h3 className="margin-bottom-25">Công việc liên quan</h3>
+          {/* Listings Container */}
+          <div className="listings-container grid-layout">
+            {listSimilarJobs}
+          </div>
+          {/* Listings Container / End */}
+        </div>
+      );
+    } else return [];
+  }
+
   renderApplicants(applicants) {
     //applicant = {dial, email, fullname, id_job, id_user, proposed_price}
 
     let content = [];
     content.push(
-      <div className="row bg-293FE4 text-white" key={0} style={{height: '50px'}}>
-        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+      <div
+        className="row bg-293FE4 text-white"
+        key={0}
+        style={{ height: "50px" }}
+      >
+        <div
+          className="col-md-4 font-weight-bold cursor-pointer"
+          style={{ lineHeight: "50px" }}
+        >
           Họ tên người ứng tuyển
         </div>
-        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+        <div
+          className="col-md-4 font-weight-bold cursor-pointer"
+          style={{ lineHeight: "50px" }}
+        >
           Email
         </div>
-        <div className="col-md-4 font-weight-bold cursor-pointer" style={{lineHeight: '50px'}}>
+        <div
+          className="col-md-4 font-weight-bold cursor-pointer"
+          style={{ lineHeight: "50px" }}
+        >
           Mức lương ứng tuyển
         </div>
       </div>
-    )
+    );
     applicants.forEach((applicant, i) => {
       content.push(
-        <div className="row task-listing" key={i} style={{height: '50px'}}>
+        <div className="row task-listing" key={i} style={{ height: "50px" }}>
           <div className="col-md-4">{applicant.fullname}</div>
-          <div className="col-md-4">
-            {applicant.email}
-          </div>
+          <div className="col-md-4">{applicant.email}</div>
           <div className="col-md-4">
             {prettierNumber(applicant.proposed_price)} VNĐ
           </div>
@@ -132,10 +214,36 @@ class JobDetailComponent extends Component {
       );
     });
     return (
-      <div className="tasks-list-container compact-list p-0">
-        {content}
-      </div>
-    )
+      <div className="tasks-list-container compact-list p-0">{content}</div>
+    );
+  }
+
+  renderApplyButton() {
+    let { user } = this.props.HeaderReducer;
+    if (user && !user.isBusinessUser) {
+      return (
+        <button
+          className="apply-now-button popup-with-zoom-anim w-100"
+          data-toggle="modal"
+          data-target="#myModal"
+        >
+          Đăng kí ứng cử <i className="icon-material-outline-arrow-right-alt" />
+        </button>
+      );
+    } else return [];
+  }
+
+  renderApplyFormPopup() {
+    let { user } = this.props.HeaderReducer;
+    if (user && !user.isBusinessUser) {
+      return (
+        <div id="myModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <ApplyForm></ApplyForm>
+          </div>
+        </div>
+      );
+    } else return [];
   }
 
   render() {
@@ -144,10 +252,7 @@ class JobDetailComponent extends Component {
     return (
       <div>
         {/* Thông tin cơ bản */}
-        <div
-          className="single-page-header"
-          data-background-image={BackgroundSingleJob}
-        >
+        <div id='job-detail-background' className="single-page-header">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -158,23 +263,23 @@ class JobDetailComponent extends Component {
                         {this.renderLogo(jobDetail.imgs)}
                       </a>
                     </div>
-                    <div className="header-details">
-                      <h3>{jobDetail.title}</h3>
-                      <h5>{jobDetail.topic}</h5>
+                    <div className="header-details text-white">
+                      <h3 className='text-white'>{jobDetail.title}</h3>
+                      <h5 className='text-white'>{jobDetail.topic}</h5>
                       <ul>
                         <li>
-                          <a href="single-company-profile.html">
+                          <span href="single-company-profile.html" className='text-white'>
                             {jobDetail.name_employer}
-                          </a>
+                          </span>
                         </li>
-                        {/* <li>
+                        <li>
                           <div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">
                             {4.9}
                           </div>
-                        </li> */}
+                        </li>
                         <li>
                           <i className="icon-material-outline-location-city" />{" "}
-                          {jobDetail.area_district}, {jobDetail.area_province}
+                          {jobDetail.district_name}, {jobDetail.province_name}
                         </li>
                         {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
                       </ul>
@@ -196,6 +301,7 @@ class JobDetailComponent extends Component {
               </div>
             </div>
           </div>
+        
         </div>
 
         {/* Page Content */}
@@ -286,110 +392,14 @@ class JobDetailComponent extends Component {
                   )}
                 </div>
               </div>
-
-              <div className="single-page-section">
-                <h3 className="margin-bottom-25">Similar Jobs</h3>
-                {/* Listings Container */}
-                <div className="listings-container grid-layout">
-                  {/* Job Listing */}
-                  <a href="#" className="job-listing">
-                    {/* Job Listing Details */}
-                    <div className="job-listing-details">
-                      {/* Logo */}
-                      <div className="job-listing-company-logo">
-                        <img src={CompanyLogoPlaceholder} alt="" />
-                      </div>
-                      {/* Details */}
-                      <div className="job-listing-description">
-                        <h4 className="job-listing-company">Coffee</h4>
-                        <h3 className="job-listing-title">
-                          Barista and Cashier
-                        </h3>
-                      </div>
-                    </div>
-                    {/* Job Listing Footer */}
-                    <div className="job-listing-footer">
-                      <ul>
-                        <li>
-                          <i className="icon-material-outline-location-on" />{" "}
-                          San Francisco
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-business-center" />{" "}
-                          Full Time
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-account-balance-wallet" />{" "}
-                          $35000-$38000
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-access-time" /> 2
-                          days ago
-                        </li>
-                      </ul>
-                    </div>
-                  </a>
-                  {/* Job Listing */}
-                  <a href="#" className="job-listing">
-                    {/* Job Listing Details */}
-                    <div className="job-listing-details">
-                      {/* Logo */}
-                      <div className="job-listing-company-logo">
-                        <img src={CompanyLogoPlaceholder} alt="" />
-                      </div>
-                      {/* Details */}
-                      <div className="job-listing-description">
-                        <h4 className="job-listing-company">
-                          King{" "}
-                          <span
-                            className="verified-badge"
-                            title="Verified Employer"
-                            data-tippy-placement="top"
-                          />
-                        </h4>
-                        <h3 className="job-listing-title">
-                          Restaurant Manager
-                        </h3>
-                      </div>
-                    </div>
-                    {/* Job Listing Footer */}
-                    <div className="job-listing-footer">
-                      <ul>
-                        <li>
-                          <i className="icon-material-outline-location-on" />{" "}
-                          San Francisco
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-business-center" />{" "}
-                          Full Time
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-account-balance-wallet" />{" "}
-                          $35000-$38000
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-access-time" /> 2
-                          days ago
-                        </li>
-                      </ul>
-                    </div>
-                  </a>
-                </div>
-                {/* Listings Container / End */}
-              </div>
+              {this.renderSimilarJobs()}
             </div>
 
             {/* Sidebar */}
             <div className="col-xl-4 col-lg-4">
               <div className="sidebar-container">
-                <button
-                  className="apply-now-button popup-with-zoom-anim w-100"
-                  data-toggle="modal"
-                  data-target="#myModal"
-                >
-                  Đăng kí ứng cử{" "}
-                  <i className="icon-material-outline-arrow-right-alt" />
-                </button>
+                {this.renderApplyButton()}
+
                 {/* Sidebar Widget */}
                 <div className="sidebar-widget">
                   <div className="job-overview">
@@ -400,7 +410,7 @@ class JobDetailComponent extends Component {
                           <i className="icon-material-outline-location-on" />
                           <span>Vị trí</span>
                           <h5>
-                            {jobDetail.area_district}, {jobDetail.area_province}
+                            {jobDetail.district_name}, {jobDetail.province_name}
                           </h5>
                         </li>
                         <li>
@@ -463,21 +473,7 @@ class JobDetailComponent extends Component {
         {/* Wrapper / End */}
 
         {/* Apply for a job popup */}
-        <div id="myModal" className="modal fade" role="dialog">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title">Đăng kí ứng cử</h4>
-                <button type="button" className="close" data-dismiss="modal">
-                  &times;
-                </button>
-              </div>
-              <div className="modal-body">
-                <ApplyForm></ApplyForm>
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.renderApplyFormPopup()}
         {/* Apply for a job popup / End */}
       </div>
     );
@@ -494,6 +490,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoadJobDetail: (jobId) => {
       dispatch(loadJobDetail(jobId));
+    },
+    onLoadSimilarJobs: (jobTopic) => {
+      dispatch(loadSimilarJobs(jobTopic));
     },
   };
 };

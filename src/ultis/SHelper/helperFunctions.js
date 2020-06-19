@@ -11,9 +11,8 @@ export const prettierNumber = (number) => {
 
 export const prettierDate = (date) => {
   let newDate = new Date(date);
-  return (
-    newDate.getDate() + "/" + newDate.getMonth() + "/" + newDate.getFullYear()
-  );
+  let month = newDate.getMonth() + 1;
+  return newDate.getDate() + "/" + month + "/" + newDate.getFullYear();
 };
 
 export const prettierDateAgo = (date) => {
@@ -25,4 +24,12 @@ export const prettierDateAgo = (date) => {
   else if (diffDays < 365)
     return Math.ceil(diffDays / 30.4375) - 1 + " tháng trước";
   else return Math.ceil(diffDays / 365.25) - 1 + " năm trước";
+};
+
+export const getImageSrc = (data, imagePlaceholder) => {
+  let img = imagePlaceholder;
+  if (data !== null) {
+    img = "data:image/png;base64," + data;
+  }
+  return img;
 };

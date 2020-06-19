@@ -10,6 +10,11 @@ import CompanyLogoPlaceholder from "../assets/images/company-logo-placeholder.pn
 import { loadJobList } from "../actions/Job";
 
 import { S_Selector } from "../ultis/SHelper/S_Help_Input";
+import {
+  prettierNumber,
+  prettierDate,
+  getImageSrc,
+} from "../ultis/SHelper/helperFunctions";
 
 class JobListComponent extends Component {
   originalQuery = {};
@@ -32,6 +37,17 @@ class JobListComponent extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+  }
+
+  componentWillReceiveProps() {
+    if (this.props.history.location.pathname !== this.props.location.pathname) {
+      // khác path
+      let splitted = this.props.history.location.pathname.split("=", 2);
+      let newTopic = Number.parseInt(splitted[1]);
+      this.originalQuery.job_topic = newTopic;
+
+      this.loadJobListFunc(1, this.originalQuery);
+    }
   }
 
   renderTags(tags) {
@@ -58,12 +74,7 @@ class JobListComponent extends Component {
     let { jobList } = this.props.JobsListReducer;
 
     for (let e of jobList) {
-      let postDate = new Date(e.post_date);
-      let expireDate = new Date(e.expire_date);
-      let logo = CompanyLogoPlaceholder;
-      if (e.img !== null) {
-        logo = "data:image/png;base64," + e.img;
-      }
+      let logo = getImageSrc(e.img, CompanyLogoPlaceholder);
       content.push(
         <NavLink
           to={"/job-detail/" + e.id_job}
@@ -91,16 +102,16 @@ class JobListComponent extends Component {
               </li>
               <li>
                 <i className="icon-material-outline-account-balance-wallet" />{" "}
-                {e.salary} đ
+                {prettierNumber(e.salary)} đ
               </li>
               <br></br>
               <li>
                 <i className="icon-material-outline-business-center" />{" "}
-                {postDate.getDate() + "/" + postDate.getMonth() + "/" + postDate.getFullYear()}
+                {prettierDate(e.post_date)}
               </li>
               <li>
                 <i className="icon-material-outline-access-time" />{" "}
-                {expireDate.getDate() + "/" + expireDate.getMonth() + "/" + expireDate.getFullYear()}
+                {prettierDate(e.expire_date)}
               </li>
             </ul>
           </div>
@@ -117,12 +128,7 @@ class JobListComponent extends Component {
     let { jobList } = this.props.JobsListReducer;
 
     for (let e of jobList) {
-      let postDate = new Date(e.post_date);
-      let expireDate = new Date(e.expire_date);
-      let logo = CompanyLogoPlaceholder;
-      if (e.img !== null) {
-        logo = "data:image/png;base64," + e.img;
-      }
+      let logo = getImageSrc(e.img, CompanyLogoPlaceholder);
       content.push(
         <div className="job-listing container" key={count}>
           {/* Job Listing Details */}
@@ -156,7 +162,7 @@ class JobListComponent extends Component {
                   </li>
                   <li>
                     <i className="icon-material-outline-account-balance-wallet" />{" "}
-                    {e.salary} đ
+                    {prettierNumber(e.salary)} đ
                   </li>
                 </ul>
               </div>
@@ -164,11 +170,11 @@ class JobListComponent extends Component {
                 <ul>
                   <li>
                     <i className="icon-material-outline-business-center" />{" "}
-                    {postDate.getDate() + "/" + postDate.getMonth() + "/" + postDate.getFullYear()}
+                    {prettierDate(e.post_date)}
                   </li>
                   <li>
                     <i className="icon-material-outline-access-time" />{" "}
-                    {expireDate.getDate() + "/" + expireDate.getMonth() + "/" + expireDate.getFullYear()}
+                    {prettierDate(e.expire_date)}
                   </li>
                 </ul>
               </div>
@@ -346,15 +352,15 @@ class JobListComponent extends Component {
                 text_tag="name"
               ></S_Selector>
             ) : (
-                <S_Selector
-                  id="select-area"
-                  className="with-border"
-                  placeholder="Chọn khu vực"
-                  data={areas}
-                  value_tag="id_province"
-                  text_tag="name"
-                ></S_Selector>
-              )}
+              <S_Selector
+                id="select-area"
+                className="with-border"
+                placeholder="Chọn khu vực"
+                data={areas}
+                value_tag="id_province"
+                text_tag="name"
+              ></S_Selector>
+            )}
           </div>
         </div>
 
@@ -374,15 +380,15 @@ class JobListComponent extends Component {
                 text_tag="name"
               ></S_Selector>
             ) : (
-                <S_Selector
-                  id="select-category"
-                  className="with-border"
-                  placeholder="Chọn chủ đề"
-                  data={jobTopic}
-                  value_tag="id_jobtopic"
-                  text_tag="name"
-                ></S_Selector>
-              )}
+              <S_Selector
+                id="select-category"
+                className="with-border"
+                placeholder="Chọn chủ đề"
+                data={jobTopic}
+                value_tag="id_jobtopic"
+                text_tag="name"
+              ></S_Selector>
+            )}
           </div>
         </div>
 
@@ -427,21 +433,21 @@ class JobListComponent extends Component {
                 <option value={0}>Lớn hơn 10.000.000đ</option>
               </select>
             ) : (
-                <select
-                  className="btn with-border dropdown-toggle bs-placeholder btn-default"
-                  id="salary-select"
-                  defaultValue={0}
-                >
-                  <option value={0} disabled>
-                    Giá tiền
+              <select
+                className="btn with-border dropdown-toggle bs-placeholder btn-default"
+                id="salary-select"
+                defaultValue={0}
+              >
+                <option value={0} disabled>
+                  Giá tiền
                 </option>
-                  <option value={1}>Nhỏ hơn 100.000 đ</option>
-                  <option value={2}>100.000đ - 500.000đ</option>
-                  <option value={3}>500.000đ - 1.000.000đ</option>
-                  <option value={4}>1.000.000đ - 10.000.000đ</option>
-                  <option value={5}>Lớn hơn 10.000.000đ</option>
-                </select>
-              )}
+                <option value={1}>Nhỏ hơn 100.000 đ</option>
+                <option value={2}>100.000đ - 500.000đ</option>
+                <option value={3}>500.000đ - 1.000.000đ</option>
+                <option value={4}>1.000.000đ - 10.000.000đ</option>
+                <option value={5}>Lớn hơn 10.000.000đ</option>
+              </select>
+            )}
           </div>
         </div>
 
@@ -460,14 +466,14 @@ class JobListComponent extends Component {
                 max="2050-12-31"
               />
             ) : (
-                <input
-                  id="expired-input"
-                  className="with-border"
-                  type="date"
-                  min="2020-01-01"
-                  max="2050-12-31"
-                />
-              )}
+              <input
+                id="expired-input"
+                className="with-border"
+                type="date"
+                min="2020-01-01"
+                max="2050-12-31"
+              />
+            )}
           </div>
         </div>
 
@@ -485,13 +491,13 @@ class JobListComponent extends Component {
                 min="1"
               />
             ) : (
-                <input
-                  id="vacancy-input"
-                  className="with-border"
-                  type="number"
-                  min="1"
-                />
-              )}
+              <input
+                id="vacancy-input"
+                className="with-border"
+                type="number"
+                min="1"
+              />
+            )}
           </div>
         </div>
       </div>
