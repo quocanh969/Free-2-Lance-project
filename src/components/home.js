@@ -17,7 +17,7 @@ import {
   loadTopUsers,
   loadStatistic,
 } from "../actions/Home";
-import { prettierNumber, prettierDate } from "../ultis/SHelper/prettier";
+import { prettierNumber, prettierDate } from "../ultis/SHelper/helperFunctions";
 
 class HomeComponent extends Component {
   constructor(props) {

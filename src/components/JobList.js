@@ -10,7 +10,7 @@ import CompanyLogoPlaceholder from "../assets/images/company-logo-placeholder.pn
 import { loadJobList } from "../actions/Job";
 
 import { S_Selector } from "../ultis/SHelper/S_Help_Input";
-import { prettierNumber, prettierDate } from "../ultis/SHelper/prettier";
+import { prettierNumber, prettierDate } from "../ultis/SHelper/helperFunctions";
 
 class JobListComponent extends Component {
   originalQuery = {};
