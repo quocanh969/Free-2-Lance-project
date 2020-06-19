@@ -41,6 +41,7 @@ export const loadJobDetail = (jobId) => {
       .then((res) => {
         dispatch(success(res.data.data));
         //loadSimilarJobs
+        dispatch(loadSimilarJobs(res.data.data.jobTopic));
       })
       .catch((err) => {
         console.log(err);
@@ -74,9 +75,9 @@ export const loadEmployer = (employerId) => {
   }
 };
 
-export const loadSimilarJobs = (jobId, take) => {
+export const loadSimilarJobs = (jobTopic) => {
   return (dispatch) => {
-    getSimilarJobs(jobId, take)
+    getSimilarJobs(jobTopic)
       .then((res) => {
         dispatch(success(res.data.data));
       })

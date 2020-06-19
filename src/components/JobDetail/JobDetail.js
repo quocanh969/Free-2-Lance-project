@@ -47,10 +47,9 @@ class JobDetailComponent extends Component {
   }
 
   componentWillMount() {
-    let { onLoadJobDetail, onLoadSimilarJobs } = this.props;
+    let { onLoadJobDetail } = this.props;
     let { jobId } = this.state;
     onLoadJobDetail(jobId);
-    onLoadSimilarJobs(jobId, 2);
   }
 
   componentDidMount() {
@@ -106,7 +105,9 @@ class JobDetailComponent extends Component {
     let jobList = similarJobs.jobList;
     if (jobList && jobList.length > 0) {
       let listSimilarJobs = [];
+      let { jobId } = this.state;
       jobList.forEach((job, i) => {
+        if (job.id_job == jobId) return;
         let logo = CompanyLogoPlaceholder;
         if (job.img !== null) {
           logo = "data:image/png;base64," + job.img;
@@ -494,8 +495,8 @@ const mapDispatchToProps = (dispatch) => {
     onLoadJobDetail: (jobId) => {
       dispatch(loadJobDetail(jobId));
     },
-    onLoadSimilarJobs: (jobId, take) => {
-      dispatch(loadSimilarJobs(jobId, take));
+    onLoadSimilarJobs: (jobTopic) => {
+      dispatch(loadSimilarJobs(jobTopic));
     },
   };
 };

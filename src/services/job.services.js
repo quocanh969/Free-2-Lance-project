@@ -78,10 +78,16 @@ function getJobsDetail(id) {
   return axios.get("/getJobById/" + id);
 }
 
-function getSimilarJobs(jobId, take) {
-  return axios.post("/getSimilarJobs", {
-    jobId,
+function getSimilarJobs(jobTopic) {
+  let page = 1,
+    take = 4,
+    isASC = 2;
+  let query = { job_topic: jobTopic };
+  return axios.post("/getJobsList", {
+    page,
     take,
+    isASC,
+    query,
   });
 }
 
