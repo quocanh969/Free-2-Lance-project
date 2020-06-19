@@ -56,6 +56,17 @@ class JobDetailComponent extends Component {
     window.scrollTo(0, 0);
   }
 
+  componentWillReceiveProps() {
+    if (this.props.history.location.pathname !== this.props.location.pathname) {
+      let splitted = this.props.history.location.pathname.split("/", 3);
+      let newJobDetail = Number.parseInt(splitted[2]);
+      this.setState({ tab: 1, jobId: newJobDetail, applicantSortType: 1 });
+      let { onLoadJobDetail } = this.props;
+      onLoadJobDetail(newJobDetail);
+      window.scrollTo(0, 0);
+    }
+  }
+
   renderLogo(images) {
     //get logo
     let logo = CompanyLogoPlaceholder;
@@ -113,7 +124,11 @@ class JobDetailComponent extends Component {
           logo = "data:image/png;base64," + job.img;
         }
         listSimilarJobs.push(
-          <a href="#" className="job-listing" key={i}>
+          <NavLink
+            to={"/job-detail/" + job.id_job}
+            className="job-listing"
+            key={i}
+          >
             {/* Job Listing Details */}
             <div className="job-listing-details">
               {/* Logo */}
@@ -148,7 +163,7 @@ class JobDetailComponent extends Component {
                 </li>
               </ul>
             </div>
-          </a>
+          </NavLink>
         );
       });
       return (

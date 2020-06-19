@@ -11,7 +11,6 @@ export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
     getJobsList(page, take, isASC, query)
       .then((res) => {
-        console.log(res.data.data);
         dispatch(
           success(
             res.data.data.jobList,
@@ -108,7 +107,7 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
         }).then((result) => {
           if (result.value) {
             //close form and reload data :(
-            window.location.reload();
+            dispatch(loadJobDetail(id_job));
           }
         });
       })
