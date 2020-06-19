@@ -3155,17 +3155,17 @@ body #backtotop a {
   top: 0;
   left: 0;
   z-index: 15;
-  background: linear-gradient(
+  /* background: linear-gradient(
     to right,
     rgba(247, 247, 247, 1) 50%,
     rgba(247, 247, 247, 0.8) 70%,
     rgba(247, 247, 247, 0.8) 90%
-  );
+  ); */
 }
 
 .single-page-header:after {
   z-index: 5;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
 }
 
 .single-page-header .background-image-container {

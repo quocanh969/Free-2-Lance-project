@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import '../../assets/css/style.css';
 import '../../assets/css/colors/blue.css';
 
-import Logo2 from '../../assets/images/logo2.png';
+import Logo2 from '../../assets/images/logo4.png';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt.png';
 
@@ -311,7 +311,10 @@ class HeaderComponent extends Component {
         let {user} = this.props.HeaderReducer;
         return (
             <nav className={"navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " + (this.state.isCurrentTop ? 'border-light bg-transparent':'border-secondary bg-light')} onScroll={()=>{this.handleScroll()}}>
-                <NavLink to='/' className="navbar-brand mr-4"><img src={Logo2} className='logo-brand'></img></NavLink>
+                <NavLink to='/' className="navbar-brand mr-4 pt-3">
+                    {/* <img src={Logo2} className='logo-brand'></img> */}
+                    <span className='font-weight-bold'><span className='text-primary'>FREE</span><span className='text-danger'>2</span><span className={this.state.isCurrentTop ? 'text-white':'text-dark'}>LANCE</span></span>
+                </NavLink>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
                 </button>

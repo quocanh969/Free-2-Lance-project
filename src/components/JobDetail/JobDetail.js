@@ -152,10 +152,7 @@ class JobDetailComponent extends Component {
     return (
       <div>
         {/* Thông tin cơ bản */}
-        <div
-          className="single-page-header"
-          data-background-image={BackgroundSingleJob}
-        >
+        <div id='job-detail-background' className="single-page-header">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -166,14 +163,14 @@ class JobDetailComponent extends Component {
                         {this.renderLogo(jobDetail.imgs)}
                       </a>
                     </div>
-                    <div className="header-details">
-                      <h3>{jobDetail.title}</h3>
-                      <h5>{jobDetail.topic}</h5>
+                    <div className="header-details text-white">
+                      <h3 className='text-white'>{jobDetail.title}</h3>
+                      <h5 className='text-white'>{jobDetail.topic}</h5>
                       <ul>
                         <li>
-                          <a href="single-company-profile.html">
+                          <span href="single-company-profile.html" className='text-white'>
                             {jobDetail.name_employer}
-                          </a>
+                          </span>
                         </li>
                         <li>
                           <div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">
@@ -204,6 +201,7 @@ class JobDetailComponent extends Component {
               </div>
             </div>
           </div>
+        
         </div>
 
         {/* Page Content */}
