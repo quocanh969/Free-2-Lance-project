@@ -8,11 +8,10 @@ import {
   prettierNumber,
   prettierDate,
   prettierDateAgo,
-} from "../../ultis/SHelper/prettier";
+  getImageSrc,
+} from "../../ultis/SHelper/helperFunctions";
 import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
-
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
-
 import BackgroundSingleJob from "../../assets/images/single-job.jpg";
 
 import MapContainer from "../map_JobsList";
@@ -47,21 +46,31 @@ class JobDetailComponent extends Component {
   }
 
   componentWillMount() {
-    let { onLoadJobDetail, onLoadSimilarJobs } = this.props;
+    let { onLoadJobDetail } = this.props;
     let { jobId } = this.state;
     onLoadJobDetail(jobId);
-    onLoadSimilarJobs(jobId, 2);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
   }
 
+  componentWillReceiveProps() {
+    if (this.props.history.location.pathname !== this.props.location.pathname) {
+      let splitted = this.props.history.location.pathname.split("/", 3);
+      let newJobDetail = Number.parseInt(splitted[2]);
+      this.setState({ tab: 1, jobId: newJobDetail, applicantSortType: 1 });
+      let { onLoadJobDetail } = this.props;
+      onLoadJobDetail(newJobDetail);
+      window.scrollTo(0, 0);
+    }
+  }
+
   renderLogo(images) {
     //get logo
     let logo = CompanyLogoPlaceholder;
     if (images != null && images.length !== 0) {
-      logo = "data:image/png;base64," + images[0];
+      logo = getImageSrc(images[0], CompanyLogoPlaceholder);
     }
 
     return <img src={logo} className="my-2" key={0} alt=""></img>;
@@ -71,10 +80,7 @@ class JobDetailComponent extends Component {
     let content = [];
 
     images.forEach((image, i) => {
-      let logo = CompanyLogoPlaceholder;
-      if (image !== null) {
-        logo = "data:image/png;base64," + image;
-      }
+      let logo = getImageSrc(image, CompanyLogoPlaceholder);
       content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
     });
 
@@ -106,13 +112,16 @@ class JobDetailComponent extends Component {
     let jobList = similarJobs.jobList;
     if (jobList && jobList.length > 0) {
       let listSimilarJobs = [];
+      let { jobId } = this.state;
       jobList.forEach((job, i) => {
-        let logo = CompanyLogoPlaceholder;
-        if (job.img !== null) {
-          logo = "data:image/png;base64," + job.img;
-        }
+        if (job.id_job == jobId) return;
+        let logo = getImageSrc(job.img, CompanyLogoPlaceholder);
         listSimilarJobs.push(
-          <a href="#" className="job-listing" key={i}>
+          <NavLink
+            to={"/job-detail/" + job.id_job}
+            className="job-listing"
+            key={i}
+          >
             {/* Job Listing Details */}
             <div className="job-listing-details">
               {/* Logo */}
@@ -147,7 +156,7 @@ class JobDetailComponent extends Component {
                 </li>
               </ul>
             </div>
-          </a>
+          </NavLink>
         );
       });
       return (
@@ -230,17 +239,7 @@ class JobDetailComponent extends Component {
       return (
         <div id="myModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title">Đăng kí ứng cử</h4>
-                <button type="button" className="close" data-dismiss="modal">
-                  &times;
-                </button>
-              </div>
-              <div className="modal-body">
-                <ApplyForm></ApplyForm>
-              </div>
-            </div>
+            <ApplyForm></ApplyForm>
           </div>
         </div>
       );
@@ -492,8 +491,8 @@ const mapDispatchToProps = (dispatch) => {
     onLoadJobDetail: (jobId) => {
       dispatch(loadJobDetail(jobId));
     },
-    onLoadSimilarJobs: (jobId, take) => {
-      dispatch(loadSimilarJobs(jobId, take));
+    onLoadSimilarJobs: (jobTopic) => {
+      dispatch(loadSimilarJobs(jobTopic));
     },
   };
 };

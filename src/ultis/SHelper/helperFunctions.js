@@ -25,3 +25,11 @@ export const prettierDateAgo = (date) => {
     return Math.ceil(diffDays / 30.4375) - 1 + " tháng trước";
   else return Math.ceil(diffDays / 365.25) - 1 + " năm trước";
 };
+
+export const getImageSrc = (data, imagePlaceholder) => {
+  let img = imagePlaceholder;
+  if (data !== null) {
+    img = "data:image/png;base64," + data;
+  }
+  return img;
+};

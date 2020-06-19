@@ -3,7 +3,10 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { prettierDate, prettierNumber } from "../../../ultis/SHelper/prettier";
+import {
+  prettierDate,
+  prettierNumber,
+} from "../../../ultis/SHelper/helperFunctions";
 
 class JobDetailInfoComponent extends Component {
   constructor(props) {
