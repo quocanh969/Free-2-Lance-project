@@ -37,7 +37,7 @@ function App() {
             <SRoute path='/search' exact component={FindJob}></SRoute>
             <SRoute path='/not-found' exact component={NotFoundComponent}></SRoute>
 
-            <SRoute path='/dashboard' exact component={Profile}></SRoute>
+            <PrivateRoute path='/dashboard' exact component={Profile}></PrivateRoute>
 
             <SRoute path='/job-detail/:id_job' exact component={JobDetail}></SRoute>
 
@@ -53,9 +53,7 @@ function App() {
             <SRoute path='/resendActivation' exact component={ResendAccountActivation}></SRoute>
 
             <SRoute path='/contact' exact component={Contact}></SRoute>
-            
-            <SRoute path='/upload' exact component={MultipleImageUploadComponent}></SRoute>
-            
+                      
             <Redirect to='/not-found'></Redirect>
           </Switch>
         </Router>

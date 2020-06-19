@@ -3,7 +3,7 @@ const initState = {
     message: "",
     sending: false,
     jobTypes: [
-        {value: 0, name: 'Thời vụ'}, {value: 1, name: 'Sản phẩm'}
+        {value: 1, name: 'Thời vụ'}, {value: 2, name: 'Sản phẩm'}
     ],
     fields: {
         jobTitle: "",

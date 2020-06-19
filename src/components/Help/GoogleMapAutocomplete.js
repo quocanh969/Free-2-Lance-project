@@ -72,7 +72,7 @@ class GoogleMapAutocomplete extends Component {
                     url="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7ZIdLTcp9ECQHsWr09nipuyWGxjOx964&libraries=places"
                     onLoad={this.handleScriptLoad}
                 />
-                <SearchBar id="autocomplete" placeholder="" value={this.state.query} onChange={(value) => { this.setState({ query: value }, () => { console.log(document.getElementById("autocomplete").value) }) }}
+                <SearchBar id={this.props.id} placeholder="Chọn địa chỉ" value={this.state.query} onChange={(value) => { this.setState({ query: value }, () => { console.log(document.getElementById("autocomplete").value) }) }}
                     style={{
                         margin: '0 auto',
                         maxWidth: 800,

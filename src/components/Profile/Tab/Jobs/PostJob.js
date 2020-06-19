@@ -6,11 +6,7 @@ import GoogleMapAutocomplete from '../../../Help/GoogleMapAutocomplete';
 import MultipleImageUploadComponent from '../../../Help/UploadImages';
 import { submitAddJobForm, loadResources } from '../../../../actions/PostJob';
 import { S_Selector, S_Tag_Autocomplete } from '../../../../ultis/SHelper/S_Help_Input';
-import { loadTopics } from '../../../../actions/Home';
-import Calendar from 'react-calendar';
-import DatePicker from 'react-date-picker'
-
-// let initField = [];
+import Swal from 'sweetalert2';
 
 class PostJobComponent extends Component {
     constructor(props) {
@@ -23,10 +19,15 @@ class PostJobComponent extends Component {
         this.getDate = this.getDate.bind(this);
         this.onHandleTextChange = this.onHandleTextChange.bind(this);
 
+
+
         this.state = {
             vacancy: '',
             salary: '',
+
             regex: /^[0-9\b]+$/,
+
+            isValid: true,
         }
 
         this.addrRef = React.createRef();
@@ -38,6 +39,20 @@ class PostJobComponent extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        window.history.scrollRestoration = 'manual';
+        console.log(window.history.scrollRestoration);
+
+    }
+
+    componentDidUpdate() {
+        if (this.state.isValid === false && this.props.AddJobReducer.fields.addressString === '') {
+            console.log("FLAG");
+            document.getElementsByClassName('MuiPaper-root')[0].setAttribute('style', 'border-color: #DC3545 !important');
+        }
+        if (this.props.AddJobReducer.status === 1 && this.props.AddJobReducer.sending === false) {
+            
+        }
     }
 
     onHandleTextChange(e) {
@@ -68,14 +83,32 @@ class PostJobComponent extends Component {
     onSubmit(e) {
         e.preventDefault();
         let { onUpdate, onSend } = this.props;
+        let isValid = 1;
+        let dateViolation = 1;
         let jobTitleValue = document.getElementById("inputJobTitle").value;
-        onUpdate("jobTitle", jobTitleValue);
+        if (jobTitleValue !== '') {
+            onUpdate("jobTitle", jobTitleValue);
+        } else {
+            isValid = 0;
+        }
         let jobTopicValue = document.getElementById("jobTopicsSelector").value;
-        onUpdate("jobTopic", jobTopicValue);
+        if (jobTopicValue !== 0) {
+            onUpdate("jobTopic", jobTopicValue);
+        } else {
+            isValid = 0;
+        }
         let jobTypeValue = document.getElementById('jobTypeSelector').value;
-        onUpdate("jobType", jobTypeValue);
+        if (jobTypeValue !== 0) {
+            onUpdate("jobType", jobTypeValue);
+        } else {
+            isValid = 0;
+        }
         let jobDescriptionValue = document.getElementById("description").value;
-        onUpdate("description", jobDescriptionValue);
+        if (jobDescriptionValue !== '') {
+            onUpdate("description", jobDescriptionValue);
+        } else {
+            isValid = 0;
+        }
         let jobRequirementsValue = document.getElementById("requirements").value;
         onUpdate("requirements", jobRequirementsValue);
         let benefitValue = document.getElementById("benefit").value;
@@ -87,48 +120,79 @@ class PostJobComponent extends Component {
         let isDealable = document.getElementById("isDealableCheck").checked;
         onUpdate("isDealable", (isDealable ? 1 : 0));
         let salary = this.state.salary;
-        onUpdate("salary", salary);
+
+        if (salary != 0) {
+            onUpdate("salary", salary);
+        } else {
+            isValid = 0;
+        }
         let vacancy = this.state.vacancy;
-        onUpdate("vacancy", vacancy);
+        if (vacancy != 0) {
+            onUpdate("vacancy", vacancy);
+        } else {
+            isValid = 0;
+        }
 
         let employer = this.props.HeaderReducer.user;
         let fields = this.props.AddJobReducer.fields;
         console.log(this.props.AddJobReducer.fields.tags);
 
         if (!fields.addressString) {
-            window.scrollTo(0, this.addrRef.current);
-            alert('Xin vui lòng chọn địa chỉ được đề xuất trong khung gợi ý');
-            return;
-        } 
-
-        // return
-        let header = {
-            employer: employer.id_user,
-            title: fields.jobTitle,
-            salary: fields.salary,
-            job_topic: fields.jobTopic,
-            address: fields.addressString.formatted_address,
-            area_province: fields.addressString.address_components[3].long_name,
-            area_district: fields.addressString.address_components[2].long_name,
-            lat: fields.addressString.geometry.location.lat(),
-            lng: fields.addressString.geometry.location.lng(),
-            description: fields.description,
-            expire_date: fields.exprDate,
-            dealable: fields.isDealable,
-            job_type: fields.jobType,
-            vacancy: fields.vacancy,
-            isOnline: fields.isOnline,
-            isDealable: fields.isDealable,
-            isCompany: (employer.isBusinessUser ? 1 : 0),
-            requirement: fields.requirements,
-            tag: [],
-            images: fields.relatedImg,
-            start_date: document.getElementById('startDateSelector').value,
-            end_date: document.getElementById('endDateSelector').value,
-            benefit: fields.benefit,
+            isValid = 0;
         }
-        console.log(header);
-        // onSend(header);
+
+        let startDate = document.getElementById('startDateSelector').value;
+        let endDate = document.getElementById('endDateSelector').value;
+
+        if (startDate >= endDate || startDate <= exprValue) {
+            dateViolation = 0;
+        }
+
+        if (isValid === 1 && dateViolation === 1) {
+            let header = {
+                employer: employer.id_user,
+                title: fields.jobTitle,
+                salary: fields.salary,
+                job_topic: fields.jobTopic,
+                address: fields.addressString.formatted_address,
+                area_province: fields.addressString.address_components[3].long_name,
+                area_district: fields.addressString.address_components[2].long_name,
+                lat: fields.addressString.geometry.location.lat(),
+                lng: fields.addressString.geometry.location.lng(),
+                description: fields.description,
+                expire_date: fields.exprDate,
+                dealable: fields.isDealable,
+                job_type: (Number.parseInt(fields.jobType) - 1).toString(),
+                vacancy: fields.vacancy,
+                isOnline: fields.isOnline,
+                isDealable: fields.isDealable,
+                isCompany: (employer.isBusinessUser ? 1 : 0),
+                requirement: fields.requirements,
+                tag: fields.tags,
+                images: fields.relatedImg,
+                start_date: document.getElementById('startDateSelector').value,
+                end_date: document.getElementById('endDateSelector').value,
+                benefit: fields.benefit,
+            }
+            console.log(header);
+            onSend(header);
+        } else {
+            let alertString = '';
+            if (isValid === 0) {
+                alertString += 'Vui lòng nhập đủ các thông tin cần thiết!\n';
+            }
+            if (dateViolation === 0) {
+                if (startDate >= endDate) {
+                    alertString += 'Ngày kết thúc phải cách ngày bắt đầu 1 ngày. Vui lòng sửa lại!\n';
+                }
+                if (exprValue >= startDate) {
+                    alertString += 'Công việc bắt đầu trước khi hết đợt tuyểt, vui lòng sửa lại!\n';
+                }
+            }
+            alert(alertString)
+            window.scrollTo(0, 0);
+            this.setState({ isValid: false });
+        }
     }
 
     getDate() {
@@ -166,85 +230,84 @@ class PostJobComponent extends Component {
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline">
-                    <h3>Post a Job</h3>
+                    <h3>ĐĂNG CÔNG VIỆC</h3>
                 </div>
                 {/* Row */}
-                <form className="row" onSubmit={this.onSubmit}>
+                <div className="row">
                     {/* Dashboard Box */}
                     <div className="col-xl-12">
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
                             <div className="headline">
-                                <h3><i className="icon-feather-folder-plus" /> Job Submission Form</h3>
+                                <h3><i className="icon-feather-folder-plus" />Đơn đăng công việc</h3>
                             </div>
                             <div className="dashboard-content with-padding padding-bottom-10">
                                 <div className="row">
                                     <div className="col-xl-4">
                                         <div className="submit-field">
-                                            <h5>Job Title</h5>
-                                            <input id="inputJobTitle" type="text" className="with-border" required />
+                                            <h5>Tiêu đề</h5>
+                                            <input autoComplete="off" id="inputJobTitle" type="text" className={"with-border " + (this.state.isValid === false && this.props.AddJobReducer.fields.jobTitle === '' ? 'border-danger mb-0' : '')} />
+                                            {(this.state.isValid === false && this.props.AddJobReducer.fields.jobTitle === '' ? <span className={"text-danger pb-0 mb-0"} >*Vui lòng nhập tiêu đề</span> : ''
+                                            )}
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
                                         <div className="submit-field">
-                                            <h5>Job Type</h5>
-                                            {/* <select className="selecthis.props.AddJobReducer.fields.jobTypege={() => {
-                                                let { onUpdate } = this.props;
-                                                let jobTypeValue = this.props.AddJobReducer.fields.jobType;
-                                                onUpdate("jobType", jobTypeValue);
-                                            }} defaultValue={0} title="Select Job Type">
-                                                <option value={0}>Thời vụ</option>
-                                                <option value={1}>Sản phẩm</option>
-                                            </select> */}
-                                            <S_Selector className="with-border" id="jobTypeSelector" data={this.props.AddJobReducer.jobTypes} value_tag={"value"} text_tag={"name"} placeholder={"Phân loại công việc"}
+                                            <h5>Loại công việc</h5>
+                                            <S_Selector className={"with-border " + (this.state.isValid === false && this.props.AddJobReducer.fields.jobType == 0 ? 'border-danger' : '')} id="jobTypeSelector" data={this.props.AddJobReducer.jobTypes} value_tag={"value"} text_tag={"name"} placeholder={"Phân loại công việc"}
                                                 handleChange={() => {
                                                     this.handleChange("jobType", document.getElementById('jobTypeSelector').value);
-                                                }} required>
-
+                                                }} >
                                             </S_Selector>
+                                            {(this.state.isValid === false && this.props.AddJobReducer.fields.jobType == 0 ? <span className={"text-danger pb-0 mb-0"} >*Vui lòng chọn phân loại</span> : ''
+                                            )}
                                         </div>
                                     </div>
                                     <div className="col-xl-4">
                                         <div className="submit-field">
-                                            <h5>Job Category</h5>
+                                            <h5>Chủ đề công việc</h5>
                                             {/* <select id="jobTopicsSelector" className="selectpicker with-border" onMouseDown="if(this.options.length>5){this.size=5}" title="Select Category"> */}
-                                            <S_Selector className="with-border" id="jobTopicsSelector" data={this.props.GeneralReducer.jobTopic} value_tag={"id_jobtopic"} text_tag={"name"} placeholder={"Chọn chủ đề"}></S_Selector>
+                                            <S_Selector className={"with-border " + (this.state.isValid === false && this.props.AddJobReducer.fields.jobTopic == 0 ? 'border-danger' : '')} id="jobTopicsSelector" data={this.props.GeneralReducer.jobTopic} value_tag={"id_jobtopic"} text_tag={"name"} placeholder={"Chọn chủ đề"}
+                                                handleChange={() => {
+                                                    this.handleChange("jobTopic", document.getElementById('jobTopicsSelector').value)
+                                                }}
+                                            ></S_Selector>
+                                            {(this.state.isValid === false && this.props.AddJobReducer.fields.jobTopic == 0 ? <span className={"text-danger pb-0 mb-0"} >*Vui lòng chọn chủ đề</span> : ''
+                                            )}
                                         </div>
                                     </div>
                                     <div className="col-xl-8">
                                         <div className='row'>
                                             <div className='col-xl-6'>
                                                 <div className="submit-field">
-                                                    <h5>Location</h5>
-                                                    {/* <div className="input-with-icon">
-                                                        <div id="autocomplete-container"> */}
-                                                    {/* <input id="autocomplete-input" className="with-border" type="text" placeholder="Type Address" /> */}
-                                                    <GoogleMapAutocomplete ref={this.addrRef} value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
-                                                    {/* </div>
-                                                        <i className="icon-material-outline-location-on" /> */}
-                                                    {/* </div> */}
+                                                    <h5>Địa chỉ</h5>
+                                                    <GoogleMapAutocomplete className='border-danger' id={"autocomplete"} ref={this.addrRef} value={this.props.AddJobReducer.fields.addressString} onChange={this.handleChange}></GoogleMapAutocomplete>
+                                                    {(this.state.isValid === false && this.props.AddJobReducer.fields.addressString === '' ? <span className={"text-danger pb-0 mb-0"} >*Vui lòng chọn địa chỉ gợi ý</span> : ''
+                                            )}
                                                 </div>
                                             </div>
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
-                                                    <h5>Salary</h5>
+                                                    <h5>Lương cơ bản</h5>
                                                     <div className="input-with-icon">
-                                                        <input className="with-border" id="salary" type="text" value={this.state.salary} onChange={this.onHandleTextChange} placeholder={"Nhập thù lao"} />
+                                                        <input className={"with-border " + (this.state.isValid === false && this.state.salary == 0 ? 'border-danger mb-0' : '')} id="salary" type="text" value={this.state.salary} onChange={this.onHandleTextChange} placeholder={"Nhập thù lao"} />
                                                         <i className="currency">VND</i>
+                                                        {/* {(this.state.isValid === false && this.state.salary == 0 ? <span className={"text-danger pb-0 mb-0"} >*Số lượng tuyển tối thiểu 1</span> : ''
+                                                        )} */}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
                                                     {/* <div className="input-with-icon"> */}
-                                                    <h5>Expired date</h5>
+                                                    <h5>Hạn chót xét tuyển</h5>
                                                     <input id="exprDateSelector" type="date" min={this.getDate().today} max={this.getDate().maxExprDate} defaultValue={this.getDate().today}></input>
                                                     {/* </div> */}
                                                 </div>
                                             </div>
-                                            <div className="col-xl-6" style={{ visibility: ((this.props.AddJobReducer.fields.jobType == 1) ? 'hidden' : 'visible') }}>
+                                            <div className="col-xl-6" style={{ visibility: ((this.props.AddJobReducer.fields.jobType == 2) ? 'hidden' : 'visible') }}>
                                                 <div className="submit-field">
-                                                    <h5>Start date</h5>
+                                                    <h5>Ngày bắt đầu</h5>
                                                     <div className="input-with-icon">
                                                         <input id="startDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
                                                     </div>
@@ -252,7 +315,7 @@ class PostJobComponent extends Component {
                                             </div>
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
-                                                    <h5>End date</h5>
+                                                    <h5>Ngày kết thúc</h5>
                                                     <div className="input-with-icon">
                                                         <input id="endDateSelector" type="date" min={this.getDate().maxExprDate} defaultValue={this.getDate().maxExprDate}></input>
                                                     </div>
@@ -262,14 +325,17 @@ class PostJobComponent extends Component {
                                                 <div className="submit-field">
                                                     <h5>Số lượng vị trí</h5>
                                                     <div className="input-with-icon">
-                                                        <input id="vacancy" className="with-border" type="text" placeholder={"Nhập số lượng cần tuyển"} value={this.state.vacancy} onChange={this.onHandleTextChange} />
+                                                        <input id="vacancy" className={"with-border " + (this.state.isValid === false && this.state.vacancy == 0 ? 'border-danger mb-0' : '')} type="text"
+                                                            placeholder={"Nhập số lượng cần tuyển"} value={this.state.vacancy} onChange={this.onHandleTextChange} />
+                                                        {(this.state.isValid === false && this.state.vacancy == 0 ? <span className={"text-danger pb-0 mb-0"} >*Số lượng tuyển tối thiểu 1</span> : ''
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
                                                     <h5>Tính chất công việc</h5>
-                                                    <div className="custom-control custom-checkbox">
+                                                    <div className="custom-control custom-checkbox mb-3">
                                                         <input type="checkbox" className="custom-control-input" id="isOnlineCheck" />
                                                         <label className="custom-control-label" htmlFor="isOnlineCheck">Việc làm online</label>
                                                     </div>
@@ -278,7 +344,7 @@ class PostJobComponent extends Component {
                                             <div className="col-xl-6">
                                                 <div className="submit-field">
                                                     <h5 style={{ visibility: 'hidden' }}>Tính chất công việc</h5>
-                                                    <div className="custom-control custom-checkbox">
+                                                    <div className="custom-control custom-checkbox mb-3">
                                                         <input type="checkbox" className="custom-control-input" id="isDealableCheck" />
                                                         <label className="custom-control-label" htmlFor="isDealableCheck">Cho phép thỏa thuận</label>
                                                     </div>
@@ -305,12 +371,14 @@ class PostJobComponent extends Component {
                                     </div>
                                     <div className="col-xl-12">
                                         <div className="submit-field">
-                                            <h5>Job Description</h5>
-                                            <textarea id="description" cols={30} rows={5} className="with-border" defaultValue={""} placeholder="Description (required)" />
-                                            <h5>Job Requirements</h5>
-                                            <textarea id="requirements" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Your requirements (optional)" />
-                                            <h5>Benefit</h5>
-                                            <textarea id="benefit" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Benefit (optional)"/>
+                                            <h5>Mô tả công việc</h5>
+                                            <textarea id="description" cols={30} rows={5} className={"with-border " + (this.state.isValid === false && this.props.AddJobReducer.fields.description === '' ? 'border-danger mb-0' : '')} defaultValue={""} placeholder="Mô tả công việc (bắt buộc)" />
+                                            {(this.state.isValid === false && this.props.AddJobReducer.fields.description === '' ? <span className={"text-danger pb-0 mb-0"} >*Vui lòng nhập mô tả công việc</span> : ''
+                                            )}
+                                            <h5>Yêu cầu</h5>
+                                            <textarea id="requirements" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Yêu cầu chi tiết (nếu có)" />
+                                            <h5>Phúc lợi</h5>
+                                            <textarea id="benefit" cols={30} rows={3} className="with-border" defaultValue={""} placeholder="Phúc lợi (nếu có)" />
                                             <div className="margin-top-30">
                                                 {/* <input className="uploadButton-input" type="button" id="upload" onClick={this.runUploadFile} /> */}
                                                 <div>
@@ -333,9 +401,9 @@ class PostJobComponent extends Component {
                     </div>
                     <div className="col-xl-12">
                         {/* <a href="#" className="button ripple-effect big margin-top-30" onClick={this.onSubmit}><i className="icon-feather-plus" /> Post a Job</a> */}
-                        <button className="button ripple-effect big margin-top-30" type="submit">Post a Job</button>
+                        <button className="button ripple-effect big margin-top-30" onClick={this.onSubmit}>Post a Job</button>
                     </div>
-                </form>
+                </div>
                 {/* Row / End */}
             </div>
         )
