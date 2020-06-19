@@ -65,6 +65,7 @@ class ApplyFormConponent extends Component {
           proposed_price,
           fileInBase64
         );
+        document.getElementById("btnCloseApplyForm").click();
       });
     } else {
       Swal.fire({
@@ -135,47 +136,67 @@ class ApplyFormConponent extends Component {
   render() {
     let { jobDetail } = this.props.JobDetailReducer;
     return (
-      <div className="sign-in-form">
-        <div className="popup-tabs-container">
-          {/* Tab */}
-          <div className="popup-tab-content" id="tab">
-            {/* Welcome Text */}
-            <div className="welcome-text">
-              <h3>
-                {jobDetail.dealable
-                  ? "Chọn mức lương mong muốn và CV"
-                  : "Chọn CV của bạn"}
-              </h3>
-            </div>
-            {/* Form */}
-            <form method="post" id="apply-now-form" onSubmit={this.applyJob}>
-              {this.renderProposedPrice()}
-              <div className="uploadButton">
-                <input
-                  className="uploadButton-input"
-                  type="file"
-                  accept="image/*, application/pdf"
-                  id="upload-cv"
-                />
-                <label
-                  className="uploadButton-button ripple-effect"
-                  htmlFor="upload-cv"
+      <div className="modal-content">
+        <div className="modal-header">
+          <h4 className="modal-title">Đăng kí ứng cử</h4>
+          <button
+            id="btnCloseApplyForm"
+            type="button"
+            className="close"
+            data-dismiss="modal"
+          >
+            &times;
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="sign-in-form">
+            <div className="popup-tabs-container">
+              {/* Tab */}
+              <div className="popup-tab-content" id="tab">
+                {/* Welcome Text */}
+                <div className="welcome-text">
+                  <h3>
+                    {jobDetail.dealable
+                      ? "Chọn mức lương mong muốn và CV"
+                      : "Chọn CV của bạn"}
+                  </h3>
+                </div>
+                {/* Form */}
+                <form
+                  method="post"
+                  id="apply-now-form"
+                  onSubmit={this.applyJob}
                 >
-                  Chọn CV
-                </label>
-                <span className="uploadButton-file-name">
-                  Chỉ được chọn 1 <br /> Dung lượng tốc đa: 50 MB.
-                </span>
+                  {this.renderProposedPrice()}
+                  <div className="uploadButton">
+                    <input
+                      className="uploadButton-input"
+                      type="file"
+                      accept="image/*, application/pdf"
+                      id="upload-cv"
+                    />
+                    <label
+                      className="uploadButton-button ripple-effect"
+                      htmlFor="upload-cv"
+                    >
+                      Chọn CV
+                    </label>
+                    <span className="uploadButton-file-name">
+                      Chỉ được chọn 1 <br /> Dung lượng tốc đa: 50 MB.
+                    </span>
+                  </div>
+                </form>
+                {/* Button */}
+                <button
+                  className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
+                  type="submit"
+                  form="apply-now-form"
+                >
+                  Đăng kí{" "}
+                  <i className="icon-material-outline-arrow-right-alt" />
+                </button>
               </div>
-            </form>
-            {/* Button */}
-            <button
-              className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
-              type="submit"
-              form="apply-now-form"
-            >
-              Đăng kí <i className="icon-material-outline-arrow-right-alt" />
-            </button>
+            </div>
           </div>
         </div>
       </div>

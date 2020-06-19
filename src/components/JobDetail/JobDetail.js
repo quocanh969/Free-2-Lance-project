@@ -246,17 +246,7 @@ class JobDetailComponent extends Component {
       return (
         <div id="myModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title">Đăng kí ứng cử</h4>
-                <button type="button" className="close" data-dismiss="modal">
-                  &times;
-                </button>
-              </div>
-              <div className="modal-body">
-                <ApplyForm></ApplyForm>
-              </div>
-            </div>
+            <ApplyForm></ApplyForm>
           </div>
         </div>
       );
