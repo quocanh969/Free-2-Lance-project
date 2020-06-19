@@ -78,6 +78,13 @@ function getJobsDetail(id) {
   return axios.get("/getJobById/" + id);
 }
 
+function getSimilarJobs(jobId, take) {
+  return axios.post("/getSimilarJobs", {
+    jobId,
+    take,
+  });
+}
+
 function getEmployerDetail(id) {
   return axios.get("/getUserInfoNotPrivate/" + id);
 }
@@ -98,4 +105,5 @@ export {
   doApplyJob,
   getTags,
   getEmployerDetail,
+  getSimilarJobs,
 };

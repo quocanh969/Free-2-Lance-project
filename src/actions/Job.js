@@ -1,6 +1,7 @@
 import {
   getJobsList,
   getJobsDetail,
+  getSimilarJobs,
   doApplyJob,
   getEmployerDetail,
 } from "../services/job.services";
@@ -39,6 +40,7 @@ export const loadJobDetail = (jobId) => {
     getJobsDetail(jobId)
       .then((res) => {
         dispatch(success(res.data.data));
+        //loadSimilarJobs
       })
       .catch((err) => {
         console.log(err);
@@ -68,6 +70,25 @@ export const loadEmployer = (employerId) => {
     return {
       type: "JOB_DETAIL_EMPLOYER_LOAD",
       employerDetail,
+    };
+  }
+};
+
+export const loadSimilarJobs = (jobId, take) => {
+  return (dispatch) => {
+    getSimilarJobs(jobId, take)
+      .then((res) => {
+        dispatch(success(res.data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(similarJobs) {
+    return {
+      type: "SIMILAR_JOB_LOAD",
+      similarJobs,
     };
   }
 };
