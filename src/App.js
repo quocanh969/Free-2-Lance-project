@@ -55,9 +55,7 @@ function App() {
             <SRoute path='/resendActivation' exact component={ResendAccountActivation}></SRoute>
 
             <SRoute path='/contact' exact component={Contact}></SRoute>
-            
-            <SRoute path='/upload' exact component={MultipleImageUploadComponent}></SRoute>
-            
+                      
             <Redirect to='/not-found'></Redirect>
           </Switch>
         </Router>
