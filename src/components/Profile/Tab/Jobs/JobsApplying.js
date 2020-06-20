@@ -2,115 +2,73 @@ import React, { Component } from 'react'
 
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { loadApplyingJobsForEmployer } from '../../../../actions/Job';
+import { prettierDate } from '../../../../ultis/SHelper/helperFunctions';
+import { history } from '../../../../ultis/history/history';
 
 class JobsApplyingComponent extends Component {
     constructor(props) {
         super(props);
+    }
 
-        this.state = {
-            jobList: [
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-                {
-                    id: 1,
-                    title: 'Bilingual Event Support Specialist',
-                    post_date: '10/10/2020',
-                    expire_date: '10/02/2021',
-                    candidates: 10,
-                },
-            ]
-        }
+    componentWillMount() {
+        this.loadJobList(1);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
     }
 
+    loadJobList(page)
+    {
+        let {onLoadApplyingJob} = this.props;
+        onLoadApplyingJob(page, 4, 0);
+    }
+
     generateListJobs() {
+        let {applyingJobsList} = this.props.EmployerReducer;
         let content = [];
-        let count = 0;
-        for (let e of this.state.jobList) {
-            content.push(
-                <li key={count}>
-                    {/* Job Listing */}
-                    <div className="job-listing">
-                        {/* Job Listing Details */}
-                        <div className="job-listing-details">
-                            {/* Logo */}
-                            {/* 											
-                            <a href="#" class="job-listing-company-logo">
-                                <img src="images/company-logo-05.png" alt="">
-                            </a>
-                            */}
-                            {/* Details */}
-                            <div className="job-listing-description">
-                                <h3 className="job-listing-title">{e.title}</h3>
-                                {/* Job Listing Footer */}
-                                <div className="job-listing-footer">
-                                    <ul>
-                                        <li><i className="icon-material-outline-date-range" /> {e.post_date}</li>
-                                        <li><i className="icon-material-outline-date-range" /> {e.expire_date}</li>
-                                    </ul>
+
+        if(applyingJobsList.length > 0) {
+            applyingJobsList.forEach((e, index)=>{
+                content.push(
+                    <li key={index}>
+                        {/* Job Listing */}
+                        <div className="job-listing">
+                            {/* Job Listing Details */}
+                            <div className="job-listing-details">
+                                
+                                {/* Details */}
+                                <div className="job-listing-description">
+                                    <h3 className="job-listing-title">{e.title}</h3>
+                                    {/* Job Listing Footer */}
+                                    <div className="job-listing-footer">
+                                        <ul>
+                                            <li><i className="icon-line-awesome-calendar-check-o" />Ngày đăng: {prettierDate(e.post_date)}</li>
+                                            <li><i className="icon-line-awesome-calendar-times-o" />Ngày hết hạn: {prettierDate(e.expire_date)}</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {/* Buttons */}
-                    <div>
-                        <span className='mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</span>
-                        <span className='btn mx-2 p-2 bg-silver rounded' onClick={()=>{this.props.switchTab(13)}}><i className="icon-line-awesome-clone" /> Details</span>
-                        <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span>
-                        <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-trash-2"/> Remove</span>
-                    </div>
-                    {/* <div className="buttons-to-right always-visible">
-                        <a className='bg-293FE4 text-white'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</a>
-                        <a href="#" className="button gray ripple-effect ico" title="Details"><i className="icon-line-awesome-clone" /> Details</a>
-                        <a href="#" className="button gray ripple-effect ico" title="Edit"><i className="icon-feather-edit"/> Edit</a>
-                        <a href="#" className="button gray ripple-effect ico" title="Remove"><i className="icon-feather-trash-2"/> Remove</a>
-                    </div> */}
-                </li>
-            );
-            count++;
+                        {/* Buttons */}
+                        <div>
+                            <span className='mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</span>
+                            <span className='btn mx-2 p-2 bg-silver rounded' onClick={()=>{history.push(`/job-detail/${e.id_job}`)}}><i className="icon-line-awesome-clone" /> Details</span>
+                            {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
+                            <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-trash-2"/> Remove</span>
+                        </div>
+                    </li>
+                );
+            })
+        }
+        else
+        {
+            content.push(
+                <div className='font-weight-bold p-5' key={0}>
+                    Bạn hiện không có công việc nào đang tuyển
+                </div>
+            )
         }
 
         return content;
@@ -132,7 +90,7 @@ class JobsApplyingComponent extends Component {
                             <div className="headline">
                                 <h3><i className="icon-material-outline-business-center" /> Danh sách công việc</h3>
                             </div>
-                            <div className="content">
+                            <div>
                                 <ul className="dashboard-box-list">
                                     {this.generateListJobs()}
                                 </ul>
@@ -154,7 +112,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onLoadApplyingJob:(page, take, isASC) => {
+            dispatch(loadApplyingJobsForEmployer(page, take, isASC));
+        }
     }
 }
 

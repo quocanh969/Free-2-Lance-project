@@ -1,5 +1,6 @@
 import {
   getJobsList,
+  getJobsForEmployer,
   getJobsDetail,
   getSimilarJobs,
   doApplyJob,
@@ -30,6 +31,87 @@ export const loadJobList = (page, take, isASC, query) => {
       jobList,
       page,
       total,
+    };
+  }
+};
+
+export const loadApplyingJobsForEmployer = (page, take, isASC) => {
+  return (dispatch) => {
+    getJobsForEmployer(page, take, isASC, 1)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.jobList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(jobList, page, total) {
+    return {
+      type: "EMPLOYER_APPLYING_JOBS_UPDATE",
+      jobList,
+      total,
+      page,
+    };
+  }
+};
+
+export const loadProcessingJobsForEmployer = (page, take, isASC) => {
+  return (dispatch) => {
+    getJobsForEmployer(page, take, isASC, 2)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.jobList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(jobList, page, total) {
+    return {
+      type: "EMPLOYER_PROCESSING_JOBS_UPDATE",
+      jobList,
+      total,
+      page,
+    };
+  }
+};
+
+export const loadFinishedJobsForEmployer = (page, take, isASC) => {
+  return (dispatch) => {
+    getJobsForEmployer(page, take, isASC, 3)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.jobList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(jobList, page, total) {
+    return {
+      type: "EMPLOYER_FINISHED_JOBS_UPDATE",
+      jobList,
+      total,
+      page,
     };
   }
 };
