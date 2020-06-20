@@ -17,6 +17,7 @@ import TasksDoing from './Tab/Tasks/TasksDoing';
 import ChangePassword from './Tab/ChangePassword';
 
 import DetailTemplate from './Tab/Jobs/JobDetail/DetailTemplate';
+import { history } from '../../ultis/history/history';
 
 class ProfileComponent extends Component {
 
@@ -24,10 +25,24 @@ class ProfileComponent extends Component {
         super(props);
 
         this.state = {
-            tab: 11,
+            tab: 1,
         }
 
         this.moveToTab = this.moveToTab.bind(this);
+    }
+
+    componentWillMount() {        
+        let tab = Number.parseInt(this.props.match.params.id);
+        this.setState({tab,});
+    }
+
+    componentWillReceiveProps() {        
+        if (this.props.history.location.pathname !== this.props.location.pathname) {
+            // khác path
+            let splitted = this.props.history.location.pathname.split("=", 2);
+            let tab = Number.parseInt(splitted[1]);
+            this.setState({tab,});            
+        }
     }
 
     switchTab() {
@@ -94,6 +109,14 @@ class ProfileComponent extends Component {
         this.setState({ tab, });
     }
 
+    handleLogOut() {
+        let { onLogOut } = this.props;
+        console.log('hahaha');
+        localStorage.clear();
+        onLogOut();
+        history.push("/login");
+    }
+
     render() {
         //let isBusinessUser = this.props.HeaderReducer.user.isBusinessUser;
         let { user } = this.props.HeaderReducer
@@ -123,41 +146,41 @@ class ProfileComponent extends Component {
                                             <div className="dashboard-nav-inner">
                                                 <ul data-submenu-title="Quản lý chung">
                                                     <li className={(this.state.tab === 1 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 1 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=1'>
                                                             <i className="icon-material-outline-dashboard" /> Thông tin chung
-                                                </div>
+                                                        </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 2 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 2 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=2'>
                                                             <i className="icon-material-outline-question-answer" /> Tin nhắn <span className="nav-tag">2</span>
-                                                        </div>
+                                                        </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 3 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 3 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=3'>
                                                             <i className="icon-material-outline-rate-review" /> Nhận xét
-                                                </div>
+                                                </NavLink>
                                                     </li>
                                                 </ul>
                                                 <ul data-submenu-title="Quản lý đăng công việc">
                                                     <li className={(this.state.tab === 4 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 4 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=4'>
                                                             <i className="icon-feather-search" /> Công việc đang tuyển
-                                                </div>
+                                                </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 5 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 5 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=5'>
                                                             <i className="icon-material-outline-business-center" /> Công việc hiện tại
-                                                </div>
+                                                </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 6 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 6 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=6'>
                                                             <i className="icon-feather-check-square" /> Công việc đã hoàn thành
-                                                </div>
+                                                </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 7 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 7 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=7'>
                                                             <i className="icon-material-outline-note-add" /> Đăng công việc
-                                                </div>
+                                                </NavLink>
                                                     </li>
                                                 </ul>
                                                 {(
@@ -171,34 +194,38 @@ class ProfileComponent extends Component {
                                                         :
                                                         <ul data-submenu-title="Quản lý việc làm">
                                                             <li className={(this.state.tab === 8 ? 'active' : '')}>
-                                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 8 }) }}>
+                                                                <NavLink className='cursor-pointer' to='/dashboard/tab=8'>
                                                                     <i className="icon-material-outline-business-center" /> Công việc hiện tại
-                                                    </div>
+                                                                </NavLink>
                                                             </li>
                                                             <li className={(this.state.tab === 9 ? 'active' : '')}>
-                                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 9 }) }}>
+                                                                <NavLink className='cursor-pointer' to='/dashboard/tab=9'>
                                                                     <i className="icon-line-awesome-hourglass" /> Công việc đang ứng tuyển
-                                                    </div>
+                                                                </NavLink>
                                                             </li>
                                                             <li className={(this.state.tab === 10 ? 'active' : '')}>
-                                                                <div className='cursor-pointer' onClick={() => { this.setState({ tab: 10 }) }}>
+                                                                <NavLink className='cursor-pointer' to='/dashboard/tab=10'>
                                                                     <i className="icon-feather-check-square" /> Công việc đã hoàn thành
-                                                    </div>
+                                                                </NavLink>
                                                             </li>
                                                         </ul>
                                                 )}
                                                 <ul data-submenu-title="Tài khoản">
                                                     <li className={(this.state.tab === 11 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 11 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=11'>
                                                             <i className="icon-material-outline-settings" /> Thông tin tài khoản
-                                                </div>
+                                                        </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 12 ? 'active' : '')}>
-                                                        <div className='cursor-pointer' onClick={() => { this.setState({ tab: 12 }) }}>
+                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=12'>
                                                             <i className="icon-feather-lock" /> Đổi mật khẩu
-                                                </div>
+                                                        </NavLink>
                                                     </li>
-                                                    <li><div className='cursor-pointer'><i className="icon-material-outline-power-settings-new" /> Đăng xuất</div></li>
+                                                    <li>
+                                                        <div className='cursor-pointer' onClick={()=>{this.handleLogOut()}}>
+                                                            <i className="icon-material-outline-power-settings-new"/> Đăng xuất
+                                                        </div>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -227,7 +254,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onLogOut: () => {
+            dispatch({
+              type: "USER_LOG_OUT",
+            });
+        },
     }
 }
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../../assets/css/style.css';
 import './S_Help_style.css';
 
 class S_Selector extends Component {
@@ -447,7 +446,7 @@ class S_Tag_Autocomplete extends Component {
                 {(
                     this.state.chosen.length > 0 
                     &&
-                    <div className='mt-2 p-1 bg-silver d-flex flex-wrap rounded'>
+                    <div className='mt-2 p-1 bg-silver d-flex flex-wrap rounded' style={{maxHeight: '50vh', overflowY: 'auto'}}>
                         {this.renderChosen()}
                     </div>
                 )}

@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
-import "../assets/css/style.css";
-import "../assets/css/colors/blue.css";
 
 import CompanyLogoPlaceholder from "../assets/images/company-logo-placeholder.png";
 

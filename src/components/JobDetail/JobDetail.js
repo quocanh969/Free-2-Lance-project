@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/colors/blue.css";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";

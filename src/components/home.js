@@ -4,8 +4,6 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import "../assets/css/testimonial.css";
-import "../assets/css/style.css";
-import "../assets/css/colors/blue.css";
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
 import UserAvatarPlaceholder from "../assets/images/user-avatar-placeholder.png";

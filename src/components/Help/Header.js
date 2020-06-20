@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import "../../assets/css/style.css";
-import "../../assets/css/colors/blue.css";
 
 import Logo2 from '../../assets/images/logo4.png';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
@@ -97,7 +95,7 @@ class HeaderComponent extends Component {
     window.addEventListener("scroll", this.handleScroll);
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   componentWillReceiveProps() {
     this.handleScroll();
@@ -163,28 +161,17 @@ class HeaderComponent extends Component {
     let { messages } = this.state;
     for (let e of messages) {
       content.push(
-        <NavLink
-          key={count}
-          to="/dashboard"
-          className="dropdown-item px-1 border-top border-secondary"
-        >
+        <NavLink key={count} to="/dashboard" className="dropdown-item px-1 border-top border-secondary">
           <div className="container-fluid px-3">
             <div className="row p-1">
               {/* avatar */}
               <div className="col-2 p-0">
-                <img
-                  className="rounded-circle"
-                  style={{ height: "auto" }}
-                  src={e.avatarImg}
-                ></img>
+                <img className="rounded-circle" style={{ height: "auto" }} src={e.avatarImg}></img>
               </div>
               {/* message */}
               <div className="col-10 px-3">
                 <div className="text-293FE4 font-weight-bold">{e.fullname}</div>
-                <div
-                  className="text-secondary d-inline-block text-truncate"
-                  style={{ width: "200px" }}
-                >
+                <div className="text-secondary d-inline-block text-truncate" style={{ width: "200px" }}>
                   {e.message}
                 </div>
               </div>
@@ -202,26 +189,21 @@ class HeaderComponent extends Component {
       case 0: {
         return (
           <span className="text-wrap">
-            <span className="text-293FE4">{notice.fullname}</span> đã từ chối
-            bạn trong công việc{" "}
-            <span className="text-293FE4">{notice.job}</span>
+            <span className="text-293FE4">{notice.fullname}</span> đã từ chối bạn trong công việc{" "}<span className="text-293FE4">{notice.job}</span>
           </span>
         );
       }
       case 1: {
         return (
           <span className="text-wrap">
-            Bạn đã được nhận công việc{" "}
-            <span className="text-293FE4">{notice.job}</span> từ{" "}
-            <span className="text-293FE4">{notice.fullname}</span>
+            Bạn đã được nhận công việc{" "}<span className="text-293FE4">{notice.job}</span> từ{" "}<span className="text-293FE4">{notice.fullname}</span>
           </span>
         );
       }
       case 2: {
         return (
           <span className="text-wrap">
-            <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
-            <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
+            <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}<span className="text-293FE4">{notice.fullname}</span> đã kết thúc
           </span>
         );
       }
@@ -238,7 +220,7 @@ class HeaderComponent extends Component {
         return "";
     }
   }
-  
+
   renderNotiContent() {
     let content = [],
       count = 0;
@@ -338,7 +320,7 @@ class HeaderComponent extends Component {
             className="dropdown-menu dropdown-menu-right"
             aria-labelledby="UserMenuDropdown"
           >
-            <NavLink className="dropdown-item" to="/dashboard">
+            <NavLink className="dropdown-item" to="/dashboard/tab=1">
               <i className="icon-material-outline-dashboard"></i>
               &nbsp;&nbsp; Tài khoản của bạn
             </NavLink>
@@ -399,49 +381,49 @@ class HeaderComponent extends Component {
       </ul>
     );
   }
-  
+
   render() {
-    let {user} = this.props.HeaderReducer;
+    let { user } = this.props.HeaderReducer;
     return (
-        <nav className={"navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " + (this.state.isCurrentTop ? 'border-light bg-transparent':'border-secondary bg-light')} onScroll={()=>{this.handleScroll()}}>
-            <NavLink to='/' className="navbar-brand mr-4 pt-3">
-                {/* <img src={Logo2} className='logo-brand'></img> */}
-                <span className='font-weight-bold'><span className='text-primary'>FREE</span><span className='text-danger'>2</span><span className={this.state.isCurrentTop ? 'text-white':'text-dark'}>LANCE</span></span>
-            </NavLink>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon" />
-            </button>
-            <div className="collapse navbar-collapse my-0 py-0" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto ">
-                    <li className="nav-item mx-2 pt-3 pb-2">
-                        <NavLink className="nav-link nav-link-header" to='/'><div>Trang chủ</div></NavLink>
-                    </li>
-                    <li className="nav-item mx-2 pt-3 pb-2">
-                        <NavLink className="nav-link nav-link-header" to='/search'><div>Tìm việc</div></NavLink>
-                    </li>
-                    <li onMouseLeave={()=>{this.setState({isTopicHover: false})}}
-                        className={"nav-item dropdown mx-2 pt-3 pb-2 "+(this.state.isTopicHover ? 'show':'')}>
-                        <NavLink className="nav-link-header nav-link dropdown-toggle" to='/job-list' id="navbarDropdown" 
-                            onMouseEnter={()=>{this.setState({isTopicHover: true})}} >
-                            <div>Chủ đề</div>
-                        </NavLink>
-                        <div className={"dropdown-menu mt-0 header-menu " + (this.state.isTopicHover ? 'show':'')} aria-labelledby="navbarDropdown">
-                            {this.renderTopicsHeader()}
-                        </div>
-                    </li>
-                    <li className="nav-item mx-2 pt-3 pb-2">
-                        <NavLink className="nav-link nav-link-header" to='/contact'><div>Liên lạc</div></NavLink>
-                    </li>
-                </ul>
-                {(
-                    user === null
-                    ?
-                    this.renderUserNotLoginContent()
-                    :
-                    this.renderUserLoginContent(user)
-                )}
-            </div>
-        </nav>
+      <nav className={"navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " + (this.state.isCurrentTop ? 'border-light bg-transparent' : 'border-secondary bg-light')} onScroll={() => { this.handleScroll() }}>
+        <NavLink to='/' className="navbar-brand mr-4 pt-3">
+          {/* <img src={Logo2} className='logo-brand'></img> */}
+          <span className='font-weight-bold'><span className='text-primary'>FREE</span><span className='text-danger'>2</span><span className={this.state.isCurrentTop ? 'text-white' : 'text-dark'}>LANCE</span></span>
+        </NavLink>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon" />
+        </button>
+        <div className="collapse navbar-collapse my-0 py-0" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto ">
+            <li className="nav-item mx-2 pt-3 pb-2">
+              <NavLink className="nav-link nav-link-header" to='/'><div>Trang chủ</div></NavLink>
+            </li>
+            <li className="nav-item mx-2 pt-3 pb-2">
+              <NavLink className="nav-link nav-link-header" to='/search'><div>Tìm việc</div></NavLink>
+            </li>
+            <li onMouseLeave={() => { this.setState({ isTopicHover: false }) }}
+              className={"nav-item dropdown mx-2 pt-3 pb-2 " + (this.state.isTopicHover ? 'show' : '')}>
+              <NavLink className="nav-link-header nav-link dropdown-toggle" to='/job-list' id="navbarDropdown"
+                onMouseEnter={() => { this.setState({ isTopicHover: true }) }} >
+                <div>Chủ đề</div>
+              </NavLink>
+              <div className={"dropdown-menu mt-0 header-menu " + (this.state.isTopicHover ? 'show' : '')} aria-labelledby="navbarDropdown">
+                {this.renderTopicsHeader()}
+              </div>
+            </li>
+            <li className="nav-item mx-2 pt-3 pb-2">
+              <NavLink className="nav-link nav-link-header" to='/contact'><div>Liên lạc</div></NavLink>
+            </li>
+          </ul>
+          {(
+            user === null
+              ?
+              this.renderUserNotLoginContent()
+              :
+              this.renderUserLoginContent(user)
+          )}
+        </div>
+      </nav>
     )
   }
 }
