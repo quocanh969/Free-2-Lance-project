@@ -4,7 +4,7 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { loadFinishedJobsForEmployer } from '../../../../actions/Job';
-import { prettierDate } from '../../../../ultis/SHelper/helperFunctions';
+import { prettierDate, prettierNumber } from '../../../../ultis/SHelper/helperFunctions';
 import { history } from '../../../../ultis/history/history';
 
 class JobsDoneComponent extends Component {
@@ -18,6 +18,12 @@ class JobsDoneComponent extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+    }
+
+    handlePagination(pageNum) {
+        if (pageNum !== this.props.EmployerReducer.currentFinishedPage) {
+            this.loadJobListFunc(pageNum);
+        }
     }
 
     loadJobList(page)
@@ -39,25 +45,48 @@ class JobsDoneComponent extends Component {
                         <div className="job-listing">
                             {/* Job Listing Details */}
                             <div className="job-listing-details">
+
                                 {/* Details */}
                                 <div className="job-listing-description">
                                     <h3 className="job-listing-title">{e.title}</h3>
+                                    <h4 className='d-flex justify-content-between'>
+                                        <span><span className='font-weight-bold'>Loại công việc: </span>{(!e.job_type ? 'Công việc thời vụ' : 'Công việc theo sản phẩm')}</span>
+                                        <span className='text-primary'><span className='font-weight-bold'>Mức lương</span> {prettierNumber(e.salary)+' VNĐ'}</span>
+                                    </h4>
                                     {/* Job Listing Footer */}
+                                    <div style={{width:'100vh'}} className='text-truncate'>
+                                        <span className='font-weight-bold'>Mô tả: </span>{e.description}
+                                    </div>                                    
+                                    <br></br>
                                     <div className="job-listing-footer">
                                         <ul>
-                                            <li><i className="icon-material-outline-date-range" />Ngày đăng: {prettierDate(e.post_date)}</li>
-                                            <li><i className="icon-material-outline-date-range" /> Expiring on 10 August, 2018</li>
+                                            <li><span className='font-weight-bold'><i className="icon-material-outline-location-city" />Khu vực: </span>{e.province}</li>
+                                            <li><span className='font-weight-bold'><i className="icon-material-outline-add-location" />Quận: </span>{e.district}</li>                                            
                                         </ul>
+                                    </div>
+                                    <hr></hr>
+                                    <div className="job-listing-footer">
+                                        {(
+                                            e.job_type
+                                            ?
+                                            <ul>                                                
+                                                <li><span className='font-weight-bold'><i className="icon-material-outline-date-range" />Ngày kết thúc công việc: </span>{prettierDate(e.deadline)}</li>                                            
+                                            </ul>
+                                            :
+                                            <ul>
+                                                <li><span className='font-weight-bold'><i className="icon-line-awesome-calendar-o" />Ngày bắt đầu công việc: </span>{prettierDate(e.start_date)}</li>
+                                                <li><span className='font-weight-bold'><i className="icon-material-outline-date-range" />Ngày kết thúc công việc: </span>{prettierDate(e.end_date)}</li>                                            
+                                            </ul>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {/* Buttons */}
                         <div>
-                            <span className='mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Candidates: {e.candidates}</span>
-                            <span className='btn mx-2 p-2 bg-silver rounded' onClick={()=>{history.push(`/job-detail/${e.id_job}`)}}><i className="icon-line-awesome-clone" /> Details</span>
-                            {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
-                            <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-trash-2"/> Remove</span>
+                            <span className='btn mx-2 py-2 px-4 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Danh sách người tham gia: {e.candidates}</span>
+                            <span className='btn mx-2 py-2 px-4 bg-warning rounded'><i className="icon-material-outline-rate-review" /> Xem phản hồi</span>
+                            <span className='btn mx-2 py-2 px-4 bg-silver rounded' onClick={() => { history.push(`/job-detail/${e.id_job}`) }}><i className="icon-line-awesome-clone" /> Xem chi tiết công việc</span>
                         </div>
                     </li>
                 )
@@ -75,7 +104,45 @@ class JobsDoneComponent extends Component {
         return content;
     }
 
+    renderPagination(page, totalPage) {
+        let content = [];
+        let start = 1,
+            end = 4;
+        if (totalPage - 4 < page) {
+            if (totalPage - 4 < 0) {
+                start = 1;
+            } else {
+                start = totalPage - 4;
+            }
+            end = totalPage;
+        } else {
+            start = page;
+            end = page + 3;
+        }
+
+        for (let e = start; e <= end; e++) {
+            content.push(
+                <li key={e}>
+                    <div
+                        className={
+                            "cursor-pointer " + (page === e ? "current-page" : undefined)
+                        }
+                        onClick={() => {
+                            this.handlePagination(e);
+                        }}
+                    >
+                        {e}
+                    </div>
+                </li>
+            );
+        }
+        return content;
+    }
+
     render() {
+        let { totalFinishedJobs, currentFinishedPage } = this.props.EmployerReducer;
+        let totalPage = Math.ceil(totalFinishedJobs / 4);
+
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
@@ -89,7 +156,7 @@ class JobsDoneComponent extends Component {
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
                             <div className="headline">
-                                <h3><i className="icon-material-outline-business-center" /> Danh sách công việc</h3>
+                                <h3><i className="icon-feather-list" /> Danh sách công việc</h3>
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
@@ -97,6 +164,30 @@ class JobsDoneComponent extends Component {
                                 </ul>
                             </div>
                         </div>
+                        {(
+                            totalFinishedJobs === 0
+                                ?
+                                ''
+                                :
+                                <div className="pagination-container margin-top-30 margin-bottom-60">
+                                    <nav className="pagination">
+                                        <ul>
+                                            <li className={"pagination-arrow " + ((currentFinishedPage === 1 || totalPage - currentFinishedPage < 3) && "d-none")}>
+                                                <div className="cursor-pointer" onClick={() => { this.handlePagination(currentFinishedPage - 1); }}>
+                                                    <i className="icon-material-outline-keyboard-arrow-left" />
+                                                </div>
+                                            </li>
+                                            {this.renderPagination(currentFinishedPage, totalPage)}
+                                            <li className={"pagination-arrow " + (totalPage - currentFinishedPage < 3 && "d-none")}>
+                                                <div className="cursor-pointer" onClick={() => { this.handlePagination(currentFinishedPage + 1); }}>
+                                                    <i className="icon-material-outline-keyboard-arrow-right" />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+
+                        )}
                     </div>
                 </div>
                 {/* Row / End */}

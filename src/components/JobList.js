@@ -618,6 +618,7 @@ class JobListComponent extends Component {
                       </ul>
                     </nav>
                   </div>
+                
                 </div>
               </div>
               {/* Pagination / End */}
