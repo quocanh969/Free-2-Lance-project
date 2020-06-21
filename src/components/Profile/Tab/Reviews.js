@@ -17,16 +17,9 @@ class ReviewsComponent extends Component {
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline">
-                    <h3>Reviews</h3>
-                    {/* Breadcrumbs */}
-                    <nav id="breadcrumbs" className="dark">
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Dashboard</a></li>
-                            <li>Reviews</li>
-                        </ul>
-                    </nav>
+                    <h3>Trang phản hồi</h3>
                 </div>
+                <p>( Để có thể viết phản hồi về người khác khi đã kết thúc công việc, vui lòng vào các trang danh sách công việc tương ứng )</p>
                 {/* Row */}
                 <div className="row">
                     {/* Dashboard Box */}
@@ -34,19 +27,23 @@ class ReviewsComponent extends Component {
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
                             <div className="headline">
-                                <h3><i className="icon-material-outline-business" /> Rate Employers</h3>
+                                <h3><i className="icon-material-outline-business" /> Phản hồi từ người thuê</h3>
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
                                     <li>
-                                        <div className="boxed-list-item">
+                                        <div>
                                             {/* Content */}
-                                            <div className="item-content">
-                                                <h4>Simple Chrome Extension</h4>
-                                                <span className="company-not-rated margin-bottom-5">Not Rated</span>
+                                            <div>
+                                                <h4 className='font-weight-bold'>Hanma Baki</h4>
+                                                <span><span className='font-weight-bold'>Email: </span>hanmabaki@gmail.com</span>
                                             </div>
+                                            <div><span className='font-weight-bold'>Công việc: </span>Đấm nhau</div>
+                                            <div className='font-weight-bold'>Mô tả công việc:</div>
+                                            <div style={{width: '50vh'}} className='text-truncate'>All is part of a hobby & passion to share music with the community.
+All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time</div>
                                         </div>
-                                        <a href="#small-dialog-2" className="popup-with-zoom-anim button ripple-effect margin-top-5 margin-bottom-10"><i className="icon-material-outline-thumb-up" /> Leave a Review</a>
+                                        <div className="btn bg-293FE4 text-white margin-top-20 margin-bottom-10"><i className="icon-material-outline-rate-review" /> Xem chi tiết phản hồi</div>
                                     </li>
                                     <li>
                                         <div className="boxed-list-item">
@@ -113,7 +110,7 @@ class ReviewsComponent extends Component {
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
                             <div className="headline">
-                                <h3><i className="icon-material-outline-face" /> Rate Freelancers</h3>
+                                <h3><i className="icon-material-outline-face" /> Phản hồi từ người nhân việc</h3>
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">

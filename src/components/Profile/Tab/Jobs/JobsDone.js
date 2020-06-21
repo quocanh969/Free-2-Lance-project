@@ -149,6 +149,7 @@ class JobsDoneComponent extends Component {
                 <div className="dashboard-headline">
                     <h3>Các công việc đã hoàn thành</h3>                    
                 </div>
+                <p>( Để xem phản hồi của người khác về mình, vui lòng vào trang <NavLink to='/dashboard/tab=3'>Phản hồi</NavLink> )</p>
                 {/* Row */}
                 <div className="row">
                     {/* Dashboard Box */}
