@@ -80,6 +80,15 @@ function getJobsForEmployer(page, take, isASC, status) {
   });
 }
 
+function getJobsForApplicant(page, take, isASC, status) {
+  return axios.post("/jobs/getJobsByApplicantId", {
+    page,
+    take,
+    isASC,
+    status,
+  });
+}
+
 function getTags() {
   return axios.get("/getAllTags");
 }
@@ -118,6 +127,7 @@ export {
   getAllTopics,
   getJobsList,
   getJobsForEmployer,
+  getJobsForApplicant,
   getJobsDetail,
   doApplyJob,
   getTags,

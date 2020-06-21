@@ -157,7 +157,7 @@ class ProfileComponent extends Component {
                                                     </li>
                                                     <li className={(this.state.tab === 3 ? 'active' : '')}>
                                                         <NavLink className='cursor-pointer' to='/dashboard/tab=3'>
-                                                            <i className="icon-material-outline-rate-review" /> Nhận xét
+                                                            <i className="icon-material-outline-rate-review" /> Phản hồi
                                                 </NavLink>
                                                     </li>
                                                 </ul>

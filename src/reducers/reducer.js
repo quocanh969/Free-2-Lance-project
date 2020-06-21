@@ -11,7 +11,8 @@ import JobDetailReducer from "./JobReducers/JobDetail.Reducer";
 import AddJobReducer from "./JobReducers/AddJobForm.Reducer";
 
 import SettingReducer from './Dashboard/Setting.Reducer';
-import EmployerReducer from './Dashboard/Employer.Reducer'
+import EmployerReducer from './Dashboard/Employer.Reducer';
+import ApplicantReducer from './Dashboard/Applicant.Reducer';
 
 import ContactUsReducer from './Contact.Reducer';
 import HomeReducer from './Home.reducer';
@@ -46,6 +47,7 @@ const reducer = combineReducers({
   AddJobReducer,// Add job reducer
   SettingReducer, // Setting reducer
   EmployerReducer, // Employer reducer
+  ApplicantReducer, // Applicant reducer
   
   // Map reducer
   ReadLocationReducer,

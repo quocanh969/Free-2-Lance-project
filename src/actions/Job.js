@@ -1,6 +1,7 @@
 import {
   getJobsList,
   getJobsForEmployer,
+  getJobsForApplicant,
   getJobsDetail,
   getSimilarJobs,
   doApplyJob,
@@ -109,6 +110,87 @@ export const loadFinishedJobsForEmployer = (page, take, isASC) => {
   function success(jobList, page, total) {
     return {
       type: "EMPLOYER_FINISHED_JOBS_UPDATE",
+      jobList,
+      total,
+      page,
+    };
+  }
+};
+
+export const loadApplyingJobsForApplicant = (page, take, isASC) => {
+  return (dispatch) => {
+    getJobsForApplicant(page, take, isASC, 1)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.jobList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(jobList, page, total) {
+    return {
+      type: "APPLICANT_APPLYING_TASK_UPDATE",
+      jobList,
+      total,
+      page,
+    };
+  }
+};
+
+export const loadProcessingJobsForApplicant = (page, take, isASC) => {
+  return (dispatch) => {
+    getJobsForApplicant(page, take, isASC, 2)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.jobList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(jobList, page, total) {
+    return {
+      type: "APPLICANT_PROCESSING_TASK_UPDATE",
+      jobList,
+      total,
+      page,
+    };
+  }
+};
+
+export const loadFinishedJobsForApplicant = (page, take, isASC) => {
+  return (dispatch) => {
+    getJobsForApplicant(page, take, isASC, 3)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.jobList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(jobList, page, total) {
+    return {
+      type: "APPLICANT_FINISHED_TASK_UPDATE",
       jobList,
       total,
       page,

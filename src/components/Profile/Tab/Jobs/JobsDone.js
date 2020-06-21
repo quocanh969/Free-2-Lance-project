@@ -85,7 +85,7 @@ class JobsDoneComponent extends Component {
                         {/* Buttons */}
                         <div>
                             <span className='btn mx-2 py-2 px-4 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Danh sách người tham gia: {e.candidates}</span>
-                            <span className='btn mx-2 py-2 px-4 bg-warning rounded'><i className="icon-material-outline-rate-review" /> Xem phản hồi</span>
+                            <span className='btn mx-2 py-2 px-4 bg-warning rounded'><i className="icon-material-outline-speaker-notes" /> Xem phản hồi</span>
                             <span className='btn mx-2 py-2 px-4 bg-silver rounded' onClick={() => { history.push(`/job-detail/${e.id_job}`) }}><i className="icon-line-awesome-clone" /> Xem chi tiết công việc</span>
                         </div>
                     </li>
@@ -158,7 +158,7 @@ class JobsDoneComponent extends Component {
                             <div className="headline">
                                 <h3><i className="icon-feather-list" /> Danh sách công việc</h3>
                             </div>
-                            <div className="content">
+                            <div>
                                 <ul className="dashboard-box-list">
                                     {this.renderJobList()}
                                 </ul>

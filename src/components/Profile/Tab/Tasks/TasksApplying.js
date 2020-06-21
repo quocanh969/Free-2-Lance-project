@@ -2,22 +2,154 @@ import React, { Component } from 'react'
 
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { loadApplyingJobsForApplicant } from '../../../../actions/Job';
+import { getImageSrc, prettierDate, prettierNumber } from '../../../../ultis/SHelper/helperFunctions';
+
+import UserAvatarPlaceholder from "../../../../assets/images/user-avatar-placeholder.png";
+import { history } from '../../../../ultis/history/history';
 
 class TasksApplyingComponent extends Component {
     constructor(props) {
         super(props);
     }
 
+    componentWillMount() {
+        this.loadJobList(1);
+    }   
+
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
-    
+
+    handlePagination(pageNum) {
+        if (pageNum !== this.props.ApplicantReducer.currentApplyingPage) {
+            this.loadJobListFunc(pageNum);
+        }
+    }
+
+    loadJobList(page) {
+        let { onLoadApplyingTask } = this.props;
+        onLoadApplyingTask(page, 4, 0);
+    }
+
+    renderJobList() {
+        let { applyingTasksList } = this.props.ApplicantReducer;
+        let content = [];
+
+        if (applyingTasksList.length > 0) {
+            applyingTasksList.forEach((e, index) => {
+                let avatar = getImageSrc(e.avatarImg, UserAvatarPlaceholder);
+                content.push(
+                    <li key={index}>
+                        {/* Overview */}
+                        <div className="freelancer-overview manage-candidates">
+                            <div className="row">
+                                {/* Avatar */}
+                                <div className="col-2">                                    
+                                    <img src={avatar} alt=""/>
+                                </div>
+                                {/* Name */}
+                                <div className="col-10 text-left">
+                                    <h3>{e.title}</h3>
+                                    <h4 className='mt-3'><span className='font-weight-bold'>Người đăng: </span>{e.fullname}</h4>
+                                    <div className='d-flex justify-content-between'>
+                                        <span className="freelancer-detail-item"><span className='font-weight-bold'><i className="icon-feather-mail" />&nbsp;Email: </span> {e.email}</span>                                    
+                                        <span className="freelancer-detail-item"><span className='font-weight-bold'><i className="icon-feather-phone" />&nbsp;Liên lạc: </span> {e.dial}</span>                                    
+                                    </div>
+                                    <h4 className='mt-3 row'>
+                                        <div className='col'><span className='font-weight-bold'>Loại công việc: </span>{(!e.job_type ? 'Công việc thời vụ' : 'Công việc theo sản phẩm')}</div>
+                                        {(e.dealable?'':<div className='col'><span className='font-weight-bold'>Mức lương: </span>{prettierNumber(e.salary)} VNĐ</div>)}
+                                    </h4>
+                                    <div style={{width:'100vh'}} className='text-truncate'>
+                                        <span className='font-weight-bold'>Mô tả: </span>
+                                        <span>{e.description}</span>
+                                    </div>
+                                    <div className='text-primary font-weight-bold'>{(e.dealable ? 'Công việc cho phép đấu giá' : 'Công việc được xét lương cứng')}</div>                          
+                                    <br></br>
+                                    <div className="row">
+                                        <div className='col'><span className='font-weight-bold'><i className="icon-material-outline-location-city" />Khu vực: </span>{e.province}</div>
+                                        <div className='col'><span className='font-weight-bold'><i className="icon-material-outline-add-location" />Quận: </span>{e.district}</div>
+                                    </div>
+                                    <hr></hr>                                        
+                                    {(
+                                        !e.job_type
+                                        ?
+                                        <div className='row'>
+                                            <div className='col'><span className='font-weight-bold'><i className="icon-line-awesome-calendar-o" />Ngày bắt đầu công việc: </span>{prettierDate(e.start_date)}</div>
+                                            <div className='col'><span className='font-weight-bold'><i className="icon-material-outline-date-range" />Ngày kết thúc công việc: </span>{prettierDate(e.end_date)}</div>
+                                        </div>
+                                        :
+                                        <div className='row'>
+                                            <div className='col'><span className='font-weight-bold'><i className="icon-material-outline-date-range" />Ngày kết thúc công việc: </span>{prettierDate(e.deadline)}</div>
+                                        </div>
+                                    )}    
+                                    <div className='mt-3'>
+                                        <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span>
+                                        <span className='btn mx-2 p-2 bg-silver rounded' onClick={() => {history.push(`/job-detail/${e.id_job}`) }}><i className="icon-line-awesome-clone" /> Xem chi tiết công việc</span>
+                                        <span className='btn mx-2 p-2 bg-danger text-white rounded'><i className="icon-line-awesome-hand-stop-o" /> Rút ứng tuyển</span>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                );
+            })
+        }
+        else {
+            content.push(
+                <div className='font-weight-bold p-5' key={0}>
+                    Bạn hiện không ứng tuyển công việc nào
+                </div>
+            )
+        }
+
+        return content;
+    }
+
+    renderPagination(page, totalPage) {
+        let content = [];
+        let start = 1,
+            end = 4;
+        if (totalPage - 4 < page) {
+            if (totalPage - 4 < 0) {
+                start = 1;
+            } else {
+                start = totalPage - 4;
+            }
+            end = totalPage;
+        } else {
+            start = page;
+            end = page + 3;
+        }
+
+        for (let e = start; e <= end; e++) {
+            content.push(
+                <li key={e}>
+                    <div
+                        className={
+                            "cursor-pointer " + (page === e ? "current-page" : undefined)
+                        }
+                        onClick={() => {
+                            this.handlePagination(e);
+                        }}
+                    >
+                        {e}
+                    </div>
+                </li>
+            );
+        }
+        return content;
+    }
+
     render() {
+        let { totalApplyingTasks, currentApplyingPage } = this.props.ApplicantReducer;
+        let totalPage = Math.ceil(totalApplyingTasks / 4);
+
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline">
-                    <h3>Các công việc bạn đang tham gia</h3>
+                    <h3>Các công việc bạn đang ứng tuyển</h3>
                 </div>
                 {/* Row */}
                 <div className="row">
@@ -26,111 +158,38 @@ class TasksApplyingComponent extends Component {
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
                             <div className="headline">
-                                <h3><i className="icon-material-outline-supervisor-account" />Danh sách các công việc bạn đang tham gia</h3>
+                                <h3><i className="icon-feather-list" /> Danh sách các công việc</h3>
                             </div>
-                            <div className="content">
+                            <div>
                                 <ul className="dashboard-box-list">
-                                    <li>
-                                        {/* Overview */}
-                                        <div className="freelancer-overview manage-candidates">
-                                            <div className="freelancer-overview-inner">
-                                                {/* Avatar */}
-                                                <div className="freelancer-avatar">
-                                                    <div className="verified-badge" />
-                                                    <a href="#"><img src="images/user-avatar-big-02.jpg" alt="" /></a>
-                                                </div>
-                                                {/* Name */}
-                                                <div className="freelancer-name">
-                                                    <h4><a href="#">David Peterson <img className="flag" src="images/flags/de.svg" alt="" title="Germany" data-tippy-placement="top" /></a></h4>
-                                                    {/* Details */}
-                                                    <span className="freelancer-detail-item"><a href="#"><i className="icon-feather-mail" /> david@example.com</a></span>
-                                                    {/* Rating */}
-                                                    <div className="freelancer-rating">
-                                                        <div className="star-rating" data-rating={5.0} />
-                                                    </div>
-                                                    {/* Bid Details */}
-                                                    <ul className="dashboard-task-info bid-info">
-                                                        <li><strong>$3,200</strong><span>Fixed Price</span></li>
-                                                        <li><strong>14 Days</strong><span>Delivery Time</span></li>
-                                                    </ul>
-                                                    {/* Buttons */}
-                                                    <div className="buttons-to-right always-visible margin-top-25 margin-bottom-0">                                                    
-                                                        {/* <span className='btn mx-2 py-2 px-4 bg-silver rounded' onClick={() => { history.push(`/job-detail/${e.id_job}`) }}><i className="icon-line-awesome-clone" /> Details</span>                                                    
-                                                        <span className='btn mx-2 py-2 px-4 bg-silver rounded'><i className="icon-feather-trash-2" /> Remove</span> */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        {/* Overview */}
-                                        <div className="freelancer-overview manage-candidates">
-                                            <div className="freelancer-overview-inner">
-                                                {/* Avatar */}
-                                                <div className="freelancer-avatar">
-                                                    <a href="#"><img src="images/user-avatar-placeholder.png" alt="" /></a>
-                                                </div>
-                                                {/* Name */}
-                                                <div className="freelancer-name">
-                                                    <h4><a href="#">Oldrich Ćuk <img className="flag" src="images/flags/sk.svg" alt="" title="Slovakia" data-tippy-placement="top" /></a></h4>
-                                                    {/* Details */}
-                                                    <span className="freelancer-detail-item"><a href="#"><i className="icon-feather-mail" /> oldrich@example.com</a></span>
-                                                    <span className="freelancer-detail-item"><i className="icon-feather-phone" /> (+421) 123-456-789</span>
-                                                    {/* Rating */}
-                                                    <br />
-                                                    <span className="company-not-rated">Minimum of 3 votes required</span>
-                                                    {/* Bid Details */}
-                                                    <ul className="dashboard-task-info bid-info">
-                                                        <li><strong>$3,000</strong><span>Fixed Price</span></li>
-                                                        <li><strong>14 Days</strong><span>Delivery Time</span></li>
-                                                    </ul>
-                                                    {/* Buttons */}
-                                                    <div className="buttons-to-right always-visible margin-top-25 margin-bottom-0">
-                                                        <a href="#small-dialog-1" className="popup-with-zoom-anim button ripple-effect"><i className="icon-material-outline-check" /> Accept Offer</a>
-                                                        <a href="#small-dialog-2" className="popup-with-zoom-anim button dark ripple-effect"><i className="icon-feather-mail" /> Send Message</a>
-                                                        <a href="#" className="button gray ripple-effect ico" title="Remove Bid" data-tippy-placement="top"><i className="icon-feather-trash-2" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        {/* Overview */}
-                                        <div className="freelancer-overview manage-candidates">
-                                            <div className="freelancer-overview-inner">
-                                                {/* Avatar */}
-                                                <div className="freelancer-avatar">
-                                                    <div className="verified-badge" />
-                                                    <a href="#"><img src="images/user-avatar-placeholder.png" alt="" /></a>
-                                                </div>
-                                                {/* Name */}
-                                                <div className="freelancer-name">
-                                                    <h4><a href="#">Kuba Adamczyk <img className="flag" src="images/flags/pl.svg" alt="" title="Poland" data-tippy-placement="top" /></a></h4>
-                                                    {/* Details */}
-                                                    <span className="freelancer-detail-item"><a href="#"><i className="icon-feather-mail" /> kuba@example.com</a></span>
-                                                    <span className="freelancer-detail-item"><i className="icon-feather-phone" /> (+48) 123-456-789</span>
-                                                    {/* Rating */}
-                                                    <div className="freelancer-rating">
-                                                        <div className="star-rating" data-rating={5.0} />
-                                                    </div>
-                                                    {/* Bid Details */}
-                                                    <ul className="dashboard-task-info bid-info">
-                                                        <li><strong>$2,700</strong><span>Fixed Price</span></li>
-                                                        <li><strong>30 Days</strong><span>Delivery Time</span></li>
-                                                    </ul>
-                                                    {/* Buttons */}
-                                                    <div className="buttons-to-right always-visible margin-top-25 margin-bottom-0">
-                                                        <a href="#small-dialog-1" className="popup-with-zoom-anim button ripple-effect"><i className="icon-material-outline-check" /> Accept Offer</a>
-                                                        <a href="#small-dialog-2" className="popup-with-zoom-anim button dark ripple-effect"><i className="icon-feather-mail" /> Send Message</a>
-                                                        <a href="#" className="button gray ripple-effect ico" title="Remove Bid" data-tippy-placement="top"><i className="icon-feather-trash-2" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    {this.renderJobList()}
                                 </ul>
-                            </div>
+                            </div>                            
                         </div>
+                        {(
+                                totalApplyingTasks === 0
+                                    ?
+                                    ''
+                                    :
+                                    <div className="pagination-container margin-top-30 margin-bottom-60">
+                                        <nav className="pagination">
+                                            <ul>
+                                                <li className={"pagination-arrow " + ((currentApplyingPage === 1 || totalPage - currentApplyingPage < 3) && "d-none")}>
+                                                    <div className="cursor-pointer" onClick={() => { this.handlePagination(currentApplyingPage - 1); }}>
+                                                        <i className="icon-material-outline-keyboard-arrow-left" />
+                                                    </div>
+                                                </li>
+                                                {this.renderPagination(currentApplyingPage, totalPage)}
+                                                <li className={"pagination-arrow " + (totalPage - currentApplyingPage < 3 && "d-none")}>
+                                                    <div className="cursor-pointer" onClick={() => { this.handlePagination(currentApplyingPage + 1); }}>
+                                                        <i className="icon-material-outline-keyboard-arrow-right" />
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+
+                            )}
                     </div>
                 </div>
                 {/* Row / End */}
@@ -148,7 +207,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onLoadApplyingTask: (page, take, isASC) => {
+            dispatch(loadApplyingJobsForApplicant(page, take, isASC));
+        }
     }
 }
 
