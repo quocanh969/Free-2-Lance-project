@@ -6,7 +6,7 @@ import GoogleMapAutocomplete from '../../../Help/GoogleMapAutocomplete';
 import MultipleImageUploadComponent from '../../../Help/UploadImages';
 import { submitAddJobForm, loadResources } from '../../../../actions/PostJob';
 import { S_Selector, S_Tag_Autocomplete } from '../../../../ultis/SHelper/S_Help_Input';
-import Swal from 'sweetalert2';
+import { history } from '../../../../ultis/history/history';
 
 class PostJobComponent extends Component {
     constructor(props) {
@@ -51,7 +51,8 @@ class PostJobComponent extends Component {
             document.getElementsByClassName('MuiPaper-root')[0].setAttribute('style', 'border-color: #DC3545 !important');
         }
         if (this.props.AddJobReducer.status === 1 && this.props.AddJobReducer.sending === false) {
-            
+            // window.location.replace("./dashboard/2")
+            history.push('./dashboard/tab=4');
         }
     }
 

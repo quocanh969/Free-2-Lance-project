@@ -12,7 +12,7 @@ class JobsApplyingComponent extends Component {
     }
 
     componentWillMount() {
-        this.loadJobList(1);
+        this.loadJobListFunc(1);
     }
 
     componentDidMount() {
@@ -25,7 +25,7 @@ class JobsApplyingComponent extends Component {
         }
     }
 
-    loadJobList(page) {
+    loadJobListFunc(page) {
         let { onLoadApplyingJob } = this.props;
         onLoadApplyingJob(page, 4, 0);
     }

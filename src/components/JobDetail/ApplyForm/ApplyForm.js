@@ -59,6 +59,7 @@ class ApplyFormConponent extends Component {
           ? this.state.proposed_price
           : jobDetail.salary;
         let { doApplyJob } = this.props;
+        fileInBase64 = fileInBase64.split(',')[1];
         doApplyJob(
           user.id_user,
           jobDetail.id_job,
