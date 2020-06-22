@@ -50,10 +50,10 @@ class PostJobComponent extends Component {
             console.log("FLAG");
             document.getElementsByClassName('MuiPaper-root')[0].setAttribute('style', 'border-color: #DC3545 !important');
         }
-        if (this.props.AddJobReducer.status === 1 && this.props.AddJobReducer.sending === false) {
-            // window.location.replace("./dashboard/2")
-            history.push('./dashboard/tab=4');
-        }
+        // if (this.props.AddJobReducer.status === 1 && this.props.AddJobReducer.sending === false) {
+        //     // window.location.replace("./dashboard/2")
+        //     history.push('./dashboard/tab=4');
+        // }
     }
 
     onHandleTextChange(e) {
