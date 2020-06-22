@@ -1,5 +1,5 @@
 import { postJob, getAllTopics } from '../services/job.services';
-
+import Swal from 'sweetalert2';
 export const submitAddJobForm = (fields) => {
   return (dispatch) => {
     dispatch(request());
@@ -9,9 +9,28 @@ export const submitAddJobForm = (fields) => {
         if (res.data.code === '-204') {
           // thất bại
           dispatch(failure(res.data.message));
+          Swal.fire({
+            title: "Đăng việc thất bại",
+            text: "Lỗi hệ thống",
+            icon: "error",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "OK!",
+          })
         } else {
           // thành công
           dispatch(success(res.data.message));
+          Swal.fire({
+            title: "Đăng tuyển thành công",
+            text: "Ấn OK để chuyển qua xem công việc đã đăng",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          }).then((result) => {
+            if (result.value) {
+              localStorage.clear();
+              window.location.href = "./dashboard/tab=4";
+            }
+          });
         }
       })
       .catch((err) => {
