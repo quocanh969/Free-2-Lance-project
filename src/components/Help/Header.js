@@ -322,6 +322,25 @@ class HeaderComponent extends Component {
           >
             <NavLink className="dropdown-item" to="/dashboard/tab=1">
               <i className="icon-material-outline-dashboard"></i>
+              &nbsp;&nbsp; Quản lý thông tin chung
+            </NavLink>
+            <NavLink className="dropdown-item" to="/dashboard/tab=4">
+              <i className="icon-material-outline-business-center"></i>
+              &nbsp;&nbsp; Quản lý đăng việc
+            </NavLink>
+            {(
+              user.isBusinessUser
+              ?
+              ''
+              :
+              <NavLink className="dropdown-item" to="/dashboard/tab=8">
+                <i className="icon-line-awesome-tasks"></i>
+                &nbsp;&nbsp; Quản lý việc làm
+              </NavLink>
+            )}
+            
+            <NavLink className="dropdown-item" to="/dashboard/tab=11">
+              <i className="icon-material-outline-account-circle"></i>
               &nbsp;&nbsp; Tài khoản của bạn
             </NavLink>
             <div className="dropdown-divider" />
