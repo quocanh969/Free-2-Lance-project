@@ -350,36 +350,38 @@ class HomeComponent extends Component {
     let content = [],
       count = 0;
     let { topUsers } = this.props.HomeReducer;
+    if (topUsers.length > 0) {
+      for (let e of topUsers) {
+        let userAvatar = getImageSrc(e.avatarImg, UserAvatarPlaceholder);
+        content.push(
+          <div
+            className={"item carousel-item " + (count === 0 && "active")}
+            key={count}
+          >
+            <div className="img-box">
+              <img src={userAvatar} alt="" />
+            </div>
+            <br></br>
 
-    for (let e of topUsers) {
-      let userAvatar = getImageSrc(e.avatarImg, UserAvatarPlaceholder);
-      content.push(
-        <div
-          className={"item carousel-item " + (count === 0 && "active")}
-          key={count}
-        >
-          <div className="img-box">
-            <img src={userAvatar} alt="" />
+            <p className="overview">
+              <b>{e.fullname}</b>
+            </p>
+            <p>
+              Rating: {e.rating}{" "}
+              <i className="icon-material-outline-star text-warning"></i>
+            </p>
+            <p>
+              <i className="icon-feather-mail" /> {e.email}
+            </p>
+            <p>
+              <i className="icon-feather-phone" /> {e.dial}
+            </p>
           </div>
-          <br></br>
-
-          <p className="overview">
-            <b>{e.fullname}</b>
-          </p>
-          <p>
-            Rating: {e.rating}{" "}
-            <i className="icon-material-outline-star text-warning"></i>
-          </p>
-          <p>
-            <i className="icon-feather-mail" /> {e.email}
-          </p>
-          <p>
-            <i className="icon-feather-phone" /> {e.dial}
-          </p>
-        </div>
-      );
-      count++;
+        );
+        count++;
+      }
     }
+
     return content;
   }
 

@@ -13,17 +13,17 @@ const HomeReducer = (state = initState, action) => {
         case 'LOAD_PRODUCTION_JOBS_LIST':
             return {
                 ...state,
-                productionJobList: action.productionJobList,
+                productionJobList: action.productionJobList || [],
             }
         case 'LOAD_TEMPORAL_JOBS_LIST':
             return {
                 ...state,
-                temporalJoblist: action.temporalJoblist,
+                temporalJoblist: action.temporalJoblist || [],
             }
         case 'LOAD_TOP_USERS':
             return {
                 ...state,
-                topUsers: action.topUsers,
+                topUsers: action.topUsers || [],
             }
         case 'LOAD_STATISTIC':
             return {
