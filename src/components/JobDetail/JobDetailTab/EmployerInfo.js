@@ -14,6 +14,42 @@ class EmployerInfoComponent extends Component {
     onLoadEmployer(jobDetail.employer);
   }
 
+  renderCompanyInfo() {
+    let { employer } = this.props.JobDetailReducer;
+    if (employer && employer.company) {
+      return (
+        <div>
+          {/* Thông tin công ty */}
+          <div className="row mb-3">
+            <div className="col-5 font-weight-bold">Vai trò:</div>
+            <div className="col-7">
+              {employer.company ? employer.company.position : ""}
+            </div>
+          </div>
+          <hr></hr>
+          <div className="row mb-3">
+            <div className="col-5 font-weight-bold">Tên công ty:</div>
+            <div className="col-7">
+              {employer.company ? employer.company.company_name : ""}
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col-5 font-weight-bold">Địa chỉ:</div>
+            <div className="col-7">
+              {employer.company ? employer.company.company_address : ""}
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col-5 font-weight-bold">Email công ty:</div>
+            <div className="col-7">
+              {employer.company ? employer.company.company_email : ""}
+            </div>
+          </div>
+        </div>
+      );
+    } else return [];
+  }
+
   render() {
     let { employer } = this.props.JobDetailReducer;
     return (
@@ -41,32 +77,7 @@ class EmployerInfoComponent extends Component {
             {employer.personal ? employer.personal.dial : ""}
           </div>
         </div>
-        {/* Thông tin công ty */}
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Vai trò:</div>
-          <div className="col-7">
-            {employer.company ? employer.company.position : ""}
-          </div>
-        </div>
-        <hr></hr>
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Tên công ty:</div>
-          <div className="col-7">
-            {employer.company ? employer.company.company_name : ""}
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Địa chỉ:</div>
-          <div className="col-7">
-            {employer.company ? employer.company.company_address : ""}
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Email công ty:</div>
-          <div className="col-7">
-            {employer.company ? employer.company.company_email : ""}
-          </div>
-        </div>
+        {this.renderCompanyInfo()}
       </div>
     );
   }
