@@ -218,7 +218,8 @@ class JobDetailComponent extends Component {
 
   renderApplyButton() {
     let { user } = this.props.HeaderReducer;
-    if (user && !user.isBusinessUser) {
+    let { jobDetail } = this.props.JobDetailReducer;
+    if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
         <button
           className="apply-now-button popup-with-zoom-anim w-100"
@@ -233,7 +234,8 @@ class JobDetailComponent extends Component {
 
   renderApplyFormPopup() {
     let { user } = this.props.HeaderReducer;
-    if (user && !user.isBusinessUser) {
+    let { jobDetail } = this.props.JobDetailReducer;
+    if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
         <div id="myModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
@@ -250,7 +252,7 @@ class JobDetailComponent extends Component {
     return (
       <div>
         {/* Thông tin cơ bản */}
-        <div id='job-detail-background' className="single-page-header">
+        <div id="job-detail-background" className="single-page-header">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -262,11 +264,14 @@ class JobDetailComponent extends Component {
                       </a>
                     </div>
                     <div className="header-details text-white">
-                      <h3 className='text-white'>{jobDetail.title}</h3>
-                      <h5 className='text-white'>{jobDetail.topic}</h5>
+                      <h3 className="text-white">{jobDetail.title}</h3>
+                      <h5 className="text-white">{jobDetail.topic}</h5>
                       <ul>
                         <li>
-                          <span href="single-company-profile.html" className='text-white'>
+                          <span
+                            href="single-company-profile.html"
+                            className="text-white"
+                          >
                             {jobDetail.name_employer}
                           </span>
                         </li>
@@ -299,7 +304,6 @@ class JobDetailComponent extends Component {
               </div>
             </div>
           </div>
-        
         </div>
 
         {/* Page Content */}
