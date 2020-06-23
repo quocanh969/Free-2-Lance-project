@@ -16,21 +16,22 @@ class ApplyFormConponent extends Component {
 
   componentDidMount() {
     document.getElementById("upload-cv").onchange = function () {
-      console.log(this.files[0]);
-      if (this.files[0].size > maxSize) {
-        Swal.fire({
-          title: "CV bạn chọn quá lớn",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        this.value = "";
-      } else {
-        Swal.fire({
-          title: "Chọn CV thành công",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1000,
-        });
+      if (this.files[0]) {
+        if (this.files[0].size > maxSize) {
+          Swal.fire({
+            title: "CV bạn chọn quá lớn",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          this.value = "";
+        } else {
+          Swal.fire({
+            title: "Chọn CV thành công",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
       }
     };
   }
@@ -102,15 +103,15 @@ class ApplyFormConponent extends Component {
               required
             />
           ) : (
-            <input
-              type="text"
-              className="input-text with-border"
-              name="proposed_price"
-              value={this.toCurrency(this.state.proposed_price)}
-              onFocus={this.toggleEditing.bind(this)}
-              readOnly
-            />
-          )}
+              <input
+                type="text"
+                className="input-text with-border"
+                name="proposed_price"
+                value={this.toCurrency(this.state.proposed_price)}
+                onFocus={this.toggleEditing.bind(this)}
+                readOnly
+              />
+            )}
         </div>
       );
     } else return [];
