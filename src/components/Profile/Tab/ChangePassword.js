@@ -68,11 +68,9 @@ class ChangePasswordComponent extends Component {
 
   spinnerLoadingNotification() {
     let content = [];
-    let { sending, status, message } = this.props.ChangePWReducer;
+    let { sending } = this.props.ChangePWReducer;
 
-    if (!sending && status === 0) {
-      // do nothing
-    } else if (sending && status === 0) {
+    if (sending) {
       // sending ...
       content.push(
         <div className="loading" key={1}>
@@ -81,12 +79,8 @@ class ChangePasswordComponent extends Component {
           </div>
         </div>
       );
-    } else if (!sending && status === -1) {
-      // failure ...
-      // do nothing
     } else {
-      /// success ...
-      // do nothing
+      content = [];
     }
     return content;
   }
@@ -101,7 +95,12 @@ class ChangePasswordComponent extends Component {
 
         {/* Row */}
         <div className="row">
-          <form className="col-xl-12" method="post" id="change-password-form" onSubmit={this.handleSubmit}>
+          <form
+            className="col-xl-12"
+            method="post"
+            id="change-password-form"
+            onSubmit={this.handleSubmit}
+          >
             {/* Đổi mật khẩu */}
             <div id="test1" className="dashboard-box">
               {/* Headline */}
@@ -116,19 +115,37 @@ class ChangePasswordComponent extends Component {
                   <div className="col-4">
                     <div className="submit-field">
                       <h5>Mật khẩu hiện tại</h5>
-                      <input type="password" id="old-change-password" ref='oldPW' className="with-border" required/>
+                      <input
+                        type="password"
+                        id="old-change-password"
+                        ref="oldPW"
+                        className="with-border"
+                        required
+                      />
                     </div>
                   </div>
                   <div className="col-4">
                     <div className="submit-field">
                       <h5>Mật khẩu mới</h5>
-                      <input type="password" id="new-change-password" ref='newPW' className="with-border" required/>
+                      <input
+                        type="password"
+                        id="new-change-password"
+                        ref="newPW"
+                        className="with-border"
+                        required
+                      />
                     </div>
                   </div>
                   <div className="col-4">
                     <div className="submit-field">
                       <h5>Nhập lại mật khẩu mới</h5>
-                      <input type="password" id="repeat-change-password" ref='confirmNewPW' className="with-border" required/>
+                      <input
+                        type="password"
+                        id="repeat-change-password"
+                        ref="confirmNewPW"
+                        className="with-border"
+                        required
+                      />
                     </div>
                   </div>
                   {/* <div className="col-xl-12">
@@ -144,7 +161,11 @@ class ChangePasswordComponent extends Component {
           {this.spinnerLoadingNotification()}
           {/* Button */}
           <div className="col-xl-12">
-            <button form="change-password-form" type='submit' className="button button-sliding-icon ripple-effect big margin-top-30">
+            <button
+              form="change-password-form"
+              type="submit"
+              className="button button-sliding-icon ripple-effect big margin-top-30"
+            >
               Lưu thay đổi <i className="icon-feather-save" />
             </button>
           </div>
