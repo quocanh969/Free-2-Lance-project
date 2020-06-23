@@ -2,17 +2,103 @@ import React, { Component } from 'react'
 
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getImageSrc } from "../../../ultis/SHelper/helperFunctions";
+import UserAvatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
+import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
+const firebase = require("firebase");
 
 class MessagesComponent extends Component {
+
     constructor(props) {
         super(props);
-    }
+        this.state = {
+            selectedChat: null,
+            newChatFormVisible: false,
+            email: localStorage.getItem("email"),
+            selectedIndex: 0,
+            chatChoosen: null,
+            emailReciver: '',
+            chatText: '',
+            friends: [],
+            chats: []
+        };
+        this.messagesEndRef = React.createRef()
 
-    componentDidMount() {
-        window.scrollTo(0,0);
     }
-    
+    buildDocKey = () => [this.state.email, this.state.emailReciver].sort().join(':');
+    componentDidUpdate() {
+        // this.scrollToBottom()
+        const container = document.getElementById('message-content-inner');
+        console.log('container:', container);
+        if(container)
+          container.scrollTo(0, container.scrollHeight);
+    }
+    componentDidMount = async () => {
+        const { email } = this.state;
+        console.log('email:', email)
+        window.scrollTo(0, 0);
+        await firebase
+            .firestore()
+            .collection('chats')
+            .where('users', 'array-contains', email)
+            .onSnapshot(async res => {
+                const chats = res.docs.map(_doc => _doc.data());
+                console.log('chats:', chats)
+                await this.setState({
+                    email: email,
+                    chats: chats,
+                    chatChoosen: chats[0],
+                    emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
+                    friends: []
+                });
+            })
+        const container = document.getElementById('message-content-inner');
+        console.log('container:', container);
+
+        if (container)
+            container.scrollTo(0, container.scrollHeight);
+    }
+    submitMessage = async (e) => {
+        e.target.value = "";
+        const { emailReciver, email, chatText } = this.state;
+        let docKey = this.buildDocKey();
+        console.log('con chim:', chatText)
+        await firebase
+            .firestore()
+            .collection('chats')
+            .doc(docKey)
+            .update({
+                messages: firebase.firestore.FieldValue.arrayUnion({
+                    sender: email,
+                    message: chatText,
+                    timestamp: Date.now()
+                }),
+                receiverHasRead: false
+            });
+
+    }
+    selectChat(chat, index) {
+        this.setState({
+            selectedIndex: index,
+            chatChoosen: chat,
+            emailReciver: chat.img.filter(el => el.email !== this.state.email)[0].email
+        });
+    }
+    userTyping = (e) => {
+        // e.preventDefault(); 
+        let value = e.target.value;
+        console.log('value:', value);
+        e.key === "Enter" ? this.submitMessage(e) : this.setState({ chatText: e.target.value });
+    }
+    scrollToBottom = () => {
+        this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
     render() {
+        const { chats, email, selectedIndex, chatChoosen, chatText } = this.state;
+        console.log('chatChoosen:', chatChoosen);
+        console.log('chatText:', chatText)
+
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
@@ -30,7 +116,7 @@ class MessagesComponent extends Component {
                 <div className="messages-container margin-top-0">
                     <div className="messages-container-inner">
                         {/* Messages */}
-                        <div className="messages-inbox">
+                        <div className="messages-inbox" ref={this.messagesEndRef} >
                             <div className="messages-headline">
                                 <div className="input-with-icon">
                                     <input id="autocomplete-input" type="text" placeholder="Search" />
@@ -38,138 +124,76 @@ class MessagesComponent extends Component {
                                 </div>
                             </div>
                             <ul>
-                                <li>
-                                    <a href="#">
-                                        <div className="message-avatar"><i className="status-icon status-online" /><img src="images/user-avatar-small-03.jpg" alt="" /></div>
-                                        <div className="message-by">
-                                            <div className="message-by-headline">
-                                                <h5>David Peterson</h5>
-                                                <span>4 hours ago</span>
-                                            </div>
-                                            <p>Thanks for reaching out. I'm quite busy right now on many</p>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li className="active-message">
-                                    <a href="#">
-                                        <div className="message-avatar"><i className="status-icon status-offline" /><img src="images/user-avatar-small-02.jpg" alt="" /></div>
-                                        <div className="message-by">
-                                            <div className="message-by-headline">
-                                                <h5>Sindy Forest</h5>
-                                                <span>Yesterday</span>
-                                            </div>
-                                            <p>Hi Tom! Hate to break it to you but I'm actually on vacation</p>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div className="message-avatar"><i className="status-icon status-offline" /><img src="images/user-avatar-placeholder.png" alt="" /></div>
-                                        <div className="message-by">
-                                            <div className="message-by-headline">
-                                                <h5>Sebastiano Piccio</h5>
-                                                <span>2 days ago</span>
-                                            </div>
-                                            <p>Hello, I want to talk about my project if you don't mind!</p>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div className="message-avatar"><i className="status-icon status-online" /><img src="images/user-avatar-placeholder.png" alt="" /></div>
-                                        <div className="message-by">
-                                            <div className="message-by-headline">
-                                                <h5>Marcin Kowalski</h5>
-                                                <span>2 days ago</span>
-                                            </div>
-                                            <p>Yes, I received payment. Thanks for cooperation!</p>
-                                        </div>
-                                    </a>
-                                </li>
+                                {
+
+                                    chats.map((chat, index) => {
+                                        return (
+                                            <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>
+                                                <a href="#">
+                                                    <div className="message-avatar"><i className="status-icon status-online" /><img src={getImageSrc(chat.img.filter(el => el.email !== email)[0].img, UserAvatarPlaceholder)} alt="" /></div>
+                                                    <div className="message-by">
+                                                        <div className="message-by-headline">
+                                                            <h5>{chat.img.filter(el => el.email !== email)[0].fullname}</h5>
+                                                            {/* <span>4 hours ago</span> */}
+                                                        </div>
+                                                        <p>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        )
+                                    })
+                                }
+
+
                             </ul>
                         </div>
                         {/* Messages / End */}
                         {/* Message Content */}
-                        <div className="message-content">
-                            <div className="messages-headline">
-                                <h4>Sindy Forest</h4>
-                                <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a>
-                            </div>
-                            {/* Message Content Inner */}
-                            <div className="message-content-inner">
-                                {/* Time Sign */}
-                                <div className="message-time-sign">
-                                    <span>28 June, 2018</span>
+                        {chatChoosen &&
+                            <div className="message-content" ref={this.messagesEndRef}>
+                                <div className="messages-headline">
+                                    <h4>{chatChoosen.img.filter(el => el.email !== email)[0].fullname}</h4>
+                                    <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a>
                                 </div>
-                                <div className="message-bubble me">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-01.jpg" alt="" /></div>
-                                        <div className="message-text"><p>Thanks for choosing my offer. I will start working on your project tomorrow.</p></div>
+                                {/* Message Content Inner */}
+                                <div className="message-content-inner" id ="message-content-inner">
+                                    {/* Time Sign */}
+                                    <div className="message-time-sign">
+                                        <span>28 June, 2018</span>
                                     </div>
-                                    <div className="clearfix" />
+                                    {
+                                        chatChoosen.messages.map((el, index) => {
+                                            return (<div key={index} className={el.sender == email ? "message-bubble me" : "message-bubble "}>
+                                                <div className="message-bubble-inner">
+                                                    <div className="message-avatar"><img src={el.sender== email?getImageSrc(chatChoosen.img.filter(el => 
+                                                        el.email === email)[0].img, UserAvatarPlaceholder):getImageSrc(chatChoosen.img.filter(el => 
+                                                        el.email !== email)[0].img, UserAvatarPlaceholder)} alt="" /></div>
+                                                    <div className="message-text">
+                                                        <Tooltip title={moment.unix(el.timestamp).format("hh:mm a")}>
+                                                            <p>{el.message}</p>
+                                                        </Tooltip>
+                                                    </div>
+                                                </div>
+                                                <div className="clearfix" />
+
+                                            </div>)
+                                        })
+                                    }
+
+
                                 </div>
-                                <div className="message-bubble">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-02.jpg" alt="" /></div>
-                                        <div className="message-text"><p>Great. If you need any further clarification let me know. 👍</p></div>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                                <div className="message-bubble me">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-01.jpg" alt="" /></div>
-                                        <div className="message-text"><p>Ok, I will. 😉</p></div>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                                {/* Time Sign */}
-                                <div className="message-time-sign">
-                                    <span>Yesterday</span>
-                                </div>
-                                <div className="message-bubble me">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-01.jpg" alt="" /></div>
-                                        <div className="message-text"><p>Hi Sindy, I just wanted to let you know that project is finished and I'm waiting for your approval.</p></div>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                                <div className="message-bubble">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-02.jpg" alt="" /></div>
-                                        <div className="message-text"><p>Hi Tom! Hate to break it to you, but I'm actually on vacation 🌴 until Sunday so I can't check it now. 😎</p></div>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                                <div className="message-bubble me">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-01.jpg" alt="" /></div>
-                                        <div className="message-text"><p>Ok, no problem. But don't forget about last payment. 🙂</p></div>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                                <div className="message-bubble">
-                                    <div className="message-bubble-inner">
-                                        <div className="message-avatar"><img src="images/user-avatar-small-02.jpg" alt="" /></div>
-                                        <div className="message-text">
-                                            {/* Typing Indicator */}
-                                            <div className="typing-indicator">
-                                                <span />
-                                                <span />
-                                                <span />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="clearfix" />
+                                {/* Message Content Inner / End */}
+                                {/* Reply Area */}
+                                <div className="message-reply">
+                                    <input
+                                        placeholder='Type your message..'
+                                        onKeyUp={(e) => this.userTyping(e)}
+                                        cols={1} rows={1} placeholder="Your Message" data-autoresize defaultValue={""} />
+                                    <button className="button ripple-effect" onClick={this.submitMessage} >Send</button>
                                 </div>
                             </div>
-                            {/* Message Content Inner / End */}
-                            {/* Reply Area */}
-                            <div className="message-reply">
-                                <textarea cols={1} rows={1} placeholder="Your Message" data-autoresize defaultValue={""} />
-                                <button className="button ripple-effect">Send</button>
-                            </div>
-                        </div>
-                        {/* Message Content */}
+                        }
+
                     </div>
                 </div>
                 {/* Messages Container / End */}
