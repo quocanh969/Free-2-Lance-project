@@ -20,7 +20,6 @@ class RegisterStepOneComponent extends Component {
     radios.forEach((radio) => {
       radio.addEventListener("change", () => {
         let isBusinessUser = radio.value === "employer" ? 1 : 0;
-        console.log(isBusinessUser);
         onChangeAccountType(isBusinessUser);
       });
     });
@@ -42,6 +41,7 @@ class RegisterStepOneComponent extends Component {
   }
 
   render() {
+    let { account } = this.props.RegisterReducer;
     return (
       <div>
         <div className="account-type">
@@ -66,6 +66,7 @@ class RegisterStepOneComponent extends Component {
               id="employer-radio"
               className="account-type-radio"
               value="employer"
+              defaultChecked={account.isBusinessUser}
             />
             <label htmlFor="employer-radio" className="ripple-effect-dark">
               <i className="icon-material-outline-business-center" /> Doanh
@@ -87,7 +88,9 @@ class RegisterStepOneComponent extends Component {
               id="fullname-register"
               ref="fullname"
               placeholder="Họ và tên"
+              defaultValue={account.fullname}
               required
+              autoFocus
             />
           </div>
           <div className="input-with-icon-left" data-tippy-placement="bottom">
@@ -101,6 +104,7 @@ class RegisterStepOneComponent extends Component {
               id="dial-register"
               ref="dial"
               placeholder="Số điện thoại"
+              defaultValue={account.dial}
               required
             />
           </div>
@@ -113,6 +117,7 @@ class RegisterStepOneComponent extends Component {
               id="address-register"
               ref="address"
               placeholder="Địa chỉ"
+              defaultValue={account.address}
               required
             />
           </div>
@@ -127,6 +132,7 @@ class RegisterStepOneComponent extends Component {
               ref="birthday"
               min="1990-01-01"
               max="2019-12-31"
+              defaultValue={account.dob}
               required
             />
           </div>
@@ -138,8 +144,12 @@ class RegisterStepOneComponent extends Component {
               name="gender"
               ref="gender"
             >
-              <option value="male">Nam</option>
-              <option value="female">Nữ</option>
+              <option selected={account.gender === 1} value="male">
+                Nam
+              </option>
+              <option selected={account.gender === 0} value="female">
+                Nữ
+              </option>
             </select>
           </div>
         </form>

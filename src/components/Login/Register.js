@@ -37,6 +37,7 @@ class RegisterComponent extends Component {
   //   console.log(role);
   // };
   render() {
+    let { step } = this.props.RegisterReducer;
     return (
       <div>
         {/* Titlebar ================================================== */}
@@ -70,6 +71,9 @@ class RegisterComponent extends Component {
                     Bạn đã có tài khoản?{" "}
                     <NavLink to="/login">Đăng nhập!</NavLink>
                   </span>
+                  <h3 style={{ fontSize: "26px", marginTop: "20px" }}>
+                    Bước {step}
+                  </h3>
                 </div>
                 {/* Account Type */}
 

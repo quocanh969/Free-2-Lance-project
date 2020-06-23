@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import {
   updateProfile,
+  prevStep,
   nextStep,
   sendRegister,
 } from "../../../actions/Register";
@@ -12,7 +13,14 @@ class RegisterStepTwoComponent extends Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.goToPreviousStep = this.goToPreviousStep.bind(this);
   }
+
+  goToPreviousStep() {
+    let { onGoToPreviousStep } = this.props;
+    onGoToPreviousStep();
+  }
+
   handleSubmit(e) {
     e.preventDefault();
 
@@ -39,36 +47,20 @@ class RegisterStepTwoComponent extends Component {
 
   spinnerLoadingNotification() {
     let content = [];
-    let { sending, status, message } = this.props.RegisterReducer;
+    let { sending } = this.props.RegisterReducer;
 
-    if (!sending && status === 0) {
-      // do nothing
-    } else if (sending && status === 0) {
+    if (sending) {
       // sending ...
       content.push(
         <div className="loading" key={1}>
-          <div className="spinner-border text-primary">
-            <span className="sr-only">Đăng gửi...</span>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         </div>
       );
-    } else if (!sending && status === -1) {
-      // failure ...
-      console.log("flag failure");
-      content.push(
-        <div className="alert alert-login alert-danger" key={1} role="alert">
-          {message}
-        </div>
-      );
     } else {
-      /// success ...
-      content.push(
-        <div className="alert alert-login alert-danger" key={1} role="alert">
-          Kiểm tra email để kích hoạt tài khoản
-        </div>
-      );
+      content = [];
     }
-
     return content;
   }
   componentDidMount = () => {
@@ -111,8 +103,15 @@ class RegisterStepTwoComponent extends Component {
   };
 
   render() {
+    let { account } = this.props.RegisterReducer;
     return (
       <div>
+        <button
+          onClick={this.goToPreviousStep}
+          className="button full-width margin-bottom-15"
+        >
+          Trở về bước 1
+        </button>
         <form
           method="post"
           id="register-account-form"
@@ -127,7 +126,9 @@ class RegisterStepTwoComponent extends Component {
               id="email-register"
               ref="email"
               placeholder="E-mail"
+              defaultValue={account.email}
               required
+              autoFocus
             />
           </div>
           <div className="input-with-icon-left">
@@ -173,6 +174,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateProfile: (account) => {
       dispatch(updateProfile(account));
+    },
+    onGoToPreviousStep: () => {
+      dispatch(prevStep());
     },
     goToNextStep: () => {
       dispatch(nextStep());
