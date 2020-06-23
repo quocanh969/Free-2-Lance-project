@@ -48,7 +48,7 @@ class RegisterStepTwoComponent extends Component {
       content.push(
         <div className="loading" key={1}>
           <div className="spinner-border text-primary">
-            <span className="sr-only">Loading...</span>
+            <span className="sr-only">Đăng gửi...</span>
           </div>
         </div>
       );
@@ -64,7 +64,7 @@ class RegisterStepTwoComponent extends Component {
       /// success ...
       content.push(
         <div className="alert alert-login alert-danger" key={1} role="alert">
-          Please check your email to activate account
+          Kiểm tra email để kích hoạt tài khoản
         </div>
       );
     }
@@ -93,9 +93,9 @@ class RegisterStepTwoComponent extends Component {
 
   renderSubmitBtn = () => {
     let { account } = this.props.RegisterReducer;
-    let message = "Register";
+    let message = "Đăng kí";
 
-    if (account.isBusinessUser) message = "Next";
+    if (account.isBusinessUser) message = "Tiếp theo";
 
     let content = [];
     content.push(
@@ -126,7 +126,7 @@ class RegisterStepTwoComponent extends Component {
               name="email-register"
               id="email-register"
               ref="email"
-              placeholder="Email"
+              placeholder="E-mail"
               required
             />
           </div>
@@ -138,7 +138,7 @@ class RegisterStepTwoComponent extends Component {
               name="password-register"
               id="password-register"
               ref="password"
-              placeholder="Password"
+              placeholder="Mật khẩu"
               required
             />
           </div>
@@ -150,7 +150,7 @@ class RegisterStepTwoComponent extends Component {
               name="confirm-register"
               id="confirm-register"
               ref="confirm"
-              placeholder="Confirm"
+              placeholder="Xác nhận mật khẩu"
               required
             />
           </div>

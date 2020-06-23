@@ -41,7 +41,7 @@ class RegisterStepThreeComponent extends Component {
       content.push(
         <div className="loading" key={1}>
           <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
+            <span className="sr-only">Đang tải...</span>
           </div>
         </div>
       );
@@ -57,7 +57,7 @@ class RegisterStepThreeComponent extends Component {
       /// success ...
       content.push(
         <div className="alert alert-login alert-success" key={1} role="alert">
-          Please check your email to activate account
+          Kiểm tra email để kích hoạt tài khoản
         </div>
       );
     }

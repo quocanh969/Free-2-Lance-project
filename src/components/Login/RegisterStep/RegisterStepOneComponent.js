@@ -55,7 +55,8 @@ class RegisterStepOneComponent extends Component {
               defaultChecked
             />
             <label htmlFor="freelancer-radio" className="ripple-effect-dark">
-              <i className="icon-material-outline-account-circle" /> Freelancer
+              <i className="icon-material-outline-account-circle" /> Người lao
+              động
             </label>
           </div>
           <div>
@@ -67,7 +68,8 @@ class RegisterStepOneComponent extends Component {
               value="employer"
             />
             <label htmlFor="employer-radio" className="ripple-effect-dark">
-              <i className="icon-material-outline-business-center" /> Employer
+              <i className="icon-material-outline-business-center" /> Doanh
+              nghiệp
             </label>
           </div>
         </div>
@@ -84,7 +86,7 @@ class RegisterStepOneComponent extends Component {
               name="fullname-register"
               id="fullname-register"
               ref="fullname"
-              placeholder="Fullname"
+              placeholder="Họ và tên"
               required
             />
           </div>
@@ -98,7 +100,7 @@ class RegisterStepOneComponent extends Component {
               name="dial-register"
               id="dial-register"
               ref="dial"
-              placeholder="Phone number"
+              placeholder="Số điện thoại"
               required
             />
           </div>
@@ -110,7 +112,7 @@ class RegisterStepOneComponent extends Component {
               name="address-register"
               id="address-register"
               ref="address"
-              placeholder="Address"
+              placeholder="Địa chỉ"
               required
             />
           </div>
@@ -136,8 +138,8 @@ class RegisterStepOneComponent extends Component {
               name="gender"
               ref="gender"
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="male">Nam</option>
+              <option value="female">Nữ</option>
             </select>
           </div>
         </form>
@@ -146,7 +148,7 @@ class RegisterStepOneComponent extends Component {
           className="button full-width button-sliding-icon ripple-effect margin-top-10"
           form="register-account-form"
         >
-          Next <i className="icon-material-outline-arrow-right-alt" />
+          Tiếp theo <i className="icon-material-outline-arrow-right-alt" />
         </button>
       </div>
     );
