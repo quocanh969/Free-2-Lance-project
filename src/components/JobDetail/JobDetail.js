@@ -74,6 +74,22 @@ class JobDetailComponent extends Component {
     return <img src={logo} className="my-2" key={0} alt=""></img>;
   }
 
+  renderMap() {
+    let { jobDetail } = this.props.JobDetailReducer;
+    let places = [
+      {
+        name: "Nơi làm",
+        title: "Nơi làm",
+        position: { lat: jobDetail.lat, lng: jobDetail.lng },
+      },
+    ];
+    return (
+      <div>
+        <MapContainer places={places} isList={false} />
+      </div>
+    );
+  }
+
   renderPhoto(images) {
     let content = [];
 
@@ -177,7 +193,7 @@ class JobDetailComponent extends Component {
     content.push(
       <div
         className="row bg-293FE4 text-white"
-        key={0}
+        key={-1}
         style={{ height: "50px" }}
       >
         <div
@@ -375,16 +391,14 @@ class JobDetailComponent extends Component {
                     <EmployerInfo></EmployerInfo>
                   ) : this.state.tab === 3 ? (
                     <div id="single-job-map-container">
-                      <div
+                      {/* <div
                         id="singleListingMap"
                         data-latitude="51.507717"
                         data-longitude="-0.131095"
                         data-map-icon="im im-icon-Hamburger"
-                      ></div>
+                      ></div> */}
                       {/* <a href="#" id="streetView">Street View</a> */}
-                      {/* <div>
-                                                <MapContainer places={places} isList={false}/>
-                                            </div> */}
+                      {this.renderMap()}
                       {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
                     </div>
                   ) : this.state.tab === 4 ? (
