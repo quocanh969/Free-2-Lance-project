@@ -1,12 +1,13 @@
-import { postJob, getAllTopics } from '../services/job.services';
-import Swal from 'sweetalert2';
+import { postJob, getAllTopics } from "../services/job.services";
+import Swal from "sweetalert2";
+import { history } from "../ultis/history/history";
 export const submitAddJobForm = (fields) => {
   return (dispatch) => {
     dispatch(request());
     postJob(fields)
       .then((res) => {
         console.log(res);
-        if (res.data.code === '-204') {
+        if (res.data.code === "-204") {
           // thất bại
           dispatch(failure(res.data.message));
           Swal.fire({
@@ -15,7 +16,7 @@ export const submitAddJobForm = (fields) => {
             icon: "error",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "OK!",
-          })
+          });
         } else {
           // thành công
           dispatch(success(res.data.message));
@@ -27,8 +28,7 @@ export const submitAddJobForm = (fields) => {
             confirmButtonText: "Ok!",
           }).then((result) => {
             if (result.value) {
-              localStorage.clear();
-              window.location.href = "./dashboard/tab=4";
+              history.push("/dashboard/tab=4");
             }
           });
         }
@@ -65,9 +65,9 @@ export const submitAddJobForm = (fields) => {
 };
 
 export const loadResources = () => {
-  return (dispatch => {
+  return (dispatch) => {
     dispatch(request());
-    getAllTopics().then(res => {
+    getAllTopics().then((res) => {
       if (res.data.code === 200) {
         // thất bại
         dispatch(success(res.data.message));
@@ -76,7 +76,7 @@ export const loadResources = () => {
         dispatch(failure(res.data.message));
       }
     });
-  })
+  };
   function request() {
     return {
       type: "LOAD_RESOURCES_REQUEST",
@@ -96,4 +96,4 @@ export const loadResources = () => {
       message,
     };
   }
-}
+};
