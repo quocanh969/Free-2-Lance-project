@@ -31,8 +31,8 @@ class MessagesComponent extends Component {
         // this.scrollToBottom()
         const container = document.getElementById('message-content-inner');
         console.log('container:', container);
-        if(container)
-          container.scrollTo(0, container.scrollHeight);
+        if (container)
+            container.scrollTo(0, container.scrollHeight);
     }
     componentDidMount = async () => {
         const { email } = this.state;
@@ -78,6 +78,18 @@ class MessagesComponent extends Component {
             });
 
     }
+    sendReadMessage = async () => {
+        let docKey = this.buildDocKey();
+        console.log('sendReadMessage:', docKey)
+
+        await firebase
+            .firestore()
+            .collection('chats')
+            .doc(docKey)
+            .update({
+                receiverHasRead: true
+            });
+    }
     selectChat(chat, index) {
         this.setState({
             selectedIndex: index,
@@ -96,9 +108,10 @@ class MessagesComponent extends Component {
     }
     render() {
         const { chats, email, selectedIndex, chatChoosen, chatText } = this.state;
+        console.log('chats:', chats)
         console.log('chatChoosen:', chatChoosen);
         console.log('chatText:', chatText)
-
+        const styleUnseen = { fontWeight: 'bold', color: 'black' };
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
@@ -136,7 +149,9 @@ class MessagesComponent extends Component {
                                                             <h5>{chat.img.filter(el => el.email !== email)[0].fullname}</h5>
                                                             {/* <span>4 hours ago</span> */}
                                                         </div>
-                                                        <p>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>
+
+                                                   
+                                                        <p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen:{} }>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>
                                                     </div>
                                                 </a>
                                             </li>
@@ -156,7 +171,7 @@ class MessagesComponent extends Component {
                                     <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a>
                                 </div>
                                 {/* Message Content Inner */}
-                                <div className="message-content-inner" id ="message-content-inner">
+                                <div className="message-content-inner" id="message-content-inner">
                                     {/* Time Sign */}
                                     <div className="message-time-sign">
                                         <span>28 June, 2018</span>
@@ -165,11 +180,11 @@ class MessagesComponent extends Component {
                                         chatChoosen.messages.map((el, index) => {
                                             return (<div key={index} className={el.sender == email ? "message-bubble me" : "message-bubble "}>
                                                 <div className="message-bubble-inner">
-                                                    <div className="message-avatar"><img src={el.sender== email?getImageSrc(chatChoosen.img.filter(el => 
-                                                        el.email === email)[0].img, UserAvatarPlaceholder):getImageSrc(chatChoosen.img.filter(el => 
-                                                        el.email !== email)[0].img, UserAvatarPlaceholder)} alt="" /></div>
+                                                    <div className="message-avatar"><img src={el.sender == email ? getImageSrc(chatChoosen.img.filter(el =>
+                                                        el.email === email)[0].img, UserAvatarPlaceholder) : getImageSrc(chatChoosen.img.filter(el =>
+                                                            el.email !== email)[0].img, UserAvatarPlaceholder)} alt="" /></div>
                                                     <div className="message-text">
-                                                        <Tooltip title={moment.unix(el.timestamp).format("hh:mm a")}>
+                                                        <Tooltip title={moment(el.timestamp).format("hh:mm a")}>
                                                             <p>{el.message}</p>
                                                         </Tooltip>
                                                     </div>
@@ -186,6 +201,7 @@ class MessagesComponent extends Component {
                                 {/* Reply Area */}
                                 <div className="message-reply">
                                     <input
+                                        onClick={this.sendReadMessage}
                                         placeholder='Type your message..'
                                         onKeyUp={(e) => this.userTyping(e)}
                                         cols={1} rows={1} placeholder="Your Message" data-autoresize defaultValue={""} />
