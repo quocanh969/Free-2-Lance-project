@@ -60,7 +60,7 @@ class ApplyFormConponent extends Component {
           ? this.state.proposed_price
           : jobDetail.salary;
         let { doApplyJob } = this.props;
-        fileInBase64 = fileInBase64.split(',')[1];
+        fileInBase64 = fileInBase64.split(",")[1];
         doApplyJob(
           user.id_user,
           jobDetail.id_job,
@@ -103,15 +103,15 @@ class ApplyFormConponent extends Component {
               required
             />
           ) : (
-              <input
-                type="text"
-                className="input-text with-border"
-                name="proposed_price"
-                value={this.toCurrency(this.state.proposed_price)}
-                onFocus={this.toggleEditing.bind(this)}
-                readOnly
-              />
-            )}
+            <input
+              type="text"
+              className="input-text with-border"
+              name="proposed_price"
+              value={this.toCurrency(this.state.proposed_price)}
+              onFocus={this.toggleEditing.bind(this)}
+              readOnly
+            />
+          )}
         </div>
       );
     } else return [];

@@ -6,7 +6,10 @@ import {
   sendAcceptApplicant,
   sendRejectApplicant,
 } from "../../../../../actions/Job";
-import { prettierNumber } from "../../../../../ultis/SHelper/helperFunctions";
+import {
+  prettierNumber,
+  getImageSrc,
+} from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
 
 export const takenApplicantsPerPage = 3;
@@ -98,6 +101,35 @@ class ApplicantsComponent extends Component {
     });
   }
 
+  viewApplicantCV(attachment) {
+    if (attachment) {
+      let keyFile = attachment.substring(0, 5).toUpperCase();
+      var modal = document.getElementById("cv-modal-dialog");
+      if (keyFile === "IVBOR" || keyFile === "/9J/4") {
+        let image = document.createElement("IMG");
+        image.className = "modal-content";
+        image.src = getImageSrc(attachment);
+        modal.innerHTML = "";
+        modal.appendChild(image);
+      } else if (keyFile === "JVBER") {
+        let iframe = document.createElement("iframe");
+        iframe.className = "modal-content";
+        iframe.style.height = "90vh";
+        iframe.src = "data:application/pdf;base64," + attachment;
+        modal.innerHTML = "";
+        modal.appendChild(iframe);
+      }
+    } else {
+      Swal.fire({
+        title: "Không đọc được CV",
+        text: "Vui lòng thử lại sau",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Ok!",
+      });
+    }
+  }
+
   generateApplicantsList() {
     let { applicantsList } = this.props.EmployerReducer;
     let content = [];
@@ -136,26 +168,28 @@ class ApplicantsComponent extends Component {
 
             {/* Buttons */}
             <div className="container text-right">
-              <button
+              <span
                 onClick={() => this.acceptApplicant(e.id_user)}
                 className="btn mx-2 py-2 px-4 bg-success text-white rounded"
               >
                 <i className="icon-material-outline-check-circle"></i> Phê duyệt
-              </button>
-              <button
+              </span>
+              <span
                 onClick={() => this.viewApplicantInfo(e.id_user)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i> Xem
                 thông tin
-              </button>
+              </span>
               <span
+                data-toggle="modal"
+                data-target="#CVModal"
                 className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => this.viewApplicantCV(index)}
+                onClick={() => this.viewApplicantCV(e.attachment)}
               >
                 <i className="icon-line-awesome-clone" /> Xem CV
               </span>
-              {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
+
               <span
                 onClick={() => this.rejectApplicant(e.id_user)}
                 className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
@@ -256,6 +290,9 @@ class ApplicantsComponent extends Component {
               )}
             </div>
           </div>
+        </div>
+        <div id="CVModal" className="modal fade" role="dialog">
+          <div id="cv-modal-dialog" className="modal-dialog modal-xl"></div>
         </div>
       </div>
     );
