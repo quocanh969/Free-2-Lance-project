@@ -212,7 +212,7 @@ export const loadJobDetail = (jobId) => {
           //loadSimilarJobs
           dispatch(loadSimilarJobs(res.data.data.jobTopic));
         } else {
-          history.push("/not-found");
+          history.push("not-found");
         }
       })
       .catch((err) => {

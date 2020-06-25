@@ -1,6 +1,6 @@
-import { changePassword } from "../../services/profile.services";
+import { changePassword } from "../services/profile.services";
 import Swal from "sweetalert2";
-import { history } from "../../ultis/history/history";
+import { history } from "../ultis/history/history";
 
 export const sendchangePassword = (oldPW, newPW) => {
   return (dispatch) => {

@@ -7,7 +7,7 @@ import { S_Selector } from "../../../ultis/SHelper/S_Help_Input";
 
 import avatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
 import browseCompoanies from "../../../assets/images/browse-companies-03.png";
-import { sendchangePassword } from "../../../actions/ProfileActions/ChangePassword";
+import { sendchangePassword } from "../../../actions/ChangePassword";
 
 class ChangePasswordComponent extends Component {
   constructor(props) {
