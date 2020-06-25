@@ -16,15 +16,18 @@ import MapContainer from "../map_JobsList";
 import ApplyForm from "./ApplyForm/ApplyForm";
 import JobDetailInfo from "./JobDetailTab/JobDetailInfo";
 import EmployerInfo from "./JobDetailTab/EmployerInfo";
+import { history } from "../../ultis/history/history";
 
 class JobDetailComponent extends Component {
   constructor(props) {
     super(props);
 
-    let jobId = 121;
+    let jobId = null;
     let { id_job } = this.props.match.params;
     if (id_job) {
       jobId = id_job;
+    } else {
+      history.push("/not-found");
     }
     this.state = {
       tab: 1,

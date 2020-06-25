@@ -12,6 +12,7 @@ import {
   doSendRejectApplicant,
 } from "../services/job.services";
 import Swal from "sweetalert2";
+import { history } from "../ultis/history/history";
 
 export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
@@ -206,9 +207,13 @@ export const loadJobDetail = (jobId) => {
   return (dispatch) => {
     getJobsDetail(jobId)
       .then((res) => {
-        dispatch(success(res.data.data));
-        //loadSimilarJobs
-        dispatch(loadSimilarJobs(res.data.data.jobTopic));
+        if (res.data.data.id_job) {
+          dispatch(success(res.data.data));
+          //loadSimilarJobs
+          dispatch(loadSimilarJobs(res.data.data.jobTopic));
+        } else {
+          history.push("/not-found");
+        }
       })
       .catch((err) => {
         console.log(err);
