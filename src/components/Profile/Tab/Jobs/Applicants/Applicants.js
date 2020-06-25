@@ -130,6 +130,11 @@ class ApplicantsComponent extends Component {
     }
   }
 
+  viewApplicantInfo(userId) {
+    let url = window.location.origin + "/user-detail/" + userId;
+    window.open(url);
+  }
+
   generateApplicantsList() {
     let { applicantsList } = this.props.EmployerReducer;
     let content = [];
