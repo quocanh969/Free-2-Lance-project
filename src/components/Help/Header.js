@@ -102,66 +102,69 @@ class HeaderComponent extends Component {
   componentDidMount = async () => {
     window.addEventListener("scroll", this.handleScroll);
     const email = localStorage.getItem('email');
-    const notifications = await
-      firebase
+    if (email) {
+      const notifications = await
+        firebase
+          .firestore()
+          .collection('notifications')
+          .doc(email)
+          .get();
+      console.log('notification exists:', notifications.exists)
+      console.log();
+      await firebase
         .firestore()
-        .collection('notifications')
-        .doc(email)
-        .get();
-    console.log('notification exists:', notifications.exists)
-    console.log();
-    await firebase
-      .firestore()
-      .collection('chats')
-      .where('users', 'array-contains', email)
-      .onSnapshot(async res => {
-        const chats = res.docs.map(_doc => _doc.data());
-        console.log('chats In header:', chats)
-        let rs = [];
-        let unreadMessage = 0;
-
-        chats.forEach(element => {
-          rs.push({
-            fullname: element.img.filter(el => el.email !== email)[0].fullname,
-            avatarImg: getImageSrc(element.img.filter(el => el.email !== email)[0].img),
-            message: element.messages[element.messages.length - 1].message.substring(0, 30)
-          })
-          if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-            unreadMessage++;
-          }
-        });
-        await this.setState({
-          email: email,
-          messages: rs,
-          unreadMessage
-
-        });
-      })
-    if (!notifications.exists) {
-      firebase
-        .firestore()
-        .collection('notifications')
-        .doc(email)
-        .set({
-          email: email,
-          listNotify: [],
-          isRead: true
-        })
-    }
-    else {
-      firebase
-        .firestore()
-        .collection('notifications')
-        .where('email', '==', email)
+        .collection('chats')
+        .where('users', 'array-contains', email)
         .onSnapshot(async res => {
-          const data = res.docs.map(_doc => _doc.data());
+          const chats = res.docs.map(_doc => _doc.data());
+          console.log('chats In header:', chats)
+          let rs = [];
+          let unreadMessage = 0;
 
+          chats.forEach(element => {
+            rs.push({
+              fullname: element.img.filter(el => el.email !== email)[0].fullname,
+              avatarImg: getImageSrc(element.img.filter(el => el.email !== email)[0].img),
+              message: element.messages[element.messages.length - 1].message.substring(0, 30)
+            })
+            if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+              unreadMessage++;
+            }
+          });
           await this.setState({
-            notifications: data[0].listNotify,
-            isReadNotify: data[0].isRead
+            email: email,
+            messages: rs,
+            unreadMessage
+
           });
         })
+      if (!notifications.exists) {
+        firebase
+          .firestore()
+          .collection('notifications')
+          .doc(email)
+          .set({
+            email: email,
+            listNotify: [],
+            isRead: true
+          })
+      }
+      else {
+        firebase
+          .firestore()
+          .collection('notifications')
+          .where('email', '==', email)
+          .onSnapshot(async res => {
+            const data = res.docs.map(_doc => _doc.data());
+
+            await this.setState({
+              notifications: data[0].listNotify,
+              isReadNotify: data[0].isRead
+            });
+          })
+      }
     }
+
   }
 
   componentDidUpdate() { }
@@ -200,15 +203,17 @@ class HeaderComponent extends Component {
       e.preventDefault();
     }
   }
-  sendReadNotfication = async ()=>{
-    const {email} =this.state;
-    await firebase
-    .firestore()
-    .collection('notifications')
-    .doc(email)
-    .update({
-        isRead: true
-    });
+  sendReadNotfication = async () => {
+    const { email } = this.state;
+    if (email) {
+      await firebase
+        .firestore()
+        .collection('notifications')
+        .doc(email)
+        .update({
+          isRead: true
+        });
+    }
   }
   renderTopicsHeader() {
     let { jobTopic } = this.props.GeneralReducer;
@@ -347,7 +352,7 @@ class HeaderComponent extends Component {
             aria-expanded="false"
             onClick={this.sendReadNotfication}
           >    <Badge color="secondary" badgeContent=" " variant="dot" invisible={isReadNotify} >
-            <NotificationsIcon/>
+              <NotificationsIcon />
               {/* <i className="icon-material-baseline-notifications-none  mx-0 p-2 font-size-25"></i> */}
 
               {/* <button
@@ -386,7 +391,7 @@ class HeaderComponent extends Component {
           >
             <Badge color="secondary" badgeContent={unreadMessage} >
               {/* <i className="icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25"></i> */}
-              <MailIcon/>
+              <MailIcon />
             </Badge>
 
 

@@ -46,23 +46,26 @@ class ProfileComponent extends Component {
     }
     componentDidMount = async () => {
         let email = localStorage.getItem('email');
-        await firebase
-            .firestore()
-            .collection('chats')
-            .where('users', 'array-contains', email)
-            .onSnapshot(async res => {
-                const chats = res.docs.map(_doc => _doc.data());
-                console.log('chats:', chats)
-                let unreadMessage = 0;
-                chats.forEach(element => {
-                    if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-                        unreadMessage++;
-                    }
-                });
-                await this.setState({
-                    unreadMessage
-                });
-            })
+        if (email) {
+            await firebase
+                .firestore()
+                .collection('chats')
+                .where('users', 'array-contains', email)
+                .onSnapshot(async res => {
+                    const chats = res.docs.map(_doc => _doc.data());
+                    console.log('chats:', chats)
+                    let unreadMessage = 0;
+                    chats.forEach(element => {
+                        if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+                            unreadMessage++;
+                        }
+                    });
+                    await this.setState({
+                        unreadMessage
+                    });
+                })
+        }
+
     }
     switchTab() {
         switch (this.state.tab) {
@@ -136,7 +139,7 @@ class ProfileComponent extends Component {
     render() {
         //let isBusinessUser = this.props.HeaderReducer.user.isBusinessUser;
         let { user } = this.props.HeaderReducer
-        const {unreadMessage}= this.state;
+        const { unreadMessage } = this.state;
         return (
             <div className='container-fluid'>
                 {(
@@ -169,9 +172,9 @@ class ProfileComponent extends Component {
                                                     </li>
                                                     <li className={(this.state.tab === 2 ? 'active' : '')}>
                                                         <NavLink className='cursor-pointer' to='/dashboard/tab=2'>
-                                                       
+
                                                             <i className="icon-material-outline-question-answer" /> Tin nhắn {
-                                                                unreadMessage>0 && <span className="nav-tag">{unreadMessage}</span>
+                                                                unreadMessage > 0 && <span className="nav-tag">{unreadMessage}</span>
                                                             }
                                                         </NavLink>
                                                     </li>

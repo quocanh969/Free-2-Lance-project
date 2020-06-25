@@ -38,21 +38,24 @@ class MessagesComponent extends Component {
         const { email } = this.state;
         console.log('email:', email)
         window.scrollTo(0, 0);
-        await firebase
-            .firestore()
-            .collection('chats')
-            .where('users', 'array-contains', email)
-            .onSnapshot(async res => {
-                const chats = res.docs.map(_doc => _doc.data());
-                console.log('chats:', chats)
-                await this.setState({
-                    email: email,
-                    chats: chats,
-                    chatChoosen: chats[0],
-                    emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
-                    friends: []
-                });
-            })
+        if (email) {
+            await firebase
+                .firestore()
+                .collection('chats')
+                .where('users', 'array-contains', email)
+                .onSnapshot(async res => {
+                    const chats = res.docs.map(_doc => _doc.data());
+                    console.log('chats:', chats)
+                    await this.setState({
+                        email: email,
+                        chats: chats,
+                        chatChoosen: chats[0],
+                        emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
+                        friends: []
+                    });
+                })
+        }
+
         const container = document.getElementById('message-content-inner');
         console.log('container:', container);
 
@@ -64,31 +67,36 @@ class MessagesComponent extends Component {
         const { emailReciver, email, chatText } = this.state;
         let docKey = this.buildDocKey();
         console.log('con chim:', chatText)
-        await firebase
-            .firestore()
-            .collection('chats')
-            .doc(docKey)
-            .update({
-                messages: firebase.firestore.FieldValue.arrayUnion({
-                    sender: email,
-                    message: chatText,
-                    timestamp: Date.now()
-                }),
-                receiverHasRead: false
-            });
+        if (email && chatText) {
+            await firebase
+                .firestore()
+                .collection('chats')
+                .doc(docKey)
+                .update({
+                    messages: firebase.firestore.FieldValue.arrayUnion({
+                        sender: email,
+                        message: chatText,
+                        timestamp: Date.now()
+                    }),
+                    receiverHasRead: false
+                });
+        }
+
 
     }
     sendReadMessage = async () => {
         let docKey = this.buildDocKey();
         console.log('sendReadMessage:', docKey)
+        if (docKey) {
+            await firebase
+                .firestore()
+                .collection('chats')
+                .doc(docKey)
+                .update({
+                    receiverHasRead: true
+                });
+        }
 
-        await firebase
-            .firestore()
-            .collection('chats')
-            .doc(docKey)
-            .update({
-                receiverHasRead: true
-            });
     }
     selectChat(chat, index) {
         this.setState({
@@ -150,8 +158,8 @@ class MessagesComponent extends Component {
                                                             {/* <span>4 hours ago</span> */}
                                                         </div>
 
-                                                   
-                                                        <p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen:{} }>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>
+
+                                                        <p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>
                                                     </div>
                                                 </a>
                                             </li>
