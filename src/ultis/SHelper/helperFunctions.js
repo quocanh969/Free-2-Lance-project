@@ -1,3 +1,4 @@
+import UserAvatarPlaceholder from "../../assets/images/user-avatar-placeholder.png";
 export const prettierNumber = (number) => {
   let formetedNumber = Number(number)
     .toFixed(2)
@@ -26,8 +27,11 @@ export const prettierDateAgo = (date) => {
   else return Math.ceil(diffDays / 365.25) - 1 + " năm trước";
 };
 
-export const getImageSrc = (data, imagePlaceholder) => {
-  let img = imagePlaceholder;
+export const getImageSrc = (data, imagePlaceholder = null) => {
+  let img = UserAvatarPlaceholder;
+  if (imagePlaceholder) {
+    img = imagePlaceholder;
+  }
   if (data !== null) {
     img = "data:image/png;base64," + data;
   }

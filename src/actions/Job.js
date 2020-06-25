@@ -6,6 +6,10 @@ import {
   getSimilarJobs,
   doApplyJob,
   getEmployerDetail,
+  doCancelRecruit,
+  getApplicantsByJobId,
+  doSendAcceptApplicant,
+  doSendRejectApplicant,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 
@@ -283,6 +287,80 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
           icon: "error",
           confirmButtonText: "OK",
         });
+      });
+  };
+};
+
+export const cancelRecruit = (jobId) => {
+  return (dispatch) => {
+    doCancelRecruit(jobId)
+      .then((res) => {
+        Swal.fire(
+          "Thành công!",
+          "Công việc của bạn đã được ngừng tuyển",
+          "success"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const loadApplicantsByJobId = (jobId, page, take,id_status) => {
+  return (dispatch) => {
+    getApplicantsByJobId(jobId, page, take,id_status)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.applicantsList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(applicantsList, page, total) {
+    return {
+      type: "EMPLOYER_APPLICANTS_UPDATE",
+      applicantsList,
+      total,
+      page,
+    };
+  }
+};
+
+export const selectJobApplying = (jobId) => {
+  return {
+    type: "EMPLOYER_SELECT_JOB_APPLYING",
+    jobId,
+  };
+};
+
+export const sendAcceptApplicant = (jobId, userId,email,job_title) => {
+  return (dispatch) => {
+    doSendAcceptApplicant(jobId, userId,email,job_title)
+      .then((res) => {
+        Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const sendRejectApplicant = (jobId, userId,email,job_title) => {
+  return (dispatch) => {
+    doSendRejectApplicant(jobId, userId,email,job_title)
+      .then((res) => {
+        Swal.fire("Thành công!", "Đã Từ chối ứng viên!!", "success");
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 };

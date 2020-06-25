@@ -122,6 +122,40 @@ function doApplyJob(id_user, id_job, proposed_price, attachment) {
     attachment,
   });
 }
+
+function doCancelRecruit(id_job) {
+  return axios.post("/jobs/cancelRecruit", {
+    id_job,
+  });
+}
+
+function getApplicantsByJobId(id, page, take,id_status) {
+  return axios.post("/applicants/getByJobId", {
+    id,
+    page,
+    take,
+    id_status
+  });
+}
+
+function doSendAcceptApplicant(id_job, id_user,email,job_title) {
+  return axios.post("/jobs/acceptApplicant", {
+    id_job,
+    id_user,
+    email,
+    job_title
+  });
+}
+
+function doSendRejectApplicant(id_job, id_user,email,job_title) {
+  return axios.post("/jobs/rejectApplicant", {
+    id_job,
+    id_user,
+    email,
+    job_title
+  });
+}
+
 export {
   postJob,
   getAllTopics,
@@ -133,4 +167,8 @@ export {
   getTags,
   getEmployerDetail,
   getSimilarJobs,
+  doCancelRecruit,
+  getApplicantsByJobId,
+  doSendAcceptApplicant,
+  doSendRejectApplicant,
 };

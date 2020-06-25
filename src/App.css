@@ -12,8 +12,9 @@ body {
   font-size: 20px;
 }
 
-#home{
-  background: rgba(0, 0, 0, .65) url('./assets/images/Stocksy_txp4d832598Y5W200_Medium_1565047.jpg');  
+#home {
+  background: rgba(0, 0, 0, 0.65)
+    url("./assets/images/Stocksy_txp4d832598Y5W200_Medium_1565047.jpg");
   background-blend-mode: darken;
   background-position: center;
   background-repeat: no-repeat;
@@ -23,7 +24,8 @@ body {
 }
 
 #s-find-job-form {
-  background: rgba(0, 0, 0, .65) url('./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg');  
+  background: rgba(0, 0, 0, 0.65)
+    url("./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg");
   background-blend-mode: darken;
   background-position: center;
   background-repeat: no-repeat;
@@ -31,7 +33,8 @@ body {
 }
 
 #job-detail-background {
-  background: rgba(0, 0, 0, .65) url('./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg');  
+  background: rgba(0, 0, 0, 0.65)
+    url("./assets/images/send-meter-reading-in-minutes-lockup-2x.jpg");
   background-blend-mode: darken;
   background-position: center;
   background-repeat: no-repeat;
@@ -256,7 +259,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* Text css*/
 .text-293FE4 {
-  color: #293FE4 !important;
+  color: #293fe4 !important;
 }
 
 .text-727473 {
@@ -285,7 +288,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* width */
 .w-40 {
-  width: 40% !important
+  width: 40% !important;
 }
 
 /* hover */
@@ -294,12 +297,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .menu-child-item:hover {
-  color: #293FE4 !important;
+  color: #293fe4 !important;
 }
 
 /* border */
 .border-293FE4 {
-  border-color: #293FE4 !important;
+  border-color: #293fe4 !important;
 }
 
 .border-radius-4 {
@@ -308,4 +311,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .border-width-3 {
   border-width: 3px;
+}
+
+/* The Close Button */
+.closeImageModalBtn {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.closeImageModalBtn:hover,
+.closeImageModalBtn:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
 }

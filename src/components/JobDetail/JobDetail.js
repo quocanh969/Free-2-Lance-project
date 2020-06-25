@@ -240,7 +240,7 @@ class JobDetailComponent extends Component {
         <button
           className="apply-now-button popup-with-zoom-anim w-100"
           data-toggle="modal"
-          data-target="#myModal"
+          data-target="#applyModal"
         >
           Đăng kí ứng cử <i className="icon-material-outline-arrow-right-alt" />
         </button>
@@ -253,7 +253,7 @@ class JobDetailComponent extends Component {
     let { jobDetail } = this.props.JobDetailReducer;
     if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
-        <div id="myModal" className="modal fade" role="dialog">
+        <div id="applyModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
             <ApplyForm></ApplyForm>
           </div>
