@@ -120,16 +120,19 @@ class HeaderComponent extends Component {
           console.log('chats In header:', chats)
           let rs = [];
           let unreadMessage = 0;
-
+          console.log('chats1234:', chats)
           chats.forEach(element => {
             rs.push({
               fullname: element.img.filter(el => el.email !== email)[0].fullname,
               avatarImg: getImageSrc(element.img.filter(el => el.email !== email)[0].img),
-              message: element.messages[element.messages.length - 1].message.substring(0, 30)
+              message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
             })
-            if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-              unreadMessage++;
+            if (element.messages.length > 0) {
+              if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+                unreadMessage++;
+              }
             }
+
           });
           await this.setState({
             email: email,

@@ -53,11 +53,13 @@ class ProfileComponent extends Component {
                 .where('users', 'array-contains', email)
                 .onSnapshot(async res => {
                     const chats = res.docs.map(_doc => _doc.data());
-                    console.log('chats:', chats)
+                    console.log('chats456:', chats)
                     let unreadMessage = 0;
-                    chats.forEach(element => {
-                        if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-                            unreadMessage++;
+                    chats.forEach((element, index) => {
+                        console.log('index:', index)
+                        if (element.messages.length > 0) {
+                            if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead)
+                                unreadMessage++;
                         }
                     });
                     await this.setState({

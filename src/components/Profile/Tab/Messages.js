@@ -46,13 +46,17 @@ class MessagesComponent extends Component {
                 .onSnapshot(async res => {
                     const chats = res.docs.map(_doc => _doc.data());
                     console.log('chats:', chats)
-                    await this.setState({
-                        email: email,
-                        chats: chats,
-                        chatChoosen: chats[0],
-                        emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
-                        friends: []
-                    });
+                    if(chats.length>0)
+                    {
+                        await this.setState({
+                            email: email,
+                            chats: chats,
+                            chatChoosen: chats[0],
+                            emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
+                            friends: []
+                        });
+                    }
+                 
                 })
         }
 
@@ -159,7 +163,9 @@ class MessagesComponent extends Component {
                                                         </div>
 
 
-                                                        <p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>
+                                                       {
+                                                           chat.messages.length>0 && (<p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>)
+                                                       } 
                                                     </div>
                                                 </a>
                                             </li>
