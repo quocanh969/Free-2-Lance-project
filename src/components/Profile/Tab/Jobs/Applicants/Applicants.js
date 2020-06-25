@@ -61,11 +61,14 @@ class ApplicantsComponent extends Component {
 
   loadApplicantListFunc(page) {
     let { onLoadApplicants } = this.props;
+
     let { selectedApplyingJob } = this.props.EmployerReducer;
-    onLoadApplicants(selectedApplyingJob, page, takenApplicantsPerPage);
+    onLoadApplicants(selectedApplyingJob, page, takenApplicantsPerPage,4);
   }
 
-  acceptApplicant(userId) {
+  acceptApplicant(userId,email) {
+    console.log("props",this.props.EmployerReducer)
+
     Swal.fire({
       title: "Bạn có chắc muốn tuyển ứng viên này??",
       icon: "warning",
@@ -78,12 +81,12 @@ class ApplicantsComponent extends Component {
       if (result.value) {
         let { selectedApplyingJob } = this.props.EmployerReducer;
         let { onSendAcceptApplicant } = this.props;
-        onSendAcceptApplicant(selectedApplyingJob, userId);
+        onSendAcceptApplicant(selectedApplyingJob, userId,email,'Job_title');
       }
     });
   }
 
-  rejectApplicant(userId) {
+  rejectApplicant(userId,email) {
     Swal.fire({
       title: "Bạn có chắc muốn từ chối ứng viên này??",
       icon: "warning",
@@ -96,7 +99,7 @@ class ApplicantsComponent extends Component {
       if (result.value) {
         let { selectedApplyingJob } = this.props.EmployerReducer;
         let { onSendRejectApplicant } = this.props;
-        onSendRejectApplicant(selectedApplyingJob, userId);
+        onSendRejectApplicant(selectedApplyingJob, userId,email,'Job_title');
       }
     });
   }
@@ -169,7 +172,7 @@ class ApplicantsComponent extends Component {
             {/* Buttons */}
             <div className="container text-right">
               <span
-                onClick={() => this.acceptApplicant(e.id_user)}
+                onClick={() => this.acceptApplicant(e.id_user,e.email)}
                 className="btn mx-2 py-2 px-4 bg-success text-white rounded"
               >
                 <i className="icon-material-outline-check-circle"></i> Phê duyệt
@@ -191,7 +194,7 @@ class ApplicantsComponent extends Component {
               </span>
 
               <span
-                onClick={() => this.rejectApplicant(e.id_user)}
+                onClick={() => this.rejectApplicant(e.id_user,e.email)}
                 className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
               >
                 <i className="icon-line-awesome-hand-stop-o" /> Từ chối
@@ -307,14 +310,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoadApplicants: (jobId, page, take) => {
-      dispatch(loadApplicantsByJobId(jobId, page, take));
+    onLoadApplicants: (jobId, page, take,id_status) => {
+      dispatch(loadApplicantsByJobId(jobId, page, take,id_status));
     },
-    onSendAcceptApplicant: (jobId, userId) => {
-      dispatch(sendAcceptApplicant(jobId, userId));
+    onSendAcceptApplicant: (jobId, userId,email,job_title) => {
+      dispatch(sendAcceptApplicant(jobId, userId,email,job_title));
     },
-    onSendRejectApplicant: (jobId, userId) => {
-      dispatch(sendRejectApplicant(jobId, userId));
+    onSendRejectApplicant: (jobId, userId,email,job_title) => {
+      dispatch(sendRejectApplicant(jobId, userId,email,job_title));
     },
   };
 };
