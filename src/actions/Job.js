@@ -314,7 +314,7 @@ export const cancelRecruit = (jobId) => {
 
 export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
-    getApplicantsByJobId(jobId, page, take, 4)
+    getApplicantsByJobId(jobId, page, take, 0)
       .then((res) => {
         dispatch(
           success(
@@ -347,10 +347,18 @@ export const selectJobApplying = (jobId, title) => {
   };
 };
 
-export const sendAcceptApplicant = (jobId, userId, email, job_title) => {
+export const sendAcceptApplicant = (
+  jobId,
+  userId,
+  email,
+  job_title,
+  page,
+  take
+) => {
   return (dispatch) => {
     doSendAcceptApplicant(jobId, userId, email, job_title)
       .then((res) => {
+        dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
         Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
       })
       .catch((err) => {
@@ -359,10 +367,18 @@ export const sendAcceptApplicant = (jobId, userId, email, job_title) => {
   };
 };
 
-export const sendRejectApplicant = (jobId, userId, email, job_title) => {
+export const sendRejectApplicant = (
+  jobId,
+  userId,
+  email,
+  job_title,
+  page,
+  take
+) => {
   return (dispatch) => {
     doSendRejectApplicant(jobId, userId, email, job_title)
       .then((res) => {
+        dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
         Swal.fire("Thành công!", "Đã Từ chối ứng viên!!", "success");
       })
       .catch((err) => {

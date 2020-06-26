@@ -12,7 +12,7 @@ import {
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
 
-export const takenApplicantsPerPage = 3;
+export const takenApplyingApplicantsPerPage = 3;
 class JobsApplyingModalComponent extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -63,7 +63,11 @@ class JobsApplyingModalComponent extends Component {
     let { onLoadApplicants } = this.props;
 
     let { selectedApplyingJobId } = this.props.EmployerReducer;
-    onLoadApplicants(selectedApplyingJobId, page, takenApplicantsPerPage);
+    onLoadApplicants(
+      selectedApplyingJobId,
+      page,
+      takenApplyingApplicantsPerPage
+    );
   }
 
   acceptApplicant(userId, email) {
@@ -80,13 +84,16 @@ class JobsApplyingModalComponent extends Component {
         let {
           selectedApplyingJobId,
           selectedApplyingJobTitle,
+          currentApplicantsPage,
         } = this.props.EmployerReducer;
         let { onSendAcceptApplicant } = this.props;
         onSendAcceptApplicant(
           selectedApplyingJobId,
           userId,
           email,
-          selectedApplyingJobTitle
+          selectedApplyingJobTitle,
+          currentApplicantsPage,
+          takenApplyingApplicantsPerPage
         );
       }
     });
@@ -106,13 +113,16 @@ class JobsApplyingModalComponent extends Component {
         let {
           selectedApplyingJobId,
           selectedApplyingJobTitle,
+          currentApplicantsPage,
         } = this.props.EmployerReducer;
         let { onSendRejectApplicant } = this.props;
         onSendRejectApplicant(
           selectedApplyingJobId,
           userId,
           email,
-          selectedApplyingJobTitle
+          selectedApplyingJobTitle,
+          currentApplicantsPage,
+          takenApplyingApplicantsPerPage
         );
       }
     });
@@ -235,7 +245,7 @@ class JobsApplyingModalComponent extends Component {
 
   render() {
     let { totalApplicants, currentApplicantsPage } = this.props.EmployerReducer;
-    let totalPage = Math.ceil(totalApplicants / takenApplicantsPerPage);
+    let totalPage = Math.ceil(totalApplicants / takenApplyingApplicantsPerPage);
     return (
       <div className="modal-content">
         <div className="modal-header">
@@ -332,11 +342,15 @@ const mapDispatchToProps = (dispatch) => {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
     },
-    onSendAcceptApplicant: (jobId, userId, email, job_title) => {
-      dispatch(sendAcceptApplicant(jobId, userId, email, job_title));
+    onSendAcceptApplicant: (jobId, userId, email, job_title, page, take) => {
+      dispatch(
+        sendAcceptApplicant(jobId, userId, email, job_title, page, take)
+      );
     },
-    onSendRejectApplicant: (jobId, userId, email, job_title) => {
-      dispatch(sendRejectApplicant(jobId, userId, email, job_title));
+    onSendRejectApplicant: (jobId, userId, email, job_title, page, take) => {
+      dispatch(
+        sendRejectApplicant(jobId, userId, email, job_title, page, take)
+      );
     },
   };
 };

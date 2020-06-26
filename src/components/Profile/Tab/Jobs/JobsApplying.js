@@ -14,8 +14,8 @@ import {
 } from "../../../../ultis/SHelper/helperFunctions";
 import { history } from "../../../../ultis/history/history";
 import Swal from "sweetalert2";
-import Apllicants from "./Modal/JobsApplyingModal";
-import { takenApplicantsPerPage } from "./Modal/JobsApplyingModal";
+import JobsApplyingModal from "./Modal/JobsApplyingModal";
+import { takenApplyingApplicantsPerPage } from "./Modal/JobsApplyingModal";
 class JobsApplyingComponent extends Component {
   constructor(props) {
     super(props);
@@ -45,6 +45,7 @@ class JobsApplyingComponent extends Component {
   StopRecuit(jobId) {
     Swal.fire({
       title: "Bạn có chắc muốn ngừng tuyển??",
+      text: "Công việc sẽ chuyển qua trạng thái thực hiện!!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -62,7 +63,7 @@ class JobsApplyingComponent extends Component {
   showApplicantsList(jobId, title) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
     onSelectJobApplying(jobId, title);
-    onLoadApplicants(jobId, 1, takenApplicantsPerPage);
+    onLoadApplicants(jobId, 1, takenApplyingApplicantsPerPage);
   }
 
   generateListJobs() {
@@ -182,7 +183,7 @@ class JobsApplyingComponent extends Component {
             <div>
               <button
                 data-toggle="modal"
-                data-target="#applicantsModal"
+                data-target="#applyingApplicantsModal"
                 onClick={() => this.showApplicantsList(e.id_job, e.title)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
@@ -332,9 +333,9 @@ class JobsApplyingComponent extends Component {
           </div>
         </div>
         {/* Row / End */}
-        <div id="applicantsModal" className="modal fade" role="dialog">
+        <div id="applyingApplicantsModal" className="modal fade" role="dialog">
           <div className="modal-dialog modal-lg">
-            <Apllicants></Apllicants>
+            <JobsApplyingModal></JobsApplyingModal>
           </div>
         </div>
       </div>
