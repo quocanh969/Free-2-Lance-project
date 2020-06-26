@@ -129,30 +129,30 @@ function doCancelRecruit(id_job) {
   });
 }
 
-function getApplicantsByJobId(id, page, take,id_status) {
+function getApplicantsByJobId(id, page, take, id_status) {
   return axios.post("/applicants/getByJobId", {
     id,
     page,
     take,
-    id_status
+    id_status,
   });
 }
 
-function doSendAcceptApplicant(id_job, id_user,email,job_title) {
+function doSendAcceptApplicant(id_job, id_user, email, job_title) {
   return axios.post("/jobs/acceptApplicant", {
     id_job,
     id_user,
     email,
-    job_title
+    job_title,
   });
 }
 
-function doSendRejectApplicant(id_job, id_user,email,job_title) {
+function doSendRejectApplicant(id_job, id_user, email, job_title) {
   return axios.post("/jobs/rejectApplicant", {
     id_job,
     id_user,
     email,
-    job_title
+    job_title,
   });
 }
 

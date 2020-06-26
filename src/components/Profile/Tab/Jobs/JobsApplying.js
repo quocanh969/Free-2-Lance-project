@@ -6,7 +6,7 @@ import {
   loadApplyingJobsForEmployer,
   cancelRecruit,
   selectJobApplying,
-  loadApplicantsByJobId,
+  loadApplyingApplicantsForEmployer,
 } from "../../../../actions/Job";
 import {
   prettierDate,
@@ -62,7 +62,7 @@ class JobsApplyingComponent extends Component {
   showApplicantsList(jobId) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
     onSelectJobApplying(jobId);
-    onLoadApplicants(jobId, 1, takenApplicantsPerPage,4);
+    onLoadApplicants(jobId, 1, takenApplicantsPerPage);
   }
 
   generateListJobs() {
@@ -359,8 +359,8 @@ const mapDispatchToProps = (dispatch) => {
     onSelectJobApplying: (jobId) => {
       dispatch(selectJobApplying(jobId));
     },
-    onLoadApplicants: (jobId, page, take,id_status) => {
-      dispatch(loadApplicantsByJobId(jobId, page, take,id_status));
+    onLoadApplicants: (jobId, page, take) => {
+      dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
     },
   };
 };
