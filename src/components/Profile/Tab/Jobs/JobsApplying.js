@@ -59,9 +59,9 @@ class JobsApplyingComponent extends Component {
     });
   }
 
-  showApplicantsList(jobId) {
+  showApplicantsList(jobId, title) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
-    onSelectJobApplying(jobId);
+    onSelectJobApplying(jobId, title);
     onLoadApplicants(jobId, 1, takenApplicantsPerPage);
   }
 
@@ -183,7 +183,7 @@ class JobsApplyingComponent extends Component {
               <button
                 data-toggle="modal"
                 data-target="#applicantsModal"
-                onClick={() => this.showApplicantsList(e.id_job)}
+                onClick={() => this.showApplicantsList(e.id_job, e.title)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i> Ứng
@@ -356,8 +356,8 @@ const mapDispatchToProps = (dispatch) => {
     onCancelRecruit: (jobId) => {
       dispatch(cancelRecruit(jobId));
     },
-    onSelectJobApplying: (jobId) => {
-      dispatch(selectJobApplying(jobId));
+    onSelectJobApplying: (jobId, title) => {
+      dispatch(selectJobApplying(jobId, title));
     },
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));

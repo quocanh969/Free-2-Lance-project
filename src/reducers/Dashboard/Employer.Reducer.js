@@ -4,7 +4,8 @@ const initState = {
   totalApplyingJobs: 0,
   currentApplyingPage: 0,
   // for list applicants of applying job list
-  selectedApplyingJob: null,
+  selectedApplyingJobId: null,
+  selectedApplyingJobTitle: null,
   applicantsList: [],
   totalApplicants: 0,
   currentApplicantsPage: 0,
@@ -44,12 +45,14 @@ const EmployerReducer = (state = initState, action) => {
     case "EMPLOYER_SELECT_JOB_APPLYING":
       return {
         ...state,
-        selectedApplyingJob: action.jobId,
+        selectedApplyingJobId: action.jobId,
+        selectedApplyingJobTitle: action.title,
       };
     case "EMPLOYER_APPLICANTS_RESET":
       return {
         ...state,
-        selectedApplyingJob: null,
+        selectedApplyingJobId: null,
+        selectedApplyingJobTitle: null,
         applicantsList: [],
         totalApplicants: 0,
         currentApplicantsPage: 0,

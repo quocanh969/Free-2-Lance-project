@@ -339,10 +339,11 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
   }
 };
 
-export const selectJobApplying = (jobId) => {
+export const selectJobApplying = (jobId, title) => {
   return {
     type: "EMPLOYER_SELECT_JOB_APPLYING",
     jobId,
+    title,
   };
 };
 

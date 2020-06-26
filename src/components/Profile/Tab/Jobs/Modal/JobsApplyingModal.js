@@ -62,8 +62,8 @@ class JobsApplyingModalComponent extends Component {
   loadApplicantListFunc(page) {
     let { onLoadApplicants } = this.props;
 
-    let { selectedApplyingJob } = this.props.EmployerReducer;
-    onLoadApplicants(selectedApplyingJob, page, takenApplicantsPerPage);
+    let { selectedApplyingJobId } = this.props.EmployerReducer;
+    onLoadApplicants(selectedApplyingJobId, page, takenApplicantsPerPage);
   }
 
   acceptApplicant(userId, email) {
@@ -77,9 +77,17 @@ class JobsApplyingModalComponent extends Component {
       cancelButtonText: "Hủy bỏ",
     }).then((result) => {
       if (result.value) {
-        let { selectedApplyingJob } = this.props.EmployerReducer;
+        let {
+          selectedApplyingJobId,
+          selectedApplyingJobTitle,
+        } = this.props.EmployerReducer;
         let { onSendAcceptApplicant } = this.props;
-        onSendAcceptApplicant(selectedApplyingJob, userId, email, "Job_title");
+        onSendAcceptApplicant(
+          selectedApplyingJobId,
+          userId,
+          email,
+          selectedApplyingJobTitle
+        );
       }
     });
   }
@@ -95,9 +103,17 @@ class JobsApplyingModalComponent extends Component {
       cancelButtonText: "Hủy bỏ",
     }).then((result) => {
       if (result.value) {
-        let { selectedApplyingJob } = this.props.EmployerReducer;
+        let {
+          selectedApplyingJobId,
+          selectedApplyingJobTitle,
+        } = this.props.EmployerReducer;
         let { onSendRejectApplicant } = this.props;
-        onSendRejectApplicant(selectedApplyingJob, userId, email, "Job_title");
+        onSendRejectApplicant(
+          selectedApplyingJobId,
+          userId,
+          email,
+          selectedApplyingJobTitle
+        );
       }
     });
   }
