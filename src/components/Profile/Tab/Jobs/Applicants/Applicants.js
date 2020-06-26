@@ -63,7 +63,7 @@ class ApplicantsComponent extends Component {
     let { onLoadApplicants } = this.props;
 
     let { selectedApplyingJob } = this.props.EmployerReducer;
-    onLoadApplicants(selectedApplyingJob, page, takenApplicantsPerPage,4);
+    onLoadApplicants(selectedApplyingJob, page, takenApplicantsPerPage,0);
   }
 
   acceptApplicant(userId,email) {

@@ -62,7 +62,7 @@ class JobsApplyingComponent extends Component {
   showApplicantsList(jobId) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
     onSelectJobApplying(jobId);
-    onLoadApplicants(jobId, 1, takenApplicantsPerPage,4);
+    onLoadApplicants(jobId, 1, takenApplicantsPerPage,0);
   }
 
   generateListJobs() {
