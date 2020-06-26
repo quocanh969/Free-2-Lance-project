@@ -14,8 +14,8 @@ import {
 } from "../../../../ultis/SHelper/helperFunctions";
 import { history } from "../../../../ultis/history/history";
 import Swal from "sweetalert2";
-import Apllicants from "./Applicants/Applicants";
-import { takenApplicantsPerPage } from "./Applicants/Applicants";
+import Apllicants from "./Modal/JobsApplyingModal";
+import { takenApplicantsPerPage } from "./Modal/JobsApplyingModal";
 class JobsApplyingComponent extends Component {
   constructor(props) {
     super(props);

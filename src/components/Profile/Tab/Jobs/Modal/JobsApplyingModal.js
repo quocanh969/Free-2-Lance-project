@@ -13,7 +13,7 @@ import {
 import Swal from "sweetalert2";
 
 export const takenApplicantsPerPage = 3;
-class ApplicantsComponent extends Component {
+class JobsApplyingModalComponent extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
@@ -324,7 +324,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const Applicants = withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ApplicantsComponent)
+const JobsApplyingModal = withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(JobsApplyingModalComponent)
 );
-export default Applicants;
+export default JobsApplyingModal;
