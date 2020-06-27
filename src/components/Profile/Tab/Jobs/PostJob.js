@@ -151,9 +151,8 @@ class PostJobComponent extends Component {
     let endDate = document.getElementById("endDateSelector").value;
 
     if (
-      (jobTopicValue === 1 &&
-        (startDate >= endDate || startDate <= exprValue)) ||
-      (jobTopicValue === 2 && endDate <= exprValue)
+      (jobTypeValue == 1 && (startDate >= endDate || startDate <= exprValue)) ||
+      (jobTypeValue == 2 && endDate <= exprValue)
     ) {
       dateViolation = 0;
     }
@@ -192,15 +191,15 @@ class PostJobComponent extends Component {
         alertString += "Vui lòng nhập đủ các thông tin cần thiết!\n";
       }
       if (dateViolation === 0) {
-        if (jobTopicValue === 1 && startDate >= endDate) {
+        if (jobTypeValue == 1 && startDate >= endDate) {
           alertString +=
             "Ngày kết thúc phải cách ngày bắt đầu 1 ngày. Vui lòng sửa lại!\n";
         }
-        if (jobTopicValue === 1 && exprValue >= startDate) {
+        if (jobTypeValue == 1 && exprValue >= startDate) {
           alertString +=
             "Công việc bắt đầu trước khi hết đợt tuyểt, vui lòng sửa lại!\n";
         }
-        if (jobTopicValue === 2 && exprValue <= endDate) {
+        if (jobTypeValue == 2 && exprValue >= endDate) {
           alertString +=
             "Công việc kết trước khi hết đợt tuyểt, vui lòng sửa lại!\n";
         }
