@@ -447,7 +447,7 @@ class JobDetailComponent extends Component {
                         </li>
                         <li>
                           <i className="icon-material-outline-access-time" />
-                          <span>Ngày đăng</span>
+                          <span>Đã đăng</span>
                           <h5>{prettierDateAgo(jobDetail.post_date)}</h5>
                         </li>
                       </ul>

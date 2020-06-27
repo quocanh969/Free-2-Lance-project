@@ -22,6 +22,11 @@ const initState = {
   finishedJobsList: [],
   totalFinishedJobs: 0,
   currentFinishedPage: 0,
+  // for list applicants of done job list
+  selectedDoneJobId: null,
+  doneApplicantsList: [],
+  totalDoneApplicants: 0,
+  currentDoneApplicantsPage: 0,
 };
 
 const EmployerReducer = (state = initState, action) => {
@@ -112,6 +117,26 @@ const EmployerReducer = (state = initState, action) => {
         finishedJobsList: [],
         totalFinishedJobs: 0,
         currentFinishedPage: 0,
+      };
+    case "EMPLOYER_DONE_APPLICANTS_UPDATE":
+      return {
+        ...state,
+        doneApplicantsList: action.applicantsList,
+        totalDoneApplicants: action.total,
+        currentDoneApplicantsPage: action.page,
+      };
+    case "EMPLOYER_SELECT_JOB_DONE":
+      return {
+        ...state,
+        selectedDoneJobId: action.jobId,
+      };
+    case "EMPLOYER_DONE_APPLICANTS_RESET":
+      return {
+        ...state,
+        selectedDoneJobId: null,
+        doneApplicantsList: [],
+        totalDoneApplicants: 0,
+        currentDoneApplicantsPage: 0,
       };
     default:
       return state;

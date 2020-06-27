@@ -444,3 +444,39 @@ export const selectJobDoing = (jobId) => {
   };
 };
 //#endregion doing job for employer
+
+//#region done job for employer
+export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
+  return (dispatch) => {
+    getApplicantsByJobId(jobId, page, take, 2)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.applicantsList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(applicantsList, page, total) {
+    return {
+      type: "EMPLOYER_DONE_APPLICANTS_UPDATE",
+      applicantsList,
+      total,
+      page,
+    };
+  }
+};
+
+export const selectJobDone = (jobId) => {
+  return {
+    type: "EMPLOYER_SELECT_JOB_DONE",
+    jobId,
+  };
+};
+//#endregion done job for employer

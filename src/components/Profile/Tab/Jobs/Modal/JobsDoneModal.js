@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadDoingApplicantsForEmployer } from "../../../../../actions/Job";
+import { loadDoneApplicantsForEmployer } from "../../../../../actions/Job";
 import {
   prettierNumber,
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
 
-export const takenDoingApplicantsPerPage = 3;
-class JobsDoingModalComponent extends Component {
+export const takenDoneApplicantsPerPage = 3;
+class JobsDoneModalComponent extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
 
   handlePagination(pageNum) {
-    if (pageNum !== this.props.EmployerReducer.currentDoingApplicantsPage) {
+    if (pageNum !== this.props.EmployerReducer.currentDoneApplicantsPage) {
       this.loadApplicantListFunc(pageNum);
     }
   }
@@ -58,8 +58,8 @@ class JobsDoingModalComponent extends Component {
   loadApplicantListFunc(page) {
     let { onLoadApplicants } = this.props;
 
-    let { selectedDoingJobId } = this.props.EmployerReducer;
-    onLoadApplicants(selectedDoingJobId, page, takenDoingApplicantsPerPage);
+    let { selectedDoneJobId } = this.props.EmployerReducer;
+    onLoadApplicants(selectedDoneJobId, page, takenDoneApplicantsPerPage);
   }
 
   viewApplicantCV(attachment) {
@@ -97,11 +97,11 @@ class JobsDoingModalComponent extends Component {
   }
 
   generateApplicantsList() {
-    let { doingApplicantsList } = this.props.EmployerReducer;
+    let { doneApplicantsList } = this.props.EmployerReducer;
     let content = [];
 
-    if (doingApplicantsList.length > 0) {
-      doingApplicantsList.forEach((e, index) => {
+    if (doneApplicantsList.length > 0) {
+      doneApplicantsList.forEach((e, index) => {
         content.push(
           <li key={index}>
             {/* Infomation */}
@@ -134,6 +134,9 @@ class JobsDoingModalComponent extends Component {
 
             {/* Buttons */}
             <div className="container text-right">
+              <span className="btn mx-2 py-2 px-4 bg-warning rounded">
+                <i className="icon-material-outline-speaker-notes" /> Phản hồi
+              </span>
               <span
                 onClick={() => this.viewApplicantInfo(e.id_user)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
@@ -166,16 +169,14 @@ class JobsDoingModalComponent extends Component {
 
   render() {
     let {
-      totalDoingApplicants,
-      currentDoingApplicantsPage,
+      totalDoneApplicants,
+      currentDoneApplicantsPage,
     } = this.props.EmployerReducer;
-    let totalPage = Math.ceil(
-      totalDoingApplicants / takenDoingApplicantsPerPage
-    );
+    let totalPage = Math.ceil(totalDoneApplicants / takenDoneApplicantsPerPage);
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h4 className="modal-title">Xem thông tin người làm</h4>
+          <h4 className="modal-title">Xem danh sách người làm</h4>
           <button
             id="btnCloseApplyForm"
             type="button"
@@ -203,7 +204,7 @@ class JobsDoingModalComponent extends Component {
                 </div>
               </div>
 
-              {totalDoingApplicants === 0 ? (
+              {totalDoneApplicants === 0 ? (
                 ""
               ) : (
                 <div className="pagination-container margin-top-20">
@@ -212,8 +213,8 @@ class JobsDoingModalComponent extends Component {
                       <li
                         className={
                           "pagination-arrow " +
-                          ((currentDoingApplicantsPage === 1 ||
-                            totalPage - currentDoingApplicantsPage < 3) &&
+                          ((currentDoneApplicantsPage === 1 ||
+                            totalPage - currentDoneApplicantsPage < 3) &&
                             "d-none")
                         }
                       >
@@ -221,7 +222,7 @@ class JobsDoingModalComponent extends Component {
                           className="cursor-pointer"
                           onClick={() => {
                             this.handlePagination(
-                              currentDoingApplicantsPage - 1
+                              currentDoneApplicantsPage - 1
                             );
                           }}
                         >
@@ -229,13 +230,13 @@ class JobsDoingModalComponent extends Component {
                         </div>
                       </li>
                       {this.renderPagination(
-                        currentDoingApplicantsPage,
+                        currentDoneApplicantsPage,
                         totalPage
                       )}
                       <li
                         className={
                           "pagination-arrow " +
-                          (totalPage - currentDoingApplicantsPage < 3 &&
+                          (totalPage - currentDoneApplicantsPage < 3 &&
                             "d-none")
                         }
                       >
@@ -243,7 +244,7 @@ class JobsDoingModalComponent extends Component {
                           className="cursor-pointer"
                           onClick={() => {
                             this.handlePagination(
-                              currentDoingApplicantsPage + 1
+                              currentDoneApplicantsPage + 1
                             );
                           }}
                         >
@@ -274,12 +275,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoadApplicants: (jobId, page, take) => {
-      dispatch(loadDoingApplicantsForEmployer(jobId, page, take));
+      dispatch(loadDoneApplicantsForEmployer(jobId, page, take));
     },
   };
 };
 
-const JobsDoingModal = withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(JobsDoingModalComponent)
+const JobsDoneModal = withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(JobsDoneModalComponent)
 );
-export default JobsDoingModal;
+export default JobsDoneModal;
