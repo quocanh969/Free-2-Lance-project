@@ -10,10 +10,12 @@ import {
   getApplicantsByJobId,
   doSendAcceptApplicant,
   doSendRejectApplicant,
+  doEndJob,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
 
+//#region load job
 export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
     getJobsList(page, take, isASC, query)
@@ -202,7 +204,9 @@ export const loadFinishedJobsForApplicant = (page, take, isASC) => {
     };
   }
 };
+//#endregion load job
 
+//#region load job detail
 export const loadJobDetail = (jobId) => {
   return (dispatch) => {
     getJobsDetail(jobId)
@@ -296,10 +300,14 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
   };
 };
 
-export const cancelRecruit = (jobId) => {
+//#endregion load job detail
+
+//#region applying job for employer
+export const cancelRecruit = (jobId, page, take, isASC) => {
   return (dispatch) => {
     doCancelRecruit(jobId)
       .then((res) => {
+        dispatch(loadApplyingJobsForEmployer(page, take, isASC));
         Swal.fire(
           "Thành công!",
           "Công việc của bạn đã được ngừng tuyển",
@@ -331,7 +339,7 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
 
   function success(applicantsList, page, total) {
     return {
-      type: "EMPLOYER_APPLICANTS_UPDATE",
+      type: "EMPLOYER_APPLYING_APPLICANTS_UPDATE",
       applicantsList,
       total,
       page,
@@ -386,3 +394,53 @@ export const sendRejectApplicant = (
       });
   };
 };
+//#endregion applying job for employer
+
+//#region doing job for employer
+export const endJob = (jobId, title, page, take, isASC) => {
+  return (dispatch) => {
+    doEndJob(jobId, title)
+      .then((res) => {
+        dispatch(loadProcessingJobsForEmployer(page, take, isASC));
+        Swal.fire("Thành công!", "Công việc của bạn đã kết thúc", "success");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
+  return (dispatch) => {
+    getApplicantsByJobId(jobId, page, take, 2)
+      .then((res) => {
+        dispatch(
+          success(
+            res.data.data.applicantsList,
+            res.data.data.page,
+            res.data.data.total
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(applicantsList, page, total) {
+    return {
+      type: "EMPLOYER_DOING_APPLICANTS_UPDATE",
+      applicantsList,
+      total,
+      page,
+    };
+  }
+};
+
+export const selectJobDoing = (jobId) => {
+  return {
+    type: "EMPLOYER_SELECT_JOB_DOING",
+    jobId,
+  };
+};
+//#endregion doing job for employer

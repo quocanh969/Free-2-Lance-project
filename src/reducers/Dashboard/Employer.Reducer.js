@@ -13,6 +13,11 @@ const initState = {
   processingJobsList: [],
   totalProcessingJobs: 0,
   currentProcessingPage: 0,
+  // for list applicants of doing job list
+  selectedDoingJobId: null,
+  doingApplicantsList: [],
+  totalDoingApplicants: 0,
+  currentDoingApplicantsPage: 0,
   // =====
   finishedJobsList: [],
   totalFinishedJobs: 0,
@@ -21,6 +26,7 @@ const initState = {
 
 const EmployerReducer = (state = initState, action) => {
   switch (action.type) {
+    // applying job cases
     case "EMPLOYER_APPLYING_JOBS_UPDATE":
       return {
         ...state,
@@ -35,7 +41,7 @@ const EmployerReducer = (state = initState, action) => {
         totalApplyingJobs: 0,
         currentApplyingPage: 0,
       };
-    case "EMPLOYER_APPLICANTS_UPDATE":
+    case "EMPLOYER_APPLYING_APPLICANTS_UPDATE":
       return {
         ...state,
         applicantsList: action.applicantsList,
@@ -48,7 +54,7 @@ const EmployerReducer = (state = initState, action) => {
         selectedApplyingJobId: action.jobId,
         selectedApplyingJobTitle: action.title,
       };
-    case "EMPLOYER_APPLICANTS_RESET":
+    case "EMPLOYER_APPLYING_APPLICANTS_RESET":
       return {
         ...state,
         selectedApplyingJobId: null,
@@ -57,6 +63,7 @@ const EmployerReducer = (state = initState, action) => {
         totalApplicants: 0,
         currentApplicantsPage: 0,
       };
+    // doing job cases
     case "EMPLOYER_PROCESSING_JOBS_UPDATE":
       return {
         ...state,
@@ -71,6 +78,27 @@ const EmployerReducer = (state = initState, action) => {
         totalProcessingJobs: 0,
         currentProcessingPage: 0,
       };
+    case "EMPLOYER_DOING_APPLICANTS_UPDATE":
+      return {
+        ...state,
+        doingApplicantsList: action.applicantsList,
+        totalDoingApplicants: action.total,
+        currentDoingApplicantsPage: action.page,
+      };
+    case "EMPLOYER_SELECT_JOB_DOING":
+      return {
+        ...state,
+        selectedDoingJobId: action.jobId,
+      };
+    case "EMPLOYER_DOING_APPLICANTS_RESET":
+      return {
+        ...state,
+        selectedDoingJobId: null,
+        doingApplicantsList: [],
+        totalDoingApplicants: 0,
+        currentDoingApplicantsPage: 0,
+      };
+    // done job cases
     case "EMPLOYER_FINISHED_JOBS_UPDATE":
       return {
         ...state,

@@ -92,7 +92,7 @@ function getJobsForApplicant(page, take, isASC, status) {
 function getTags() {
   return axios.get("/getAllTags");
 }
-
+//#region Job detail
 function getJobsDetail(id) {
   return axios.get("/getJobById/" + id);
 }
@@ -122,7 +122,9 @@ function doApplyJob(id_user, id_job, proposed_price, attachment) {
     attachment,
   });
 }
+//#endregion Job detail
 
+//#region dashboard job for employer
 function doCancelRecruit(id_job) {
   return axios.post("/jobs/cancelRecruit", {
     id_job,
@@ -156,6 +158,14 @@ function doSendRejectApplicant(id_job, id_user, email, job_title) {
   });
 }
 
+function doEndJob(id_job, job_title) {
+  return axios.post("/jobs/finishJob", {
+    id_job,
+    job_title,
+  });
+}
+//#endregion dashboard job for employer
+
 export {
   postJob,
   getAllTopics,
@@ -171,4 +181,5 @@ export {
   getApplicantsByJobId,
   doSendAcceptApplicant,
   doSendRejectApplicant,
+  doEndJob,
 };
