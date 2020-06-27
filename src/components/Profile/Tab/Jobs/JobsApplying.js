@@ -55,7 +55,8 @@ class JobsApplyingComponent extends Component {
     }).then((result) => {
       if (result.value) {
         let { onCancelRecruit } = this.props;
-        onCancelRecruit(jobId);
+        let { currentApplyingPage } = this.props.EmployerReducer;
+        onCancelRecruit(jobId, currentApplyingPage, 4, 0);
       }
     });
   }
@@ -354,8 +355,8 @@ const mapDispatchToProps = (dispatch) => {
     onLoadApplyingJob: (page, take, isASC) => {
       dispatch(loadApplyingJobsForEmployer(page, take, isASC));
     },
-    onCancelRecruit: (jobId) => {
-      dispatch(cancelRecruit(jobId));
+    onCancelRecruit: (jobId, page, take, isASC) => {
+      dispatch(cancelRecruit(jobId, page, take, isASC));
     },
     onSelectJobApplying: (jobId, title) => {
       dispatch(selectJobApplying(jobId, title));
