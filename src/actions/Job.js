@@ -384,7 +384,7 @@ const GetResultTransactions = (
               console.log(err);
             });
         } else {
-          setTimeout(
+          setTimeout(() => {
             dispatch(
               GetResultTransactions(
                 jobId,
@@ -396,9 +396,8 @@ const GetResultTransactions = (
                 jobPage,
                 take
               )
-            ),
-            10000
-          );
+            );
+          }, 3000);
         }
       })
       .catch((err) => {
