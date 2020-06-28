@@ -24,7 +24,7 @@ class ReportFormConponent extends Component {
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h4 className="modal-title">Báo cáo người dùng</h4>
+          <h4 className="modal-title">Báo cáo người làm</h4>
           <button
             id="btnCloseReportForm"
             type="button"
@@ -72,7 +72,7 @@ class ReportFormConponent extends Component {
                   type="submit"
                   form="report-now-form"
                 >
-                  Báo cáo người dùng{" "}
+                  Báo cáo người làm{" "}
                   <i className="icon-material-outline-arrow-right-alt" />
                 </button>
               </div>

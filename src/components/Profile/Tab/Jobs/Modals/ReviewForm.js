@@ -40,7 +40,7 @@ class ReviewFormConponent extends Component {
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h4 className="modal-title">Đánh giá người dùng</h4>
+          <h4 className="modal-title">Đánh giá người làm</h4>
           <button
             id="btnCloseReviewForm"
             type="button"
@@ -101,7 +101,7 @@ class ReviewFormConponent extends Component {
                   type="submit"
                   form="review-now-form"
                 >
-                  Đánh giá người dùng{" "}
+                  Đánh giá người làm{" "}
                   <i className="icon-material-outline-arrow-right-alt" />
                 </button>
               </div>
