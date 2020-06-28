@@ -361,12 +361,14 @@ export const sendAcceptApplicant = (
   email,
   job_title,
   page,
+  jobPage,
   take
 ) => {
   return (dispatch) => {
     doSendAcceptApplicant(jobId, userId, email, job_title)
       .then((res) => {
         dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+        dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
         Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
       })
       .catch((err) => {
@@ -381,12 +383,14 @@ export const sendRejectApplicant = (
   email,
   job_title,
   page,
+  jobPage,
   take
 ) => {
   return (dispatch) => {
     doSendRejectApplicant(jobId, userId, email, job_title)
       .then((res) => {
         dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+        dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
         Swal.fire("Thành công!", "Đã Từ chối ứng viên!!", "success");
       })
       .catch((err) => {

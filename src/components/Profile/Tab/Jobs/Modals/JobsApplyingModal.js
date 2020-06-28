@@ -85,6 +85,7 @@ class JobsApplyingModalComponent extends Component {
           selectedApplyingJobId,
           selectedApplyingJobTitle,
           currentApplicantsPage,
+          currentApplyingPage,
         } = this.props.EmployerReducer;
         let { onSendAcceptApplicant } = this.props;
         onSendAcceptApplicant(
@@ -93,6 +94,7 @@ class JobsApplyingModalComponent extends Component {
           email,
           selectedApplyingJobTitle,
           currentApplicantsPage,
+          currentApplyingPage,
           takenApplyingApplicantsPerPage
         );
       }
@@ -114,6 +116,7 @@ class JobsApplyingModalComponent extends Component {
           selectedApplyingJobId,
           selectedApplyingJobTitle,
           currentApplicantsPage,
+          currentApplyingPage,
         } = this.props.EmployerReducer;
         let { onSendRejectApplicant } = this.props;
         onSendRejectApplicant(
@@ -122,6 +125,7 @@ class JobsApplyingModalComponent extends Component {
           email,
           selectedApplyingJobTitle,
           currentApplicantsPage,
+          currentApplyingPage,
           takenApplyingApplicantsPerPage
         );
       }
@@ -342,14 +346,46 @@ const mapDispatchToProps = (dispatch) => {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
     },
-    onSendAcceptApplicant: (jobId, userId, email, job_title, page, take) => {
+    onSendAcceptApplicant: (
+      jobId,
+      userId,
+      email,
+      job_title,
+      page,
+      jobPage,
+      take
+    ) => {
       dispatch(
-        sendAcceptApplicant(jobId, userId, email, job_title, page, take)
+        sendAcceptApplicant(
+          jobId,
+          userId,
+          email,
+          job_title,
+          page,
+          jobPage,
+          take
+        )
       );
     },
-    onSendRejectApplicant: (jobId, userId, email, job_title, page, take) => {
+    onSendRejectApplicant: (
+      jobId,
+      userId,
+      email,
+      job_title,
+      page,
+      jobPage,
+      take
+    ) => {
       dispatch(
-        sendRejectApplicant(jobId, userId, email, job_title, page, take)
+        sendRejectApplicant(
+          jobId,
+          userId,
+          email,
+          job_title,
+          page,
+          jobPage,
+          take
+        )
       );
     },
   };

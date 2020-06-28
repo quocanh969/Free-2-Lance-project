@@ -13,8 +13,8 @@ import {
   prettierNumber,
 } from "../../../../ultis/SHelper/helperFunctions";
 import { history } from "../../../../ultis/history/history";
-import JobsDoneModal from "./Modal/JobsDoneModal";
-import { takenDoneApplicantsPerPage } from "./Modal/JobsDoneModal";
+import JobsDoneModal from "./Modals/JobsDoneModal";
+import { takenDoneApplicantsPerPage } from "./Modals/JobsDoneModal";
 
 class JobsDoneComponent extends Component {
   constructor(props) {
