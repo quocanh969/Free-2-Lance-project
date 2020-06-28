@@ -89,7 +89,8 @@ class JobsApplyingComponent extends Component {
                             <span className='btn mx-2 py-2 px-4 bg-293FE4 text-white rounded'><i className='icon-material-outline-supervisor-account'></i> Ứng viên đăng ký: {e.candidates}</span>
                             <span className='btn mx-2 py-2 px-4 bg-silver rounded' onClick={() => { history.push(`/job-detail/${e.id_job}`) }}><i className="icon-line-awesome-clone" /> Xem chi tiết công việc</span>
                             {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
-                            <span className='btn mx-2 py-2 px-4 bg-danger text-white rounded'><i className="icon-line-awesome-hand-stop-o" /> Ngừng tuyển</span>
+                            {( e.expire_date < new Date() ? <span className='btn mx-2 py-2 px-4 bg-danger text-white rounded'><i className="icon-line-awesome-hand-stop-o" /> Ngừng tuyển</span> : <span className='btn mx-2 py-2 px-4 bg-danger text-white rounded'><i className="icon-line-awesome-hand-stop-o" /> Xủ lý hết hạn</span>)}
+                            
                         </div>
                     </li>
                 );
