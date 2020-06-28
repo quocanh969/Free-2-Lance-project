@@ -15,6 +15,7 @@ const initState = {
   currentProcessingPage: 0,
   // for list applicants of doing job list
   selectedDoingJobId: null,
+  selectedReportedUser: null,
   doingApplicantsList: [],
   totalDoingApplicants: 0,
   currentDoingApplicantsPage: 0,
@@ -95,10 +96,16 @@ const EmployerReducer = (state = initState, action) => {
         ...state,
         selectedDoingJobId: action.jobId,
       };
+    case "EMPLOYER_SELECT_REPORTED_USER":
+      return {
+        ...state,
+        selectedReportedUser: action.userId,
+      };
     case "EMPLOYER_DOING_APPLICANTS_RESET":
       return {
         ...state,
         selectedDoingJobId: null,
+        selectedReportedUser: null,
         doingApplicantsList: [],
         totalDoingApplicants: 0,
         currentDoingApplicantsPage: 0,

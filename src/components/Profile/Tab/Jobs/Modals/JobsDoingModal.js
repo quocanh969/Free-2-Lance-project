@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadDoingApplicantsForEmployer } from "../../../../../actions/Job";
+import {
+  loadDoingApplicantsForEmployer,
+  selectReportedUser,
+} from "../../../../../actions/Job";
 import {
   prettierNumber,
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
+import ReportForm from "./ReportForm";
 
 export const takenDoingApplicantsPerPage = 3;
 class JobsDoingModalComponent extends Component {
@@ -96,6 +100,11 @@ class JobsDoingModalComponent extends Component {
     window.open(url);
   }
 
+  reportEmployee(userId) {
+    let { onSelectReportedUser } = this.props;
+    onSelectReportedUser(userId);
+  }
+
   generateApplicantsList() {
     let { doingApplicantsList } = this.props.EmployerReducer;
     let content = [];
@@ -148,6 +157,14 @@ class JobsDoingModalComponent extends Component {
                 onClick={() => this.viewApplicantCV(e.attachment)}
               >
                 <i className="icon-line-awesome-clone" /> Xem CV
+              </span>
+              <span
+                data-toggle="modal"
+                data-target="#reportModal"
+                onClick={() => this.reportEmployee(e.id_user)}
+                className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
+              >
+                <i className="icon-line-awesome-hand-stop-o" /> Báo cáo
               </span>
             </div>
           </li>
@@ -260,6 +277,11 @@ class JobsDoingModalComponent extends Component {
         <div id="CVModal" className="modal fade" role="dialog">
           <div id="cv-modal-dialog" className="modal-dialog modal-xl"></div>
         </div>
+        <div id="reportModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <ReportForm></ReportForm>
+          </div>
+        </div>
       </div>
     );
   }
@@ -275,6 +297,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadDoingApplicantsForEmployer(jobId, page, take));
+    },
+    onSelectReportedUser: (userId) => {
+      dispatch(selectReportedUser(userId));
     },
   };
 };

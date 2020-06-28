@@ -164,6 +164,15 @@ function doEndJob(id_job, job_title) {
     job_title,
   });
 }
+
+function doReportUser(content, reporterId, yourRole) {
+  return axios.post("/users/addReport", {
+    content,
+    reporterId,
+    yourRole,
+  });
+}
+
 //#endregion dashboard job for employer
 
 export {
@@ -182,4 +191,5 @@ export {
   doSendAcceptApplicant,
   doSendRejectApplicant,
   doEndJob,
+  doReportUser,
 };

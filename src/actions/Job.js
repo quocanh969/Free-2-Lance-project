@@ -11,6 +11,7 @@ import {
   doSendAcceptApplicant,
   doSendRejectApplicant,
   doEndJob,
+  doReportUser,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
@@ -445,6 +446,35 @@ export const selectJobDoing = (jobId) => {
   return {
     type: "EMPLOYER_SELECT_JOB_DOING",
     jobId,
+  };
+};
+
+export const selectReportedUser = (userId) => {
+  return {
+    type: "EMPLOYER_SELECT_REPORTED_USER",
+    userId,
+  };
+};
+
+export const reportUser = (content, reporterId, role) => {
+  return (dispatch) => {
+    doReportUser(content, reporterId, role)
+      .then((res) => {
+        Swal.fire({
+          title: "Báo cáo người dùng thành công",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        //show error;
+        Swal.fire({
+          title: "Đã xảy ra lỗi, vui lòng thử lại sau",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
   };
 };
 //#endregion doing job for employer
