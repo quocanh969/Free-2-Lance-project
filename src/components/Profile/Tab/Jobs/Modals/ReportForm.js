@@ -29,7 +29,11 @@ class ReportFormConponent extends Component {
             id="btnCloseReportForm"
             type="button"
             className="close"
-            data-dismiss="modal"
+            data-toggle="modal"
+            data-target="#reportModal"
+            onClick={() => {
+              document.getElementById("content-report-form").value = "";
+            }}
           >
             &times;
           </button>
