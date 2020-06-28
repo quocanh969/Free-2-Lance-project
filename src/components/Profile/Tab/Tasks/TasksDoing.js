@@ -31,7 +31,7 @@ class TasksDoingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentProcessingPage) {
-      this.loadJobListFunc(pageNum);
+      this.loadJobList(pageNum);
     }
   }
 

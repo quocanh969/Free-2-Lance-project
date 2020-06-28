@@ -16,6 +16,7 @@ import {
   doReportUser,
   doReviewEmployee,
   doStopApply,
+  doReviewEmployer,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
@@ -600,7 +601,7 @@ export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
     doReviewEmployee(applicantId, jobId, feedback, rating)
       .then((res) => {
         Swal.fire({
-          title: "Báo cáo người dùng thành công",
+          title: "Báo cáo người làm thành công",
           icon: "success",
           confirmButtonText: "OK",
         });
@@ -643,10 +644,33 @@ export const selectReportedEmployer = (userId) => {
   };
 };
 
-export const selectReviewEmployer = (applicantId) => {
+export const selectReviewEmployer = (applicantId, jobId) => {
   return {
     type: "APPLICANT_SELECT_REVIEW_USER",
     applicantId,
+    jobId,
+  };
+};
+
+export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
+  return (dispatch) => {
+    doReviewEmployer(applicantId, jobId, feedback, rating)
+      .then((res) => {
+        Swal.fire({
+          title: "Báo cáo người thuê thành công",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        //show error;
+        Swal.fire({
+          title: "Đã xảy ra lỗi, vui lòng thử lại sau",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
   };
 };
 //#endregion jobs for applicant

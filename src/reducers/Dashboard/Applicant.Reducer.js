@@ -13,6 +13,7 @@ const initState = {
   currentFinishedPage: 0,
 
   selectedReviewApplicantId: null,
+  selectedReviewJobId: null,
   selectedReportedUser: null,
 };
 
@@ -69,6 +70,7 @@ const ApplicantReducer = (state = initState, action) => {
       return {
         ...state,
         selectedReviewApplicantId: action.applicantId,
+        selectedReviewJobId: action.jobId,
       };
     default:
       return state;

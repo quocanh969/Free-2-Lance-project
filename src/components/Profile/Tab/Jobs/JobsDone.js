@@ -31,7 +31,7 @@ class JobsDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentFinishedPage) {
-      this.loadJobListFunc(pageNum);
+      this.loadJobList(pageNum);
     }
   }
 

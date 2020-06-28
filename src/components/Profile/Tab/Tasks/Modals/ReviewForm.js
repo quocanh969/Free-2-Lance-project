@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
-import { reviewEmployee } from "../../../../../actions/Job";
+import { reviewEmployer } from "../../../../../actions/Job";
 import StarRatings from "react-star-ratings";
 
 class ReviewFormConponent extends Component {
@@ -23,10 +23,15 @@ class ReviewFormConponent extends Component {
     let { doReviewUser } = this.props;
     let {
       selectedReviewApplicantId,
-      selectedDoneJobId,
-    } = this.props.EmployerReducer;
+      selectedReviewJobId,
+    } = this.props.ApplicantReducer;
     let { rating } = this.state;
-    doReviewUser(selectedReviewApplicantId, selectedDoneJobId, content, rating);
+    doReviewUser(
+      selectedReviewApplicantId,
+      selectedReviewJobId,
+      content,
+      rating
+    );
     document.getElementById("btnCloseReviewForm").click();
   }
 
@@ -46,7 +51,7 @@ class ReviewFormConponent extends Component {
             type="button"
             className="close"
             data-toggle="modal"
-            data-target="#reviewModal"
+            data-target="#reviewEmployerModal"
             onClick={() => {
               document.getElementById("content-review-form").value = "";
               this.setState({ rating: 1 });
@@ -122,7 +127,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     doReviewUser: (applicantId, jobId, feedback, rating) => {
-      dispatch(reviewEmployee(applicantId, jobId, feedback, rating));
+      dispatch(reviewEmployer(applicantId, jobId, feedback, rating));
     },
   };
 };

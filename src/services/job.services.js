@@ -211,6 +211,20 @@ function doStopApply(id_user, id_job) {
     job_title,
   });
 }
+
+function doReviewEmployer(
+  id_applicant,
+  id_job,
+  feedback_fromEmployee,
+  rating_fromEmployee
+) {
+  return axios.post("/accepted/reviewFromEmployee", {
+    id_applicant,
+    id_job,
+    feedback_fromEmployee,
+    rating_fromEmployee,
+  });
+}
 //#endregion dashboard job for applicant
 
 export {
@@ -234,4 +248,5 @@ export {
   doSendtransferMoneyMomoToF2L,
   doGetResultTransactions,
   doStopApply,
+  doReviewEmployer,
 };
