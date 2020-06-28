@@ -198,6 +198,14 @@ function doReviewEmployee(
     rating_fromEmployer,
   });
 }
+
+function getReviewList(id_job, page, take) {
+  return axios.post("/getReviewListByJobId", {
+    id_job,
+    page,
+    take,
+  });
+}
 //#endregion dashboard job for employer
 
 //#region dashboard job for applicant
@@ -249,4 +257,5 @@ export {
   doGetResultTransactions,
   doStopApply,
   doReviewEmployer,
+  getReviewList,
 };
