@@ -41,8 +41,23 @@ body {
   background-size: cover;
 }
 
+#user-detail-background {
+  background: rgba(0, 0, 0, 0.65)
+    url("./assets/images/Stocksy_txp4d832598Y5W200_Medium_1565047.jpg");
+  background-blend-mode: darken;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 #s-find-job {
   min-height: 100vh;
+}
+
+#myTabContent {
+  border-bottom: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
 }
 
 .dropdown-toggle::after {
