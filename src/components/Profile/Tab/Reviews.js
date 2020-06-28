@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getReviewTaskUserDetail, getReviewJobUserDetail } from '../../../actions/UserDetail';
+import { getImageSrc } from '../../../ultis/SHelper/helperFunctions';
+
+import avatarPlaceholder from '../../../assets/images/portrait_placeholder.png';
 
 class ReviewsComponent extends Component {
     constructor(props) {
@@ -9,10 +13,141 @@ class ReviewsComponent extends Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
+
+        this.loadTaskListFunc(1);
+        this.loadJobListFunc(1);
     }
-    
+
+    // Task
+    loadTaskListFunc(page) {
+        let { onLoadReviewTaskDetailUser } = this.props;
+        let { user } = this.props.HeaderReducer;
+
+        onLoadReviewTaskDetailUser(page, 8, user.id_user);
+    }
+
+    handleTaskPagination(pageNum) {
+        if (pageNum !== this.props.UserDetailReducer.currentTaskPage) {
+            this.loadTaskListFunc(pageNum);
+        }
+    }
+
+    renderTaskPagination(page, totalPage) {
+        let content = [];
+        let start = 1,
+            end = 4;
+        if (totalPage - 4 < page) {
+            if (totalPage - 4 <= 0) {
+                start = 1;
+            } else {
+                start = totalPage - 4;
+            }
+            end = totalPage;
+        } else {
+            start = page;
+            end = page + 3;
+        }
+
+        for (let e = start; e <= end; e++) {
+            content.push(
+                <li className={'page-item ' + (page === e ? "active" : '')} key={e}>
+                    <div
+                        className="page-link cursor-pointer"
+                        onClick={() => {
+                            this.handleTaskPagination(e);
+                        }}
+                    >
+                        {e}
+                    </div>
+                </li>
+            );
+        }
+        return content;
+    }
+
+    // Job
+    loadJobListFunc(page) {
+        let { onLoadReviewJobDetailUser } = this.props;
+        let { user } = this.props.HeaderReducer;
+
+        onLoadReviewJobDetailUser(page, 8, user.id_user);
+    }
+
+    handleJobPagination(pageNum) {
+        if (pageNum !== this.props.UserDetailReducer.currentJobPage) {
+            this.loadJobListFunc(pageNum);
+        }
+    }
+
+    renderJobPagination(page, totalPage) {
+        let content = [];
+        let start = 1,
+            end = 4;
+        if (totalPage - 4 < page) {
+            if (totalPage - 4 <= 0) {
+                start = 1;
+            } else {
+                start = totalPage - 4;
+            }
+            end = totalPage;
+        } else {
+            start = page;
+            end = page + 3;
+        }
+
+        for (let e = start; e <= end; e++) {
+            content.push(
+                <li className={'page-item ' + (page === e ? "active" : '')} key={e}>
+                    <div
+                        className="page-link cursor-pointer"
+                        onClick={() => {
+                            this.handleJobPagination(e);
+                        }}
+                    >
+                        {e}
+                    </div>
+                </li>
+            );
+        }
+        return content;
+    }
+
+
+    renderReview(reviews) {
+        let content = [];
+
+        reviews.forEach((e, index) => {
+            content.push(
+                <li key={index}>
+                    <div className='row mb-2 pb-2 mx-1 border-bottom border-dark'>
+                        <div className='col-3 profile-img'>
+                            <img src={getImageSrc(null, avatarPlaceholder)} style={{ width: '50px', height: '50px' }}></img>
+                        </div>
+
+                        <div className='col-9'>
+                            <h4>{e.title}</h4>
+                            <div className='h5'>{e.fullname}</div>
+                        </div>
+                        <div className='col'>
+                            <div className='h5'>{e.email}</div>
+                            <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployee}/5 <i className="icon-material-outline-star text-warning"></i></div>
+                            <div className='font-weight-bold'>Nội dung phản hồi:</div>
+                            <p>{e.feedback_fromEmployee}</p>
+                        </div>
+                    </div>
+                </li>
+            )
+        })
+
+        return content;
+    }
+
     render() {
+        let { jobs, totalJob, currentJobPage, tasks, totalTask, currentTaskPage } = this.props.UserDetailReducer;
+        let totalTaskPage = Math.ceil(totalTask / 8);
+        let totalJobPage = Math.ceil(totalJob / 8);
+
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
@@ -31,80 +166,35 @@ class ReviewsComponent extends Component {
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
-                                    <li>
-                                        <div>
-                                            {/* Content */}
-                                            <div>
-                                                <h4 className='font-weight-bold'>Hanma Baki</h4>
-                                                <span><span className='font-weight-bold'>Email: </span>hanmabaki@gmail.com</span>
-                                            </div>
-                                            <div><span className='font-weight-bold'>Công việc: </span>Đấm nhau</div>
-                                            <div className='font-weight-bold'>Mô tả công việc:</div>
-                                            <div style={{width: '50vh'}} className='text-truncate'>All is part of a hobby & passion to share music with the community.
-All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time</div>
-                                        </div>
-                                        <div className="btn bg-293FE4 text-white margin-top-20 margin-bottom-10"><i className="icon-material-outline-rate-review" /> Xem chi tiết phản hồi</div>
-                                    </li>
-                                    <li>
-                                        <div className="boxed-list-item">
-                                            {/* Content */}
-                                            <div className="item-content">
-                                                <h4>Adsense Expert</h4>
-                                                <span className="company-not-rated margin-bottom-5">Not Rated</span>
-                                            </div>
-                                        </div>
-                                        <a href="#small-dialog-2" className="popup-with-zoom-anim button ripple-effect margin-top-5 margin-bottom-10"><i className="icon-material-outline-thumb-up" /> Leave a Review</a>
-                                    </li>
-                                    <li>
-                                        <div className="boxed-list-item">
-                                            {/* Content */}
-                                            <div className="item-content">
-                                                <h4>Fix Python Selenium Code</h4>
-                                                <div className="item-details margin-top-10">
-                                                    <div className="star-rating" data-rating={5.0} />
-                                                    <div className="detail-item"><i className="icon-material-outline-date-range" /> May 2018</div>
-                                                </div>
-                                                <div className="item-description">
-                                                    <p>Great clarity in specification and communication. I got payment really fast. Really recommend this employer for his professionalism. I will work for him again with pleasure.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a href="#small-dialog-1" className="popup-with-zoom-anim button gray ripple-effect margin-top-5 margin-bottom-10"><i className="icon-feather-edit" /> Edit Review</a>
-                                    </li>
-                                    <li>
-                                        <div className="boxed-list-item">
-                                            {/* Content */}
-                                            <div className="item-content">
-                                                <h4>PHP Core Website Fixes</h4>
-                                                <div className="item-details margin-top-10">
-                                                    <div className="star-rating" data-rating={5.0} />
-                                                    <div className="detail-item"><i className="icon-material-outline-date-range" /> May 2018</div>
-                                                </div>
-                                                <div className="item-description">
-                                                    <p>Great clarity in specification and communication. I got payment really fast. Really recommend this employer for his professionalism. I will work for him again with pleasure.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a href="#small-dialog-1" className="popup-with-zoom-anim button gray ripple-effect margin-top-5 margin-bottom-10"><i className="icon-feather-edit" /> Edit Review</a>
-                                    </li>
+                                    {this.renderReview(tasks)}
                                 </ul>
                             </div>
                         </div>
-                        {/* Pagination */}
-                        <div className="clearfix" />
-                        <div className="pagination-container margin-top-40 margin-bottom-0">
-                            <nav className="pagination">
-                                <ul>
-                                    <li><a href="#" className="ripple-effect current-page">1</a></li>
-                                    <li><a href="#" className="ripple-effect">2</a></li>
-                                    <li><a href="#" className="ripple-effect">3</a></li>
-                                    <li className="pagination-arrow"><a href="#" className="ripple-effect"><i className="icon-material-outline-keyboard-arrow-right" /></a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div className="clearfix" />
-                        {/* Pagination / End */}
+                        {(
+                            totalTask === 0
+                                ?
+                                ''
+                                :
+                                <nav className='mt-1' aria-label="...">
+                                    <ul className="pagination">
+                                        <li className={"pagination-item " + ((currentTaskPage === 1 || totalTaskPage - currentTaskPage < 3) && "d-none")}>
+                                            <div className="cursor-pointer page-link" onClick={() => { this.handleTaskPagination(currentTaskPage - 1); }}>
+                                                <i className="icon-material-outline-keyboard-arrow-left" />
+                                            </div>
+                                        </li>
+                                        {this.renderTaskPagination(currentTaskPage, totalTaskPage)}
+                                        <li className={"pagination-item " + (totalTaskPage - currentTaskPage < 3 && "d-none")}>
+                                            <div className="cursor-pointer page-link" onClick={() => { this.handleTaskPagination(currentTaskPage + 1); }}>
+                                                <i className="icon-material-outline-keyboard-arrow-right" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                        )}
                     </div>
+
+
+
                     {/* Dashboard Box */}
                     <div className="col-xl-6">
                         <div className="dashboard-box margin-top-0">
@@ -114,35 +204,31 @@ All music used in the creation of this video are the intellectual property of th
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
-                                    <li>
-                                        <div className="boxed-list-item">
-                                            {/* Content */}
-                                            <div className="item-content">
-                                                <h4>Simple Chrome Extension</h4>
-                                                <span className="company-not-rated margin-bottom-5">Not Rated</span>
-                                            </div>
-                                        </div>
-                                        <a href="#small-dialog-2" className="popup-with-zoom-anim button ripple-effect margin-top-5 margin-bottom-10"><i className="icon-material-outline-thumb-up" /> Leave a Review</a>
-                                    </li>
-                                    <li>
-                                        <div className="boxed-list-item">
-                                            {/* Content */}
-                                            <div className="item-content">
-                                                <h4>Help Fix Laravel PHP issue</h4>
-                                                <div className="item-details margin-top-10">
-                                                    <div className="star-rating" data-rating={5.0} />
-                                                    <div className="detail-item"><i className="icon-material-outline-date-range" /> August 2018</div>
-                                                </div>
-                                                <div className="item-description">
-                                                    <p>Excellent programmer - helped me fixing small issue.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a href="#small-dialog-1" className="popup-with-zoom-anim button gray ripple-effect margin-top-5 margin-bottom-10"><i className="icon-feather-edit" /> Edit Review</a>
-                                    </li>
+                                    {this.renderReview(jobs)}
                                 </ul>
                             </div>
                         </div>
+                        {(
+                            totalJob === 0
+                                ?
+                                ''
+                                :
+                                <nav className='mt-1' aria-label="...">
+                                    <ul className="pagination">
+                                        <li className={"pagination-item " + ((currentJobPage === 1 || totalJobPage - currentJobPage < 3) && "d-none")}>
+                                            <div className="cursor-pointer page-link" onClick={() => { this.handleJobPagination(currentJobPage - 1); }}>
+                                                <i className="icon-material-outline-keyboard-arrow-left" />
+                                            </div>
+                                        </li>
+                                        {this.renderJobPagination(currentJobPage, totalJobPage)}
+                                        <li className={"pagination-item " + (totalJobPage - currentJobPage < 3 && "d-none")}>
+                                            <div className="cursor-pointer page-link" onClick={() => { this.handleJobPagination(currentJobPage + 1); }}>
+                                                <i className="icon-material-outline-keyboard-arrow-right" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                        )}
                     </div>
                 </div>
                 {/* Row / End */}
@@ -159,7 +245,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onLoadReviewTaskDetailUser: (page, take, employee) => {
+            dispatch(getReviewTaskUserDetail(page, take, employee));
+        },
+        onLoadReviewJobDetailUser: (page, take, employer) => {
+            dispatch(getReviewJobUserDetail(page, take, employer));
+        },
     }
 }
 
