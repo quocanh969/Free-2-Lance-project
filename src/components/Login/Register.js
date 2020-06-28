@@ -37,6 +37,7 @@ class RegisterComponent extends Component {
   //   console.log(role);
   // };
   render() {
+    let { step } = this.props.RegisterReducer;
     return (
       <div>
         {/* Titlebar ================================================== */}
@@ -44,14 +45,14 @@ class RegisterComponent extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h2>Register</h2>
+                <h2>Đăng kí</h2>
                 {/* Breadcrumbs */}
                 <nav id="breadcrumbs" className="dark">
                   <ul>
                     <li>
-                      <NavLink to="/">Home</NavLink>
+                      <NavLink to="/">Trang chủ</NavLink>
                     </li>
-                    <li>Register</li>
+                    <li>Đăng kí</li>
                   </ul>
                 </nav>
               </div>
@@ -65,13 +66,14 @@ class RegisterComponent extends Component {
               <div className="login-register-page">
                 {/* Welcome Text */}
                 <div className="welcome-text">
-                  <h3 style={{ fontSize: "26px" }}>
-                    Let's create your account!
-                  </h3>
+                  <h3 style={{ fontSize: "26px" }}>Hãy tạo 1 tài khoản!!</h3>
                   <span>
-                    Already have an account?{" "}
-                    <NavLink to="/login">Log In!</NavLink>
+                    Bạn đã có tài khoản?{" "}
+                    <NavLink to="/login">Đăng nhập!</NavLink>
                   </span>
+                  <h3 style={{ fontSize: "26px", marginTop: "20px" }}>
+                    Bước {step}
+                  </h3>
                 </div>
                 {/* Account Type */}
 
@@ -84,11 +86,11 @@ class RegisterComponent extends Component {
                 </div>
                 <div className="social-login-buttons">
                   <button className="facebook-login ripple-effect">
-                    <i className="icon-brand-facebook-f" /> Register via
+                    <i className="icon-brand-facebook-f" /> Đăng kí bằng
                     Facebook
                   </button>
                   <button className="google-login ripple-effect">
-                    <i className="icon-brand-google-plus-g" /> Register via
+                    <i className="icon-brand-google-plus-g" /> Đăng kí bằng
                     Google+
                   </button>
                 </div>

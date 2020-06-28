@@ -16,21 +16,22 @@ class ApplyFormConponent extends Component {
 
   componentDidMount() {
     document.getElementById("upload-cv").onchange = function () {
-      console.log(this.files[0]);
-      if (this.files[0].size > maxSize) {
-        Swal.fire({
-          title: "CV bạn chọn quá lớn",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        this.value = "";
-      } else {
-        Swal.fire({
-          title: "Chọn CV thành công",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1000,
-        });
+      if (this.files[0]) {
+        if (this.files[0].size > maxSize) {
+          Swal.fire({
+            title: "CV bạn chọn quá lớn",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          this.value = "";
+        } else {
+          Swal.fire({
+            title: "Chọn CV thành công",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
       }
     };
   }
@@ -59,7 +60,7 @@ class ApplyFormConponent extends Component {
           ? this.state.proposed_price
           : jobDetail.salary;
         let { doApplyJob } = this.props;
-        fileInBase64 = fileInBase64.split(',')[1];
+        fileInBase64 = fileInBase64.split(",")[1];
         doApplyJob(
           user.id_user,
           jobDetail.id_job,

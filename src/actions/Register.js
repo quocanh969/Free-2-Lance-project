@@ -1,4 +1,6 @@
 import { register } from "../services/account.services";
+import Swal from "sweetalert2";
+import { history } from "../ultis/history/history";
 
 export const sendRegister = (account) => {
   return (dispatch) => {
@@ -8,15 +10,30 @@ export const sendRegister = (account) => {
         console.log(res);
         if (res.data.code === "-103") {
           // thất bại
-          dispatch(failure(res.data.message));
+          Swal.fire({
+            title: "Đăng kí tài khoản không thành công",
+            text:
+              res.data.message === "Email is already used"
+                ? "Email đã được sử dụng"
+                : res.data.message,
+            icon: "error",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          });
         } else {
           // thành công
-          dispatch(success(res.data.message));
-          //   dispatch(updateUser(res.data.data));
-          //   // Lưu vào localstorage
-          //   localStorage.setItem("user", JSON.stringify(res.data.data));
-          //   // Time out
-          //   localStorage.setItem("timeOut", JSON.stringify(new Date()));
+          Swal.fire({
+            title: "Đăng kí thành công",
+            text: "Vui lòng kiểm tra email để kích hoạt tài khoản",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          }).then((result) => {
+            if (result.value) {
+              localStorage.clear();
+              history.push("/login");
+            }
+          });
         }
       })
       .catch((err) => {

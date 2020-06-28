@@ -10,19 +10,20 @@ import ReadLocationReducer from "./JobReducers/ReadLocation.Reducer";
 import JobDetailReducer from "./JobReducers/JobDetail.Reducer";
 import AddJobReducer from "./JobReducers/AddJobForm.Reducer";
 
-import SettingReducer from './Dashboard/Setting.Reducer';
-import EmployerReducer from './Dashboard/Employer.Reducer';
-import ApplicantReducer from './Dashboard/Applicant.Reducer';
+import SettingReducer from "./Dashboard/Setting.Reducer";
+import EmployerReducer from "./Dashboard/Employer.Reducer";
+import ApplicantReducer from "./Dashboard/Applicant.Reducer";
 
-import ContactUsReducer from './Contact.Reducer';
-import HomeReducer from './Home.reducer';
-import JobsListReducer from './JobReducers/JobsList.Reducer';
+import ContactUsReducer from "./Contact.Reducer";
+import HomeReducer from "./Home.reducer";
+import JobsListReducer from "./JobReducers/JobsList.Reducer";
 
-import ChangePWReducer from "./ProfileReducers/ChangePassword.reducer";
+import ChangePWReducer from "./AccountReducers/ChangePassword.reducer";
 
 import GeneralReducer from "./General.Reducer";
 
 import HeaderReducer from "./Header.Reducer";
+import UserDetailReducer from "./Dashboard/UserDetail.Reducer";
 
 const reducer = combineReducers({
   // Header reducer
@@ -43,12 +44,12 @@ const reducer = combineReducers({
   ActivationReducer,
   ResendActivationReducer,
 
-  //Dashboard        
-  AddJobReducer,// Add job reducer
+  //Dashboard
+  AddJobReducer, // Add job reducer
   SettingReducer, // Setting reducer
   EmployerReducer, // Employer reducer
   ApplicantReducer, // Applicant reducer
-  
+
   // Map reducer
   ReadLocationReducer,
 
@@ -57,6 +58,7 @@ const reducer = combineReducers({
 
   // Profile reducer
   ChangePWReducer,
+  UserDetailReducer,
 });
 
 export default reducer;

@@ -1,3 +1,4 @@
+import UserAvatarPlaceholder from "../../assets/images/user-avatar-placeholder.png";
 export const prettierNumber = (number) => {
   let formetedNumber = Number(number)
     .toFixed(2)
@@ -19,15 +20,22 @@ export const prettierDateAgo = (date) => {
   let postDate = new Date(date);
   let today = new Date();
   const diffTime = Math.abs(today - postDate);
+  const diffMinutes = Math.ceil(diffTime / (1000 * 60));
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  if (diffDays <= 30) return diffDays + " ngày trước";
+  if (diffMinutes < 60) return diffMinutes + " phút trước";
+  else if (diffMinutes < 60 * 24)
+    return Math.ceil(diffMinutes / 60) - 1 + " giờ trước";
+  else if (diffDays <= 30) return diffDays + " ngày trước";
   else if (diffDays < 365)
     return Math.ceil(diffDays / 30.4375) - 1 + " tháng trước";
   else return Math.ceil(diffDays / 365.25) - 1 + " năm trước";
 };
 
-export const getImageSrc = (data, imagePlaceholder) => {
-  let img = imagePlaceholder;
+export const getImageSrc = (data, imagePlaceholder = null) => {
+  let img = UserAvatarPlaceholder;
+  if (imagePlaceholder) {
+    img = imagePlaceholder;
+  }
   if (data !== null) {
     img = "data:image/png;base64," + data;
   }

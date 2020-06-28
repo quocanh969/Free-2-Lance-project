@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
-import { updateProfile, sendRegister } from "../../../actions/Register";
+import {
+  updateProfile,
+  sendRegister,
+  prevStep,
+} from "../../../actions/Register";
 import { connect } from "react-redux";
 
 class RegisterStepThreeComponent extends Component {
@@ -8,6 +12,12 @@ class RegisterStepThreeComponent extends Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.goToPreviousStep = this.goToPreviousStep.bind(this);
+  }
+
+  goToPreviousStep() {
+    let { onGoToPreviousStep } = this.props;
+    onGoToPreviousStep();
   }
 
   handleSubmit(e) {
@@ -32,11 +42,9 @@ class RegisterStepThreeComponent extends Component {
 
   spinnerLoadingNotification() {
     let content = [];
-    let { sending, status, message } = this.props.RegisterReducer;
+    let { sending } = this.props.RegisterReducer;
 
-    if (!sending && status === 0) {
-      // do nothing
-    } else if (sending && status === 0) {
+    if (sending) {
       // sending ...
       content.push(
         <div className="loading" key={1}>
@@ -45,29 +53,21 @@ class RegisterStepThreeComponent extends Component {
           </div>
         </div>
       );
-    } else if (!sending && status === -1) {
-      // failure ...
-      console.log("flag failure");
-      content.push(
-        <div className="alert alert-login alert-danger" key={1} role="alert">
-          {message}
-        </div>
-      );
     } else {
-      /// success ...
-      content.push(
-        <div className="alert alert-login alert-success" key={1} role="alert">
-          Please check your email to activate account
-        </div>
-      );
+      content = [];
     }
-
     return content;
   }
 
   render() {
     return (
       <div>
+        <button
+          onClick={this.goToPreviousStep}
+          className="button full-width margin-bottom-15"
+        >
+          Trở về bước 2
+        </button>
         <form
           method="post"
           id="register-account-form"
@@ -83,6 +83,7 @@ class RegisterStepThreeComponent extends Component {
               ref="companyName"
               placeholder="Company's name"
               required
+              autoFocus
             />
           </div>
           <div className="input-with-icon-left">
@@ -155,6 +156,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onGoToPreviousStep: () => {
+      dispatch(prevStep());
+    },
     onUpdateProfile: (account) => {
       dispatch(updateProfile(account));
     },

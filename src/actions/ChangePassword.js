@@ -1,5 +1,6 @@
-import { changePassword } from "../../services/profile.services";
+import { changePassword } from "../services/profile.services";
 import Swal from "sweetalert2";
+import { history } from "../ultis/history/history";
 
 export const sendchangePassword = (oldPW, newPW) => {
   return (dispatch) => {
@@ -16,7 +17,7 @@ export const sendchangePassword = (oldPW, newPW) => {
             icon: "error",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Ok!",
-          });        
+          });
         } else {
           // thành công
           dispatch(success(res.data.message));
@@ -29,7 +30,7 @@ export const sendchangePassword = (oldPW, newPW) => {
           }).then((result) => {
             if (result.value) {
               localStorage.clear();
-              window.location.href = "./login";
+              history.push("/login");
             }
           });
         }

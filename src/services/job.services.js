@@ -92,7 +92,7 @@ function getJobsForApplicant(page, take, isASC, status) {
 function getTags() {
   return axios.get("/getAllTags");
 }
-
+//#region Job detail
 function getJobsDetail(id) {
   return axios.get("/getJobById/" + id);
 }
@@ -122,6 +122,72 @@ function doApplyJob(id_user, id_job, proposed_price, attachment) {
     attachment,
   });
 }
+//#endregion Job detail
+
+//#region dashboard job for employer
+function doCancelRecruit(id_job) {
+  return axios.post("/jobs/cancelRecruit", {
+    id_job,
+  });
+}
+
+function getApplicantsByJobId(id, page, take, id_status) {
+  return axios.post("/applicants/getByJobId", {
+    id,
+    page,
+    take,
+    id_status,
+  });
+}
+
+function doSendAcceptApplicant(id_job, id_user, email, job_title) {
+  return axios.post("/jobs/acceptApplicant", {
+    id_job,
+    id_user,
+    email,
+    job_title,
+  });
+}
+
+function doSendRejectApplicant(id_job, id_user, email, job_title) {
+  return axios.post("/jobs/rejectApplicant", {
+    id_job,
+    id_user,
+    email,
+    job_title,
+  });
+}
+
+function doEndJob(id_job, job_title) {
+  return axios.post("/jobs/finishJob", {
+    id_job,
+    job_title,
+  });
+}
+
+function doReportUser(content, reporterId, yourRole) {
+  return axios.post("/users/addReport", {
+    content,
+    reporterId,
+    yourRole,
+  });
+}
+
+function doReviewEmployee(
+  id_applicant,
+  id_job,
+  feedback_fromEmployer,
+  rating_fromEmployer
+) {
+  return axios.post("/accepted/reviewFromEmployer", {
+    id_applicant,
+    id_job,
+    feedback_fromEmployer,
+    rating_fromEmployer,
+  });
+}
+//#endregion dashboard job for employer
+
 export {
   postJob,
   getAllTopics,
@@ -133,4 +199,11 @@ export {
   getTags,
   getEmployerDetail,
   getSimilarJobs,
+  doCancelRecruit,
+  getApplicantsByJobId,
+  doSendAcceptApplicant,
+  doSendRejectApplicant,
+  doEndJob,
+  doReportUser,
+  doReviewEmployee,
 };

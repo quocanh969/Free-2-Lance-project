@@ -2,13 +2,6 @@ const initState = {
   jobDetail: {},
   employer: {},
   similarJobs: [],
-  places: [
-    {
-      name: "Dud location 1",
-      title: "Dud location 1",
-      position: { lat: 51.507717, lng: -0.131095 },
-    },
-  ],
   appliedStatus: 0, //havent send
 };
 

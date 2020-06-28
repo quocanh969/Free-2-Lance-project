@@ -16,15 +16,18 @@ import MapContainer from "../map_JobsList";
 import ApplyForm from "./ApplyForm/ApplyForm";
 import JobDetailInfo from "./JobDetailTab/JobDetailInfo";
 import EmployerInfo from "./JobDetailTab/EmployerInfo";
+import { history } from "../../ultis/history/history";
 
 class JobDetailComponent extends Component {
   constructor(props) {
     super(props);
 
-    let jobId = 121;
+    let jobId = null;
     let { id_job } = this.props.match.params;
     if (id_job) {
       jobId = id_job;
+    } else {
+      history.push("/not-found");
     }
     this.state = {
       tab: 1,
@@ -72,6 +75,22 @@ class JobDetailComponent extends Component {
     }
 
     return <img src={logo} className="my-2" key={0} alt=""></img>;
+  }
+
+  renderMap() {
+    let { jobDetail } = this.props.JobDetailReducer;
+    let places = [
+      {
+        name: "Nơi làm",
+        title: "Nơi làm",
+        position: { lat: jobDetail.lat, lng: jobDetail.lng },
+      },
+    ];
+    return (
+      <div>
+        <MapContainer places={places} isList={false} />
+      </div>
+    );
   }
 
   renderPhoto(images) {
@@ -177,7 +196,7 @@ class JobDetailComponent extends Component {
     content.push(
       <div
         className="row bg-293FE4 text-white"
-        key={0}
+        key={-1}
         style={{ height: "50px" }}
       >
         <div
@@ -218,12 +237,13 @@ class JobDetailComponent extends Component {
 
   renderApplyButton() {
     let { user } = this.props.HeaderReducer;
-    if (user && !user.isBusinessUser) {
+    let { jobDetail } = this.props.JobDetailReducer;
+    if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
         <button
           className="apply-now-button popup-with-zoom-anim w-100"
           data-toggle="modal"
-          data-target="#myModal"
+          data-target="#applyModal"
         >
           Đăng kí ứng cử <i className="icon-material-outline-arrow-right-alt" />
         </button>
@@ -233,9 +253,10 @@ class JobDetailComponent extends Component {
 
   renderApplyFormPopup() {
     let { user } = this.props.HeaderReducer;
-    if (user && !user.isBusinessUser) {
+    let { jobDetail } = this.props.JobDetailReducer;
+    if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
-        <div id="myModal" className="modal fade" role="dialog">
+        <div id="applyModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
             <ApplyForm></ApplyForm>
           </div>
@@ -250,7 +271,7 @@ class JobDetailComponent extends Component {
     return (
       <div>
         {/* Thông tin cơ bản */}
-        <div id='job-detail-background' className="single-page-header">
+        <div id="job-detail-background" className="single-page-header">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -262,11 +283,14 @@ class JobDetailComponent extends Component {
                       </a>
                     </div>
                     <div className="header-details text-white">
-                      <h3 className='text-white'>{jobDetail.title}</h3>
-                      <h5 className='text-white'>{jobDetail.topic}</h5>
+                      <h3 className="text-white">{jobDetail.title}</h3>
+                      <h5 className="text-white">{jobDetail.topic}</h5>
                       <ul>
                         <li>
-                          <span href="single-company-profile.html" className='text-white'>
+                          <span
+                            href="single-company-profile.html"
+                            className="text-white"
+                          >
                             {jobDetail.name_employer}
                           </span>
                         </li>
@@ -299,7 +323,6 @@ class JobDetailComponent extends Component {
               </div>
             </div>
           </div>
-        
         </div>
 
         {/* Page Content */}
@@ -371,16 +394,14 @@ class JobDetailComponent extends Component {
                     <EmployerInfo></EmployerInfo>
                   ) : this.state.tab === 3 ? (
                     <div id="single-job-map-container">
-                      <div
+                      {/* <div
                         id="singleListingMap"
                         data-latitude="51.507717"
                         data-longitude="-0.131095"
                         data-map-icon="im im-icon-Hamburger"
-                      ></div>
+                      ></div> */}
                       {/* <a href="#" id="streetView">Street View</a> */}
-                      {/* <div>
-                                                <MapContainer places={places} isList={false}/>
-                                            </div> */}
+                      {this.renderMap()}
                       {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
                     </div>
                   ) : this.state.tab === 4 ? (
@@ -426,7 +447,7 @@ class JobDetailComponent extends Component {
                         </li>
                         <li>
                           <i className="icon-material-outline-access-time" />
-                          <span>Ngày đăng</span>
+                          <span>Đã đăng</span>
                           <h5>{prettierDateAgo(jobDetail.post_date)}</h5>
                         </li>
                       </ul>

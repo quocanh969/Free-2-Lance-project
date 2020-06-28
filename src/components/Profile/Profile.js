@@ -18,6 +18,7 @@ import ChangePassword from './Tab/ChangePassword';
 
 import DetailTemplate from './Tab/Jobs/JobDetail/DetailTemplate';
 import { history } from '../../ultis/history/history';
+const firebase = require("firebase");
 
 class ProfileComponent extends Component {
 
@@ -26,23 +27,48 @@ class ProfileComponent extends Component {
 
         this.state = {
             tab: 1,
+            unreadMessage: 0,
         }
     }
 
-    componentWillMount() {        
+    componentWillMount() {
         let tab = Number.parseInt(this.props.match.params.id);
-        this.setState({tab,});
+        this.setState({ tab, });
     }
 
-    componentWillReceiveProps() {        
+    componentWillReceiveProps() {
         if (this.props.history.location.pathname !== this.props.location.pathname) {
             // khác path
             let splitted = this.props.history.location.pathname.split("=", 2);
             let tab = Number.parseInt(splitted[1]);
-            this.setState({tab,});            
+            this.setState({ tab, });
         }
     }
+    componentDidMount = async () => {
+        let email = localStorage.getItem('email');
+        if (email) {
+            await firebase
+                .firestore()
+                .collection('chats')
+                .where('users', 'array-contains', email)
+                .onSnapshot(async res => {
+                    const chats = res.docs.map(_doc => _doc.data());
+                    console.log('chats456:', chats)
+                    let unreadMessage = 0;
+                    chats.forEach((element, index) => {
+                        console.log('index:', index)
+                        if (element.messages.length > 0) {
+                            if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead)
+                                unreadMessage++;
+                        }
+                    });
+                    await this.setState({
+                        unreadMessage
+                    });
+                })
+        }
 
+    }
     switchTab() {
         switch (this.state.tab) {
             case 1:
@@ -105,6 +131,7 @@ class ProfileComponent extends Component {
 
     handleLogOut() {
         let { onLogOut } = this.props;
+
         console.log('hahaha');
         localStorage.clear();
         onLogOut();
@@ -114,6 +141,7 @@ class ProfileComponent extends Component {
     render() {
         //let isBusinessUser = this.props.HeaderReducer.user.isBusinessUser;
         let { user } = this.props.HeaderReducer
+        const { unreadMessage } = this.state;
         return (
             <div className='container-fluid'>
                 {(
@@ -146,7 +174,10 @@ class ProfileComponent extends Component {
                                                     </li>
                                                     <li className={(this.state.tab === 2 ? 'active' : '')}>
                                                         <NavLink className='cursor-pointer' to='/dashboard/tab=2'>
-                                                            <i className="icon-material-outline-question-answer" /> Tin nhắn <span className="nav-tag">2</span>
+
+                                                            <i className="icon-material-outline-question-answer" /> Tin nhắn {
+                                                                unreadMessage > 0 && <span className="nav-tag">{unreadMessage}</span>
+                                                            }
                                                         </NavLink>
                                                     </li>
                                                     <li className={(this.state.tab === 3 ? 'active' : '')}>
@@ -216,8 +247,8 @@ class ProfileComponent extends Component {
                                                         </NavLink>
                                                     </li>
                                                     <li>
-                                                        <div className='cursor-pointer' onClick={()=>{this.handleLogOut()}}>
-                                                            <i className="icon-material-outline-power-settings-new"/> Đăng xuất
+                                                        <div className='cursor-pointer' onClick={() => { this.handleLogOut() }}>
+                                                            <i className="icon-material-outline-power-settings-new" /> Đăng xuất
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -250,7 +281,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onLogOut: () => {
             dispatch({
-              type: "USER_LOG_OUT",
+                type: "USER_LOG_OUT",
             });
         },
     }

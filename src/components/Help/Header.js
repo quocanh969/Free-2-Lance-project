@@ -5,12 +5,16 @@ import { connect } from "react-redux";
 import Logo2 from '../../assets/images/logo4.png';
 import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
 import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt.png';
+import Badge from '@material-ui/core/Badge';
+import MailIcon from '@material-ui/icons/Mail';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { loadTopics, loadAreas, loadTags } from "../../actions/Home";
 import { loadJobList } from "../../actions/Job";
 import { updateUserState } from "../../actions/Account";
 import { history } from "../../ultis/history/history";
 import { getImageSrc } from "../../ultis/SHelper/helperFunctions";
+const firebase = require("firebase");
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -19,6 +23,10 @@ class HeaderComponent extends Component {
     this.state = {
       isTopicHover: false,
       isCurrentTop: false,
+      email: localStorage.getItem('item'),
+      isReadNotify: true,
+      notifications: [],
+      unreadMessage: 0,
       messages: [
         {
           id_user: 1,
@@ -91,8 +99,75 @@ class HeaderComponent extends Component {
     onLoadTags();
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     window.addEventListener("scroll", this.handleScroll);
+    const email = localStorage.getItem('email');
+    if (email) {
+      const notifications = await
+        firebase
+          .firestore()
+          .collection('notifications')
+          .doc(email)
+          .get();
+      console.log('notification exists:', notifications.exists)
+      console.log();
+      await firebase
+        .firestore()
+        .collection('chats')
+        .where('users', 'array-contains', email)
+        .onSnapshot(async res => {
+          const chats = res.docs.map(_doc => _doc.data());
+          console.log('chats In header:', chats)
+          let rs = [];
+          let unreadMessage = 0;
+          console.log('chats1234:', chats)
+          chats.forEach(element => {
+            rs.push({
+              fullname: element.img.filter(el => el.email !== email)[0].fullname,
+              avatarImg: getImageSrc(element.img.filter(el => el.email !== email)[0].img),
+              message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
+            })
+            if (element.messages.length > 0) {
+              if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+                unreadMessage++;
+              }
+            }
+
+          });
+          await this.setState({
+            email: email,
+            messages: rs,
+            unreadMessage
+
+          });
+        })
+      if (!notifications.exists) {
+        firebase
+          .firestore()
+          .collection('notifications')
+          .doc(email)
+          .set({
+            email: email,
+            listNotify: [],
+            isRead: true
+          })
+      }
+      else {
+        firebase
+          .firestore()
+          .collection('notifications')
+          .where('email', '==', email)
+          .onSnapshot(async res => {
+            const data = res.docs.map(_doc => _doc.data());
+
+            await this.setState({
+              notifications: data[0].listNotify,
+              isReadNotify: data[0].isRead
+            });
+          })
+      }
+    }
+
   }
 
   componentDidUpdate() { }
@@ -131,7 +206,18 @@ class HeaderComponent extends Component {
       e.preventDefault();
     }
   }
-
+  sendReadNotfication = async () => {
+    const { email } = this.state;
+    if (email) {
+      await firebase
+        .firestore()
+        .collection('notifications')
+        .doc(email)
+        .update({
+          isRead: true
+        });
+    }
+  }
   renderTopicsHeader() {
     let { jobTopic } = this.props.GeneralReducer;
 
@@ -185,6 +271,7 @@ class HeaderComponent extends Component {
   }
 
   renderNotice(notice) {
+    console.log('notice:', notice)
     switch (notice.type) {
       case 0: {
         return (
@@ -224,8 +311,10 @@ class HeaderComponent extends Component {
   renderNotiContent() {
     let content = [],
       count = 0;
-    let { notices } = this.state;
-    for (let e of notices) {
+    const { notices, notifications, isRead } = this.state;
+    console.log('notifications:', notifications);
+    console.log('isRead:', isRead);
+    for (let e of notifications) {
       content.push(
         <NavLink
           key={count}
@@ -236,7 +325,7 @@ class HeaderComponent extends Component {
             <div className="row p-1">
               {/* avatar */}
               <div className="col-2 p-0">
-                <img style={{ height: "auto" }} src={e.jobTopicImg}></img>
+                <img style={{ height: "auto" }} src={JobImgePlaceholder}></img>
               </div>
               {/* message */}
               <div className="col-10 px-3">{this.renderNotice(e)}</div>
@@ -251,19 +340,38 @@ class HeaderComponent extends Component {
 
   renderUserLoginContent(user) {
     let userAvatar = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
+    const { isReadNotify, unreadMessage } = this.state;
+    console.log('isReadNotify:', isReadNotify)
     return (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
+
           <button
-            className="nav-link-header nav-link dropdown-toggle px-0 pt-1 pb-0"
             id="NotiMenuDropdown"
+            className="nav-link-header nav-link dropdown-toggle px-0 pt-1 pb-0"
             role="button"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-          >
-            <i className="icon-material-baseline-notifications-none mx-0 p-2 font-size-25"></i>
+            onClick={this.sendReadNotfication}
+          >    <Badge color="secondary" badgeContent=" " variant="dot" invisible={isReadNotify} >
+              <NotificationsIcon />
+              {/* <i className="icon-material-baseline-notifications-none  mx-0 p-2 font-size-25"></i> */}
+
+              {/* <button
+        id="NotiMenuDropdown"
+        className="nav-link-header nav-link dropdown-toggle px-0 pt-1 pb-0"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+      </button> */}
+            </Badge>
+
           </button>
+
+
           <div
             className="shadow dropdown-menu dropdown-menu-right mt-1"
             style={{ width: "300px" }}
@@ -284,7 +392,12 @@ class HeaderComponent extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <i className="icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25"></i>
+            <Badge color="secondary" badgeContent={unreadMessage} >
+              {/* <i className="icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25"></i> */}
+              <MailIcon />
+            </Badge>
+
+
           </button>
           <div
             className="shadow dropdown-menu dropdown-menu-right mt-1"
@@ -330,15 +443,15 @@ class HeaderComponent extends Component {
             </NavLink>
             {(
               user.isBusinessUser
-              ?
-              ''
-              :
-              <NavLink className="dropdown-item" to="/dashboard/tab=8">
-                <i className="icon-line-awesome-tasks"></i>
+                ?
+                ''
+                :
+                <NavLink className="dropdown-item" to="/dashboard/tab=8">
+                  <i className="icon-line-awesome-tasks"></i>
                 &nbsp;&nbsp; Quản lý việc làm
               </NavLink>
             )}
-            
+
             <NavLink className="dropdown-item" to="/dashboard/tab=11">
               <i className="icon-material-outline-account-circle"></i>
               &nbsp;&nbsp; Tài khoản của bạn

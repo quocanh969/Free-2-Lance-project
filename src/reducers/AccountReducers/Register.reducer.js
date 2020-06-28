@@ -58,7 +58,6 @@ const RegisterReducer = (state = initState, action) => {
         step: state.step - 1,
       };
     case "REGISTER_UPDATE_PROFILE":
-      console.log(action.account);
       return {
         ...state,
         account: {
