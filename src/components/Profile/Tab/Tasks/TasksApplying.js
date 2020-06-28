@@ -2,7 +2,10 @@ import React, { Component } from "react";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadApplyingJobsForApplicant } from "../../../../actions/Job";
+import {
+  loadApplyingJobsForApplicant,
+  stopApply,
+} from "../../../../actions/Job";
 import {
   getImageSrc,
   prettierDate,
@@ -50,7 +53,8 @@ class TasksApplyingComponent extends Component {
       if (result.value) {
         let { onStopApply } = this.props;
         let { currentApplyingPage } = this.props.ApplicantReducer;
-        onStopApply(jobId, currentApplyingPage, 4, 0);
+        let { user } = this.props.HeaderReducer;
+        onStopApply(user.id_user, jobId, currentApplyingPage, 4, 0);
       }
     });
   }
@@ -166,10 +170,10 @@ class TasksApplyingComponent extends Component {
                     </div>
                   )}
                   <div className="mt-3">
-                    <span className="btn mx-2 p-2 bg-293FE4 text-white rounded">
+                    {/* <span className="btn mx-2 p-2 bg-293FE4 text-white rounded">
                       <i className="icon-feather-refresh-ccw"></i> Cập nhật
                       thông tin
-                    </span>
+                    </span> */}
                     <span
                       className="btn mx-2 p-2 bg-silver rounded"
                       onClick={() => {
@@ -179,7 +183,10 @@ class TasksApplyingComponent extends Component {
                       <i className="icon-line-awesome-clone" /> Xem chi tiết
                       công việc
                     </span>
-                    <span onClick={() => this.StopApply(e.id_job)} className="btn mx-2 p-2 bg-danger text-white rounded">
+                    <span
+                      onClick={() => this.StopApply(e.id_job)}
+                      className="btn mx-2 p-2 bg-danger text-white rounded"
+                    >
                       <i className="icon-line-awesome-hand-stop-o" /> Rút ứng
                       tuyển
                     </span>
@@ -329,6 +336,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoadApplyingTask: (page, take, isASC) => {
       dispatch(loadApplyingJobsForApplicant(page, take, isASC));
+    },
+    onStopApply: (userId, jobId, page, take, isASC) => {
+      dispatch(stopApply(userId, jobId, page, take, isASC));
     },
   };
 };

@@ -15,6 +15,7 @@ import {
   doEndJob,
   doReportUser,
   doReviewEmployee,
+  doStopApply,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
@@ -417,6 +418,16 @@ export const sendAcceptApplicant = (
   take
 ) => {
   return (dispatch) => {
+    // doSendAcceptApplicant(jobId, userId, email, job_title)
+    //   .then((res) => {
+    //     dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+    //     dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+    //     Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
     doSendtransferMoneyMomoToF2L(applicantId)
       .then((res) => {
         if (res.data.code == 200) {
@@ -606,3 +617,22 @@ export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
   };
 };
 //#endregion done job for employer
+
+//#region done job for employer
+export const stopApply = (userId, jobId, page, take, isASC) => {
+  return (dispatch) => {
+    doStopApply(userId, jobId)
+      .then((res) => {
+        dispatch(loadApplyingJobsForApplicant(page, take, isASC));
+        Swal.fire(
+          "Thành công!",
+          "Công việc của bạn đã được ngừng tuyển",
+          "success"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+//#endregion jobs for applicant

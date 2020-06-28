@@ -200,6 +200,19 @@ function doReviewEmployee(
 }
 //#endregion dashboard job for employer
 
+//#region dashboard job for applicant
+function doStopApply(id_user, id_job) {
+  let email = "haibinhbd2@gmail.com";
+  let job_title = "spam chu gi nua";
+  return axios.post("/jobs/rejectApplicant", {
+    id_job,
+    id_user,
+    email,
+    job_title,
+  });
+}
+//#endregion dashboard job for applicant
+
 export {
   postJob,
   getAllTopics,
@@ -220,4 +233,5 @@ export {
   doReviewEmployee,
   doSendtransferMoneyMomoToF2L,
   doGetResultTransactions,
+  doStopApply,
 };
