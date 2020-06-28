@@ -12,6 +12,7 @@ import {
   doSendRejectApplicant,
   doEndJob,
   doReportUser,
+  doReviewEmployee,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
@@ -417,7 +418,7 @@ export const endJob = (jobId, title, page, take, isASC) => {
 
 export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
-    getApplicantsByJobId(jobId, page, take, 2)
+    getApplicantsByJobId(jobId, page, take, 1)
       .then((res) => {
         dispatch(
           success(
@@ -482,7 +483,7 @@ export const reportUser = (content, reporterId, role) => {
 //#region done job for employer
 export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
-    getApplicantsByJobId(jobId, page, take, 2)
+    getApplicantsByJobId(jobId, page, take, 1)
       .then((res) => {
         dispatch(
           success(
@@ -511,6 +512,35 @@ export const selectJobDone = (jobId) => {
   return {
     type: "EMPLOYER_SELECT_JOB_DONE",
     jobId,
+  };
+};
+
+export const selectReviewUser = (applicantId) => {
+  return {
+    type: "EMPLOYER_SELECT_REVIEW_USER",
+    applicantId,
+  };
+};
+
+export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
+  return (dispatch) => {
+    doReviewEmployee(applicantId, jobId, feedback, rating)
+      .then((res) => {
+        Swal.fire({
+          title: "Báo cáo người dùng thành công",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        //show error;
+        Swal.fire({
+          title: "Đã xảy ra lỗi, vui lòng thử lại sau",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
   };
 };
 //#endregion done job for employer

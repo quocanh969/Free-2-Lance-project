@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadDoneApplicantsForEmployer } from "../../../../../actions/Job";
+import { loadDoneApplicantsForEmployer, selectReviewUser } from "../../../../../actions/Job";
 import {
   prettierNumber,
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
-
+import ReviewForm from "./ReviewForm";
 export const takenDoneApplicantsPerPage = 3;
 class JobsDoneModalComponent extends Component {
   componentDidMount() {
@@ -96,6 +96,11 @@ class JobsDoneModalComponent extends Component {
     window.open(url);
   }
 
+  reviewEmployee(applicantId) {
+    let { onSelectReviewUser } = this.props;
+    onSelectReviewUser(applicantId);
+  }
+
   generateApplicantsList() {
     let { doneApplicantsList } = this.props.EmployerReducer;
     let content = [];
@@ -134,7 +139,12 @@ class JobsDoneModalComponent extends Component {
 
             {/* Buttons */}
             <div className="container text-right">
-              <span className="btn mx-2 py-2 px-4 bg-warning rounded">
+              <span
+                data-toggle="modal"
+                data-target="#reviewModal"
+                onClick={() => this.reviewEmployee(e.id_applicant)}
+                className="btn mx-2 py-2 px-4 bg-warning rounded"
+              >
                 <i className="icon-material-outline-speaker-notes" /> Phản hồi
               </span>
               <span
@@ -261,6 +271,11 @@ class JobsDoneModalComponent extends Component {
         <div id="CVModal" className="modal fade" role="dialog">
           <div id="cv-modal-dialog" className="modal-dialog modal-xl"></div>
         </div>
+        <div id="reviewModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <ReviewForm></ReviewForm>
+          </div>
+        </div>
       </div>
     );
   }
@@ -276,6 +291,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadDoneApplicantsForEmployer(jobId, page, take));
+    },
+    onSelectReviewUser: (applicantId) => {
+      dispatch(selectReviewUser(applicantId));
     },
   };
 };

@@ -173,6 +173,19 @@ function doReportUser(content, reporterId, yourRole) {
   });
 }
 
+function doReviewEmployee(
+  id_applicant,
+  id_job,
+  feedback_fromEmployer,
+  rating_fromEmployer
+) {
+  return axios.post("/accepted/reviewFromEmployer", {
+    id_applicant,
+    id_job,
+    feedback_fromEmployer,
+    rating_fromEmployer,
+  });
+}
 //#endregion dashboard job for employer
 
 export {
@@ -192,4 +205,5 @@ export {
   doSendRejectApplicant,
   doEndJob,
   doReportUser,
+  doReviewEmployee,
 };
