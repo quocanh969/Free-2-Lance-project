@@ -150,7 +150,7 @@ class MessagesComponent extends Component {
                             </div>
                             <ul>
                                 {
-
+                                    
                                     chats.map((chat, index) => {
                                         return (
                                             <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>

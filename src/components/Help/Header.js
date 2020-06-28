@@ -99,80 +99,80 @@ class HeaderComponent extends Component {
     onLoadTags();
   }
 
-  // componentDidMount = async () => {
-  //   window.addEventListener("scroll", this.handleScroll);
-  //   const email = localStorage.getItem('email');
-  //   if (email) {
-  //     const notifications = await
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .doc(email)
-  //         .get();
-  //     console.log('notification exists:', notifications.exists)
-  //     console.log();
-  //     await firebase
-  //       .firestore()
-  //       .collection('chats')
-  //       .where('users', 'array-contains', email)
-  //       .onSnapshot(async res => {
-  //         const chats = res.docs.map(_doc => _doc.data());
-  //         let rs = [];
-  //         let unreadMessage = 0;
-  //         console.log('chats1234:', chats)
-  //         chats.forEach(element => {
-  //           console.log(element);
-  //           let realPerson = element.img.filter(el => el.email !== email);
-  //           if(realPerson.length > 0) {
-  //             rs.push({
-  //               fullname: realPerson[0].fullname,
-  //               avatarImg: getImageSrc(realPerson[0].img),
-  //               message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
-  //             })
+  componentDidMount = async () => {
+    window.addEventListener("scroll", this.handleScroll);
+    const email = localStorage.getItem('email');
+    if (email) {
+      const notifications = await
+        firebase
+          .firestore()
+          .collection('notifications')
+          .doc(email)
+          .get();
+      console.log('notification exists:', notifications.exists)
+      console.log();
+      await firebase
+        .firestore()
+        .collection('chats')
+        .where('users', 'array-contains', email)
+        .onSnapshot(async res => {
+          const chats = res.docs.map(_doc => _doc.data());
+          let rs = [];
+          let unreadMessage = 0;
+          console.log('chats1234:', chats)
+          chats.forEach(element => {
+            console.log(element);
+            let realPerson = element.img.filter(el => el.email !== email);
+            if(realPerson.length > 0) {
+              rs.push({
+                fullname: realPerson[0].fullname,
+                avatarImg: getImageSrc(realPerson[0].img),
+                message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
+              })
               
-  //             if (element.messages.length > 0) {
-  //               if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-  //                 unreadMessage++;
-  //               }
-  //             }
-  //           }
+              if (element.messages.length > 0) {
+                if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+                  unreadMessage++;
+                }
+              }
+            }
 
-  //         });
-  //         await this.setState({
-  //           email: email,
-  //           messages: rs,
-  //           unreadMessage
+          });
+          await this.setState({
+            email: email,
+            messages: rs,
+            unreadMessage
 
-  //         });
-  //       })
-  //     if (!notifications.exists) {
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .doc(email)
-  //         .set({
-  //           email: email,
-  //           listNotify: [],
-  //           isRead: true
-  //         })
-  //     }
-  //     else {
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .where('email', '==', email)
-  //         .onSnapshot(async res => {
-  //           const data = res.docs.map(_doc => _doc.data());
+          });
+        })
+      if (!notifications.exists) {
+        firebase
+          .firestore()
+          .collection('notifications')
+          .doc(email)
+          .set({
+            email: email,
+            listNotify: [],
+            isRead: true
+          })
+      }
+      else {
+        firebase
+          .firestore()
+          .collection('notifications')
+          .where('email', '==', email)
+          .onSnapshot(async res => {
+            const data = res.docs.map(_doc => _doc.data());
 
-  //           await this.setState({
-  //             notifications: data[0].listNotify,
-  //             isReadNotify: data[0].isRead
-  //           });
-  //         })
-  //     }
-  //   }
+            await this.setState({
+              notifications: data[0].listNotify,
+              isReadNotify: data[0].isRead
+            });
+          })
+      }
+    }
 
-  // }
+  }
 
   componentDidUpdate() { }
 
