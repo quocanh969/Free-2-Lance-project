@@ -8,6 +8,8 @@ import {
   getEmployerDetail,
   doCancelRecruit,
   getApplicantsByJobId,
+  doGetResultTransactions,
+  doSendtransferMoneyMomoToF2L,
   doSendAcceptApplicant,
   doSendRejectApplicant,
   doEndJob,
@@ -357,21 +359,82 @@ export const selectJobApplying = (jobId, title) => {
   };
 };
 
-export const sendAcceptApplicant = (
+const GetResultTransactions = (
   jobId,
   userId,
   email,
+  applicantId,
   job_title,
   page,
   jobPage,
   take
 ) => {
   return (dispatch) => {
-    doSendAcceptApplicant(jobId, userId, email, job_title)
+    doGetResultTransactions(applicantId)
       .then((res) => {
-        dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
-        dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
-        Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
+        if (res.data.code == 202) {
+          //thanh toan thanh cong thi se duyet
+          doSendAcceptApplicant(jobId, userId, email, job_title)
+            .then((res) => {
+              dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+              dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+              Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          setTimeout(
+            dispatch(
+              GetResultTransactions(
+                jobId,
+                userId,
+                email,
+                applicantId,
+                job_title,
+                page,
+                jobPage,
+                take
+              )
+            ),
+            10000
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const sendAcceptApplicant = (
+  jobId,
+  userId,
+  email,
+  applicantId,
+  job_title,
+  page,
+  jobPage,
+  take
+) => {
+  return (dispatch) => {
+    doSendtransferMoneyMomoToF2L(applicantId)
+      .then((res) => {
+        if (res.data.code == 200) {
+          dispatch(
+            GetResultTransactions(
+              jobId,
+              userId,
+              email,
+              applicantId,
+              job_title,
+              page,
+              jobPage,
+              take
+            )
+          );
+          window.open(res.data.data);
+        }
       })
       .catch((err) => {
         console.log(err);

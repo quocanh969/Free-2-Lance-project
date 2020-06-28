@@ -70,9 +70,10 @@ class JobsApplyingModalComponent extends Component {
     );
   }
 
-  acceptApplicant(userId, email) {
+  acceptApplicant(userId, email, applicantId) {
     Swal.fire({
       title: "Bạn có chắc muốn tuyển ứng viên này??",
+      text: "Bạn sẽ phải thanh toán trước",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -92,6 +93,7 @@ class JobsApplyingModalComponent extends Component {
           selectedApplyingJobId,
           userId,
           email,
+          applicantId,
           selectedApplyingJobTitle,
           currentApplicantsPage,
           currentApplyingPage,
@@ -205,7 +207,9 @@ class JobsApplyingModalComponent extends Component {
             {/* Buttons */}
             <div className="container text-right">
               <span
-                onClick={() => this.acceptApplicant(e.id_user, e.email)}
+                onClick={() =>
+                  this.acceptApplicant(e.id_user, e.email, e.id_applicant)
+                }
                 className="btn mx-2 py-2 px-4 bg-success text-white rounded"
               >
                 <i className="icon-material-outline-check-circle"></i> Phê duyệt
@@ -350,6 +354,7 @@ const mapDispatchToProps = (dispatch) => {
       jobId,
       userId,
       email,
+      applicantId,
       job_title,
       page,
       jobPage,
@@ -360,6 +365,7 @@ const mapDispatchToProps = (dispatch) => {
           jobId,
           userId,
           email,
+          applicantId,
           job_title,
           page,
           jobPage,

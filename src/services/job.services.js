@@ -140,6 +140,18 @@ function getApplicantsByJobId(id, page, take, id_status) {
   });
 }
 
+function doSendtransferMoneyMomoToF2L(id_applicant) {
+  return axios.post("/transferMoneyMomoToF2L", {
+    id_applicant,
+  });
+}
+
+function doGetResultTransactions(id_applicant) {
+  return axios.post("/getResultTransactions", {
+    id_applicant,
+  });
+}
+
 function doSendAcceptApplicant(id_job, id_user, email, job_title) {
   return axios.post("/jobs/acceptApplicant", {
     id_job,
@@ -206,4 +218,6 @@ export {
   doEndJob,
   doReportUser,
   doReviewEmployee,
+  doSendtransferMoneyMomoToF2L,
+  doGetResultTransactions,
 };
