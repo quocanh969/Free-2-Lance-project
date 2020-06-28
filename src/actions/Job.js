@@ -618,7 +618,7 @@ export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
 };
 //#endregion done job for employer
 
-//#region done job for employer
+//#region jobs for applicant
 export const stopApply = (userId, jobId, page, take, isASC) => {
   return (dispatch) => {
     doStopApply(userId, jobId)
@@ -633,6 +633,20 @@ export const stopApply = (userId, jobId, page, take, isASC) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+};
+
+export const selectReportedEmployer = (userId) => {
+  return {
+    type: "APPLICANT_SELECT_REPORTED_USER",
+    userId,
+  };
+};
+
+export const selectReviewEmployer = (applicantId) => {
+  return {
+    type: "APPLICANT_SELECT_REVIEW_USER",
+    applicantId,
   };
 };
 //#endregion jobs for applicant
