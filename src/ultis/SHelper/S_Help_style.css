@@ -38,7 +38,7 @@
 }
 
 .selector-dropdown-menu {
-    max-height: calc(100vh - 70vh);
+    max-height: 30vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
