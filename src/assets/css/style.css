@@ -15797,7 +15797,21 @@ ul.dashboard-box-list > li:hover {
   align-items: flex-start;
   margin-top: 15px;
 }
-
+.message-reply input {
+  min-width: auto;
+  height: 48px;
+  min-height: 48px;
+  padding: 10px 0;
+  margin: 0 15px 0 0;
+  flex: 1;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 26px;
+  box-shadow: none;
+  border: none;
+  box-sizing: border-box;
+  resize: none;
+}
 .message-reply textarea {
   min-width: auto;
   height: 48px;

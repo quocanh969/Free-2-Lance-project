@@ -39,7 +39,7 @@ export const sendLogin = (email, password) => {
           // thành công
           
           localStorage.setItem("token", JSON.stringify(res.data.data.token));
-          
+          localStorage.setItem("email",email);
           // lấy thông tin user
           getUserInfo().then(res=>{
             if(res.data.code === '200')
