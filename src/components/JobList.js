@@ -15,7 +15,6 @@ import {
 } from "../ultis/SHelper/helperFunctions";
 
 class JobListComponent extends Component {
-  originalQuery = {};
 
   constructor(props) {
     super(props);
@@ -23,14 +22,14 @@ class JobListComponent extends Component {
     this.state = {
       isGridMode: true,
       isASC: 2,
+      query: {},
     };
 
-    this.initQuery(); // original query
     this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   componentWillMount() {
-    this.loadJobListFunc(1, this.originalQuery);
+    this.initQuery(); // original query
   }
 
   componentDidMount() {
@@ -42,9 +41,10 @@ class JobListComponent extends Component {
       // khác path
       let splitted = this.props.history.location.pathname.split("=", 2);
       let newTopic = Number.parseInt(splitted[1]);
-      this.originalQuery.job_topic = newTopic;
 
-      this.loadJobListFunc(1, this.originalQuery);
+      this.setState({query: {job_topic: newTopic}}, () => {
+        this.loadJobListFunc(1, this.state.query);
+      });
     }
   }
 
@@ -203,7 +203,7 @@ class JobListComponent extends Component {
   }
 
   handleFilter() {
-    let query = this.originalQuery;
+    let query = this.state.query;
 
     if (query["area_province"] !== undefined) {
       let area = document.getElementById("select-area").value;
@@ -266,14 +266,14 @@ class JobListComponent extends Component {
       // navigate từ topic trên header
       let { params } = this.props.match;
       // Tiền xử lý params
-      for (let e in params) {
-        if (params !== "") {
-          this.originalQuery[e] = params[e];
-        }
-      }
+      this.setState({query: params}, () => {
+        this.loadJobListFunc(1, this.state.query);
+      });      
     } else {
       // navigate từ search page
-      this.originalQuery = this.props.location.state;
+      this.setState({query: this.props.location.state}, () => {
+        this.loadJobListFunc(1, this.state.query);
+      });
     }
   }
 
@@ -320,6 +320,7 @@ class JobListComponent extends Component {
 
   renderFilter() {
     let { jobTopic, areas } = this.props.GeneralReducer;
+    console.log(this.state.query);
     return (
       <div className="sidebar-container">
         <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
@@ -338,13 +339,13 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Khu vực</h3>
           <div className="input-with-icon">
-            {this.originalQuery["area_province"] !== undefined ? (
+            {this.state.query["area_province"] !== undefined ? (
               <S_Selector
                 id="select-area"
                 className="with-border"
                 placeholder="Chọn khu vực"
                 disabled={true}
-                value={this.originalQuery["area_province"]}
+                value={this.state.query["area_province"]}
                 data={areas}
                 value_tag="id_province"
                 text_tag="name"
@@ -366,13 +367,13 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Chủ đề</h3>
           <div className="input-with-icon">
-            {this.originalQuery["job_topic"] !== undefined ? (
+            {this.state.query["job_topic"] !== undefined ? (
               <S_Selector
                 id="select-category"
                 className="with-border"
                 placeholder="Chọn chủ đề"
                 disabled={true}
-                value={this.originalQuery["job_topic"]}
+                value={Number.parseInt(this.state.query["job_topic"])}
                 data={jobTopic}
                 value_tag="id_jobtopic"
                 text_tag="name"
@@ -414,12 +415,12 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Salary</h3>
           <div className="input-with-icon">
-            {this.originalQuery["salary"] !== undefined ? (
+            {this.state.query["salary"] !== undefined ? (
               <select
                 disabled
                 className="btn bg-cloud with-border dropdown-toggle bs-placeholder btn-default"
                 id="salary-select"
-                defaultValue={this.originalQuery["salary"].top}
+                defaultValue={this.state.query["salary"].top}
               >
                 <option value={1} disabled>
                   Giá tiền
@@ -453,12 +454,12 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Ngày hết hạn</h3>
           <div className="input-with-icon">
-            {this.originalQuery["expire_date"] !== undefined ? (
+            {this.state.query["expire_date"] !== undefined ? (
               <input
                 id="expired-input"
                 className="bg-cloud with-border"
                 disabled
-                value={this.originalQuery["expire_date"]}
+                value={this.state.query["expire_date"]}
                 type="date"
                 min="2020-01-01"
                 max="2050-12-31"
@@ -479,12 +480,12 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Số lượng tuyển ( ít nhất )</h3>
           <div className="input-with-icon">
-            {this.originalQuery["vacancy"] !== undefined ? (
+            {this.state.query["vacancy"] !== undefined ? (
               <input
                 id="vacancy-input"
                 className="bg-cloud with-border"
                 disabled
-                value={this.originalQuery["vacancy"]}
+                value={this.state.query["vacancy"]}
                 type="number"
                 min="1"
               />

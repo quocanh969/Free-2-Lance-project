@@ -35,19 +35,6 @@ class HeaderComponent extends Component {
           message:
             "All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time.",
         },
-        {
-          id_user: 2,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "Triple H",
-          message: "All music used in the creation of this video are t",
-        },
-        {
-          id_user: 3,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "Garen",
-          message:
-            "All music used in the creation of this video are the intellectual property of those who owns it. ",
-        },
       ],
       notices: [
         {
@@ -56,27 +43,6 @@ class HeaderComponent extends Component {
           fullname: "John Cena",
           type: 1, // nhận
           job: "Đấm nhau",
-        },
-        {
-          id_user: 2,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Triple H",
-          type: 0, // ko nhận
-          job: "Đấm nhau",
-        },
-        {
-          id_user: 3,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Garen",
-          type: 2, // kết thúc công việc
-          job: "Cày rank LOL",
-        },
-        {
-          id_user: 4,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Ronaldo",
-          type: 3, // nhận thanh toán
-          job: "Đá bóng",
         },
       ],
     };
@@ -99,80 +65,80 @@ class HeaderComponent extends Component {
     onLoadTags();
   }
 
-  // componentDidMount = async () => {
-  //   window.addEventListener("scroll", this.handleScroll);
-  //   const email = localStorage.getItem('email');
-  //   if (email) {
-  //     const notifications = await
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .doc(email)
-  //         .get();
-  //     console.log('notification exists:', notifications.exists)
-  //     console.log();
-  //     await firebase
-  //       .firestore()
-  //       .collection('chats')
-  //       .where('users', 'array-contains', email)
-  //       .onSnapshot(async res => {
-  //         const chats = res.docs.map(_doc => _doc.data());
-  //         let rs = [];
-  //         let unreadMessage = 0;
-  //         console.log('chats1234:', chats)
-  //         chats.forEach(element => {
-  //           console.log(element);
-  //           let realPerson = element.img.filter(el => el.email !== email);
-  //           if(realPerson.length > 0) {
-  //             rs.push({
-  //               fullname: realPerson[0].fullname,
-  //               avatarImg: getImageSrc(realPerson[0].img),
-  //               message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
-  //             })
+  componentDidMount = async () => {
+    window.addEventListener("scroll", this.handleScroll);
+    // const email = localStorage.getItem('email');
+    // if (email) {
+    //   const notifications = await
+    //     firebase
+    //       .firestore()
+    //       .collection('notifications')
+    //       .doc(email)
+    //       .get();
+    //   console.log('notification exists:', notifications.exists)
+    //   console.log();
+    //   await firebase
+    //     .firestore()
+    //     .collection('chats')
+    //     .where('users', 'array-contains', email)
+    //     .onSnapshot(async res => {
+    //       const chats = res.docs.map(_doc => _doc.data());
+    //       let rs = [];
+    //       let unreadMessage = 0;
+    //       console.log('chats1234:', chats)
+    //       chats.forEach(element => {
+    //         console.log(element);
+    //         let realPerson = element.img.filter(el => el.email !== email);
+    //         if(realPerson.length > 0) {
+    //           rs.push({
+    //             fullname: realPerson[0].fullname,
+    //             avatarImg: getImageSrc(realPerson[0].img),
+    //             message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
+    //           })
 
-  //             if (element.messages.length > 0) {
-  //               if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-  //                 unreadMessage++;
-  //               }
-  //             }
-  //           }
+    //           if (element.messages.length > 0) {
+    //             if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+    //               unreadMessage++;
+    //             }
+    //           }
+    //         }
 
-  //         });
-  //         await this.setState({
-  //           email: email,
-  //           messages: rs,
-  //           unreadMessage
+    //       });
+    //       await this.setState({
+    //         email: email,
+    //         messages: rs,
+    //         unreadMessage
 
-  //         });
-  //       })
-  //     if (!notifications.exists) {
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .doc(email)
-  //         .set({
-  //           email: email,
-  //           listNotify: [],
-  //           isRead: true
-  //         })
-  //     }
-  //     else {
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .where('email', '==', email)
-  //         .onSnapshot(async res => {
-  //           const data = res.docs.map(_doc => _doc.data());
+    //       });
+    //     })
+    //   if (!notifications.exists) {
+    //     firebase
+    //       .firestore()
+    //       .collection('notifications')
+    //       .doc(email)
+    //       .set({
+    //         email: email,
+    //         listNotify: [],
+    //         isRead: true
+    //       })
+    //   }
+    //   else {
+    //     firebase
+    //       .firestore()
+    //       .collection('notifications')
+    //       .where('email', '==', email)
+    //       .onSnapshot(async res => {
+    //         const data = res.docs.map(_doc => _doc.data());
 
-  //           await this.setState({
-  //             notifications: data[0].listNotify,
-  //             isReadNotify: data[0].isRead
-  //           });
-  //         })
-  //     }
-  //   }
+    //         await this.setState({
+    //           notifications: data[0].listNotify,
+    //           isReadNotify: data[0].isRead
+    //         });
+    //       })
+    //   }
+    // }
 
-  // }
+  }
 
   componentDidUpdate() {}
 
@@ -201,15 +167,18 @@ class HeaderComponent extends Component {
     history.push("/login");
   }
 
-  handleTopicNavClick(e, topic) {
-    let currentTopic = Number.parseInt(this.props.match.params.job_topic);
-    if (currentTopic !== topic) {
-      let { onLoadJobByJob } = this.props;
-      onLoadJobByJob({ job_topic: topic });
-    } else {
-      e.preventDefault();
-    }
-  }
+  // handleTopicNavClick(e, topic) {
+  //   let currentTopic = Number.parseInt(this.props.match.params.job_topic);
+  //   console.log(currentTopic);
+  //   console.log(topic);
+  //   if (currentTopic !== topic) {
+  //     let { onLoadJobByTopic } = this.props;
+  //     onLoadJobByTopic({ job_topic: topic });
+  //   } else {
+  //     e.preventDefault();
+  //   }
+  // }
+
   sendReadNotfication = async () => {
     const { email } = this.state;
     if (email) {
@@ -218,6 +187,7 @@ class HeaderComponent extends Component {
       });
     }
   };
+
   renderTopicsHeader() {
     let { jobTopic } = this.props.GeneralReducer;
 
@@ -328,8 +298,8 @@ class HeaderComponent extends Component {
     let content = [],
       count = 0;
     const { notices, notifications, isRead } = this.state;
-    console.log("notifications:", notifications);
-    console.log("isRead:", isRead);
+    // console.log("notifications:", notifications);
+    // console.log("isRead:", isRead);
     for (let e of notifications) {
       content.push(
         <NavLink
@@ -357,7 +327,7 @@ class HeaderComponent extends Component {
   renderUserLoginContent(user) {
     let userAvatar = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
     const { isReadNotify, unreadMessage } = this.state;
-    console.log("isReadNotify:", isReadNotify);
+    // console.log("isReadNotify:", isReadNotify);
     return (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
@@ -651,7 +621,7 @@ const mapDispatchToProps = (dispatch) => {
     onLoadTags: () => {
       dispatch(loadTags());
     },
-    onLoadJobByJob: (query) => {
+    onLoadJobByTopic: (query) => {
       dispatch(loadJobList(1, 8, 2, query));
     },
   };

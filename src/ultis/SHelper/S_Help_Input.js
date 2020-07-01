@@ -26,15 +26,22 @@ class S_Selector extends Component {
     componentDidMount() {
         if(this.props.value)
         {
+            console.log(this.props.value);
             this.initValue();
         }
     }
 
-    componentDidUpdate() {
-        if(this.state.selected === undefined && this.props.value)
-        {
+    componentDidUpdate() {        
+        if(this.state.selected === undefined && this.props.value) {            
+            console.log('hello world ~!!');            
             this.initValue();
-        }        
+        }
+        else {
+            if(this.state.selected && this.state.selected[this.props.value_tag] !== this.props.value) {
+                this.initValue();
+            }
+            // console.log(this.state.selected[this.props.text_tag]);
+        } 
     }
     // componentDidUpdate() {
     //     console.log(this.props);
@@ -52,6 +59,7 @@ class S_Selector extends Component {
     }
 
     initValue() {
+        console.log('hello');
         let value = Number.parseInt(this.props.value);
         let selected = this.findeValueObject(value);
         if(selected !== null)
@@ -117,7 +125,7 @@ class S_Selector extends Component {
                         this.props.disabled
                         ?
                         <div className={"s-btn-select bg-cloud w-100 d-flex justify-content-between " + (this.props.className)}>
-                            <span>{this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}</span>                        
+                            {this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}                      
                         </div>
                         :
                         <button className={"btn btn-select dropdown-toggle w-100 d-flex justify-content-between mb-0 " + (this.props.className)}
