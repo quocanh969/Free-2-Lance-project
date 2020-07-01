@@ -96,11 +96,11 @@ class JobListComponent extends Component {
             <ul>
               <li>
                 <i className="icon-material-outline-location-on" />{" "}
-                {e.area_province}
+                {e.province}
               </li>
               <li>
                 <i className="icon-material-outline-account-balance-wallet" />{" "}
-                {prettierNumber(e.salary)} đ
+                {prettierNumber(e.salary)} VNĐ
               </li>
               <br></br>
               <li>
@@ -156,7 +156,7 @@ class JobListComponent extends Component {
                 <ul>
                   <li>
                     <i className="icon-material-outline-location-on" />{" "}
-                    {e.area_province}
+                    {e.province}
                   </li>
                   <li>
                     <i className="icon-material-outline-account-balance-wallet" />{" "}
