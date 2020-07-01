@@ -10,7 +10,6 @@ import {
 } from "../../ultis/SHelper/helperFunctions";
 import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
-import BackgroundSingleJob from "../../assets/images/single-job.jpg";
 
 import MapContainer from "../map_JobsList";
 import ApplyForm from "./ApplyForm/ApplyForm";

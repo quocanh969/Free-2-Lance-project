@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import "../assets/css/testimonial.css";
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
-import UserAvatarPlaceholder from "../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../assets/images/portrait_placeholder.png";
 
 import { S_Selector } from "../ultis/SHelper/S_Help_Input";
 import {
@@ -20,10 +20,13 @@ import {
   prettierDate,
   getImageSrc,
 } from "../ultis/SHelper/helperFunctions";
+import { history } from "../ultis/history/history";
 
 class HomeComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -41,6 +44,28 @@ class HomeComponent extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+  }
+
+  handleSearchSubmit(e) {
+    e.preventDefault();
+    let query = {};
+    let title = document.getElementById('input-title').value;
+    let area_province = document.getElementById('select-area').value;
+    let job_topic = document.getElementById('select-category').value;
+
+    if(title.length > 0) {
+      query['title'] = title;
+    }
+    if(area_province != 0) {
+      query['area_province'] = area_province;
+    }
+    if(job_topic != 0) {
+      query['job_topic'] = job_topic;
+    }
+    
+    if(query.length !== {}) {
+      history.push('/job-list', query);
+    }
   }
 
   areaSession(areas) {
@@ -108,7 +133,7 @@ class HomeComponent extends Component {
           {/* Search Bar */}
           <div className="row">
             <div className="col-md-12">
-              <form className="intro-banner-search-form margin-top-95">
+              <form id='search-field' onSubmit={this.handleSearchSubmit} className="intro-banner-search-form margin-top-95">
                 {/* Search Field */}
                 <div className="intro-search-field">
                   <label

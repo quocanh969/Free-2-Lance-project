@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getImageSrc } from "../../../ultis/SHelper/helperFunctions";
-import UserAvatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../assets/images/portrait_placeholder.png";
 import Tooltip from "@material-ui/core/Tooltip";
 import moment from 'moment';
 const firebase = require("firebase");

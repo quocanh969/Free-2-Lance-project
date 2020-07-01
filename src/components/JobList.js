@@ -42,7 +42,7 @@ class JobListComponent extends Component {
       let splitted = this.props.history.location.pathname.split("=", 2);
       let newTopic = Number.parseInt(splitted[1]);
 
-      this.setState({query: {job_topic: newTopic}}, () => {
+      this.setState({ query: { job_topic: newTopic } }, () => {
         this.loadJobListFunc(1, this.state.query);
       });
     }
@@ -203,59 +203,49 @@ class JobListComponent extends Component {
   }
 
   handleFilter() {
-    let query = this.state.query;
+    let query = {...this.state.query};
 
-    if (query["area_province"] !== undefined) {
-      let area = document.getElementById("select-area").value;
-      if (area !== "0") query["area_province"] = area;
-    }
+    let area = document.getElementById("select-area").value;
+    if (area !== "0") query["area_province"] = area;
 
-    if (query["job_topic"] !== undefined) {
-      let category = document.getElementById("select-category").value;
-      if (category !== "0") query["job_topic"] = category;
-    }
+    let category = document.getElementById("select-category").value;
+    if (category !== "0") query["job_topic"] = category;
 
-    if (query["salary"] !== undefined) {
-      let salary = Number.parseInt(
-        document.getElementById("salary-select").value
-      );
-      if (salary !== 0) {
-        switch (salary) {
-          case 1: {
-            query["salary"] = { top: 100000, bot: 0 };
-            break;
-          }
-          case 2: {
-            query["salary"] = { top: 500000, bot: 100000 };
-            break;
-          }
-          case 3: {
-            query["salary"] = { top: 1000000, bot: 500000 };
-            break;
-          }
-          case 4: {
-            query["salary"] = { top: 10000000, bot: 1000000 };
-            break;
-          }
-          case 5: {
-            query["salary"] = { top: 0, bot: 10000000 };
-            break;
-          }
+    let salary = Number.parseInt(
+      document.getElementById("salary-select").value
+    );
+    if (salary !== 0) {
+      switch (salary) {
+        case 1: {
+          query["salary"] = { top: 100000, bot: 0 };
+          break;
+        }
+        case 2: {
+          query["salary"] = { top: 500000, bot: 100000 };
+          break;
+        }
+        case 3: {
+          query["salary"] = { top: 1000000, bot: 500000 };
+          break;
+        }
+        case 4: {
+          query["salary"] = { top: 10000000, bot: 1000000 };
+          break;
+        }
+        case 5: {
+          query["salary"] = { top: 0, bot: 10000000 };
+          break;
         }
       }
     }
 
-    if (query["expire_date"] !== undefined) {
-      let expiredDate = document.getElementById("expired-input").value;
-      if (expiredDate !== "") query["expire_date"] = expiredDate;
-    }
+    let expiredDate = document.getElementById("expired-input").value;
+    if (expiredDate !== "") query["expire_date"] = expiredDate;
 
-    if (query["vacancy"] !== undefined) {
-      let vacancy = document.getElementById("vacancy-input").value;
-      if (vacancy !== "") query["vacancy"] = vacancy;
-    }
+    let vacancy = document.getElementById("vacancy-input").value;
+    if (vacancy !== "") query["vacancy"] = vacancy;
 
-    console.log(query);
+    this.loadJobListFunc(1, query);
   }
 
   initQuery() {
@@ -266,12 +256,12 @@ class JobListComponent extends Component {
       // navigate từ topic trên header
       let { params } = this.props.match;
       // Tiền xử lý params
-      this.setState({query: params}, () => {
+      this.setState({ query: params }, () => {
         this.loadJobListFunc(1, this.state.query);
-      });      
+      });
     } else {
       // navigate từ search page
-      this.setState({query: this.props.location.state}, () => {
+      this.setState({ query: this.props.location.state }, () => {
         this.loadJobListFunc(1, this.state.query);
       });
     }
@@ -345,21 +335,21 @@ class JobListComponent extends Component {
                 className="with-border"
                 placeholder="Chọn khu vực"
                 disabled={true}
-                value={this.state.query["area_province"]}
+                value={Number.parseInt(this.state.query["area_province"])}
                 data={areas}
                 value_tag="id_province"
                 text_tag="name"
               ></S_Selector>
             ) : (
-              <S_Selector
-                id="select-area"
-                className="with-border"
-                placeholder="Chọn khu vực"
-                data={areas}
-                value_tag="id_province"
-                text_tag="name"
-              ></S_Selector>
-            )}
+                <S_Selector
+                  id="select-area"
+                  className="with-border"
+                  placeholder="Chọn khu vực"
+                  data={areas}
+                  value_tag="id_province"
+                  text_tag="name"
+                ></S_Selector>
+              )}
           </div>
         </div>
 
@@ -379,15 +369,15 @@ class JobListComponent extends Component {
                 text_tag="name"
               ></S_Selector>
             ) : (
-              <S_Selector
-                id="select-category"
-                className="with-border"
-                placeholder="Chọn chủ đề"
-                data={jobTopic}
-                value_tag="id_jobtopic"
-                text_tag="name"
-              ></S_Selector>
-            )}
+                <S_Selector
+                  id="select-category"
+                  className="with-border"
+                  placeholder="Chọn chủ đề"
+                  data={jobTopic}
+                  value_tag="id_jobtopic"
+                  text_tag="name"
+                ></S_Selector>
+              )}
           </div>
         </div>
 
@@ -432,21 +422,21 @@ class JobListComponent extends Component {
                 <option value={0}>Lớn hơn 10.000.000đ</option>
               </select>
             ) : (
-              <select
-                className="btn with-border dropdown-toggle bs-placeholder btn-default"
-                id="salary-select"
-                defaultValue={0}
-              >
-                <option value={0} disabled>
-                  Giá tiền
+                <select
+                  className="btn with-border dropdown-toggle bs-placeholder btn-default"
+                  id="salary-select"
+                  defaultValue={0}
+                >
+                  <option value={0} disabled>
+                    Giá tiền
                 </option>
-                <option value={1}>Nhỏ hơn 100.000 đ</option>
-                <option value={2}>100.000đ - 500.000đ</option>
-                <option value={3}>500.000đ - 1.000.000đ</option>
-                <option value={4}>1.000.000đ - 10.000.000đ</option>
-                <option value={5}>Lớn hơn 10.000.000đ</option>
-              </select>
-            )}
+                  <option value={1}>Nhỏ hơn 100.000 đ</option>
+                  <option value={2}>100.000đ - 500.000đ</option>
+                  <option value={3}>500.000đ - 1.000.000đ</option>
+                  <option value={4}>1.000.000đ - 10.000.000đ</option>
+                  <option value={5}>Lớn hơn 10.000.000đ</option>
+                </select>
+              )}
           </div>
         </div>
 
@@ -465,14 +455,14 @@ class JobListComponent extends Component {
                 max="2050-12-31"
               />
             ) : (
-              <input
-                id="expired-input"
-                className="with-border"
-                type="date"
-                min="2020-01-01"
-                max="2050-12-31"
-              />
-            )}
+                <input
+                  id="expired-input"
+                  className="with-border"
+                  type="date"
+                  min="2020-01-01"
+                  max="2050-12-31"
+                />
+              )}
           </div>
         </div>
 
@@ -490,13 +480,13 @@ class JobListComponent extends Component {
                 min="1"
               />
             ) : (
-              <input
-                id="vacancy-input"
-                className="with-border"
-                type="number"
-                min="1"
-              />
-            )}
+                <input
+                  id="vacancy-input"
+                  className="with-border"
+                  type="number"
+                  min="1"
+                />
+              )}
           </div>
         </div>
       </div>
@@ -619,7 +609,7 @@ class JobListComponent extends Component {
                       </ul>
                     </nav>
                   </div>
-                
+
                 </div>
               </div>
               {/* Pagination / End */}

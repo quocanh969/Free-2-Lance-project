@@ -3,7 +3,7 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Logo2 from "../../assets/images/logo4.png";
-import UserAvatarPlaceholder from "../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../assets/images/portrait_placeholder.png";
 import JobImgePlaceholder from "../../assets/images/company-logo-placeholder-alt.png";
 import Badge from "@material-ui/core/Badge";
 import MailIcon from "@material-ui/icons/Mail";
