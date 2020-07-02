@@ -382,6 +382,7 @@ class HomeComponent extends Component {
           <div
             className={"item carousel-item " + (count === 0 && "active")}
             key={count}
+            onClick={()=>{history.push('user-detail/'+e.id_user)}}
           >
             <div className="img-box">
               <img src={userAvatar} alt="" />

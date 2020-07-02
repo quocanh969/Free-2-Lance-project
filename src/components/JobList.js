@@ -563,9 +563,17 @@ class JobListComponent extends Component {
                     : "compact-list-layout")
                 }
               >
-                {this.state.isGridMode
+                {(
+                  this.props.JobsListReducer.jobList.length > 0
+                  ?
+                  (
+                    this.state.isGridMode
                   ? this.generateJobListGridMode()
-                  : this.generateJobListListMode()}
+                  : this.generateJobListListMode()
+                  )
+                  :
+                  'Danh sách công việc tìm kiếm rỗng !!!'
+                )}
               </div>
               {/* Pagination */}
               <div className="clearfix" />
