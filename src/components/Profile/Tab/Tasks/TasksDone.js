@@ -35,6 +35,7 @@ class TasksDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentFinishedPage) {
+      window.scrollTo(0,0);
       this.loadJobList(pageNum);
     }
   }

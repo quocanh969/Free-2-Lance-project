@@ -96,7 +96,7 @@ class DashboardComponent extends Component {
               <div className="headline">
                 <h3><i className="icon-line-awesome-calendar"/>Lịch trình cá nhân</h3>
               </div>
-              <div id="full_calendar" className='mt-4'></div>
+              <div id="full_calendar" className='mt-4' ></div>
             </div>
             <div className="col-xl-4 dashboard-box ml-2 mr-4">
               <div className="headline">

@@ -33,6 +33,7 @@ class JobsApplyingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentApplyingPage) {
+      window.scrollTo(0,0);
       this.loadJobListFunc(pageNum);
     }
   }

@@ -59,4 +59,6 @@
 
 .suggestion-show {
     display: block !important;
+    max-height: 50vh;
+    overflow-y: auto;
 }

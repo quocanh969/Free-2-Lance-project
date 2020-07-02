@@ -37,7 +37,7 @@ class S_Selector extends Component {
             this.initValue();
         }
         else {
-            if(this.state.selected && this.state.selected[this.props.value_tag] !== this.props.value) {
+            if(this.props.disabled && this.state.selected && this.state.selected[this.props.value_tag] !== this.props.value) {
                 this.initValue();
             }
             // console.log(this.state.selected[this.props.text_tag]);
@@ -396,7 +396,6 @@ class S_Tag_Autocomplete extends Component {
     handleClick = (e) => {
         if(!document.getElementById('auto_complete').contains(e.target)) {
             this.setState({isFocus: false});
-            // console.log('địt mẹ cuộc đời');
         }
     }
 
