@@ -261,7 +261,7 @@ class PostJobComponent extends Component {
               </div>
               <div className="dashboard-content with-padding padding-bottom-10">
                 <div className="row">
-                  <div className="col-xl-4">
+                  <div className="col-xl-8">
                     <div className="submit-field">
                       <h5>Tiêu đề</h5>
                       <input
@@ -271,91 +271,50 @@ class PostJobComponent extends Component {
                         className={
                           "with-border " +
                           (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.jobTitle === ""
+                            this.props.AddJobReducer.fields.jobTitle === ""
                             ? "border-danger mb-0"
                             : "")
                         }
                       />
                       {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.jobTitle === "" ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng nhập tiêu đề
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                        this.props.AddJobReducer.fields.jobTitle === "" ? (
+                          <span className={"text-danger pb-0 mb-0"}>
+                            *Vui lòng nhập tiêu đề
+                          </span>
+                        ) : (
+                          ""
+                        )}
                     </div>
                   </div>
+
                   <div className="col-xl-4">
                     <div className="submit-field">
-                      <h5>Loại công việc</h5>
-                      <S_Selector
-                        className={
-                          "with-border " +
-                          (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.jobType == 0
-                            ? "border-danger"
-                            : "")
-                        }
-                        id="jobTypeSelector"
-                        data={this.props.AddJobReducer.jobTypes}
-                        value_tag={"value"}
-                        text_tag={"name"}
-                        placeholder={"Phân loại công việc"}
-                        handleChange={() => {
-                          this.handleChange(
-                            "jobType",
-                            document.getElementById("jobTypeSelector").value
-                          );
-                        }}
-                      ></S_Selector>
-                      {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.jobType == 0 ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng chọn phân loại
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                      <h5>Lương cơ bản</h5>
+                      <div className="input-with-icon">
+                        <input
+                          className={
+                            "with-border " +
+                            (this.state.isValid === false &&
+                              this.state.salary == 0
+                              ? "border-danger mb-0"
+                              : "")
+                          }
+                          id="salary"
+                          type="text"
+                          value={this.state.salary}
+                          onChange={this.onHandleTextChange}
+                          placeholder={"Nhập thù lao"}
+                        />
+                        <i className="currency">VND</i>
+                        {/* {(this.state.isValid === false && this.state.salary == 0 ? <span className={"text-danger pb-0 mb-0"} >*Số lượng tuyển tối thiểu 1</span> : ''
+                                                        )} */}
+                      </div>
                     </div>
                   </div>
-                  <div className="col-xl-4">
-                    <div className="submit-field">
-                      <h5>Chủ đề công việc</h5>
-                      {/* <select id="jobTopicsSelector" className="selectpicker with-border" onMouseDown="if(this.options.length>5){this.size=5}" title="Select Category"> */}
-                      <S_Selector
-                        className={
-                          "with-border " +
-                          (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.jobTopic == 0
-                            ? "border-danger"
-                            : "")
-                        }
-                        id="jobTopicsSelector"
-                        data={this.props.GeneralReducer.jobTopic}
-                        value_tag={"id_jobtopic"}
-                        text_tag={"name"}
-                        placeholder={"Chọn chủ đề"}
-                        handleChange={() => {
-                          this.handleChange(
-                            "jobTopic",
-                            document.getElementById("jobTopicsSelector").value
-                          );
-                        }}
-                      ></S_Selector>
-                      {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.jobTopic == 0 ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng chọn chủ đề
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </div>
+
                   <div className="col-xl-8">
                     <div className="row">
-                      <div className="col-xl-6">
+                      <div className="col-xl-12">
                         <div className="submit-field">
                           <h5>Địa chỉ</h5>
                           <GoogleMapAutocomplete
@@ -368,41 +327,88 @@ class PostJobComponent extends Component {
                             onChange={this.handleChange}
                           ></GoogleMapAutocomplete>
                           {this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.addressString ===
+                            this.props.AddJobReducer.fields.addressString ===
                             "" ? (
-                            <span className={"text-danger pb-0 mb-0"}>
-                              *Vui lòng chọn địa chỉ gợi ý
-                            </span>
-                          ) : (
-                            ""
-                          )}
+                              <span className={"text-danger pb-0 mb-0"}>
+                                *Vui lòng chọn địa chỉ gợi ý
+                              </span>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
-                      <div className="col-xl-6">
+
+                      <div className="col-xl-6 mt-3">
                         <div className="submit-field">
-                          <h5>Lương cơ bản</h5>
-                          <div className="input-with-icon">
-                            <input
-                              className={
-                                "with-border " +
-                                (this.state.isValid === false &&
-                                this.state.salary == 0
-                                  ? "border-danger mb-0"
-                                  : "")
-                              }
-                              id="salary"
-                              type="text"
-                              value={this.state.salary}
-                              onChange={this.onHandleTextChange}
-                              placeholder={"Nhập thù lao"}
-                            />
-                            <i className="currency">VND</i>
-                            {/* {(this.state.isValid === false && this.state.salary == 0 ? <span className={"text-danger pb-0 mb-0"} >*Số lượng tuyển tối thiểu 1</span> : ''
-                                                        )} */}
-                          </div>
+                          <h5>Loại công việc</h5>
+                          <S_Selector
+                            className={
+                              "with-border " +
+                              (this.state.isValid === false &&
+                                this.props.AddJobReducer.fields.jobType == 0
+                                ? "border-danger"
+                                : "")
+                            }
+                            id="jobTypeSelector"
+                            data={this.props.AddJobReducer.jobTypes}
+                            value_tag={"value"}
+                            text_tag={"name"}
+                            placeholder={"Phân loại công việc"}
+                            handleChange={() => {
+                              this.handleChange(
+                                "jobType",
+                                document.getElementById("jobTypeSelector").value
+                              );
+                            }}
+                          ></S_Selector>
+                          {this.state.isValid === false &&
+                            this.props.AddJobReducer.fields.jobType == 0 ? (
+                              <span className={"text-danger pb-0 mb-0"}>
+                                *Vui lòng chọn phân loại
+                              </span>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
-                      <div className="col-xl-6">
+
+                      <div className="col-xl-6 mt-3">
+                        <div className="submit-field">
+                          <h5>Chủ đề công việc</h5>
+                          {/* <select id="jobTopicsSelector" className="selectpicker with-border" onMouseDown="if(this.options.length>5){this.size=5}" title="Select Category"> */}
+                          <S_Selector
+                            className={
+                              "with-border " +
+                              (this.state.isValid === false &&
+                                this.props.AddJobReducer.fields.jobTopic == 0
+                                ? "border-danger"
+                                : "")
+                            }
+                            id="jobTopicsSelector"
+                            data={this.props.GeneralReducer.jobTopic}
+                            value_tag={"id_jobtopic"}
+                            text_tag={"name"}
+                            placeholder={"Chọn chủ đề"}
+                            handleChange={() => {
+                              this.handleChange(
+                                "jobTopic",
+                                document.getElementById("jobTopicsSelector").value
+                              );
+                            }}
+                          ></S_Selector>
+                          {this.state.isValid === false &&
+                            this.props.AddJobReducer.fields.jobTopic == 0 ? (
+                              <span className={"text-danger pb-0 mb-0"}>
+                                *Vui lòng chọn chủ đề
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                        </div>
+
+                      </div>
+
+                      <div className="col-xl-6 mt-3">
                         <div className="submit-field">
                           {/* <div className="input-with-icon"> */}
                           <h5>Hạn chót xét tuyển</h5>
@@ -416,8 +422,38 @@ class PostJobComponent extends Component {
                           {/* </div> */}
                         </div>
                       </div>
+                      <div className="col-xl-6 mt-3">
+                        <div className="submit-field">
+                          <h5>Số lượng vị trí</h5>
+                          <div className="input-with-icon">
+                            <input
+                              id="vacancy"
+                              className={
+                                "with-border " +
+                                (this.state.isValid === false &&
+                                  this.state.vacancy == 0
+                                  ? "border-danger mb-0"
+                                  : "")
+                              }
+                              type="text"
+                              placeholder={"Nhập số lượng cần tuyển"}
+                              value={this.state.vacancy}
+                              onChange={this.onHandleTextChange}
+                            />
+                            {this.state.isValid === false &&
+                              this.state.vacancy == 0 ? (
+                                <span className={"text-danger pb-0 mb-0"}>
+                                  *Số lượng tuyển tối thiểu 1
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                          </div>
+                        </div>
+                      </div>
+
                       <div
-                        className="col-xl-6"
+                        className="col-xl-6 mt-3"
                         style={{
                           visibility:
                             this.props.AddJobReducer.fields.jobType == 2
@@ -437,7 +473,8 @@ class PostJobComponent extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="col-xl-6">
+
+                      <div className="col-xl-6 mt-3">
                         <div className="submit-field">
                           <h5>Ngày kết thúc</h5>
                           <div className="input-with-icon">
@@ -450,36 +487,8 @@ class PostJobComponent extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="col-xl-6">
-                        <div className="submit-field">
-                          <h5>Số lượng vị trí</h5>
-                          <div className="input-with-icon">
-                            <input
-                              id="vacancy"
-                              className={
-                                "with-border " +
-                                (this.state.isValid === false &&
-                                this.state.vacancy == 0
-                                  ? "border-danger mb-0"
-                                  : "")
-                              }
-                              type="text"
-                              placeholder={"Nhập số lượng cần tuyển"}
-                              value={this.state.vacancy}
-                              onChange={this.onHandleTextChange}
-                            />
-                            {this.state.isValid === false &&
-                            this.state.vacancy == 0 ? (
-                              <span className={"text-danger pb-0 mb-0"}>
-                                *Số lượng tuyển tối thiểu 1
-                              </span>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6">
+
+                      <div className="col-xl-6 mt-3">
                         <div className="submit-field">
                           <h5>Tính chất công việc</h5>
                           <div className="custom-control custom-checkbox mb-3">
@@ -497,7 +506,7 @@ class PostJobComponent extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="col-xl-6">
+                      <div className="col-xl-6 mt-3">
                         <div className="submit-field">
                           <h5 style={{ visibility: "hidden" }}>
                             Tính chất công việc
@@ -545,6 +554,7 @@ class PostJobComponent extends Component {
                       </div>
                     </div>
                   </div>
+
                   <div className="col-xl-12">
                     <div className="submit-field">
                       <h5>Mô tả công việc</h5>
@@ -555,7 +565,7 @@ class PostJobComponent extends Component {
                         className={
                           "with-border " +
                           (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.description === ""
+                            this.props.AddJobReducer.fields.description === ""
                             ? "border-danger mb-0"
                             : "")
                         }
@@ -563,13 +573,13 @@ class PostJobComponent extends Component {
                         placeholder="Mô tả công việc (bắt buộc)"
                       />
                       {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.description === "" ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng nhập mô tả công việc
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                        this.props.AddJobReducer.fields.description === "" ? (
+                          <span className={"text-danger pb-0 mb-0"}>
+                            *Vui lòng nhập mô tả công việc
+                          </span>
+                        ) : (
+                          ""
+                        )}
                       <h5>Yêu cầu</h5>
                       <textarea
                         id="requirements"
