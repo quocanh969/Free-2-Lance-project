@@ -1,4 +1,4 @@
-import UserAvatarPlaceholder from "../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../assets/images/portrait_placeholder.png";
 export const prettierNumber = (number) => {
   let formetedNumber = Number(number)
     .toFixed(2)

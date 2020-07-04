@@ -7,7 +7,22 @@ import {withRouter, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 class ContactComponent extends Component {
-    
+    componentDidMount() {
+        let map = document.getElementById('contact-map');
+        let iframe = document.createElement("iframe");
+        // <iframe style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        iframe.style.height = "90vh";
+        iframe.style.width='100%';
+        iframe.style.border = '0';
+        iframe.frameBorder = '0';
+
+        iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.7599664184736!2d106.64911261411635!3d10.752973662568158!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752e8b42bc3d8b%3A0x5e5f6df12b810cf2!2zMTA1MSDEkC4gTmd1eeG7hW4gVHLDo2ksIFBoxrDhu51uZyAxNCwgUXXhuq1uIDUsIEjhu5MgQ2jDrSBNaW5oLCBWaWV0bmFt!5e0!3m2!1sen!2s!4v1593623392811!5m2!1sen!2s";
+        map.innerHTML = "";
+        map.appendChild(iframe);
+
+        window.scrollTo(0,0);
+    }
+
     render() {
         let {places} = this.props.ContactUsReducer;
 
@@ -18,14 +33,7 @@ class ContactComponent extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                <h2>Contact</h2>
-                                {/* Breadcrumbs */}
-                                <nav id="breadcrumbs" className="dark">
-                                    <ul>
-                                        <li><NavLink to='/'>Home</NavLink></li>
-                                        <li>Contact</li>
-                                    </ul>
-                                </nav>
+                                <h2>Liên hệ với chúng tôi</h2>
                             </div>
                         </div>
                     </div>
@@ -38,59 +46,19 @@ class ContactComponent extends Component {
                             <div className="contact-location-info margin-bottom-50">
                                 <div className="contact-address">
                                     <ul>
-                                        <li className="contact-address-headline">Our Office</li>
-                                        <li>425 Berry Street, CA 93584</li>
-                                        <li>Phone (123) 123-456</li>
-                                        <li><a href="#">mail@example.com</a></li>
-                                        <li>
-                                            <div className="freelancer-socials">
-                                                <ul>
-                                                    <li><a href="#" title="Dribbble" data-tippy-placement="top"><i className="icon-brand-dribbble" /></a></li>
-                                                    <li><a href="#" title="Twitter" data-tippy-placement="top"><i className="icon-brand-twitter" /></a></li>
-                                                    <li><a href="#" title="Behance" data-tippy-placement="top"><i className="icon-brand-behance" /></a></li>
-                                                    <li><a href="#" title="GitHub" data-tippy-placement="top"><i className="icon-brand-github" /></a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
+                                        <li className="contact-address-headline"></li>
+                                        <li>Địa chỉ: 1051 Nguyễn Trãi, Phường 14, Quận 5, TPHCM</li>
+                                        <li>Số điện thoại: (036) 563-58729</li>
+                                        <li>Email: free2lance@gmail.com</li>
                                     </ul>
                                 </div>
                                 <div id="single-job-map-container">
                                     {/* <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" /> */}
-                                    <div>
-                                        <MapContainer places={places} isList={false}></MapContainer>
+                                    <div id='contact-map'>                                        
                                     </div>
                                     {/* <a href="#" id="streetView">Street View</a> */}
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-xl-8 col-lg-8 offset-xl-2 offset-lg-2">
-                            <section id="contact" className="margin-bottom-60">
-                                <h3 className="headline margin-top-15 margin-bottom-35">Any questions? Feel free to contact us!</h3>
-                                <form method="post" name="contactform" id="contactform" autoComplete="on">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="input-with-icon-left">
-                                                <input className="with-border" name="name" type="text" id="name" placeholder="Your Name" required="required" />
-                                                <i className="icon-material-outline-account-circle" />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="input-with-icon-left">
-                                                <input className="with-border" name="email" type="email" id="email" placeholder="Email Address" pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$" required="required" />
-                                                <i className="icon-material-outline-email" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="input-with-icon-left">
-                                        <input className="with-border" name="subject" type="text" id="subject" placeholder="Subject" required="required" />
-                                        <i className="icon-material-outline-assignment" />
-                                    </div>
-                                    <div>
-                                        <textarea className="with-border" name="comments" cols={40} rows={5} id="comments" placeholder="Message" spellCheck="true" required="required" defaultValue={""} />
-                                    </div>
-                                    <button type="submit" className="submit button margin-top-15" id="submit" defaultValue="Submit Message">Send</button>
-                                </form>
-                            </section>
                         </div>
                     </div>
                 </div>

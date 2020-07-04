@@ -29,6 +29,11 @@ const initState = {
   doneApplicantsList: [],
   totalDoneApplicants: 0,
   currentDoneApplicantsPage: 0,
+
+  // for review list
+  reviewList: [],
+  totalReviews: 0,
+  currentReviewPage: 0,
 };
 
 const EmployerReducer = (state = initState, action) => {
@@ -151,6 +156,21 @@ const EmployerReducer = (state = initState, action) => {
         doneApplicantsList: [],
         totalDoneApplicants: 0,
         currentDoneApplicantsPage: 0,
+      };
+
+    case "EMPLOYER_REVIEW_LIST_UPDATE":
+      return {
+        ...state,
+        reviewList: action.list,
+        totalReviews: action.total,
+        currentReviewPage: action.page,
+      };
+    case "EMPLOYER_REVIEW_LIST_RESET":
+      return {
+        ...state,
+        reviewList: [],
+        totalReviews: 0,
+        currentReviewPage: 0,
       };
     default:
       return state;

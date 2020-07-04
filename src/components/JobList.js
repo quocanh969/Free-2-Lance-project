@@ -15,7 +15,6 @@ import {
 } from "../ultis/SHelper/helperFunctions";
 
 class JobListComponent extends Component {
-  originalQuery = {};
 
   constructor(props) {
     super(props);
@@ -23,14 +22,14 @@ class JobListComponent extends Component {
     this.state = {
       isGridMode: true,
       isASC: 2,
+      query: {},
     };
 
-    this.initQuery(); // original query
     this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   componentWillMount() {
-    this.loadJobListFunc(1, this.originalQuery);
+    this.initQuery(); // original query
   }
 
   componentDidMount() {
@@ -42,9 +41,10 @@ class JobListComponent extends Component {
       // khác path
       let splitted = this.props.history.location.pathname.split("=", 2);
       let newTopic = Number.parseInt(splitted[1]);
-      this.originalQuery.job_topic = newTopic;
 
-      this.loadJobListFunc(1, this.originalQuery);
+      this.setState({ query: { job_topic: newTopic } }, () => {
+        this.loadJobListFunc(1, this.state.query);
+      });
     }
   }
 
@@ -96,11 +96,11 @@ class JobListComponent extends Component {
             <ul>
               <li>
                 <i className="icon-material-outline-location-on" />{" "}
-                {e.area_province}
+                {e.province}
               </li>
               <li>
                 <i className="icon-material-outline-account-balance-wallet" />{" "}
-                {prettierNumber(e.salary)} đ
+                {prettierNumber(e.salary)} VNĐ
               </li>
               <br></br>
               <li>
@@ -156,7 +156,7 @@ class JobListComponent extends Component {
                 <ul>
                   <li>
                     <i className="icon-material-outline-location-on" />{" "}
-                    {e.area_province}
+                    {e.province}
                   </li>
                   <li>
                     <i className="icon-material-outline-account-balance-wallet" />{" "}
@@ -203,59 +203,49 @@ class JobListComponent extends Component {
   }
 
   handleFilter() {
-    let query = this.originalQuery;
+    let query = {...this.state.query};
 
-    if (query["area_province"] !== undefined) {
-      let area = document.getElementById("select-area").value;
-      if (area !== "0") query["area_province"] = area;
-    }
+    let area = document.getElementById("select-area").value;
+    if (area !== "0") query["area_province"] = area;
 
-    if (query["job_topic"] !== undefined) {
-      let category = document.getElementById("select-category").value;
-      if (category !== "0") query["job_topic"] = category;
-    }
+    let category = document.getElementById("select-category").value;
+    if (category !== "0") query["job_topic"] = category;
 
-    if (query["salary"] !== undefined) {
-      let salary = Number.parseInt(
-        document.getElementById("salary-select").value
-      );
-      if (salary !== 0) {
-        switch (salary) {
-          case 1: {
-            query["salary"] = { top: 100000, bot: 0 };
-            break;
-          }
-          case 2: {
-            query["salary"] = { top: 500000, bot: 100000 };
-            break;
-          }
-          case 3: {
-            query["salary"] = { top: 1000000, bot: 500000 };
-            break;
-          }
-          case 4: {
-            query["salary"] = { top: 10000000, bot: 1000000 };
-            break;
-          }
-          case 5: {
-            query["salary"] = { top: 0, bot: 10000000 };
-            break;
-          }
+    let salary = Number.parseInt(
+      document.getElementById("salary-select").value
+    );
+    if (salary !== 0) {
+      switch (salary) {
+        case 1: {
+          query["salary"] = { top: 100000, bot: 0 };
+          break;
+        }
+        case 2: {
+          query["salary"] = { top: 500000, bot: 100000 };
+          break;
+        }
+        case 3: {
+          query["salary"] = { top: 1000000, bot: 500000 };
+          break;
+        }
+        case 4: {
+          query["salary"] = { top: 10000000, bot: 1000000 };
+          break;
+        }
+        case 5: {
+          query["salary"] = { top: 0, bot: 10000000 };
+          break;
         }
       }
     }
 
-    if (query["expire_date"] !== undefined) {
-      let expiredDate = document.getElementById("expired-input").value;
-      if (expiredDate !== "") query["expire_date"] = expiredDate;
-    }
+    let expiredDate = document.getElementById("expired-input").value;
+    if (expiredDate !== "") query["expire_date"] = expiredDate;
 
-    if (query["vacancy"] !== undefined) {
-      let vacancy = document.getElementById("vacancy-input").value;
-      if (vacancy !== "") query["vacancy"] = vacancy;
-    }
+    let vacancy = document.getElementById("vacancy-input").value;
+    if (vacancy !== "") query["vacancy"] = vacancy;
 
-    console.log(query);
+    this.loadJobListFunc(1, query);
   }
 
   initQuery() {
@@ -266,14 +256,14 @@ class JobListComponent extends Component {
       // navigate từ topic trên header
       let { params } = this.props.match;
       // Tiền xử lý params
-      for (let e in params) {
-        if (params !== "") {
-          this.originalQuery[e] = params[e];
-        }
-      }
+      this.setState({ query: params }, () => {
+        this.loadJobListFunc(1, this.state.query);
+      });
     } else {
       // navigate từ search page
-      this.originalQuery = this.props.location.state;
+      this.setState({ query: this.props.location.state }, () => {
+        this.loadJobListFunc(1, this.state.query);
+      });
     }
   }
 
@@ -320,6 +310,7 @@ class JobListComponent extends Component {
 
   renderFilter() {
     let { jobTopic, areas } = this.props.GeneralReducer;
+    console.log(this.state.query);
     return (
       <div className="sidebar-container">
         <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
@@ -338,27 +329,27 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Khu vực</h3>
           <div className="input-with-icon">
-            {this.originalQuery["area_province"] !== undefined ? (
+            {this.state.query["area_province"] !== undefined ? (
               <S_Selector
                 id="select-area"
                 className="with-border"
                 placeholder="Chọn khu vực"
                 disabled={true}
-                value={this.originalQuery["area_province"]}
+                value={Number.parseInt(this.state.query["area_province"])}
                 data={areas}
                 value_tag="id_province"
                 text_tag="name"
               ></S_Selector>
             ) : (
-              <S_Selector
-                id="select-area"
-                className="with-border"
-                placeholder="Chọn khu vực"
-                data={areas}
-                value_tag="id_province"
-                text_tag="name"
-              ></S_Selector>
-            )}
+                <S_Selector
+                  id="select-area"
+                  className="with-border"
+                  placeholder="Chọn khu vực"
+                  data={areas}
+                  value_tag="id_province"
+                  text_tag="name"
+                ></S_Selector>
+              )}
           </div>
         </div>
 
@@ -366,27 +357,27 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Chủ đề</h3>
           <div className="input-with-icon">
-            {this.originalQuery["job_topic"] !== undefined ? (
+            {this.state.query["job_topic"] !== undefined ? (
               <S_Selector
                 id="select-category"
                 className="with-border"
                 placeholder="Chọn chủ đề"
                 disabled={true}
-                value={this.originalQuery["job_topic"]}
+                value={Number.parseInt(this.state.query["job_topic"])}
                 data={jobTopic}
                 value_tag="id_jobtopic"
                 text_tag="name"
               ></S_Selector>
             ) : (
-              <S_Selector
-                id="select-category"
-                className="with-border"
-                placeholder="Chọn chủ đề"
-                data={jobTopic}
-                value_tag="id_jobtopic"
-                text_tag="name"
-              ></S_Selector>
-            )}
+                <S_Selector
+                  id="select-category"
+                  className="with-border"
+                  placeholder="Chọn chủ đề"
+                  data={jobTopic}
+                  value_tag="id_jobtopic"
+                  text_tag="name"
+                ></S_Selector>
+              )}
           </div>
         </div>
 
@@ -414,12 +405,12 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Salary</h3>
           <div className="input-with-icon">
-            {this.originalQuery["salary"] !== undefined ? (
+            {this.state.query["salary"] !== undefined ? (
               <select
                 disabled
                 className="btn bg-cloud with-border dropdown-toggle bs-placeholder btn-default"
                 id="salary-select"
-                defaultValue={this.originalQuery["salary"].top}
+                defaultValue={this.state.query["salary"].top}
               >
                 <option value={1} disabled>
                   Giá tiền
@@ -431,21 +422,21 @@ class JobListComponent extends Component {
                 <option value={0}>Lớn hơn 10.000.000đ</option>
               </select>
             ) : (
-              <select
-                className="btn with-border dropdown-toggle bs-placeholder btn-default"
-                id="salary-select"
-                defaultValue={0}
-              >
-                <option value={0} disabled>
-                  Giá tiền
+                <select
+                  className="btn with-border dropdown-toggle bs-placeholder btn-default"
+                  id="salary-select"
+                  defaultValue={0}
+                >
+                  <option value={0} disabled>
+                    Giá tiền
                 </option>
-                <option value={1}>Nhỏ hơn 100.000 đ</option>
-                <option value={2}>100.000đ - 500.000đ</option>
-                <option value={3}>500.000đ - 1.000.000đ</option>
-                <option value={4}>1.000.000đ - 10.000.000đ</option>
-                <option value={5}>Lớn hơn 10.000.000đ</option>
-              </select>
-            )}
+                  <option value={1}>Nhỏ hơn 100.000 đ</option>
+                  <option value={2}>100.000đ - 500.000đ</option>
+                  <option value={3}>500.000đ - 1.000.000đ</option>
+                  <option value={4}>1.000.000đ - 10.000.000đ</option>
+                  <option value={5}>Lớn hơn 10.000.000đ</option>
+                </select>
+              )}
           </div>
         </div>
 
@@ -453,25 +444,25 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Ngày hết hạn</h3>
           <div className="input-with-icon">
-            {this.originalQuery["expire_date"] !== undefined ? (
+            {this.state.query["expire_date"] !== undefined ? (
               <input
                 id="expired-input"
                 className="bg-cloud with-border"
                 disabled
-                value={this.originalQuery["expire_date"]}
+                value={this.state.query["expire_date"]}
                 type="date"
                 min="2020-01-01"
                 max="2050-12-31"
               />
             ) : (
-              <input
-                id="expired-input"
-                className="with-border"
-                type="date"
-                min="2020-01-01"
-                max="2050-12-31"
-              />
-            )}
+                <input
+                  id="expired-input"
+                  className="with-border"
+                  type="date"
+                  min="2020-01-01"
+                  max="2050-12-31"
+                />
+              )}
           </div>
         </div>
 
@@ -479,23 +470,23 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Số lượng tuyển ( ít nhất )</h3>
           <div className="input-with-icon">
-            {this.originalQuery["vacancy"] !== undefined ? (
+            {this.state.query["vacancy"] !== undefined ? (
               <input
                 id="vacancy-input"
                 className="bg-cloud with-border"
                 disabled
-                value={this.originalQuery["vacancy"]}
+                value={this.state.query["vacancy"]}
                 type="number"
                 min="1"
               />
             ) : (
-              <input
-                id="vacancy-input"
-                className="with-border"
-                type="number"
-                min="1"
-              />
-            )}
+                <input
+                  id="vacancy-input"
+                  className="with-border"
+                  type="number"
+                  min="1"
+                />
+              )}
           </div>
         </div>
       </div>
@@ -572,9 +563,17 @@ class JobListComponent extends Component {
                     : "compact-list-layout")
                 }
               >
-                {this.state.isGridMode
+                {(
+                  this.props.JobsListReducer.jobList.length > 0
+                  ?
+                  (
+                    this.state.isGridMode
                   ? this.generateJobListGridMode()
-                  : this.generateJobListListMode()}
+                  : this.generateJobListListMode()
+                  )
+                  :
+                  'Danh sách công việc tìm kiếm rỗng !!!'
+                )}
               </div>
               {/* Pagination */}
               <div className="clearfix" />
@@ -618,7 +617,7 @@ class JobListComponent extends Component {
                       </ul>
                     </nav>
                   </div>
-                
+
                 </div>
               </div>
               {/* Pagination / End */}

@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
-import Logo2 from '../../assets/images/logo4.png';
-import UserAvatarPlaceholder from '../../assets/images/user-avatar-placeholder.png';
-import JobImgePlaceholder from '../../assets/images/company-logo-placeholder-alt.png';
-import Badge from '@material-ui/core/Badge';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Logo2 from "../../assets/images/logo4.png";
+import UserAvatarPlaceholder from "../../assets/images/portrait_placeholder.png";
+import JobImgePlaceholder from "../../assets/images/company-logo-placeholder-alt.png";
+import Badge from "@material-ui/core/Badge";
+import MailIcon from "@material-ui/icons/Mail";
+import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import { loadTopics, loadAreas, loadTags } from "../../actions/Home";
 import { loadJobList } from "../../actions/Job";
@@ -23,7 +23,7 @@ class HeaderComponent extends Component {
     this.state = {
       isTopicHover: false,
       isCurrentTop: false,
-      email: localStorage.getItem('item'),
+      email: localStorage.getItem("item"),
       isReadNotify: true,
       notifications: [],
       unreadMessage: 0,
@@ -35,19 +35,6 @@ class HeaderComponent extends Component {
           message:
             "All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time.",
         },
-        {
-          id_user: 2,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "Triple H",
-          message: "All music used in the creation of this video are t",
-        },
-        {
-          id_user: 3,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "Garen",
-          message:
-            "All music used in the creation of this video are the intellectual property of those who owns it. ",
-        },
       ],
       notices: [
         {
@@ -56,27 +43,6 @@ class HeaderComponent extends Component {
           fullname: "John Cena",
           type: 1, // nhận
           job: "Đấm nhau",
-        },
-        {
-          id_user: 2,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Triple H",
-          type: 0, // ko nhận
-          job: "Đấm nhau",
-        },
-        {
-          id_user: 3,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Garen",
-          type: 2, // kết thúc công việc
-          job: "Cày rank LOL",
-        },
-        {
-          id_user: 4,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Ronaldo",
-          type: 3, // nhận thanh toán
-          job: "Đá bóng",
         },
       ],
     };
@@ -99,82 +65,82 @@ class HeaderComponent extends Component {
     onLoadTags();
   }
 
-  // componentDidMount = async () => {
-  //   window.addEventListener("scroll", this.handleScroll);
-  //   const email = localStorage.getItem('email');
-  //   if (email) {
-  //     const notifications = await
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .doc(email)
-  //         .get();
-  //     console.log('notification exists:', notifications.exists)
-  //     console.log();
-  //     await firebase
-  //       .firestore()
-  //       .collection('chats')
-  //       .where('users', 'array-contains', email)
-  //       .onSnapshot(async res => {
-  //         const chats = res.docs.map(_doc => _doc.data());
-  //         let rs = [];
-  //         let unreadMessage = 0;
-  //         console.log('chats1234:', chats)
-  //         chats.forEach(element => {
-  //           console.log(element);
-  //           let realPerson = element.img.filter(el => el.email !== email);
-  //           if(realPerson.length > 0) {
-  //             rs.push({
-  //               fullname: realPerson[0].fullname,
-  //               avatarImg: getImageSrc(realPerson[0].img),
-  //               message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
-  //             })
-              
-  //             if (element.messages.length > 0) {
-  //               if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
-  //                 unreadMessage++;
-  //               }
-  //             }
-  //           }
+  componentDidMount = async () => {
+    window.addEventListener("scroll", this.handleScroll);
+    // const email = localStorage.getItem('email');
+    // if (email) {
+    //   const notifications = await
+    //     firebase
+    //       .firestore()
+    //       .collection('notifications')
+    //       .doc(email)
+    //       .get();
+    //   console.log('notification exists:', notifications.exists)
+    //   console.log();
+    //   await firebase
+    //     .firestore()
+    //     .collection('chats')
+    //     .where('users', 'array-contains', email)
+    //     .onSnapshot(async res => {
+    //       const chats = res.docs.map(_doc => _doc.data());
+    //       let rs = [];
+    //       let unreadMessage = 0;
+    //       console.log('chats1234:', chats)
+    //       chats.forEach(element => {
+    //         console.log(element);
+    //         let realPerson = element.img.filter(el => el.email !== email);
+    //         if(realPerson.length > 0) {
+    //           rs.push({
+    //             fullname: realPerson[0].fullname,
+    //             avatarImg: getImageSrc(realPerson[0].img),
+    //             message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
+    //           })
 
-  //         });
-  //         await this.setState({
-  //           email: email,
-  //           messages: rs,
-  //           unreadMessage
+    //           if (element.messages.length > 0) {
+    //             if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
+    //               unreadMessage++;
+    //             }
+    //           }
+    //         }
 
-  //         });
-  //       })
-  //     if (!notifications.exists) {
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .doc(email)
-  //         .set({
-  //           email: email,
-  //           listNotify: [],
-  //           isRead: true
-  //         })
-  //     }
-  //     else {
-  //       firebase
-  //         .firestore()
-  //         .collection('notifications')
-  //         .where('email', '==', email)
-  //         .onSnapshot(async res => {
-  //           const data = res.docs.map(_doc => _doc.data());
+    //       });
+    //       await this.setState({
+    //         email: email,
+    //         messages: rs,
+    //         unreadMessage
 
-  //           await this.setState({
-  //             notifications: data[0].listNotify,
-  //             isReadNotify: data[0].isRead
-  //           });
-  //         })
-  //     }
-  //   }
+    //       });
+    //     })
+    //   if (!notifications.exists) {
+    //     firebase
+    //       .firestore()
+    //       .collection('notifications')
+    //       .doc(email)
+    //       .set({
+    //         email: email,
+    //         listNotify: [],
+    //         isRead: true
+    //       })
+    //   }
+    //   else {
+    //     firebase
+    //       .firestore()
+    //       .collection('notifications')
+    //       .where('email', '==', email)
+    //       .onSnapshot(async res => {
+    //         const data = res.docs.map(_doc => _doc.data());
 
-  // }
+    //         await this.setState({
+    //           notifications: data[0].listNotify,
+    //           isReadNotify: data[0].isRead
+    //         });
+    //       })
+    //   }
+    // }
 
-  componentDidUpdate() { }
+  }
+
+  componentDidUpdate() {}
 
   componentWillReceiveProps() {
     this.handleScroll();
@@ -201,27 +167,27 @@ class HeaderComponent extends Component {
     history.push("/login");
   }
 
-  handleTopicNavClick(e, topic) {
-    let currentTopic = Number.parseInt(this.props.match.params.job_topic);
-    if (currentTopic !== topic) {
-      let { onLoadJobByJob } = this.props;
-      onLoadJobByJob({ job_topic: topic });
-    } else {
-      e.preventDefault();
-    }
-  }
+  // handleTopicNavClick(e, topic) {
+  //   let currentTopic = Number.parseInt(this.props.match.params.job_topic);
+  //   console.log(currentTopic);
+  //   console.log(topic);
+  //   if (currentTopic !== topic) {
+  //     let { onLoadJobByTopic } = this.props;
+  //     onLoadJobByTopic({ job_topic: topic });
+  //   } else {
+  //     e.preventDefault();
+  //   }
+  // }
+
   sendReadNotfication = async () => {
     const { email } = this.state;
     if (email) {
-      await firebase
-        .firestore()
-        .collection('notifications')
-        .doc(email)
-        .update({
-          isRead: true
-        });
+      await firebase.firestore().collection("notifications").doc(email).update({
+        isRead: true,
+      });
     }
-  }
+  };
+
   renderTopicsHeader() {
     let { jobTopic } = this.props.GeneralReducer;
 
@@ -251,17 +217,28 @@ class HeaderComponent extends Component {
     let { messages } = this.state;
     for (let e of messages) {
       content.push(
-        <NavLink key={count} to="/dashboard" className="dropdown-item px-1 border-top border-secondary">
+        <NavLink
+          key={count}
+          to="/dashboard"
+          className="dropdown-item px-1 border-top border-secondary"
+        >
           <div className="container-fluid px-3">
             <div className="row p-1">
               {/* avatar */}
               <div className="col-2 p-0">
-                <img className="rounded-circle" style={{ height: "auto" }} src={e.avatarImg}></img>
+                <img
+                  className="rounded-circle"
+                  style={{ height: "auto" }}
+                  src={e.avatarImg}
+                ></img>
               </div>
               {/* message */}
               <div className="col-10 px-3">
                 <div className="text-293FE4 font-weight-bold">{e.fullname}</div>
-                <div className="text-secondary d-inline-block text-truncate" style={{ width: "200px" }}>
+                <div
+                  className="text-secondary d-inline-block text-truncate"
+                  style={{ width: "200px" }}
+                >
                   {e.message}
                 </div>
               </div>
@@ -275,26 +252,31 @@ class HeaderComponent extends Component {
   }
 
   renderNotice(notice) {
-    console.log('notice:', notice)
+    console.log("notice:", notice);
     switch (notice.type) {
       case 0: {
         return (
           <span className="text-wrap">
-            <span className="text-293FE4">{notice.fullname}</span> đã từ chối bạn trong công việc{" "}<span className="text-293FE4">{notice.job}</span>
+            <span className="text-293FE4">{notice.fullname}</span> đã từ chối
+            bạn trong công việc{" "}
+            <span className="text-293FE4">{notice.job}</span>
           </span>
         );
       }
       case 1: {
         return (
           <span className="text-wrap">
-            Bạn đã được nhận công việc{" "}<span className="text-293FE4">{notice.job}</span> từ{" "}<span className="text-293FE4">{notice.fullname}</span>
+            Bạn đã được nhận công việc{" "}
+            <span className="text-293FE4">{notice.job}</span> từ{" "}
+            <span className="text-293FE4">{notice.fullname}</span>
           </span>
         );
       }
       case 2: {
         return (
           <span className="text-wrap">
-            <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}<span className="text-293FE4">{notice.fullname}</span> đã kết thúc
+            <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
+            <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
           </span>
         );
       }
@@ -316,8 +298,8 @@ class HeaderComponent extends Component {
     let content = [],
       count = 0;
     const { notices, notifications, isRead } = this.state;
-    console.log('notifications:', notifications);
-    console.log('isRead:', isRead);
+    // console.log("notifications:", notifications);
+    // console.log("isRead:", isRead);
     for (let e of notifications) {
       content.push(
         <NavLink
@@ -345,11 +327,10 @@ class HeaderComponent extends Component {
   renderUserLoginContent(user) {
     let userAvatar = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
     const { isReadNotify, unreadMessage } = this.state;
-    console.log('isReadNotify:', isReadNotify)
+    // console.log("isReadNotify:", isReadNotify);
     return (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
-
           <button
             id="NotiMenuDropdown"
             className="nav-link-header nav-link dropdown-toggle px-0 pt-1 pb-0"
@@ -358,7 +339,14 @@ class HeaderComponent extends Component {
             aria-haspopup="true"
             aria-expanded="false"
             onClick={this.sendReadNotfication}
-          >    <Badge color="secondary" badgeContent=" " variant="dot" invisible={isReadNotify} >
+          >
+            {" "}
+            <Badge
+              color="secondary"
+              badgeContent=" "
+              variant="dot"
+              invisible={isReadNotify}
+            >
               <NotificationsIcon />
               {/* <i className="icon-material-baseline-notifications-none  mx-0 p-2 font-size-25"></i> */}
 
@@ -372,9 +360,7 @@ class HeaderComponent extends Component {
       >
       </button> */}
             </Badge>
-
           </button>
-
 
           <div
             className="shadow dropdown-menu dropdown-menu-right mt-1"
@@ -396,12 +382,10 @@ class HeaderComponent extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <Badge color="secondary" badgeContent={unreadMessage} >
+            <Badge color="secondary" badgeContent={unreadMessage}>
               {/* <i className="icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25"></i> */}
               <MailIcon />
             </Badge>
-
-
           </button>
           <div
             className="shadow dropdown-menu dropdown-menu-right mt-1"
@@ -445,13 +429,11 @@ class HeaderComponent extends Component {
               <i className="icon-material-outline-business-center"></i>
               &nbsp;&nbsp; Quản lý đăng việc
             </NavLink>
-            {(
-              user.isBusinessUser
-                ?
-                ''
-                :
-                <NavLink className="dropdown-item" to="/dashboard/tab=8">
-                  <i className="icon-line-awesome-tasks"></i>
+            {user.isBusinessUser ? (
+              ""
+            ) : (
+              <NavLink className="dropdown-item" to="/dashboard/tab=8">
+                <i className="icon-line-awesome-tasks"></i>
                 &nbsp;&nbsp; Quản lý việc làm
               </NavLink>
             )}
@@ -521,46 +503,96 @@ class HeaderComponent extends Component {
   render() {
     let { user } = this.props.HeaderReducer;
     return (
-      <nav className={"navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " + (this.state.isCurrentTop ? 'border-light bg-transparent' : 'border-secondary bg-light')} onScroll={() => { this.handleScroll() }}>
-        <NavLink to='/' className="navbar-brand mr-4 pt-3">
+      <nav
+        className={
+          "navbar fixed-top navbar-expand-lg pl-5 pr-3 pr-0 py-0 border-bottom " +
+          (this.state.isCurrentTop
+            ? "border-light bg-transparent"
+            : "border-secondary bg-light")
+        }
+        onScroll={() => {
+          this.handleScroll();
+        }}
+      >
+        <NavLink to="/" className="navbar-brand mr-4 pt-3">
           {/* <img src={Logo2} className='logo-brand'></img> */}
-          <span className='font-weight-bold'><span className='text-primary'>FREE</span><span className='text-danger'>2</span><span className={this.state.isCurrentTop ? 'text-white' : 'text-dark'}>LANCE</span></span>
+          <span className="font-weight-bold">
+            <span className="text-primary">FREE</span>
+            <span className="text-danger">2</span>
+            <span
+              className={this.state.isCurrentTop ? "text-white" : "text-dark"}
+            >
+              LANCE
+            </span>
+          </span>
         </NavLink>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse my-0 py-0" id="navbarSupportedContent">
+        <div
+          className="collapse navbar-collapse my-0 py-0"
+          id="navbarSupportedContent"
+        >
           <ul className="navbar-nav mr-auto ">
             <li className="nav-item mx-2 pt-3 pb-2">
-              <NavLink className="nav-link nav-link-header" to='/'><div>Trang chủ</div></NavLink>
+              <NavLink className="nav-link nav-link-header" to="/">
+                <div>Trang chủ</div>
+              </NavLink>
             </li>
             <li className="nav-item mx-2 pt-3 pb-2">
-              <NavLink className="nav-link nav-link-header" to='/search'><div>Tìm việc</div></NavLink>
+              <NavLink className="nav-link nav-link-header" to="/search">
+                <div>Tìm việc</div>
+              </NavLink>
             </li>
-            <li onMouseLeave={() => { this.setState({ isTopicHover: false }) }}
-              className={"nav-item dropdown mx-2 pt-3 pb-2 " + (this.state.isTopicHover ? 'show' : '')}>
-              <NavLink className="nav-link-header nav-link dropdown-toggle" to='/job-list' id="navbarDropdown"
-                onMouseEnter={() => { this.setState({ isTopicHover: true }) }} >
+            <li
+              onMouseLeave={() => {
+                this.setState({ isTopicHover: false });
+              }}
+              className={
+                "nav-item dropdown mx-2 pt-3 pb-2 " +
+                (this.state.isTopicHover ? "show" : "")
+              }
+            >
+              <NavLink
+                className="nav-link-header nav-link dropdown-toggle"
+                to="/job-list"
+                id="navbarDropdown"
+                onMouseEnter={() => {
+                  this.setState({ isTopicHover: true });
+                }}
+              >
                 <div>Chủ đề</div>
               </NavLink>
-              <div className={"dropdown-menu mt-0 header-menu " + (this.state.isTopicHover ? 'show' : '')} aria-labelledby="navbarDropdown">
+              <div
+                className={
+                  "dropdown-menu mt-0 header-menu " +
+                  (this.state.isTopicHover ? "show" : "")
+                }
+                aria-labelledby="navbarDropdown"
+              >
                 {this.renderTopicsHeader()}
               </div>
             </li>
             <li className="nav-item mx-2 pt-3 pb-2">
-              <NavLink className="nav-link nav-link-header" to='/contact'><div>Liên lạc</div></NavLink>
+              <NavLink className="nav-link nav-link-header" to="/contact">
+                <div>Liên lạc</div>
+              </NavLink>
             </li>
           </ul>
-          {(
-            user === null
-              ?
-              this.renderUserNotLoginContent()
-              :
-              this.renderUserLoginContent(user)
-          )}
+          {user === null
+            ? this.renderUserNotLoginContent()
+            : this.renderUserLoginContent(user)}
         </div>
       </nav>
-    )
+    );
   }
 }
 
@@ -589,7 +621,7 @@ const mapDispatchToProps = (dispatch) => {
     onLoadTags: () => {
       dispatch(loadTags());
     },
-    onLoadJobByJob: (query) => {
+    onLoadJobByTopic: (query) => {
       dispatch(loadJobList(1, 8, 2, query));
     },
   };

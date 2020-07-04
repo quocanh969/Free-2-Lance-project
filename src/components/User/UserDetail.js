@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import '../../assets/css/detail.css';
 
 // Image
-import SingleFreelancer from "../../assets/images/single-freelancer.jpg";
 import avatarPlaceholder from "../../assets/images/portrait_placeholder.png";
-import FlagDE from "../../assets/images/flags/de.svg";
-import BrowseCompanies03 from "../../assets/images/browse-companies-03.png";
-import BrowseCompanies04 from "../../assets/images/browse-companies-04.png";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";

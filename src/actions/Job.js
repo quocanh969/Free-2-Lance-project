@@ -13,6 +13,7 @@ import {
   doSendAcceptApplicant,
   doSendRejectApplicant,
   doEndJob,
+  getReviewList,
   doReportUser,
   doReviewEmployee,
   doStopApply,
@@ -582,6 +583,29 @@ export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
   }
 };
 
+export const loadReviewList = (jobId, page, take) => {
+  return (dispatch) => {
+    getReviewList(jobId, page, take)
+      .then((res) => {
+        dispatch(
+          success(res.data.data.list, res.data.data.page, res.data.data.total)
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(list, page, total) {
+    return {
+      type: "EMPLOYER_REVIEW_LIST_UPDATE",
+      list,
+      total,
+      page,
+    };
+  }
+};
+
 export const selectJobDone = (jobId) => {
   return {
     type: "EMPLOYER_SELECT_JOB_DONE",
@@ -601,7 +625,7 @@ export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
     doReviewEmployee(applicantId, jobId, feedback, rating)
       .then((res) => {
         Swal.fire({
-          title: "Báo cáo người làm thành công",
+          title: "Đánh giá người làm thành công",
           icon: "success",
           confirmButtonText: "OK",
         });
@@ -657,7 +681,7 @@ export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
     doReviewEmployer(applicantId, jobId, feedback, rating)
       .then((res) => {
         Swal.fire({
-          title: "Báo cáo người thuê thành công",
+          title: "Đánh giá người thuê thành công",
           icon: "success",
           confirmButtonText: "OK",
         });
@@ -672,5 +696,26 @@ export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
         });
       });
   };
+};
+
+export const loadReviewFromEmployer = (jobId) => {
+  return (dispatch) => {
+    getReviewList(jobId, 1, 9999)
+      .then((res) => {
+        dispatch(
+          success(res.data.data.list)
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function success(list, page, total) {
+    return {
+      type: "APPLICANT_REVIEW_UPDATE",
+      list,
+    };
+  }
 };
 //#endregion jobs for applicant

@@ -6,6 +6,7 @@ import {
   loadFinishedJobsForApplicant,
   selectReportedEmployer,
   selectReviewEmployer,
+  loadReviewFromEmployer,
 } from "../../../../actions/Job";
 import {
   getImageSrc,
@@ -13,10 +14,11 @@ import {
   prettierNumber,
 } from "../../../../ultis/SHelper/helperFunctions";
 
-import UserAvatarPlaceholder from "../../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../../assets/images/portrait_placeholder.png";
 import { history } from "../../../../ultis/history/history";
 import ReportForm from "./Modals/ReportForm";
 import ReviewForm from "./Modals/ReviewForm";
+import ReviewModal from "./Modals/ReviewModal";
 
 class TasksDoneComponent extends Component {
   constructor(props) {
@@ -33,6 +35,7 @@ class TasksDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentFinishedPage) {
+      window.scrollTo(0,0);
       this.loadJobList(pageNum);
     }
   }
@@ -50,6 +53,11 @@ class TasksDoneComponent extends Component {
   reviewEmployer(applicantId, jobId) {
     let { onSelectReviewEmployer } = this.props;
     onSelectReviewEmployer(applicantId, jobId);
+  }
+
+  loadReview(jobId) {
+    let { onLoadReviewFromEmployer } = this.props;
+    onLoadReviewFromEmployer(jobId);
   }
 
   renderJobList() {
@@ -165,7 +173,12 @@ class TasksDoneComponent extends Component {
                   </div>
 
                   <div className="mt-2 row">
-                    <span className="btn col mx-2 p-2 bg-primary text-white rounded">
+                    <span
+                      data-toggle="modal"
+                      data-target="#reviewFromEmployerModal"
+                      onClick={() => this.loadReview(e.id_job)}
+                      className="btn col mx-2 p-2 bg-primary text-white rounded"
+                    >
                       <i className="icon-material-outline-rate-review" /> Xem
                       phản hồi
                     </span>
@@ -330,6 +343,11 @@ class TasksDoneComponent extends Component {
             <ReviewForm></ReviewForm>
           </div>
         </div>
+        <div id="reviewFromEmployerModal" className="modal fade" role="dialog">
+          <div className="modal-dialog modal-lg">
+            <ReviewModal></ReviewModal>
+          </div>
+        </div>
       </div>
     );
   }
@@ -351,6 +369,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelectReviewEmployer: (applicantId, jobId) => {
       dispatch(selectReviewEmployer(applicantId, jobId));
+    },
+    onLoadReviewFromEmployer: (jobId) => {
+      dispatch(loadReviewFromEmployer(jobId));
     },
   };
 };

@@ -12,7 +12,7 @@ import {
   prettierNumber,
 } from "../../../../ultis/SHelper/helperFunctions";
 
-import UserAvatarPlaceholder from "../../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../../assets/images/portrait_placeholder.png";
 import { history } from "../../../../ultis/history/history";
 import ReportForm from "./Modals/ReportForm";
 
@@ -31,6 +31,7 @@ class TasksDoingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentProcessingPage) {
+      window.scrollTo(0,0);
       this.loadJobList(pageNum);
     }
   }

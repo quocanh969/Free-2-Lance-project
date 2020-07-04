@@ -7,6 +7,7 @@ import {
   loadFinishedJobsForEmployer,
   selectJobDone,
   loadDoneApplicantsForEmployer,
+  loadReviewList,
 } from "../../../../actions/Job";
 import {
   prettierDate,
@@ -15,6 +16,8 @@ import {
 import { history } from "../../../../ultis/history/history";
 import JobsDoneModal from "./Modals/JobsDoneModal";
 import { takenDoneApplicantsPerPage } from "./Modals/JobsDoneModal";
+import { takenReviewsPerPage } from "./Modals/UserReviewsModal";
+import UserReviewsModal from "./Modals/UserReviewsModal";
 
 class JobsDoneComponent extends Component {
   constructor(props) {
@@ -31,6 +34,7 @@ class JobsDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentFinishedPage) {
+      window.scrollTo(0,0);
       this.loadJobList(pageNum);
     }
   }
@@ -44,6 +48,12 @@ class JobsDoneComponent extends Component {
     let { onSelectJobDone, onLoadDoneApplicants } = this.props;
     onSelectJobDone(jobId);
     onLoadDoneApplicants(jobId, 1, takenDoneApplicantsPerPage);
+  }
+
+  showReviewList(jobId) {
+    let { onSelectJobDone, onLoadReviewList } = this.props;
+    onSelectJobDone(jobId);
+    onLoadReviewList(jobId, 1, takenReviewsPerPage);
   }
 
   renderJobList() {
@@ -142,7 +152,12 @@ class JobsDoneComponent extends Component {
                 <i className="icon-material-outline-supervisor-account"></i>{" "}
                 Danh sách người tham gia: {e.candidates}
               </button>
-              <span className="btn mx-2 py-2 px-4 bg-warning rounded">
+              <span
+                data-toggle="modal"
+                data-target="#userReviessModal"
+                onClick={() => this.showReviewList(e.id_job)}
+                className="btn mx-2 py-2 px-4 bg-warning rounded"
+              >
                 <i className="icon-material-outline-speaker-notes" /> Xem phản
                 hồi
               </span>
@@ -284,6 +299,11 @@ class JobsDoneComponent extends Component {
             <JobsDoneModal></JobsDoneModal>
           </div>
         </div>
+        <div id="userReviessModal" className="modal fade" role="dialog">
+          <div className="modal-dialog modal-lg">
+            <UserReviewsModal></UserReviewsModal>
+          </div>
+        </div>
       </div>
     );
   }
@@ -305,6 +325,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onLoadDoneApplicants: (jobId, page, take) => {
       dispatch(loadDoneApplicantsForEmployer(jobId, page, take));
+    },
+    onLoadReviewList: (jobId, page, take) => {
+      dispatch(loadReviewList(jobId, page, take));
     },
   };
 };

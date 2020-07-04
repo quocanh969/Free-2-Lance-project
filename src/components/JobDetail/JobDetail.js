@@ -10,7 +10,6 @@ import {
 } from "../../ultis/SHelper/helperFunctions";
 import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
-import BackgroundSingleJob from "../../assets/images/single-job.jpg";
 
 import MapContainer from "../map_JobsList";
 import ApplyForm from "./ApplyForm/ApplyForm";
@@ -222,7 +221,7 @@ class JobDetailComponent extends Component {
     applicants.forEach((applicant, i) => {
       content.push(
         <div className="row task-listing" key={i} style={{ height: "50px" }}>
-          <div className="col-md-4">{applicant.fullname}</div>
+          <NavLink to={'/user-detail/'+applicant.id_user} className="col-md-4">{applicant.fullname}</NavLink>
           <div className="col-md-4">{applicant.email}</div>
           <div className="col-md-4">
             {prettierNumber(applicant.proposed_price)} VNĐ
@@ -296,7 +295,7 @@ class JobDetailComponent extends Component {
                         </li>
                         <li>
                           <div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">
-                            {4.9}
+                            {4.9}&nbsp;<i className="icon-material-outline-star text-warning"></i>
                           </div>
                         </li>
                         <li>

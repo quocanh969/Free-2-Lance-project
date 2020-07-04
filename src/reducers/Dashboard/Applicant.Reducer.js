@@ -15,6 +15,7 @@ const initState = {
   selectedReviewApplicantId: null,
   selectedReviewJobId: null,
   selectedReportedUser: null,
+  reviewList: [],
 };
 
 const ApplicantReducer = (state = initState, action) => {
@@ -71,6 +72,11 @@ const ApplicantReducer = (state = initState, action) => {
         ...state,
         selectedReviewApplicantId: action.applicantId,
         selectedReviewJobId: action.jobId,
+      };
+    case "APPLICANT_REVIEW_UPDATE":
+      return {
+        ...state,
+        reviewList: action.list,
       };
     default:
       return state;
