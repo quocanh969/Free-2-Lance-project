@@ -51,33 +51,42 @@ class EmployerInfoComponent extends Component {
   }
 
   render() {
-    let { employer } = this.props.JobDetailReducer;
+    let { employer, isLoadingEmployer } = this.props.JobDetailReducer;
     return (
+
       <div>
-        {/* Thông tin cá nhân */}
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Người thuê:</div>
-          <div className="col-7">
-            {employer.personal ? employer.personal.fullname : ""}
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Người dùng đánh giá:</div>
-          <div className="col-7">{4.9} / 5</div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Email liên hệ:</div>
-          <div className="col-7">
-            {employer.personal ? employer.personal.email : ""}
-          </div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-5 font-weight-bold">Điện thoại liên lạc:</div>
-          <div className="col-7">
-            {employer.personal ? employer.personal.dial : ""}
-          </div>
-        </div>
-        {this.renderCompanyInfo()}
+        {!isLoadingEmployer ?
+          (<div>{/* Thông tin cá nhân */}
+            <div className="row mb-3">
+              <div className="col-5 font-weight-bold">Người thuê:</div>
+              <div className="col-7">
+                {employer.personal ? employer.personal.fullname : ""}
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-5 font-weight-bold">Người dùng đánh giá:</div>
+              <div className="col-7">{4.9} / 5</div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-5 font-weight-bold">Email liên hệ:</div>
+              <div className="col-7">
+                {employer.personal ? employer.personal.email : ""}
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-5 font-weight-bold">Điện thoại liên lạc:</div>
+              <div className="col-7">
+                {employer.personal ? employer.personal.dial : ""}
+              </div>
+            </div>
+            {this.renderCompanyInfo()}
+          </div>) :
+          (<div className="loading" key={1}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>)}
+
       </div>
     );
   }

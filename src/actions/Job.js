@@ -216,6 +216,7 @@ export const loadFinishedJobsForApplicant = (page, take, isASC) => {
 //#region load job detail
 export const loadJobDetail = (jobId) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsDetail(jobId)
       .then((res) => {
         if (res.data.data.id_job) {
@@ -237,10 +238,16 @@ export const loadJobDetail = (jobId) => {
       jobDetail,
     };
   }
+  function loading() {
+    return {
+      type: "JOB_DETAIL_LOADING",
+    };
+  }
 };
 
 export const loadEmployer = (employerId) => {
   return (dispatch) => {
+    dispatch(loading());
     getEmployerDetail(employerId)
       .then((res) => {
         dispatch(success(res.data.data));
@@ -254,6 +261,11 @@ export const loadEmployer = (employerId) => {
     return {
       type: "JOB_DETAIL_EMPLOYER_LOAD",
       employerDetail,
+    };
+  }
+  function loading() {
+    return {
+      type: "JOB_DETAIL_EMPLOYER_LOADING",
     };
   }
 };
@@ -279,10 +291,11 @@ export const loadSimilarJobs = (jobTopic) => {
 
 export const applyJob = (id_user, id_job, proposed_price, attachment) => {
   return (dispatch) => {
+    dispatch(loading());
     doApplyJob(id_user, id_job, proposed_price, attachment)
       .then((res) => {
-        //reload data
-        // loadJobDetail(id_job);
+        dispatch(success());
+        dispatch(loadJobDetail(id_job));
         //show success
         Swal.fire({
           title: "Đăng kí thành công, xin vui lòng đợi duyệt",
@@ -290,7 +303,6 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
           confirmButtonText: "OK",
         }).then((result) => {
           if (result.value) {
-            //close form and reload data :(
             dispatch(loadJobDetail(id_job));
           }
         });
@@ -305,6 +317,16 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
         });
       });
   };
+  function success() {
+    return {
+      type: "APPLY_JOB_SUCCESS",
+    };
+  }
+  function loading() {
+    return {
+      type: "APPLY_JOB_SENDING",
+    };
+  }
 };
 
 //#endregion load job detail

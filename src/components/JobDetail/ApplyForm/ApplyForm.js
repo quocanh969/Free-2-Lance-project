@@ -67,7 +67,7 @@ class ApplyFormConponent extends Component {
           proposed_price,
           fileInBase64
         );
-        document.getElementById("btnCloseApplyForm").click();
+
       });
     } else {
       Swal.fire({
@@ -77,6 +77,28 @@ class ApplyFormConponent extends Component {
       });
     }
   }
+
+  spinnerLoadingNotification() {
+    let content = [];
+    let { isApplying, appliedStatus } = this.props.JobDetailReducer;
+    if (isApplying) {
+      // sending ...
+      content.push(
+        <div className="loading" key={1}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      );
+    } else {
+      content = [];
+    }
+    if (appliedStatus === 1) {//success -> close form
+      document.getElementById("btnCloseApplyForm").click();
+    }
+    return content;
+  }
+
   renderProposedPrice() {
     let { jobDetail } = this.props.JobDetailReducer;
     if (jobDetail.dealable) {
@@ -103,15 +125,15 @@ class ApplyFormConponent extends Component {
               required
             />
           ) : (
-            <input
-              type="text"
-              className="input-text with-border"
-              name="proposed_price"
-              value={this.toCurrency(this.state.proposed_price)}
-              onFocus={this.toggleEditing.bind(this)}
-              readOnly
-            />
-          )}
+              <input
+                type="text"
+                className="input-text with-border"
+                name="proposed_price"
+                value={this.toCurrency(this.state.proposed_price)}
+                onFocus={this.toggleEditing.bind(this)}
+                readOnly
+              />
+            )}
         </div>
       );
     } else return [];
@@ -188,6 +210,7 @@ class ApplyFormConponent extends Component {
                     </span>
                   </div>
                 </form>
+                {this.spinnerLoadingNotification()}
                 {/* Button */}
                 <button
                   className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
