@@ -486,7 +486,7 @@ class HomeComponent extends Component {
                   </p>
                 </div>
                 {/* Jobs Container */}
-                <div className="tasks-list-container compact-list margin-top-20">
+                <div className="tasks-list-container compact-list margin-top-20 px-3">
                   {this.renderTemporalJobsList()}
                 </div>
                 {/* Jobs Container / End */}
@@ -499,7 +499,7 @@ class HomeComponent extends Component {
                   </p>
                 </div>
                 {/* Jobs Container */}
-                <div className="tasks-list-container compact-list margin-top-20">
+                <div className="tasks-list-container compact-list margin-top-20 px-3">
                   {this.renderProductionJobsList()}
                 </div>
                 {/* Jobs Container / End */}
