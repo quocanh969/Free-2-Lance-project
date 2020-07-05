@@ -2,6 +2,7 @@ import { loadOtherUserDetail, loadReviewByEmployerId, loadReviewByEmployeeId } f
 
 export const loadUserDetail = (userId) => {
   return (dispatch) => {
+    dispatch(loading());
     loadOtherUserDetail(userId)
       .then((res) => {
         dispatch(success(res.data.data));
@@ -17,13 +18,19 @@ export const loadUserDetail = (userId) => {
       userDetail,
     };
   }
+  function loading() {
+    return {
+      type: "USER_DETAIL_LOADING"
+    };
+  }
 };
 
 export const getReviewJobUserDetail = (page, take, employer) => {
   return (dispatch) => {
+    dispatch(loading());
     loadReviewByEmployerId(page, take, employer)
       .then((res) => {
-        if(res.data.code === '200') {
+        if (res.data.code === '200') {
           dispatch(success(res.data.data.list, res.data.data.total, res.data.data.page));
         }
       })
@@ -35,18 +42,24 @@ export const getReviewJobUserDetail = (page, take, employer) => {
   function success(list, total, page) {
     return {
       type: "JOB_USER_DETAIL_LOAD",
-      list, 
-      total, 
+      list,
+      total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "JOB_USER_DETAIL_LOADING"
     };
   }
 };
 
 export const getReviewTaskUserDetail = (page, take, employee) => {
   return (dispatch) => {
+    dispatch(loading());
     loadReviewByEmployeeId(page, take, employee)
       .then((res) => {
-        if(res.data.code === '200') {
+        if (res.data.code === '200') {
           dispatch(success(res.data.data.list, res.data.data.total, res.data.data.page));
         }
       })
@@ -58,9 +71,14 @@ export const getReviewTaskUserDetail = (page, take, employee) => {
   function success(list, total, page) {
     return {
       type: "TASK_USER_DETAIL_LOAD",
-      list, 
-      total, 
+      list,
+      total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "TASK_USER_DETAIL_LOADING"
     };
   }
 };

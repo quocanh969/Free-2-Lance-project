@@ -38,8 +38,12 @@ class UserDetailComponent extends Component {
   }
 
   render() {
-    let { userDetail } = this.props.UserDetailReducer;
-    if (userDetail === null) return '';
+    let { userDetail, isLoadingUserDetail } = this.props.UserDetailReducer;
+    if (isLoadingUserDetail || userDetail == null) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     else {
       return (
         <div>
