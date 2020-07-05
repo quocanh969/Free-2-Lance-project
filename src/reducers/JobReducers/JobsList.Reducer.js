@@ -2,6 +2,7 @@ const initState = {
     jobList: [],
     page: 1,
     total: 0,
+    isSending: false,
 }
 
 const JobsListReducer = (state = initState, action) => {
@@ -12,6 +13,12 @@ const JobsListReducer = (state = initState, action) => {
                 jobList: action.jobList,
                 page: action.page,
                 total: action.total,
+                isSending: false,
+            }
+        case 'LOADING_JOB_LIST':
+            return {
+                ...state,
+                isSending: true,
             }
         default:
             return state

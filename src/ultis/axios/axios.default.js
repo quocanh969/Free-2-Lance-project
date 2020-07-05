@@ -30,14 +30,15 @@ axios.interceptors.response.use(
         text: 'Vui lòng đăng nhập lại',
         icon: "warning",
         confirmButtonText: 'OK'
-      });
-      localStorage.clear();
-
-      // history.push("/login");
-      window.location.href = "./login";
-      MyStore.dispatch({
-        type: "USER_LOG_OUT",
-      });
+      }).then((result) => {
+        if (result.value) {
+          localStorage.clear();
+          history.push("/login");
+          MyStore.dispatch({
+            type: "USER_LOG_OUT",
+          });
+        }
+      });;
     }
     return Promise.reject(error);
   }

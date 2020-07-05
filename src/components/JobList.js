@@ -203,7 +203,7 @@ class JobListComponent extends Component {
   }
 
   handleFilter() {
-    let query = {...this.state.query};
+    let query = { ...this.state.query };
 
     let area = document.getElementById("select-area").value;
     if (area !== "0") query["area_province"] = area;
@@ -495,7 +495,7 @@ class JobListComponent extends Component {
 
   render() {
     let { areas, jobTopic } = this.props.GeneralReducer;
-    let { page, total } = this.props.JobsListReducer;
+    let { page, total, isSending } = this.props.JobsListReducer;
     let sortType = [
       { type: 2, text: "Mới nhất" },
       { type: 1, text: "Đã đăng lâu nhất" },
@@ -563,16 +563,22 @@ class JobListComponent extends Component {
                     : "compact-list-layout")
                 }
               >
-                {(
-                  this.props.JobsListReducer.jobList.length > 0
-                  ?
+                {(isSending ? (<div className="loading" key={1}>
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>) :
                   (
-                    this.state.isGridMode
-                  ? this.generateJobListGridMode()
-                  : this.generateJobListListMode()
+                    this.props.JobsListReducer.jobList.length > 0
+                      ?
+                      (
+                        this.state.isGridMode
+                          ? this.generateJobListGridMode()
+                          : this.generateJobListListMode()
+                      )
+                      :
+                      'Danh sách công việc tìm kiếm rỗng !!!'
                   )
-                  :
-                  'Danh sách công việc tìm kiếm rỗng !!!'
                 )}
               </div>
               {/* Pagination */}

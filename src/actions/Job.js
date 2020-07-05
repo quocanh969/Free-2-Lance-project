@@ -25,6 +25,7 @@ import { history } from "../ultis/history/history";
 //#region load job
 export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsList(page, take, isASC, query)
       .then((res) => {
         dispatch(
@@ -46,6 +47,11 @@ export const loadJobList = (page, take, isASC, query) => {
       jobList,
       page,
       total,
+    };
+  }
+  function loading() {
+    return {
+      type: "LOADING_JOB_LIST",
     };
   }
 };
