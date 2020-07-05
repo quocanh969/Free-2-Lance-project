@@ -3,6 +3,7 @@ const initState = {
   jobDetail: {},
   isLoadingEmployer: false,
   employer: {},
+  isLoadingSimilarJob: false,
   similarJobs: [],
   isApplying: false,
   appliedStatus: 0, //havent send
@@ -22,6 +23,11 @@ const JobDetailReducer = (state = initState, action) => {
         appliedStatus: 0,
         jobDetail: action.jobDetail,
       };
+    case "JOB_DETAIL_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingJobDetail: false,
+      };
     case "JOB_DETAIL_EMPLOYER_LOADING":
       return {
         ...state,
@@ -33,9 +39,27 @@ const JobDetailReducer = (state = initState, action) => {
         isLoadingEmployer: false,
         employer: action.employerDetail,
       };
+    case "JOB_DETAIL_EMPLOYER_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingEmployer: false,
+      };
     case "SIMILAR_JOB_LOAD":
       return {
         ...state,
+        isLoadingSimilarJob: false,
+        similarJobs: action.similarJobs,
+      };
+    case "SIMILAR_JOB_LOADING":
+      return {
+        ...state,
+        isLoadingSimilarJob: true,
+        similarJobs: action.similarJobs,
+      };
+    case "SIMILAR_JOB_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingSimilarJob: false,
         similarJobs: action.similarJobs,
       };
     case "APPLY_JOB_SENDING":
@@ -52,6 +76,7 @@ const JobDetailReducer = (state = initState, action) => {
     case "APPLY_JOB_FAILURE":
       return {
         ...state,
+        isApplying: false,
         appliedStatus: 2, //failure
       };
     default:

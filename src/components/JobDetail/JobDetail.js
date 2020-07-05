@@ -124,7 +124,12 @@ class JobDetailComponent extends Component {
   }
 
   renderSimilarJobs() {
-    let { similarJobs } = this.props.JobDetailReducer;
+    let { similarJobs, isLoadingSimilarJob } = this.props.JobDetailReducer;
+    if (isLoadingSimilarJob) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     let jobList = similarJobs.jobList;
     if (jobList && jobList.length > 0) {
       let listSimilarJobs = [];

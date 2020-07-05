@@ -234,6 +234,7 @@ export const loadJobDetail = (jobId) => {
         }
       })
       .catch((err) => {
+        dispatch(failure());
         console.log(err);
       });
   };
@@ -249,6 +250,11 @@ export const loadJobDetail = (jobId) => {
       type: "JOB_DETAIL_LOADING",
     };
   }
+  function failure() {
+    return {
+      type: "JOB_DETAIL_LOAD_FAILURE",
+    };
+  }
 };
 
 export const loadEmployer = (employerId) => {
@@ -260,6 +266,7 @@ export const loadEmployer = (employerId) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -274,15 +281,22 @@ export const loadEmployer = (employerId) => {
       type: "JOB_DETAIL_EMPLOYER_LOADING",
     };
   }
+  function failure() {
+    return {
+      type: "JOB_DETAIL_EMPLOYER_LOAD_FAILURE",
+    };
+  }
 };
 
 export const loadSimilarJobs = (jobTopic) => {
   return (dispatch) => {
+    dispatch(loading());
     getSimilarJobs(jobTopic)
       .then((res) => {
         dispatch(success(res.data.data));
       })
       .catch((err) => {
+        dispatch(failure());
         console.log(err);
       });
   };
@@ -291,6 +305,16 @@ export const loadSimilarJobs = (jobTopic) => {
     return {
       type: "SIMILAR_JOB_LOAD",
       similarJobs,
+    };
+  }
+  function loading() {
+    return {
+      type: "SIMILAR_JOB_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "SIMILAR_JOB_LOAD_FAILURE",
     };
   }
 };
