@@ -185,7 +185,7 @@ class ReviewsComponent extends Component {
                             </div>
                         </div>
                         {(
-                            totalTask === 0
+                            (totalTask === 0 || isLoadingTaskReview)
                                 ?
                                 ''
                                 :
@@ -196,7 +196,7 @@ class ReviewsComponent extends Component {
                                                 <i className="icon-material-outline-keyboard-arrow-left" />
                                             </div>
                                         </li>
-                                        {isLoadingTaskReview ? (<div></div>) : this.renderTaskPagination(currentTaskPage, totalTaskPage)}
+                                        {this.renderTaskPagination(currentTaskPage, totalTaskPage)}
                                         <li className={"pagination-item " + (totalTaskPage - currentTaskPage < 3 && "d-none")}>
                                             <div className="cursor-pointer page-link" onClick={() => { this.handleTaskPagination(currentTaskPage + 1); }}>
                                                 <i className="icon-material-outline-keyboard-arrow-right" />
@@ -227,7 +227,7 @@ class ReviewsComponent extends Component {
                             </div>
                         </div>
                         {(
-                            totalJob === 0
+                            (totalJob === 0 || isLoadingJobReview)
                                 ?
                                 ''
                                 :
@@ -238,7 +238,7 @@ class ReviewsComponent extends Component {
                                                 <i className="icon-material-outline-keyboard-arrow-left" />
                                             </div>
                                         </li>
-                                        {isLoadingJobReview ? (<div></div>) : this.renderJobPagination(currentJobPage, totalJobPage)}
+                                        {this.renderJobPagination(currentJobPage, totalJobPage)}
                                         <li className={"pagination-item " + (totalJobPage - currentJobPage < 3 && "d-none")}>
                                             <div className="cursor-pointer page-link" onClick={() => { this.handleJobPagination(currentJobPage + 1); }}>
                                                 <i className="icon-material-outline-keyboard-arrow-right" />

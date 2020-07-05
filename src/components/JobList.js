@@ -587,7 +587,7 @@ class JobListComponent extends Component {
                 <div className="col-md-12">
                   {/* Pagination */}
                   <div className="pagination-container margin-top-30 margin-bottom-60">
-                    <nav className="pagination">
+                    {isSending ? (<div></div>) : <nav className="pagination">
                       <ul>
                         <li
                           className={
@@ -621,7 +621,7 @@ class JobListComponent extends Component {
                           </div>
                         </li>
                       </ul>
-                    </nav>
+                    </nav>}
                   </div>
 
                 </div>
