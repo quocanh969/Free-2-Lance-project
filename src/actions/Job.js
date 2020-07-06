@@ -679,22 +679,42 @@ export const selectJobDoing = (jobId) => {
   };
 };
 
-export const selectReportedUser = (userId) => {
+export const selectReportedUser = (userId, applicantId) => {
   return {
     type: "EMPLOYER_SELECT_REPORTED_USER",
     userId,
+    applicantId
   };
 };
 
-export const reportUser = (content, reporterId, role) => {
+export const selectFiredUser = (userId, applicantId) => {
+  return {
+    type: "EMPLOYER_SELECT_FIRED_USER",
+    userId,
+    applicantId
+  };
+};
+
+export const reportUser = (content, reporterId, role, type, applicantId) => {
   return (dispatch) => {
-    doReportUser(content, reporterId, role)
+    doReportUser(content, reporterId, role, type, applicantId)
       .then((res) => {
-        Swal.fire({
-          title: "Báo cáo người dùng thành công",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+        if (type == 0) {
+          Swal.fire({
+            title: "Báo cáo người dùng thành công",
+            text: "Vui lòng đợi quản trị viên xử lý",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else if (type == 1) {
+          Swal.fire({
+            title: "Gửi yêu cầu sa thải thành công",
+            text: "Vui lòng đợi quản trị viên xử lý",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -839,10 +859,11 @@ export const stopApply = (userId, jobId, page, take, isASC) => {
   };
 };
 
-export const selectReportedEmployer = (userId) => {
+export const selectReportedEmployer = (userId, applicantId) => {
   return {
     type: "APPLICANT_SELECT_REPORTED_USER",
     userId,
+    applicantId
   };
 };
 

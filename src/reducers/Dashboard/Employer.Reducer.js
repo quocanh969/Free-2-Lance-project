@@ -19,6 +19,8 @@ const initState = {
   // for list applicants of doing job list
   selectedDoingJobId: null,
   selectedReportedUser: null,
+  selectedReportType: 0,
+  selectedReportedIdApplicant: null,
   isLoadingDoingApplicantsList: false,
   doingApplicantsList: [],
   totalDoingApplicants: 0,
@@ -160,12 +162,23 @@ const EmployerReducer = (state = initState, action) => {
       return {
         ...state,
         selectedReportedUser: action.userId,
+        selectedReportedIdApplicant: action.applicantId,
+        selectedReportType: 0,
+      };
+    case "EMPLOYER_SELECT_FIRED_USER":
+      return {
+        ...state,
+        selectedReportedUser: action.userId,
+        selectedReportedIdApplicant: action.applicantId,
+        selectedReportType: 1,
       };
     case "EMPLOYER_DOING_APPLICANTS_RESET":
       return {
         ...state,
         selectedDoingJobId: null,
         selectedReportedUser: null,
+        selectedReportType: 0,
+        selectedReportedIdApplicant: null,
         isLoadingDoingApplicantsList: false,
         doingApplicantsList: [],
         totalDoingApplicants: 0,

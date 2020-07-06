@@ -15,16 +15,17 @@ class ReportFormConponent extends Component {
     e.preventDefault();
     let content = this.refs.content.value;
     let { doReportUser } = this.props;
-    let { selectedReportedUser } = this.props.EmployerReducer;
-    doReportUser(content, selectedReportedUser, 1);
+    let { selectedReportedUser, selectedReportType, selectedReportedIdApplicant } = this.props.EmployerReducer;
+    doReportUser(content, selectedReportedUser, 1, selectedReportType, selectedReportedIdApplicant);
     document.getElementById("btnCloseReportForm").click();
   }
 
   render() {
+    let { selectedReportType } = this.props.EmployerReducer;
     return (
       <div className="modal-content">
         <div className="modal-header">
-          <h4 className="modal-title">Báo cáo người làm</h4>
+          <h4 className="modal-title">{selectedReportType == 0 ? "Báo cáo người làm" : "Sa thải người làm"}</h4>
           <button
             id="btnCloseReportForm"
             type="button"
@@ -45,7 +46,7 @@ class ReportFormConponent extends Component {
               <div className="popup-tab-content" id="tab">
                 {/* Welcome Text */}
                 <div className="welcome-text">
-                  <h3>Nhập nội dung bạn muốn báo cáo</h3>
+                  <h3>{selectedReportType == 0 ? "Nhập nội dung bạn muốn báo cáo" : "Nhập lý do sa thải"}</h3>
                 </div>
                 {/* Form */}
                 <form
@@ -72,7 +73,8 @@ class ReportFormConponent extends Component {
                   type="submit"
                   form="report-now-form"
                 >
-                  Báo cáo người làm{" "}
+                  {selectedReportType == 0 ? "Báo cáo người làm" : "Sa thải người làm"}
+                  {" "}
                   <i className="icon-material-outline-arrow-right-alt" />
                 </button>
               </div>
@@ -92,8 +94,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doReportUser: (content, reporterId, role) => {
-      dispatch(reportUser(content, reporterId, role));
+    doReportUser: (content, reporterId, role, type, applicantId) => {
+      dispatch(reportUser(content, reporterId, role, type, applicantId));
     },
   };
 };

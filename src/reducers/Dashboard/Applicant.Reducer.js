@@ -18,6 +18,7 @@ const initState = {
   selectedReviewApplicantId: null,
   selectedReviewJobId: null,
   selectedReportedUser: null,
+  selectedReportedApplicantId: null,
   reviewList: [],
   isLoadingReviewList: false,
 };
@@ -103,6 +104,7 @@ const ApplicantReducer = (state = initState, action) => {
       return {
         ...state,
         selectedReportedUser: action.userId,
+        selectedReportedApplicantId: action.applicantId,
       };
     case "APPLICANT_SELECT_REVIEW_USER":
       return {
@@ -116,12 +118,12 @@ const ApplicantReducer = (state = initState, action) => {
         reviewList: action.list,
         isLoadingReviewList: false,
       };
-      case "APPLICANT_REVIEW_LOADING":
+    case "APPLICANT_REVIEW_LOADING":
       return {
         ...state,
         isLoadingReviewList: true,
       };
-      case "APPLICANT_REVIEW_FAILURE":
+    case "APPLICANT_REVIEW_FAILURE":
       return {
         ...state,
         isLoadingReviewList: false,

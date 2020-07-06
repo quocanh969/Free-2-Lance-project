@@ -177,11 +177,13 @@ function doEndJob(id_job, job_title) {
   });
 }
 
-function doReportUser(content, reporterId, yourRole) {
+function doReportUser(content, reporterId, yourRole, type, applicantId) {
   return axios.post("/users/addReport", {
     content,
     reporterId,
     yourRole,
+    type,
+    applicantId
   });
 }
 
