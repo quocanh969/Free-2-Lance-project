@@ -65,7 +65,7 @@ class UserDetailComponent extends Component {
                           <div className='col-6 text-white'>
                             Đánh giá từ người làm:  <StarRatings
                               rating={userDetail.employee.employee_rating}
-                              starRatedColor="yellow"
+                              starRatedColor="ffd11a"
                               starDimension="15px"
                               starSpacing="3px"
                               numberOfStars={5}
@@ -80,7 +80,7 @@ class UserDetailComponent extends Component {
                               <div className='col-6 text-white'>
                                 Đánh giá từ người thuê:  <StarRatings
                                   rating={userDetail.employer.employer_rating}
-                                  starRatedColor="yellow"
+                                  starRatedColor="ffd11a"
                                   starDimension="15px"
                                   starSpacing="3px"
                                   numberOfStars={5}
