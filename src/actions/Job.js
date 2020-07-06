@@ -38,6 +38,7 @@ export const loadJobList = (page, take, isASC, query) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -52,6 +53,11 @@ export const loadJobList = (page, take, isASC, query) => {
   function loading() {
     return {
       type: "LOADING_JOB_LIST",
+    };
+  }
+  function failure() {
+    return {
+      type: "LOAD_JOB_LIST_FAILURE",
     };
   }
 };

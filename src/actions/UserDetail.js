@@ -9,6 +9,7 @@ export const loadUserDetail = (userId) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -21,6 +22,11 @@ export const loadUserDetail = (userId) => {
   function loading() {
     return {
       type: "USER_DETAIL_LOADING"
+    };
+  }
+  function failure() {
+    return {
+      type: "USER_DETAIL_LOAD_FAILURE"
     };
   }
 };
@@ -36,6 +42,7 @@ export const getReviewJobUserDetail = (page, take, employer) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -52,6 +59,11 @@ export const getReviewJobUserDetail = (page, take, employer) => {
       type: "JOB_USER_DETAIL_LOADING"
     };
   }
+  function failure() {
+    return {
+      type: "JOB_USER_DETAIL_LOAD_FAILURE"
+    };
+  }
 };
 
 export const getReviewTaskUserDetail = (page, take, employee) => {
@@ -65,6 +77,7 @@ export const getReviewTaskUserDetail = (page, take, employee) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -79,6 +92,11 @@ export const getReviewTaskUserDetail = (page, take, employee) => {
   function loading() {
     return {
       type: "TASK_USER_DETAIL_LOADING"
+    };
+  }
+  function failure() {
+    return {
+      type: "TASK_USER_DETAIL_LOAD_FAILURE"
     };
   }
 };

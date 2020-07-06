@@ -20,6 +20,11 @@ const JobsListReducer = (state = initState, action) => {
                 ...state,
                 isSending: true,
             }
+        case 'LOAD_JOB_LIST_FAILURE':
+            return {
+                ...state,
+                isSending: false,
+            }
         default:
             return state
     }

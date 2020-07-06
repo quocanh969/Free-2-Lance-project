@@ -26,6 +26,11 @@ const UserDetailReducer = (state = initState, action) => {
         ...state,
         isLoadingUserDetail: true,
       };
+    case "USER_DETAIL_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingUserDetail: false,
+      };
     case "JOB_USER_DETAIL_LOAD":
       return {
         ...state,
@@ -39,6 +44,11 @@ const UserDetailReducer = (state = initState, action) => {
         ...state,
         isLoadingJobReview: true,
       };
+    case "JOB_USER_DETAIL_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingJobReview: false,
+      };
     case "TASK_USER_DETAIL_LOAD":
       return {
         ...state,
@@ -51,6 +61,11 @@ const UserDetailReducer = (state = initState, action) => {
       return {
         ...state,
         isLoadingTaskReview: true,
+      };
+    case "TASK_USER_DETAIL_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingTaskReview: false,
       };
     default:
       return state;
