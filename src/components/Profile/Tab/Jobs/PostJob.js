@@ -271,19 +271,19 @@ class PostJobComponent extends Component {
                         className={
                           "with-border " +
                           (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.jobTitle === ""
+                            this.props.AddJobReducer.fields.jobTitle === ""
                             ? "border-danger mb-0"
                             : "")
                         }
                       />
                       {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.jobTitle === "" ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng nhập tiêu đề
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                        this.props.AddJobReducer.fields.jobTitle === "" ? (
+                          <span className={"text-danger pb-0 mb-0"}>
+                            *Vui lòng nhập tiêu đề
+                          </span>
+                        ) : (
+                          ""
+                        )}
                     </div>
                   </div>
                   <div className="col-xl-4">
@@ -293,7 +293,7 @@ class PostJobComponent extends Component {
                         className={
                           "with-border " +
                           (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.jobType == 0
+                            this.props.AddJobReducer.fields.jobType == 0
                             ? "border-danger"
                             : "")
                         }
@@ -310,13 +310,13 @@ class PostJobComponent extends Component {
                         }}
                       ></S_Selector>
                       {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.jobType == 0 ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng chọn phân loại
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                        this.props.AddJobReducer.fields.jobType == 0 ? (
+                          <span className={"text-danger pb-0 mb-0"}>
+                            *Vui lòng chọn phân loại
+                          </span>
+                        ) : (
+                          ""
+                        )}
                     </div>
                   </div>
                   <div className="col-xl-4">
@@ -327,7 +327,7 @@ class PostJobComponent extends Component {
                         className={
                           "with-border " +
                           (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.jobTopic == 0
+                            this.props.AddJobReducer.fields.jobTopic == 0
                             ? "border-danger"
                             : "")
                         }
@@ -344,13 +344,13 @@ class PostJobComponent extends Component {
                         }}
                       ></S_Selector>
                       {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.jobTopic == 0 ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng chọn chủ đề
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                        this.props.AddJobReducer.fields.jobTopic == 0 ? (
+                          <span className={"text-danger pb-0 mb-0"}>
+                            *Vui lòng chọn chủ đề
+                          </span>
+                        ) : (
+                          ""
+                        )}
                     </div>
                   </div>
                   <div className="col-xl-8">
@@ -368,14 +368,14 @@ class PostJobComponent extends Component {
                             onChange={this.handleChange}
                           ></GoogleMapAutocomplete>
                           {this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.addressString ===
+                            this.props.AddJobReducer.fields.addressString ===
                             "" ? (
-                            <span className={"text-danger pb-0 mb-0"}>
-                              *Vui lòng chọn địa chỉ gợi ý
-                            </span>
-                          ) : (
-                            ""
-                          )}
+                              <span className={"text-danger pb-0 mb-0"}>
+                                *Vui lòng chọn địa chỉ gợi ý
+                              </span>
+                            ) : (
+                              ""
+                            )}
                         </div>
                       </div>
                       <div className="col-xl-6">
@@ -386,7 +386,7 @@ class PostJobComponent extends Component {
                               className={
                                 "with-border " +
                                 (this.state.isValid === false &&
-                                this.state.salary == 0
+                                  this.state.salary == 0
                                   ? "border-danger mb-0"
                                   : "")
                               }
@@ -459,7 +459,7 @@ class PostJobComponent extends Component {
                               className={
                                 "with-border " +
                                 (this.state.isValid === false &&
-                                this.state.vacancy == 0
+                                  this.state.vacancy == 0
                                   ? "border-danger mb-0"
                                   : "")
                               }
@@ -469,13 +469,13 @@ class PostJobComponent extends Component {
                               onChange={this.onHandleTextChange}
                             />
                             {this.state.isValid === false &&
-                            this.state.vacancy == 0 ? (
-                              <span className={"text-danger pb-0 mb-0"}>
-                                *Số lượng tuyển tối thiểu 1
-                              </span>
-                            ) : (
-                              ""
-                            )}
+                              this.state.vacancy == 0 ? (
+                                <span className={"text-danger pb-0 mb-0"}>
+                                  *Số lượng tuyển tối thiểu 1
+                                </span>
+                              ) : (
+                                ""
+                              )}
                           </div>
                         </div>
                       </div>
@@ -555,7 +555,7 @@ class PostJobComponent extends Component {
                         className={
                           "with-border " +
                           (this.state.isValid === false &&
-                          this.props.AddJobReducer.fields.description === ""
+                            this.props.AddJobReducer.fields.description === ""
                             ? "border-danger mb-0"
                             : "")
                         }
@@ -563,13 +563,13 @@ class PostJobComponent extends Component {
                         placeholder="Mô tả công việc (bắt buộc)"
                       />
                       {this.state.isValid === false &&
-                      this.props.AddJobReducer.fields.description === "" ? (
-                        <span className={"text-danger pb-0 mb-0"}>
-                          *Vui lòng nhập mô tả công việc
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                        this.props.AddJobReducer.fields.description === "" ? (
+                          <span className={"text-danger pb-0 mb-0"}>
+                            *Vui lòng nhập mô tả công việc
+                          </span>
+                        ) : (
+                          ""
+                        )}
                       <h5>Yêu cầu</h5>
                       <textarea
                         id="requirements"

@@ -309,7 +309,7 @@ class JobListComponent extends Component {
   }
 
   renderFilter() {
-    let { jobTopic, areas } = this.props.GeneralReducer;
+    let { jobTopic, areas, isLoadingJobTopic, isLoadingAreas } = this.props.GeneralReducer;
     console.log(this.state.query);
     return (
       <div className="sidebar-container">
@@ -329,7 +329,11 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Khu vực</h3>
           <div className="input-with-icon">
-            {this.state.query["area_province"] !== undefined ? (
+            {isLoadingAreas ? (<div className="loading" key={1}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>) : (this.state.query["area_province"] !== undefined ? (
               <S_Selector
                 id="select-area"
                 className="with-border"
@@ -349,7 +353,7 @@ class JobListComponent extends Component {
                   value_tag="id_province"
                   text_tag="name"
                 ></S_Selector>
-              )}
+              ))}
           </div>
         </div>
 
@@ -357,7 +361,11 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Chủ đề</h3>
           <div className="input-with-icon">
-            {this.state.query["job_topic"] !== undefined ? (
+            {isLoadingJobTopic ? (<div className="loading" key={1}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>) : (this.state.query["job_topic"] !== undefined ? (
               <S_Selector
                 id="select-category"
                 className="with-border"
@@ -377,7 +385,7 @@ class JobListComponent extends Component {
                   value_tag="id_jobtopic"
                   text_tag="name"
                 ></S_Selector>
-              )}
+              ))}
           </div>
         </div>
 

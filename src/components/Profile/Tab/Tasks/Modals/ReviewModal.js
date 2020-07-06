@@ -13,7 +13,7 @@ class ReviewModalConponent extends Component {
     let content = [];
     if (reviewList.length > 0) {
       reviewList.forEach((e, index) => {
-        if (e.id_user != user.id_user) return;
+        if (e.id_user2 != user.id_user) return;
         content.push(
           <li key={index}>
             {/* Infomation */}

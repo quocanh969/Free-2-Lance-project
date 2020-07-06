@@ -189,8 +189,14 @@ class HeaderComponent extends Component {
   };
 
   renderTopicsHeader() {
-    let { jobTopic } = this.props.GeneralReducer;
-
+    let { jobTopic, isLoadingJobTopic } = this.props.GeneralReducer;
+    if (isLoadingJobTopic) {
+      return (<div className="loading" key={1}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>);
+    }
     let content = [],
       count = 0;
 
