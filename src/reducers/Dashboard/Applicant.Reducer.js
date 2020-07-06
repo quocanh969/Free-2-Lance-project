@@ -1,13 +1,16 @@
 const initState = {
   // =====
+  isLoadingApplyingTasksList: false,
   applyingTasksList: [],
   totalApplyingTasks: 0,
   currentApplyingPage: 0,
   // =====
+  isLoadingProcessingTasksList: false,
   processingTasksList: [],
   totalProcessingTasks: 0,
   currentProcessingPage: 0,
   // =====
+  isLoadingFinishedTasksList: false,
   finishedTasksList: [],
   totalFinishedTasks: 0,
   currentFinishedPage: 0,
@@ -23,9 +26,20 @@ const ApplicantReducer = (state = initState, action) => {
     case "APPLICANT_APPLYING_TASK_UPDATE":
       return {
         ...state,
+        isLoadingApplyingTasksList: false,
         applyingTasksList: action.jobList,
         totalApplyingTasks: action.total,
         currentApplyingPage: action.page,
+      };
+    case "APPLICANT_APPLYING_TASK_LOADING":
+      return {
+        ...state,
+        isLoadingApplyingTasksList: true,
+      };
+    case "APPLICANT_APPLYING_TASK_FAILURE":
+      return {
+        ...state,
+        isLoadingApplyingTasksList: false,
       };
     case "APPLICANT_APPLYING_TASK_RESET":
       return {
@@ -37,9 +51,20 @@ const ApplicantReducer = (state = initState, action) => {
     case "APPLICANT_PROCESSING_TASK_UPDATE":
       return {
         ...state,
+        isLoadingProcessingTasksList: false,
         processingTasksList: action.jobList,
         totalProcessingTasks: action.total,
         currentProcessingPage: action.page,
+      };
+    case "APPLICANT_PROCESSING_TASK_LOADING":
+      return {
+        ...state,
+        isLoadingProcessingTasksList: true,
+      };
+    case "APPLICANT_PROCESSING_TASK_FAILURE":
+      return {
+        ...state,
+        isLoadingProcessingTasksList: false,
       };
     case "APPLICANT_PROCESSING_TASK_RESET":
       return {
@@ -51,9 +76,20 @@ const ApplicantReducer = (state = initState, action) => {
     case "APPLICANT_FINISHED_TASK_UPDATE":
       return {
         ...state,
+        isLoadingFinishedTasksList: false,
         finishedTasksList: action.jobList,
         totalFinishedTasks: action.total,
         currentFinishedPage: action.page,
+      };
+    case "APPLICANT_FINISHED_TASK_LOADING":
+      return {
+        ...state,
+        isLoadingFinishedTasksList: true,
+      };
+    case "APPLICANT_FINISHED_TASK_FAILURE":
+      return {
+        ...state,
+        isLoadingFinishedTasksList: false,
       };
     case "APPLICANT_FINISHED_TASK_RESET":
       return {

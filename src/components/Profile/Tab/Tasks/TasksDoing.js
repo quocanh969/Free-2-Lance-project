@@ -31,7 +31,7 @@ class TasksDoingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentProcessingPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadJobList(pageNum);
     }
   }
@@ -47,8 +47,13 @@ class TasksDoingComponent extends Component {
   }
 
   renderJobList() {
-    let { processingTasksList } = this.props.ApplicantReducer;
+    let { processingTasksList, isLoadingProcessingTasksList } = this.props.ApplicantReducer;
     let content = [];
+    if (isLoadingProcessingTasksList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (processingTasksList.length > 0) {
       processingTasksList.forEach((e, index) => {
@@ -137,16 +142,16 @@ class TasksDoingComponent extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="row">
-                      <div className="col">
-                        <span className="font-weight-bold">
-                          <i className="icon-material-outline-date-range" />
+                      <div className="row">
+                        <div className="col">
+                          <span className="font-weight-bold">
+                            <i className="icon-material-outline-date-range" />
                           Ngày kết thúc công việc:{" "}
-                        </span>
-                        {prettierDate(e.deadline)}
+                          </span>
+                          {prettierDate(e.deadline)}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                   <div className="mt-3">
                     {/* <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span> */}
                     <span
@@ -255,46 +260,46 @@ class TasksDoingComponent extends Component {
             {totalProcessingTasks === 0 ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentProcessingPage === 1 ||
-                          totalPage - currentProcessingPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentProcessingPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentProcessingPage === 1 ||
+                            totalPage - currentProcessingPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentProcessingPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentProcessingPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentProcessingPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentProcessingPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentProcessingPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentProcessingPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentProcessingPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}

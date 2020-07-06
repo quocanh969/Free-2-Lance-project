@@ -145,6 +145,7 @@ export const loadFinishedJobsForEmployer = (page, take, isASC) => {
 
 export const loadApplyingJobsForApplicant = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForApplicant(page, take, isASC, 1)
       .then((res) => {
         dispatch(
@@ -157,6 +158,7 @@ export const loadApplyingJobsForApplicant = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -168,10 +170,21 @@ export const loadApplyingJobsForApplicant = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "APPLICANT_APPLYING_TASK_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_APPLYING_TASK_FAILURE",
+    };
+  }
 };
 
 export const loadProcessingJobsForApplicant = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForApplicant(page, take, isASC, 2)
       .then((res) => {
         dispatch(
@@ -184,6 +197,7 @@ export const loadProcessingJobsForApplicant = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -195,10 +209,21 @@ export const loadProcessingJobsForApplicant = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "APPLICANT_PROCESSING_TASK_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_PROCESSING_TASK_FAILURE",
+    };
+  }
 };
 
 export const loadFinishedJobsForApplicant = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForApplicant(page, take, isASC, 3)
       .then((res) => {
         dispatch(
@@ -211,6 +236,7 @@ export const loadFinishedJobsForApplicant = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -220,6 +246,16 @@ export const loadFinishedJobsForApplicant = (page, take, isASC) => {
       jobList,
       total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "APPLICANT_FINISHED_TASK_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_FINISHED_TASK_FAILURE",
     };
   }
 };
