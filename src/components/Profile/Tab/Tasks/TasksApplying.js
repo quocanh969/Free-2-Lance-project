@@ -83,7 +83,7 @@ class TasksApplyingComponent extends Component {
                 </div>
                 {/* Name */}
                 <div className="col-10 text-left">
-                  <h3>{e.title}</h3>
+                  <h3>{e.title + " "}{e.applicant_status == 1 ? "(Đã được duyệt)" : ""}</h3>
                   <h4 className="mt-3">
                     <span className="font-weight-bold">Người đăng: </span>
                     {e.fullname}
@@ -189,13 +189,14 @@ class TasksApplyingComponent extends Component {
                       <i className="icon-line-awesome-clone" /> Xem chi tiết
                       công việc
                     </span>
-                    <span
+                    {e.applicant_status == 0 ? (<span
                       onClick={() => this.StopApply(e.id_job)}
                       className="btn mx-2 p-2 bg-danger text-white rounded"
                     >
                       <i className="icon-line-awesome-hand-stop-o" /> Rút ứng
                       tuyển
-                    </span>
+                    </span>) : ''}
+
                   </div>
                 </div>
               </div>
@@ -282,7 +283,7 @@ class TasksApplyingComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {(totalApplyingTasks === 0||isLoadingApplyingTasksList) ? (
+            {(totalApplyingTasks === 0 || isLoadingApplyingTasksList) ? (
               ""
             ) : (
                 <div className="pagination-container margin-top-30 margin-bottom-60">
