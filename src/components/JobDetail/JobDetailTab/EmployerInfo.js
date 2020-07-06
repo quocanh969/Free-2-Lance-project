@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { loadEmployer } from "../../../actions/Job";
 import { connect } from "react-redux";
+import StarRatings from "react-star-ratings";
+
 
 class EmployerInfoComponent extends Component {
   constructor(props) {
@@ -65,7 +67,15 @@ class EmployerInfoComponent extends Component {
             </div>
             <div className="row mb-3">
               <div className="col-5 font-weight-bold">Người dùng đánh giá:</div>
-              <div className="col-7">{4.9} / 5</div>
+              <div className="col-7"><StarRatings
+                rating={employer.employee ? employer.employee.employee_rating : 0}
+                starRatedColor="blue"
+                starDimension="18px"
+                starSpacing="3px"
+                numberOfStars={5}
+                name="rating"
+              /></div>
+
             </div>
             <div className="row mb-3">
               <div className="col-5 font-weight-bold">Email liên hệ:</div>

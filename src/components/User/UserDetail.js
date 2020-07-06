@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import '../../assets/css/detail.css';
+import StarRatings from "react-star-ratings"
 
 // Image
 import avatarPlaceholder from "../../assets/images/portrait_placeholder.png";
@@ -62,7 +63,14 @@ class UserDetailComponent extends Component {
                         <div className='text-warning font-weight-bold'>{(userDetail.personal.isBusinessUser === false ? 'Người dùng cá nhân' : 'Người dùng doanh nghiệp')}</div>
                         <div className='row'>
                           <div className='col-6 text-white'>
-                            Đánh giá từ người làm: {userDetail.employee.employee_rating} / 5 <i className="icon-material-outline-star text-warning"></i>
+                            Đánh giá từ người làm:  <StarRatings
+                              rating={userDetail.employee.employee_rating}
+                              starRatedColor="yellow"
+                              starDimension="15px"
+                              starSpacing="3px"
+                              numberOfStars={5}
+                              name="rating"
+                            />
                           </div>
                           {(
                             userDetail.personal.isBusinessUser
@@ -70,7 +78,14 @@ class UserDetailComponent extends Component {
                               ''
                               :
                               <div className='col-6 text-white'>
-                                Đánh giá từ người thuê: {userDetail.employer.employer_rating} / 5 <i className="icon-material-outline-star text-warning"></i>
+                                Đánh giá từ người thuê:  <StarRatings
+                                  rating={userDetail.employer.employer_rating}
+                                  starRatedColor="yellow"
+                                  starDimension="15px"
+                                  starSpacing="3px"
+                                  numberOfStars={5}
+                                  name="rating"
+                                />
                               </div>
                           )}
                         </div>

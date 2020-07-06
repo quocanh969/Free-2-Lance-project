@@ -301,11 +301,6 @@ class JobDetailComponent extends Component {
                               </span>
                             </li>
                             <li>
-                              <div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">
-                                {4.9}&nbsp;<i className="icon-material-outline-star text-warning"></i>
-                              </div>
-                            </li>
-                            <li>
                               <i className="icon-material-outline-location-city" />{" "}
                               {jobDetail.district_name}, {jobDetail.province_name}
                             </li>

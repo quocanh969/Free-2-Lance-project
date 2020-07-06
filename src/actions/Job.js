@@ -561,37 +561,38 @@ export const sendAcceptApplicant = (
   take
 ) => {
   return (dispatch) => {
-    // doSendAcceptApplicant(jobId, userId, email, job_title)
-    //   .then((res) => {
-    //     dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
-    //     dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
-    //     Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-    doSendtransferMoneyMomoToF2L(applicantId)
+    doSendAcceptApplicant(jobId, userId, email, job_title)
       .then((res) => {
-        if (res.data.code == 200) {
-          dispatch(
-            GetResultTransactions(
-              jobId,
-              userId,
-              email,
-              applicantId,
-              job_title,
-              page,
-              jobPage,
-              take
-            )
-          );
-          window.open(res.data.data);
-        }
+        dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+        dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+        Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
       })
       .catch((err) => {
         console.log(err);
       });
+
+    //TODO: enable momo here
+    // doSendtransferMoneyMomoToF2L(applicantId)
+    //   .then((res) => {
+    //     if (res.data.code == 200) {
+    //       dispatch(
+    //         GetResultTransactions(
+    //           jobId,
+    //           userId,
+    //           email,
+    //           applicantId,
+    //           job_title,
+    //           page,
+    //           jobPage,
+    //           take
+    //         )
+    //       );
+    //       window.open(res.data.data);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 };
 
