@@ -33,7 +33,7 @@ class JobsApplyingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentApplyingPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadJobListFunc(pageNum);
     }
   }
@@ -69,8 +69,13 @@ class JobsApplyingComponent extends Component {
   }
 
   generateListJobs() {
-    let { applyingJobsList } = this.props.EmployerReducer;
+    let { applyingJobsList, isLoadingApplyingJobsList } = this.props.EmployerReducer;
     let content = [];
+    if (isLoadingApplyingJobsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (applyingJobsList.length > 0) {
       applyingJobsList.forEach((e, index) => {
@@ -93,11 +98,11 @@ class JobsApplyingComponent extends Component {
                     {e.dealable ? (
                       ""
                     ) : (
-                      <span className="text-primary">
-                        <span className="font-weight-bold">Mức lương</span>{" "}
-                        {prettierNumber(e.salary) + " VNĐ"}
-                      </span>
-                    )}
+                        <span className="text-primary">
+                          <span className="font-weight-bold">Mức lương</span>{" "}
+                          {prettierNumber(e.salary) + " VNĐ"}
+                        </span>
+                      )}
                   </h4>
                   {/* Job Listing Footer */}
                   <div style={{ width: "100vh" }} className="text-truncate">
@@ -154,8 +159,8 @@ class JobsApplyingComponent extends Component {
                           {prettierDate(e.deadline)}
                         </li>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </ul>
                     {!e.job_type ? (
                       <ul>
@@ -175,8 +180,8 @@ class JobsApplyingComponent extends Component {
                         </li>
                       </ul>
                     ) : (
-                      ""
-                    )}
+                        ""
+                      )}
                   </div>
                 </div>
               </div>
@@ -292,46 +297,46 @@ class JobsApplyingComponent extends Component {
             {totalApplyingJobs === 0 ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentApplyingPage === 1 ||
-                          totalPage - currentApplyingPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentApplyingPage === 1 ||
+                            totalPage - currentApplyingPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentApplyingPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentApplyingPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentApplyingPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentApplyingPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}

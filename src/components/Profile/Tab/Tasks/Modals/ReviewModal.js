@@ -9,7 +9,12 @@ import StarRatings from "react-star-ratings";
 class ReviewModalConponent extends Component {
   generateReview() {
     let { user } = this.props.HeaderReducer;
-    let { reviewList } = this.props.ApplicantReducer;
+    let { reviewList, isLoadingReviewList } = this.props.ApplicantReducer;
+    if (isLoadingReviewList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     let content = [];
     if (reviewList.length > 0) {
       reviewList.forEach((e, index) => {

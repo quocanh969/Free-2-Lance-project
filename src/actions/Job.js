@@ -64,6 +64,7 @@ export const loadJobList = (page, take, isASC, query) => {
 
 export const loadApplyingJobsForEmployer = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForEmployer(page, take, isASC, 1)
       .then((res) => {
         dispatch(
@@ -76,6 +77,7 @@ export const loadApplyingJobsForEmployer = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -87,10 +89,21 @@ export const loadApplyingJobsForEmployer = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_APPLYING_JOBS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_APPLYING_JOBS_FAILURE",
+    };
+  }
 };
 
 export const loadProcessingJobsForEmployer = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForEmployer(page, take, isASC, 2)
       .then((res) => {
         dispatch(
@@ -103,6 +116,7 @@ export const loadProcessingJobsForEmployer = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -114,10 +128,21 @@ export const loadProcessingJobsForEmployer = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_PROCESSING_JOBS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_PROCESSING_JOBS_FAILURE",
+    };
+  }
 };
 
 export const loadFinishedJobsForEmployer = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForEmployer(page, take, isASC, 3)
       .then((res) => {
         dispatch(
@@ -130,6 +155,7 @@ export const loadFinishedJobsForEmployer = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -139,6 +165,16 @@ export const loadFinishedJobsForEmployer = (page, take, isASC) => {
       jobList,
       total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "EMPLOYER_FINISHED_JOBS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_FINISHED_JOBS_FAILURE",
     };
   }
 };
@@ -423,6 +459,7 @@ export const cancelRecruit = (jobId, page, take, isASC) => {
 
 export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getApplicantsByJobId(jobId, page, take, 0)
       .then((res) => {
         dispatch(
@@ -435,6 +472,7 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -444,6 +482,16 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
       applicantsList,
       total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "EMPLOYER_APPLYING_APPLICANTS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_APPLYING_APPLICANTS_FAILURE",
     };
   }
 };
@@ -587,6 +635,7 @@ export const endJob = (jobId, title, page, take, isASC) => {
 
 export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getApplicantsByJobId(jobId, page, take, 1)
       .then((res) => {
         dispatch(
@@ -599,6 +648,7 @@ export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -608,6 +658,16 @@ export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
       applicantsList,
       total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "EMPLOYER_DOING_APPLICANTS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_DOING_APPLICANTS_FAILURE",
     };
   }
 };
@@ -652,6 +712,7 @@ export const reportUser = (content, reporterId, role) => {
 //#region done job for employer
 export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getApplicantsByJobId(jobId, page, take, 1)
       .then((res) => {
         dispatch(
@@ -664,6 +725,7 @@ export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -675,10 +737,21 @@ export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_DONE_APPLICANTS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_DONE_APPLICANTS_FAILURE",
+    };
+  }
 };
 
 export const loadReviewList = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getReviewList(jobId, page, take)
       .then((res) => {
         dispatch(
@@ -687,6 +760,7 @@ export const loadReviewList = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -696,6 +770,16 @@ export const loadReviewList = (jobId, page, take) => {
       list,
       total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "EMPLOYER_REVIEW_LIST_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_REVIEW_LIST_FAILURE",
     };
   }
 };
@@ -794,6 +878,7 @@ export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
 
 export const loadReviewFromEmployer = (jobId) => {
   return (dispatch) => {
+    dispatch(loading());
     getReviewList(jobId, 1, 9999)
       .then((res) => {
         dispatch(
@@ -802,13 +887,24 @@ export const loadReviewFromEmployer = (jobId) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure())
       });
   };
 
-  function success(list, page, total) {
+  function success(list) {
     return {
       type: "APPLICANT_REVIEW_UPDATE",
       list,
+    };
+  }
+  function loading() {
+    return {
+      type: "APPLICANT_REVIEW_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_REVIEW_FAILURE",
     };
   }
 };

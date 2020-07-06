@@ -20,7 +20,7 @@ class JobsApplyingModalComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentApplicantsPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadApplicantListFunc(pageNum);
     }
   }
@@ -170,8 +170,13 @@ class JobsApplyingModalComponent extends Component {
   }
 
   generateApplicantsList() {
-    let { applicantsList } = this.props.EmployerReducer;
+    let { applicantsList, isLoadingApplicantsList } = this.props.EmployerReducer;
     let content = [];
+    if (isLoadingApplicantsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (applicantsList.length > 0) {
       applicantsList.forEach((e, index) => {
@@ -289,46 +294,46 @@ class JobsApplyingModalComponent extends Component {
               {totalApplicants === 0 ? (
                 ""
               ) : (
-                <div className="pagination-container margin-top-20">
-                  <nav className="pagination">
-                    <ul>
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          ((currentApplicantsPage === 1 ||
-                            totalPage - currentApplicantsPage < 3) &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentApplicantsPage - 1);
-                          }}
+                  <div className="pagination-container margin-top-20">
+                    <nav className="pagination">
+                      <ul>
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            ((currentApplicantsPage === 1 ||
+                              totalPage - currentApplicantsPage < 3) &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-left" />
-                        </div>
-                      </li>
-                      {this.renderPagination(currentApplicantsPage, totalPage)}
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          (totalPage - currentApplicantsPage < 3 && "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentApplicantsPage + 1);
-                          }}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentApplicantsPage - 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-left" />
+                          </div>
+                        </li>
+                        {this.renderPagination(currentApplicantsPage, totalPage)}
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            (totalPage - currentApplicantsPage < 3 && "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-right" />
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentApplicantsPage + 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-right" />
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
             </div>
           </div>
         </div>

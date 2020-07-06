@@ -64,9 +64,13 @@ class UserReviewsModalComponent extends Component {
   }
 
   generateReviewsList() {
-    let { reviewList } = this.props.EmployerReducer;
+    let { reviewList, isLoadingreviewList } = this.props.EmployerReducer;
     let content = [];
-    console.log(reviewList);
+    if (isLoadingreviewList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     if (reviewList.length > 0) {
       reviewList.forEach((e, index) => {
         content.push(
@@ -158,46 +162,46 @@ class UserReviewsModalComponent extends Component {
               {totalReviews === 0 ? (
                 ""
               ) : (
-                <div className="pagination-container margin-top-20">
-                  <nav className="pagination">
-                    <ul>
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          ((currentReviewPage === 1 ||
-                            totalPage - currentReviewPage < 3) &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentReviewPage - 1);
-                          }}
+                  <div className="pagination-container margin-top-20">
+                    <nav className="pagination">
+                      <ul>
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            ((currentReviewPage === 1 ||
+                              totalPage - currentReviewPage < 3) &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-left" />
-                        </div>
-                      </li>
-                      {this.renderPagination(currentReviewPage, totalPage)}
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          (totalPage - currentReviewPage < 3 && "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentReviewPage + 1);
-                          }}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentReviewPage - 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-left" />
+                          </div>
+                        </li>
+                        {this.renderPagination(currentReviewPage, totalPage)}
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            (totalPage - currentReviewPage < 3 && "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-right" />
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentReviewPage + 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-right" />
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
             </div>
           </div>
         </div>

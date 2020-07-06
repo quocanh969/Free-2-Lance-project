@@ -19,6 +19,7 @@ const initState = {
   selectedReviewJobId: null,
   selectedReportedUser: null,
   reviewList: [],
+  isLoadingReviewList: false,
 };
 
 const ApplicantReducer = (state = initState, action) => {
@@ -113,6 +114,17 @@ const ApplicantReducer = (state = initState, action) => {
       return {
         ...state,
         reviewList: action.list,
+        isLoadingReviewList: false,
+      };
+      case "APPLICANT_REVIEW_LOADING":
+      return {
+        ...state,
+        isLoadingReviewList: true,
+      };
+      case "APPLICANT_REVIEW_FAILURE":
+      return {
+        ...state,
+        isLoadingReviewList: false,
       };
     default:
       return state;
