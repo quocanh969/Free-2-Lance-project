@@ -507,7 +507,7 @@ class HeaderComponent extends Component {
   }
 
   render() {
-    let { user } = this.props.HeaderReducer;
+    let { user, isLoadingUser } = this.props.HeaderReducer;
     return (
       <nav
         className={
@@ -593,9 +593,13 @@ class HeaderComponent extends Component {
               </NavLink>
             </li>
           </ul>
-          {user === null
+          {isLoadingUser ? (<div className="loading" key={1}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>) : (user === null
             ? this.renderUserNotLoginContent()
-            : this.renderUserLoginContent(user)}
+            : this.renderUserLoginContent(user))}
         </div>
       </nav>
     );
