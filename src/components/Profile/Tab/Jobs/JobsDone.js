@@ -225,7 +225,7 @@ class JobsDoneComponent extends Component {
   }
 
   render() {
-    let { totalFinishedJobs, currentFinishedPage } = this.props.EmployerReducer;
+    let { totalFinishedJobs, currentFinishedPage, isLoadingFinishedJobsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalFinishedJobs / 4);
 
     return (
@@ -253,7 +253,7 @@ class JobsDoneComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalFinishedJobs === 0 ? (
+            {(totalFinishedJobs === 0 || isLoadingFinishedJobsList) ? (
               ""
             ) : (
                 <div className="pagination-container margin-top-30 margin-bottom-60">

@@ -239,6 +239,7 @@ class JobsDoingComponent extends Component {
     let {
       totalProcessingJobs,
       currentProcessingPage,
+      isLoadingProcessingJobsList,
     } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalProcessingJobs / 4);
 
@@ -267,7 +268,7 @@ class JobsDoingComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalProcessingJobs === 0 ? (
+            {(totalProcessingJobs === 0 || isLoadingProcessingJobsList) ? (
               ""
             ) : (
                 <div className="pagination-container margin-top-30 margin-bottom-60">

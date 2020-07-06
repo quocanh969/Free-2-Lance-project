@@ -187,6 +187,7 @@ class JobsDoneModalComponent extends Component {
     let {
       totalDoneApplicants,
       currentDoneApplicantsPage,
+      isLoadingDoneApplicantsList
     } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalDoneApplicants / takenDoneApplicantsPerPage);
     return (
@@ -220,7 +221,7 @@ class JobsDoneModalComponent extends Component {
                 </div>
               </div>
 
-              {totalDoneApplicants === 0 ? (
+              {(totalDoneApplicants === 0 || isLoadingDoneApplicantsList) ? (
                 ""
               ) : (
                   <div className="pagination-container margin-top-20">

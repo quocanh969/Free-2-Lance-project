@@ -229,6 +229,7 @@ class TasksDoingComponent extends Component {
     let {
       totalProcessingTasks,
       currentProcessingPage,
+      isLoadingProcessingTasksList,
     } = this.props.ApplicantReducer;
     let totalPage = Math.ceil(totalProcessingTasks / 4);
 
@@ -257,7 +258,7 @@ class TasksDoingComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalProcessingTasks === 0 ? (
+            {(totalProcessingTasks === 0||isLoadingProcessingTasksList) ? (
               ""
             ) : (
                 <div className="pagination-container margin-top-30 margin-bottom-60">

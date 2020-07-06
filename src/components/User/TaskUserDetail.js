@@ -106,7 +106,7 @@ class TaskUserDetailComponent extends Component {
 
           {/* Pagination */}
           {(
-            totalTask === 0
+            (totalTask === 0 || isLoadingTaskReview)
               ?
               ''
               :

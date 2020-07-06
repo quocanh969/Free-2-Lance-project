@@ -106,7 +106,7 @@ class JobUserDetailComponent extends Component {
 
                     {/* Pagination */}
                     {(
-                        totalJob === 0
+                        (totalJob === 0 || isLoadingJobReview)
                             ?
                             ''
                             :

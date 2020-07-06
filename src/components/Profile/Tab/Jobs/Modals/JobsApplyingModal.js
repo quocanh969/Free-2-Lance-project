@@ -258,7 +258,7 @@ class JobsApplyingModalComponent extends Component {
   }
 
   render() {
-    let { totalApplicants, currentApplicantsPage } = this.props.EmployerReducer;
+    let { totalApplicants, currentApplicantsPage, isLoadingApplicantsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalApplicants / takenApplyingApplicantsPerPage);
     return (
       <div className="modal-content">
@@ -291,7 +291,7 @@ class JobsApplyingModalComponent extends Component {
                 </div>
               </div>
 
-              {totalApplicants === 0 ? (
+              {(totalApplicants === 0 || isLoadingApplicantsList) ? (
                 ""
               ) : (
                   <div className="pagination-container margin-top-20">

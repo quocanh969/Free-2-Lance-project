@@ -263,7 +263,7 @@ class JobsApplyingComponent extends Component {
   }
 
   render() {
-    let { totalApplyingJobs, currentApplyingPage } = this.props.EmployerReducer;
+    let { totalApplyingJobs, currentApplyingPage, isLoadingApplyingJobsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalApplyingJobs / 4);
 
     return (
@@ -294,7 +294,7 @@ class JobsApplyingComponent extends Component {
               </div>
             </div>
 
-            {totalApplyingJobs === 0 ? (
+            {(totalApplyingJobs === 0 || isLoadingApplyingJobsList) ? (
               ""
             ) : (
                 <div className="pagination-container margin-top-30 margin-bottom-60">

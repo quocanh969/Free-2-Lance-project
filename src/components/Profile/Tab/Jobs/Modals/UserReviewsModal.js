@@ -126,7 +126,7 @@ class UserReviewsModalComponent extends Component {
   }
 
   render() {
-    let { totalReviews, currentReviewPage } = this.props.EmployerReducer;
+    let { totalReviews, currentReviewPage, isLoadingreviewList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalReviews / takenReviewsPerPage);
     return (
       <div className="modal-content">
@@ -159,7 +159,7 @@ class UserReviewsModalComponent extends Component {
                 </div>
               </div>
 
-              {totalReviews === 0 ? (
+              {(totalReviews === 0 || isLoadingreviewList) ? (
                 ""
               ) : (
                   <div className="pagination-container margin-top-20">
