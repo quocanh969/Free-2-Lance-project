@@ -403,7 +403,6 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
     doApplyJob(id_user, id_job, proposed_price, attachment)
       .then((res) => {
         dispatch(success());
-        dispatch(loadJobDetail(id_job));
         //show success
         Swal.fire({
           title: "Đăng kí thành công, xin vui lòng đợi duyệt",

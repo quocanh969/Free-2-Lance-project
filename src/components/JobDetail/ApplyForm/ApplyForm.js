@@ -49,6 +49,7 @@ class ApplyFormConponent extends Component {
 
   applyJob(e) {
     e.preventDefault();
+
     let selectedFile = document.getElementById("upload-cv").files[0];
     // get base64 of selectedFile
 
@@ -56,17 +57,37 @@ class ApplyFormConponent extends Component {
       this.getBase64(selectedFile, (fileInBase64) => {
         let { user } = this.props.HeaderReducer;
         let { jobDetail } = this.props.JobDetailReducer;
+
+        //check proposed price (valid from 50% to 100% of salary)
         let proposed_price = jobDetail.dealable
           ? this.state.proposed_price
           : jobDetail.salary;
-        let { doApplyJob } = this.props;
-        fileInBase64 = fileInBase64.split(",")[1];
-        doApplyJob(
-          user.id_user,
-          jobDetail.id_job,
-          proposed_price,
-          fileInBase64
-        );
+        if (proposed_price < jobDetail.salary / 2) {
+          Swal.fire({
+            title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+        else if (proposed_price > jobDetail.salary) {
+          Swal.fire({
+            title: "Lương mong muốn không được lớn hơn " + this.toCurrency(jobDetail.salary),
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+        else {//send apply job
+          let { doApplyJob } = this.props;
+          fileInBase64 = fileInBase64.split(",")[1];
+          doApplyJob(
+            user.id_user,
+            jobDetail.id_job,
+            proposed_price,
+            fileInBase64
+          );
+        }
+
+
 
       });
     } else {
@@ -122,6 +143,8 @@ class ApplyFormConponent extends Component {
               value={this.state.proposed_price}
               onChange={this.onChange.bind(this)}
               onBlur={this.toggleEditing.bind(this)}
+              min={10}
+              max={100}
               required
             />
           ) : (
@@ -144,7 +167,7 @@ class ApplyFormConponent extends Component {
   }
 
   toCurrency(number) {
-    if (number === null) return "Mức lương mong muốn (VNĐ)";
+    if (number === null) return "Mức lương (từ 50% đến 100% giá gốc)";
     const formatter = new Intl.NumberFormat("sv-SE", {
       style: "decimal",
       currency: "SEK",
