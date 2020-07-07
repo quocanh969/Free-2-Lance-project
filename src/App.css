@@ -63,6 +63,10 @@ body {
 .dropdown-toggle::after {
   display: none !important;
 }
+
+.dropdown-item:hover {
+  color: inherit !important;
+}
 /* 
 .full-page-map-container,.full-page-content-container {
     height: 100vh !important;

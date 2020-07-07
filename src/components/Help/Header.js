@@ -304,14 +304,11 @@ class HeaderComponent extends Component {
     let content = [],
       count = 0;
     const { notices, notifications, isRead } = this.state;
-    // console.log("notifications:", notifications);
+    console.log("notifications:", notifications);
     // console.log("isRead:", isRead);
     for (let e of notifications) {
       content.push(
-        <NavLink
-          key={count}
-          to="/job-detail"
-          className="dropdown-item px-1 border-top border-secondary"
+        <div key={count} className="dropdown-item px-1 border-top border-secondary cursor-pointer"
         >
           <div className="container-fluid px-3">
             <div className="row p-1">
@@ -320,10 +317,10 @@ class HeaderComponent extends Component {
                 <img style={{ height: "auto" }} src={JobImgePlaceholder}></img>
               </div>
               {/* message */}
-              <div className="col-10 px-3">{this.renderNotice(e)}</div>
+              <div className="col-10 px-3">{this.renderNotice(e.content)}</div>
             </div>
           </div>
-        </NavLink>
+        </div>
       );
       count++;
     }

@@ -89,27 +89,27 @@ class JobsApplyingComponent extends Component {
                 <div className="job-listing-description">
                   <h3 className="job-listing-title">{e.title}</h3>
                   <h4 className="d-flex justify-content-between">
-                    <span>
+                    <div>
                       <span className="font-weight-bold">Loại công việc: </span>
                       {!e.job_type
                         ? "Công việc thời vụ"
                         : "Công việc theo sản phẩm"}
-                    </span>
+                    </div>
                     {e.dealable ? (
                       ""
                     ) : (
-                        <span className="text-primary">
+                        <div className="text-primary">
                           <span className="font-weight-bold">Mức lương</span>{" "}
                           {prettierNumber(e.salary) + " VNĐ"}
-                        </span>
+                        </div>
                       )}
                   </h4>
                   {/* Job Listing Footer */}
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     {e.description}
                   </div>
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Số lượng cần tuyển: </span>
                     {e.vacancy}
                     <span style={{ display: "inline-block", width: "30px" }}></span>
@@ -199,13 +199,13 @@ class JobsApplyingComponent extends Component {
                 data-toggle="modal"
                 data-target="#applyingApplicantsModal"
                 onClick={() => this.showApplicantsList(e.id_job, e.title, e.vacancy - e.participants)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
+                className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i> Ứng
                 viên đăng ký: {e.candidates}
               </button>
               <span
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
+                className="btn m-2 py-2 px-4 bg-silver rounded"
                 onClick={() => {
                   history.push(`/job-detail/${e.id_job}`);
                 }}
@@ -215,7 +215,7 @@ class JobsApplyingComponent extends Component {
               {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
               <span
                 onClick={() => this.StopRecuit(e.id_job)}
-                className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
+                className="btn m-2 py-2 px-4 bg-danger text-white rounded"
               >
                 <i className="icon-line-awesome-hand-stop-o" /> Ngừng tuyển
               </span>

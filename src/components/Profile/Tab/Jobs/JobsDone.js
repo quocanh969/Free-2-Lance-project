@@ -77,19 +77,19 @@ class JobsDoneComponent extends Component {
                 <div className="job-listing-description">
                   <h3 className="job-listing-title">{e.title}</h3>
                   <h4 className="d-flex justify-content-between">
-                    <span>
+                    <div>
                       <span className="font-weight-bold">Loại công việc: </span>
                       {!e.job_type
                         ? "Công việc thời vụ"
                         : "Công việc theo sản phẩm"}
-                    </span>
-                    <span className="text-primary">
+                    </div>
+                    <div className="text-primary">
                       <span className="font-weight-bold">Mức lương</span>{" "}
                       {prettierNumber(e.salary) + " VNĐ"}
-                    </span>
+                    </div>
                   </h4>
                   {/* Job Listing Footer */}
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     {e.description}
                   </div>
