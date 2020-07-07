@@ -26,13 +26,13 @@ class ReviewModalConponent extends Component {
               <div className="container">
                 <div className="row">
                   <div className="col-xl-5">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Họ và tên: </span>
                       {e.employer_name}
                     </div>
                   </div>
                   <div className="col-xl-4">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Đánh giá: </span>
                       <span style={{ marginBottom: "5px" }}>
                         <StarRatings
@@ -49,7 +49,7 @@ class ReviewModalConponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-xl-9">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Phản hồi: </span>
                       {e.feedback_fromEmployer}
                     </div>

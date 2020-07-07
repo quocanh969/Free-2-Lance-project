@@ -102,21 +102,21 @@ class JobsDoingModalComponent extends Component {
               <div className="container">
                 <div className="row">
                   <div className="col-xl-5">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Họ và tên: </span>
                       {e.fullname}
                     </div>
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Email: </span>
                       {e.email}
                     </div>
                   </div>
                   <div className="col-xl-4">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Số điện thoại: </span>
                       {e.dial}
                     </div>
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Lương: </span>
                       {prettierNumber(e.proposed_price)} VNĐ
                     </div>
