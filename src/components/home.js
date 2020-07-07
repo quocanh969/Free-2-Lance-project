@@ -290,7 +290,8 @@ class HomeComponent extends Component {
           <div className="task-listing-details">
             <div className="task-listing-description">
               <h3
-                className="task-listing-title d-inline-block text-truncate"
+                title={e.title}
+                className="task-listing-title text-truncate"
                 style={{ maxWidth: "25vh" }}
               >
                 {e.title}
@@ -306,7 +307,7 @@ class HomeComponent extends Component {
                 </li>
               </ul>
               <p
-                className="d-inline-block text-truncate"
+                className="text-truncate"
                 style={{ maxWidth: "25vh" }}
               >
                 {e.description}
@@ -351,7 +352,8 @@ class HomeComponent extends Component {
           <div className="task-listing-details">
             <div className="task-listing-description">
               <h3
-                className="task-listing-title d-inline-block text-truncate"
+                title={e.title}
+                className="task-listing-title text-truncate"
                 style={{ maxWidth: "25vh" }}
               >
                 {e.title}
@@ -367,7 +369,7 @@ class HomeComponent extends Component {
                 </li>
               </ul>
               <p
-                className="d-inline-block text-truncate"
+                className="text-truncate"
                 style={{ maxWidth: "25vh" }}
               >
                 {e.description}
