@@ -11,6 +11,12 @@ const initState = {
   totalTask: 0,
   currentTaskPage: 0,
   isLoadingTaskReview: false,
+
+  transaction: [],
+  totalTransaction: 0,
+  currentTransactionPage: 0,
+  sum: 0,
+  isLoadingTransactionReview: false,
 };
 
 const UserDetailReducer = (state = initState, action) => {
@@ -66,6 +72,25 @@ const UserDetailReducer = (state = initState, action) => {
       return {
         ...state,
         isLoadingTaskReview: false,
+      };
+    case "USER_TRANSACTION_LOAD":
+      return {
+        ...state,
+        transaction: action.list,
+        totalTransaction: action.total,
+        currentTransactionPage: action.page,
+        sum: action.sum,
+        isLoadingTransactionReview: false,
+      };
+    case "USER_TRANSACTION_LOADING":
+      return {
+        ...state,
+        isLoadingTransactionReview: true,
+      };
+    case "USER_TRANSACTION_LOAD_FAILURE":
+      return {
+        ...state,
+        isLoadingTransactionReview: false,
       };
     default:
       return state;

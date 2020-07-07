@@ -89,20 +89,20 @@ class TasksApplyingComponent extends Component {
                     {e.fullname}
                   </h4>
                   <div className="d-flex justify-content-between">
-                    <span className="freelancer-detail-item">
+                    <div className="freelancer-detail-item">
                       <span className="font-weight-bold">
                         <i className="icon-feather-mail" />
                         &nbsp;Email:{" "}
                       </span>{" "}
                       {e.email}
-                    </span>
-                    <span className="freelancer-detail-item">
+                    </div>
+                    <div className="freelancer-detail-item">
                       <span className="font-weight-bold">
                         <i className="icon-feather-phone" />
                         &nbsp;Liên lạc:{" "}
                       </span>{" "}
                       {e.dial}
-                    </span>
+                    </div>
                   </div>
                   <h4 className="mt-3 row">
                     <div className="col">
@@ -120,7 +120,7 @@ class TasksApplyingComponent extends Component {
                         </div>
                       )}
                   </h4>
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     <span>{e.description}</span>
                   </div>

@@ -29,6 +29,7 @@ class ReviewsComponent extends Component {
 
     handleTaskPagination(pageNum) {
         if (pageNum !== this.props.UserDetailReducer.currentTaskPage) {
+            window.scrollTo(0,0);
             this.loadTaskListFunc(pageNum);
         }
     }
@@ -76,6 +77,7 @@ class ReviewsComponent extends Component {
 
     handleJobPagination(pageNum) {
         if (pageNum !== this.props.UserDetailReducer.currentJobPage) {
+            window.scrollTo(0,0);
             this.loadJobListFunc(pageNum);
         }
     }
