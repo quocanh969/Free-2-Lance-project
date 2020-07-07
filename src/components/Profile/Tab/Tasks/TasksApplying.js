@@ -31,7 +31,7 @@ class TasksApplyingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentApplyingPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadJobList(pageNum);
     }
   }
@@ -61,8 +61,13 @@ class TasksApplyingComponent extends Component {
   }
 
   renderJobList() {
-    let { applyingTasksList } = this.props.ApplicantReducer;
+    let { applyingTasksList, isLoadingApplyingTasksList } = this.props.ApplicantReducer;
     let content = [];
+    if (isLoadingApplyingTasksList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (applyingTasksList.length > 0) {
       applyingTasksList.forEach((e, index) => {
@@ -78,7 +83,7 @@ class TasksApplyingComponent extends Component {
                 </div>
                 {/* Name */}
                 <div className="col-10 text-left">
-                  <h3>{e.title}</h3>
+                  <h3>{e.title + " "}{e.applicant_status == 1 ? "(Đã được duyệt)" : ""}</h3>
                   <h4 className="mt-3">
                     <span className="font-weight-bold">Người đăng: </span>
                     {e.fullname}
@@ -109,11 +114,11 @@ class TasksApplyingComponent extends Component {
                     {e.dealable ? (
                       ""
                     ) : (
-                      <div className="col">
-                        <span className="font-weight-bold">Mức lương: </span>
-                        {prettierNumber(e.salary)} VNĐ
-                      </div>
-                    )}
+                        <div className="col">
+                          <span className="font-weight-bold">Mức lương: </span>
+                          {prettierNumber(e.salary)} VNĐ
+                        </div>
+                      )}
                   </h4>
                   <div style={{ width: "100vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
@@ -160,16 +165,16 @@ class TasksApplyingComponent extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="row">
-                      <div className="col">
-                        <span className="font-weight-bold">
-                          <i className="icon-material-outline-date-range" />
+                      <div className="row">
+                        <div className="col">
+                          <span className="font-weight-bold">
+                            <i className="icon-material-outline-date-range" />
                           Ngày kết thúc công việc:{" "}
-                        </span>
-                        {prettierDate(e.deadline)}
+                          </span>
+                          {prettierDate(e.deadline)}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                   <div className="mt-3">
                     {/* <span className="btn mx-2 p-2 bg-293FE4 text-white rounded">
                       <i className="icon-feather-refresh-ccw"></i> Cập nhật
@@ -184,13 +189,14 @@ class TasksApplyingComponent extends Component {
                       <i className="icon-line-awesome-clone" /> Xem chi tiết
                       công việc
                     </span>
-                    <span
+                    {e.applicant_status == 0 ? (<span
                       onClick={() => this.StopApply(e.id_job)}
                       className="btn mx-2 p-2 bg-danger text-white rounded"
                     >
                       <i className="icon-line-awesome-hand-stop-o" /> Rút ứng
                       tuyển
-                    </span>
+                    </span>) : ''}
+
                   </div>
                 </div>
               </div>
@@ -248,6 +254,7 @@ class TasksApplyingComponent extends Component {
     let {
       totalApplyingTasks,
       currentApplyingPage,
+      isLoadingApplyingTasksList
     } = this.props.ApplicantReducer;
     let totalPage = Math.ceil(totalApplyingTasks / 4);
 
@@ -276,49 +283,49 @@ class TasksApplyingComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalApplyingTasks === 0 ? (
+            {(totalApplyingTasks === 0 || isLoadingApplyingTasksList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentApplyingPage === 1 ||
-                          totalPage - currentApplyingPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentApplyingPage === 1 ||
+                            totalPage - currentApplyingPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentApplyingPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentApplyingPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentApplyingPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentApplyingPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}

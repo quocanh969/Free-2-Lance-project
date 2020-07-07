@@ -25,6 +25,7 @@ import { history } from "../ultis/history/history";
 //#region load job
 export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsList(page, take, isASC, query)
       .then((res) => {
         dispatch(
@@ -37,6 +38,7 @@ export const loadJobList = (page, take, isASC, query) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -48,10 +50,21 @@ export const loadJobList = (page, take, isASC, query) => {
       total,
     };
   }
+  function loading() {
+    return {
+      type: "LOADING_JOB_LIST",
+    };
+  }
+  function failure() {
+    return {
+      type: "LOAD_JOB_LIST_FAILURE",
+    };
+  }
 };
 
 export const loadApplyingJobsForEmployer = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForEmployer(page, take, isASC, 1)
       .then((res) => {
         dispatch(
@@ -64,6 +77,7 @@ export const loadApplyingJobsForEmployer = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -75,10 +89,21 @@ export const loadApplyingJobsForEmployer = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_APPLYING_JOBS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_APPLYING_JOBS_FAILURE",
+    };
+  }
 };
 
 export const loadProcessingJobsForEmployer = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForEmployer(page, take, isASC, 2)
       .then((res) => {
         dispatch(
@@ -91,6 +116,7 @@ export const loadProcessingJobsForEmployer = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -102,10 +128,21 @@ export const loadProcessingJobsForEmployer = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_PROCESSING_JOBS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_PROCESSING_JOBS_FAILURE",
+    };
+  }
 };
 
 export const loadFinishedJobsForEmployer = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForEmployer(page, take, isASC, 3)
       .then((res) => {
         dispatch(
@@ -118,6 +155,7 @@ export const loadFinishedJobsForEmployer = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -129,10 +167,21 @@ export const loadFinishedJobsForEmployer = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_FINISHED_JOBS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_FINISHED_JOBS_FAILURE",
+    };
+  }
 };
 
 export const loadApplyingJobsForApplicant = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForApplicant(page, take, isASC, 1)
       .then((res) => {
         dispatch(
@@ -145,6 +194,7 @@ export const loadApplyingJobsForApplicant = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -156,10 +206,21 @@ export const loadApplyingJobsForApplicant = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "APPLICANT_APPLYING_TASK_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_APPLYING_TASK_FAILURE",
+    };
+  }
 };
 
 export const loadProcessingJobsForApplicant = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForApplicant(page, take, isASC, 2)
       .then((res) => {
         dispatch(
@@ -172,6 +233,7 @@ export const loadProcessingJobsForApplicant = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -183,10 +245,21 @@ export const loadProcessingJobsForApplicant = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "APPLICANT_PROCESSING_TASK_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_PROCESSING_TASK_FAILURE",
+    };
+  }
 };
 
 export const loadFinishedJobsForApplicant = (page, take, isASC) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsForApplicant(page, take, isASC, 3)
       .then((res) => {
         dispatch(
@@ -199,6 +272,7 @@ export const loadFinishedJobsForApplicant = (page, take, isASC) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -210,12 +284,23 @@ export const loadFinishedJobsForApplicant = (page, take, isASC) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "APPLICANT_FINISHED_TASK_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_FINISHED_TASK_FAILURE",
+    };
+  }
 };
 //#endregion load job
 
 //#region load job detail
 export const loadJobDetail = (jobId) => {
   return (dispatch) => {
+    dispatch(loading());
     getJobsDetail(jobId)
       .then((res) => {
         if (res.data.data.id_job) {
@@ -227,6 +312,7 @@ export const loadJobDetail = (jobId) => {
         }
       })
       .catch((err) => {
+        dispatch(failure());
         console.log(err);
       });
   };
@@ -237,16 +323,28 @@ export const loadJobDetail = (jobId) => {
       jobDetail,
     };
   }
+  function loading() {
+    return {
+      type: "JOB_DETAIL_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "JOB_DETAIL_LOAD_FAILURE",
+    };
+  }
 };
 
 export const loadEmployer = (employerId) => {
   return (dispatch) => {
+    dispatch(loading());
     getEmployerDetail(employerId)
       .then((res) => {
         dispatch(success(res.data.data));
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -256,15 +354,27 @@ export const loadEmployer = (employerId) => {
       employerDetail,
     };
   }
+  function loading() {
+    return {
+      type: "JOB_DETAIL_EMPLOYER_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "JOB_DETAIL_EMPLOYER_LOAD_FAILURE",
+    };
+  }
 };
 
 export const loadSimilarJobs = (jobTopic) => {
   return (dispatch) => {
+    dispatch(loading());
     getSimilarJobs(jobTopic)
       .then((res) => {
         dispatch(success(res.data.data));
       })
       .catch((err) => {
+        dispatch(failure());
         console.log(err);
       });
   };
@@ -275,14 +385,24 @@ export const loadSimilarJobs = (jobTopic) => {
       similarJobs,
     };
   }
+  function loading() {
+    return {
+      type: "SIMILAR_JOB_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "SIMILAR_JOB_LOAD_FAILURE",
+    };
+  }
 };
 
 export const applyJob = (id_user, id_job, proposed_price, attachment) => {
   return (dispatch) => {
+    dispatch(loading());
     doApplyJob(id_user, id_job, proposed_price, attachment)
       .then((res) => {
-        //reload data
-        // loadJobDetail(id_job);
+        dispatch(success());
         //show success
         Swal.fire({
           title: "Đăng kí thành công, xin vui lòng đợi duyệt",
@@ -290,7 +410,6 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
           confirmButtonText: "OK",
         }).then((result) => {
           if (result.value) {
-            //close form and reload data :(
             dispatch(loadJobDetail(id_job));
           }
         });
@@ -305,6 +424,16 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
         });
       });
   };
+  function success() {
+    return {
+      type: "APPLY_JOB_SUCCESS",
+    };
+  }
+  function loading() {
+    return {
+      type: "APPLY_JOB_SENDING",
+    };
+  }
 };
 
 //#endregion load job detail
@@ -329,6 +458,7 @@ export const cancelRecruit = (jobId, page, take, isASC) => {
 
 export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getApplicantsByJobId(jobId, page, take, 0)
       .then((res) => {
         dispatch(
@@ -341,6 +471,7 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -352,13 +483,24 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_APPLYING_APPLICANTS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_APPLYING_APPLICANTS_FAILURE",
+    };
+  }
 };
 
-export const selectJobApplying = (jobId, title) => {
+export const selectJobApplying = (jobId, title, number) => {
   return {
     type: "EMPLOYER_SELECT_JOB_APPLYING",
     jobId,
     title,
+    number
   };
 };
 
@@ -381,6 +523,7 @@ const GetResultTransactions = (
             .then((res) => {
               dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
               dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+              dispatch(success());
               Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
             })
             .catch((err) => {
@@ -407,6 +550,11 @@ const GetResultTransactions = (
         console.log(err);
       });
   };
+  function success() {
+    return {
+      type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
+    };
+  }
 };
 
 export const sendAcceptApplicant = (
@@ -420,37 +568,44 @@ export const sendAcceptApplicant = (
   take
 ) => {
   return (dispatch) => {
-    // doSendAcceptApplicant(jobId, userId, email, job_title)
-    //   .then((res) => {
-    //     dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
-    //     dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
-    //     Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-    doSendtransferMoneyMomoToF2L(applicantId)
+    doSendAcceptApplicant(jobId, userId, email, job_title)
       .then((res) => {
-        if (res.data.code == 200) {
-          dispatch(
-            GetResultTransactions(
-              jobId,
-              userId,
-              email,
-              applicantId,
-              job_title,
-              page,
-              jobPage,
-              take
-            )
-          );
-          window.open(res.data.data);
-        }
+        dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+        dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+        dispatch(success());
+        Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
       })
       .catch((err) => {
         console.log(err);
       });
+    function success() {
+      return {
+        type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
+      };
+    }
+
+    //TODO: enable momo here
+    // doSendtransferMoneyMomoToF2L(applicantId)
+    //   .then((res) => {
+    //     if (res.data.code == 200) {
+    //       dispatch(
+    //         GetResultTransactions(
+    //           jobId,
+    //           userId,
+    //           email,
+    //           applicantId,
+    //           job_title,
+    //           page,
+    //           jobPage,
+    //           take
+    //         )
+    //       );
+    //       window.open(res.data.data);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 };
 
@@ -493,6 +648,7 @@ export const endJob = (jobId, title, page, take, isASC) => {
 
 export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getApplicantsByJobId(jobId, page, take, 1)
       .then((res) => {
         dispatch(
@@ -505,6 +661,7 @@ export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -516,6 +673,16 @@ export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_DOING_APPLICANTS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_DOING_APPLICANTS_FAILURE",
+    };
+  }
 };
 
 export const selectJobDoing = (jobId) => {
@@ -525,22 +692,42 @@ export const selectJobDoing = (jobId) => {
   };
 };
 
-export const selectReportedUser = (userId) => {
+export const selectReportedUser = (userId, applicantId) => {
   return {
     type: "EMPLOYER_SELECT_REPORTED_USER",
     userId,
+    applicantId
   };
 };
 
-export const reportUser = (content, reporterId, role) => {
+export const selectFiredUser = (userId, applicantId) => {
+  return {
+    type: "EMPLOYER_SELECT_FIRED_USER",
+    userId,
+    applicantId
+  };
+};
+
+export const reportUser = (content, reporterId, role, type, applicantId) => {
   return (dispatch) => {
-    doReportUser(content, reporterId, role)
+    doReportUser(content, reporterId, role, type, applicantId)
       .then((res) => {
-        Swal.fire({
-          title: "Báo cáo người dùng thành công",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+        if (type == 0) {
+          Swal.fire({
+            title: "Báo cáo người dùng thành công",
+            text: "Vui lòng đợi quản trị viên xử lý",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+        else if (type == 1) {
+          Swal.fire({
+            title: "Gửi yêu cầu sa thải thành công",
+            text: "Vui lòng đợi quản trị viên xử lý",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -558,6 +745,7 @@ export const reportUser = (content, reporterId, role) => {
 //#region done job for employer
 export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getApplicantsByJobId(jobId, page, take, 1)
       .then((res) => {
         dispatch(
@@ -570,6 +758,7 @@ export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -581,10 +770,21 @@ export const loadDoneApplicantsForEmployer = (jobId, page, take) => {
       page,
     };
   }
+  function loading() {
+    return {
+      type: "EMPLOYER_DONE_APPLICANTS_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_DONE_APPLICANTS_FAILURE",
+    };
+  }
 };
 
 export const loadReviewList = (jobId, page, take) => {
   return (dispatch) => {
+    dispatch(loading());
     getReviewList(jobId, page, take)
       .then((res) => {
         dispatch(
@@ -593,6 +793,7 @@ export const loadReviewList = (jobId, page, take) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
       });
   };
 
@@ -602,6 +803,16 @@ export const loadReviewList = (jobId, page, take) => {
       list,
       total,
       page,
+    };
+  }
+  function loading() {
+    return {
+      type: "EMPLOYER_REVIEW_LIST_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "EMPLOYER_REVIEW_LIST_FAILURE",
     };
   }
 };
@@ -661,10 +872,11 @@ export const stopApply = (userId, jobId, page, take, isASC) => {
   };
 };
 
-export const selectReportedEmployer = (userId) => {
+export const selectReportedEmployer = (userId, applicantId) => {
   return {
     type: "APPLICANT_SELECT_REPORTED_USER",
     userId,
+    applicantId
   };
 };
 
@@ -700,6 +912,7 @@ export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
 
 export const loadReviewFromEmployer = (jobId) => {
   return (dispatch) => {
+    dispatch(loading());
     getReviewList(jobId, 1, 9999)
       .then((res) => {
         dispatch(
@@ -708,13 +921,24 @@ export const loadReviewFromEmployer = (jobId) => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure())
       });
   };
 
-  function success(list, page, total) {
+  function success(list) {
     return {
       type: "APPLICANT_REVIEW_UPDATE",
       list,
+    };
+  }
+  function loading() {
+    return {
+      type: "APPLICANT_REVIEW_LOADING",
+    };
+  }
+  function failure() {
+    return {
+      type: "APPLICANT_REVIEW_FAILURE",
     };
   }
 };

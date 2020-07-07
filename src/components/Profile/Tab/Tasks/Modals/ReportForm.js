@@ -15,8 +15,8 @@ class ReportFormConponent extends Component {
     e.preventDefault();
     let content = this.refs.content.value;
     let { doReportUser } = this.props;
-    let { selectedReportedUser } = this.props.ApplicantReducer;
-    doReportUser(content, selectedReportedUser, 0);
+    let { selectedReportedUser, selectedReportedApplicantId } = this.props.ApplicantReducer;
+    doReportUser(content, selectedReportedUser, 0, 0, selectedReportedApplicantId);
     document.getElementById("btnCloseReportForm").click();
   }
 
@@ -92,8 +92,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doReportUser: (content, reporterId, role) => {
-      dispatch(reportUser(content, reporterId, role));
+    doReportUser: (content, reporterId, role, type, applicantId) => {
+      dispatch(reportUser(content, reporterId, role, type, applicantId));
     },
   };
 };

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   loadDoingApplicantsForEmployer,
   selectReportedUser,
+  selectFiredUser
 } from "../../../../../actions/Job";
 import {
   prettierNumber,
@@ -20,7 +21,7 @@ class JobsDoingModalComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentDoingApplicantsPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadApplicantListFunc(pageNum);
     }
   }
@@ -67,48 +68,30 @@ class JobsDoingModalComponent extends Component {
     onLoadApplicants(selectedDoingJobId, page, takenDoingApplicantsPerPage);
   }
 
-  viewApplicantCV(attachment) {
-    if (attachment) {
-      let keyFile = attachment.substring(0, 5).toUpperCase();
-      var modal = document.getElementById("cv-modal-dialog");
-      if (keyFile === "IVBOR" || keyFile === "/9J/4") {
-        let image = document.createElement("IMG");
-        image.className = "modal-content";
-        image.src = getImageSrc(attachment);
-        modal.innerHTML = "";
-        modal.appendChild(image);
-      } else if (keyFile === "JVBER") {
-        let iframe = document.createElement("iframe");
-        iframe.className = "modal-content";
-        iframe.style.height = "90vh";
-        iframe.src = "data:application/pdf;base64," + attachment;
-        modal.innerHTML = "";
-        modal.appendChild(iframe);
-      }
-    } else {
-      Swal.fire({
-        title: "Không đọc được CV",
-        text: "Vui lòng thử lại sau",
-        icon: "error",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "Ok!",
-      });
-    }
-  }
 
   viewApplicantInfo(userId) {
     let url = window.location.origin + "/user-detail/" + userId;
     window.open(url);
   }
 
-  reportEmployee(userId) {
+  reportEmployee(userId, applicantId) {
     let { onSelectReportedUser } = this.props;
-    onSelectReportedUser(userId);
+    onSelectReportedUser(userId, applicantId);
+  }
+
+  fireEmployee(userId, applicantId) {
+    let { onSelectFiredUser } = this.props;
+    onSelectFiredUser(userId, applicantId);
   }
 
   generateApplicantsList() {
-    let { doingApplicantsList } = this.props.EmployerReducer;
+    let { doingApplicantsList, isLoadingDoingApplicantsList } = this.props.EmployerReducer;
     let content = [];
+    if (isLoadingDoingApplicantsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (doingApplicantsList.length > 0) {
       doingApplicantsList.forEach((e, index) => {
@@ -153,19 +136,19 @@ class JobsDoingModalComponent extends Component {
               </span>
               <span
                 data-toggle="modal"
-                data-target="#CVModal"
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => this.viewApplicantCV(e.attachment)}
+                data-target="#reportModal"
+                onClick={() => this.reportEmployee(e.id_user, e.id_applicant)}
+                className="btn mx-2 py-2 px-4 bg-warning text-white rounded"
               >
-                <i className="icon-line-awesome-clone" /> Xem CV
+                <i className="icon-material-outline-speaker-notes" /> Báo cáo
               </span>
               <span
                 data-toggle="modal"
                 data-target="#reportModal"
-                onClick={() => this.reportEmployee(e.id_user)}
+                onClick={() => this.fireEmployee(e.id_user, e.id_applicant)}
                 className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
               >
-                <i className="icon-line-awesome-hand-stop-o" /> Báo cáo
+                <i className="icon-line-awesome-hand-stop-o" /> Sa thải
               </span>
             </div>
           </li>
@@ -186,6 +169,7 @@ class JobsDoingModalComponent extends Component {
     let {
       totalDoingApplicants,
       currentDoingApplicantsPage,
+      isLoadingDoingApplicantsList,
     } = this.props.EmployerReducer;
     let totalPage = Math.ceil(
       totalDoingApplicants / takenDoingApplicantsPerPage
@@ -221,57 +205,57 @@ class JobsDoingModalComponent extends Component {
                 </div>
               </div>
 
-              {totalDoingApplicants === 0 ? (
+              {(totalDoingApplicants === 0 || isLoadingDoingApplicantsList) ? (
                 ""
               ) : (
-                <div className="pagination-container margin-top-20">
-                  <nav className="pagination">
-                    <ul>
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          ((currentDoingApplicantsPage === 1 ||
-                            totalPage - currentDoingApplicantsPage < 3) &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(
-                              currentDoingApplicantsPage - 1
-                            );
-                          }}
+                  <div className="pagination-container margin-top-20">
+                    <nav className="pagination">
+                      <ul>
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            ((currentDoingApplicantsPage === 1 ||
+                              totalPage - currentDoingApplicantsPage < 3) &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-left" />
-                        </div>
-                      </li>
-                      {this.renderPagination(
-                        currentDoingApplicantsPage,
-                        totalPage
-                      )}
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          (totalPage - currentDoingApplicantsPage < 3 &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(
-                              currentDoingApplicantsPage + 1
-                            );
-                          }}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(
+                                currentDoingApplicantsPage - 1
+                              );
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-left" />
+                          </div>
+                        </li>
+                        {this.renderPagination(
+                          currentDoingApplicantsPage,
+                          totalPage
+                        )}
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            (totalPage - currentDoingApplicantsPage < 3 &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-right" />
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(
+                                currentDoingApplicantsPage + 1
+                              );
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-right" />
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -299,8 +283,11 @@ const mapDispatchToProps = (dispatch) => {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadDoingApplicantsForEmployer(jobId, page, take));
     },
-    onSelectReportedUser: (userId) => {
-      dispatch(selectReportedUser(userId));
+    onSelectReportedUser: (userId, applicantId) => {
+      dispatch(selectReportedUser(userId, applicantId));
+    },
+    onSelectFiredUser: (userId, applicantId) => {
+      dispatch(selectFiredUser(userId, applicantId));
     },
   };
 };

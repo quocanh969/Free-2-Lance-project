@@ -1,6 +1,7 @@
 
 const initState = {
     user: null,
+    isLoadingUser: false,
     company: null,
 }
 
@@ -10,6 +11,17 @@ const HeaderReducer = (state = initState, action) => {
             return {
                 ...state,
                 user: action.user,
+                isLoadingUser: false,
+            };
+            case 'LOADING_USER_INFO':            
+            return {
+                ...state,
+                isLoadingUser: true,
+            };
+            case 'LOAD_USER_INFO_FAILURE':            
+            return {
+                ...state,
+                isLoadingUser: false,
             };
         case 'UPDATE_PERSONAL_INFO':
             let newUserState = state.user;

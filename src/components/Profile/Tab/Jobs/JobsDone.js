@@ -34,7 +34,7 @@ class JobsDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentFinishedPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadJobList(pageNum);
     }
   }
@@ -58,7 +58,12 @@ class JobsDoneComponent extends Component {
 
   renderJobList() {
     let content = [];
-    let { finishedJobsList } = this.props.EmployerReducer;
+    let { finishedJobsList, isLoadingFinishedJobsList } = this.props.EmployerReducer;
+    if (isLoadingFinishedJobsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (finishedJobsList.length > 0) {
       finishedJobsList.forEach((e, index) => {
@@ -120,23 +125,23 @@ class JobsDoneComponent extends Component {
                         </li>
                       </ul>
                     ) : (
-                      <ul>
-                        <li>
-                          <span className="font-weight-bold">
-                            <i className="icon-line-awesome-calendar-o" />
+                        <ul>
+                          <li>
+                            <span className="font-weight-bold">
+                              <i className="icon-line-awesome-calendar-o" />
                             Ngày bắt đầu công việc:{" "}
-                          </span>
-                          {prettierDate(e.start_date)}
-                        </li>
-                        <li>
-                          <span className="font-weight-bold">
-                            <i className="icon-material-outline-date-range" />
+                            </span>
+                            {prettierDate(e.start_date)}
+                          </li>
+                          <li>
+                            <span className="font-weight-bold">
+                              <i className="icon-material-outline-date-range" />
                             Ngày kết thúc công việc:{" "}
-                          </span>
-                          {prettierDate(e.end_date)}
-                        </li>
-                      </ul>
-                    )}
+                            </span>
+                            {prettierDate(e.end_date)}
+                          </li>
+                        </ul>
+                      )}
                   </div>
                 </div>
               </div>
@@ -220,7 +225,7 @@ class JobsDoneComponent extends Component {
   }
 
   render() {
-    let { totalFinishedJobs, currentFinishedPage } = this.props.EmployerReducer;
+    let { totalFinishedJobs, currentFinishedPage, isLoadingFinishedJobsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalFinishedJobs / 4);
 
     return (
@@ -248,49 +253,49 @@ class JobsDoneComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalFinishedJobs === 0 ? (
+            {(totalFinishedJobs === 0 || isLoadingFinishedJobsList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentFinishedPage === 1 ||
-                          totalPage - currentFinishedPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentFinishedPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentFinishedPage === 1 ||
+                            totalPage - currentFinishedPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentFinishedPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentFinishedPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentFinishedPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentFinishedPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentFinishedPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentFinishedPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentFinishedPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}

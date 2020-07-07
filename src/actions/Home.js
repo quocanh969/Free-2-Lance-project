@@ -4,12 +4,14 @@ import { getTopUsers } from '../services/user.services';
 
 export const loadTopics = () => {
     return dispatch => {
+        dispatch(loading());
         getAllTopics()
             .then(res => {
                 dispatch(success(res.data.data));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -19,16 +21,28 @@ export const loadTopics = () => {
             jobTopic,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_JOB_TOPICS',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_JOB_TOPICS_FAILURE',
+        }
+    }
 }
 
 export const loadTags = () => {
     return dispatch => {
+        dispatch(loading());
         getTags()
             .then(res => {
                 dispatch(success(res.data.data));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -38,16 +52,28 @@ export const loadTags = () => {
             jobTag,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_JOB_TAGS',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_JOB_TAGS_FAILURE',
+        }
+    }
 }
 
 export const loadAreas = () => {
     return dispatch => {
+        dispatch(loading());
         getAllAreas()
             .then(res => {
                 dispatch(success(res.data.data));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -57,16 +83,28 @@ export const loadAreas = () => {
             areas,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_AREAS',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_AREAS_FAILURE',
+        }
+    }
 }
 
 export const loadDistricts = (id_province) => {
     return dispatch => {
+        dispatch(loading());
         getAllDistrictsFromArea(id_province)
             .then(res => {
                 dispatch(success(res.data.data));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -76,6 +114,16 @@ export const loadDistricts = (id_province) => {
             districts,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_DISTRICTS',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_DISTRICTS_FAILURE',
+        }
+    }
 }
 
 export const loadProductionJobs = (page, take) => {
@@ -83,13 +131,14 @@ export const loadProductionJobs = (page, take) => {
         let query = {
             job_type: '1',
         }
-
+        dispatch(loading());
         getJobsList(page, take, 1, query)
             .then(res => {
                 dispatch(success(res.data.data.jobList));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -99,6 +148,16 @@ export const loadProductionJobs = (page, take) => {
             productionJobList,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_PRODUCTION_JOBS_LIST',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_PRODUCTION_JOBS_LIST_FAILURE',
+        }
+    }
 }
 
 export const loadTemporalJobs = (page, take) => {
@@ -106,13 +165,14 @@ export const loadTemporalJobs = (page, take) => {
         let query = {
             job_type: '0',
         }
-
+        dispatch(loading());
         getJobsList(page, take, 1, query)
             .then(res => {
                 dispatch(success(res.data.data.jobList));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -122,16 +182,28 @@ export const loadTemporalJobs = (page, take) => {
             temporalJoblist,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_TEMPORAL_JOBS_LIST',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_TEMPORAL_JOBS_LIST_FAILURE',
+        }
+    }
 }
 
 export const loadTopUsers = () => {
     return dispatch => {
+        dispatch(loading());
         getTopUsers()
             .then(res => {
                 dispatch(success(res.data.data));
             })
             .catch(err => {
                 console.log(err);
+                dispatch(failure());
             })
     }
 
@@ -141,10 +213,21 @@ export const loadTopUsers = () => {
             topUsers,
         }
     }
+    function loading() {
+        return {
+            type: 'LOADING_TOP_USERS',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_TOP_USERS_FAILURE',
+        }
+    }
 }
 
 export const loadStatistic = () => {
     return dispatch => {
+        dispatch(loading());
         getStatistic().then(res => {
             if (res.data.code === 1) {
                 // let memberNum = Number.parseInt(res.data.data.memberNum);
@@ -155,6 +238,7 @@ export const loadStatistic = () => {
             }
         }).catch(err => {
             console.log(err);
+            dispatch(failure());
         })
     }
 
@@ -165,6 +249,16 @@ export const loadStatistic = () => {
             finishedJobNum,
             applyingJobNum,
             proccessingJobNum,
+        }
+    }
+    function loading() {
+        return {
+            type: 'LOADING_STATISTIC',
+        }
+    }
+    function failure() {
+        return {
+            type: 'LOAD_STATISTIC_FAILURE',
         }
     }
 }

@@ -72,7 +72,7 @@ function getJobsList(page, take, isASC, query) {
 }
 
 function getJobsForEmployer(page, take, isASC, status) {
-  return axios.post("/jobs/getJobsByEmployerId", {
+  return axios.post("/jobs/getJobsByEmployerIdForWeb", {
     page,
     take,
     isASC,
@@ -177,11 +177,13 @@ function doEndJob(id_job, job_title) {
   });
 }
 
-function doReportUser(content, reporterId, yourRole) {
+function doReportUser(content, reporterId, yourRole, type, applicantId) {
   return axios.post("/users/addReport", {
     content,
     reporterId,
     yourRole,
+    type,
+    applicantId
   });
 }
 

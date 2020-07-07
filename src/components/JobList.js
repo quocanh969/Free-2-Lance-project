@@ -203,7 +203,7 @@ class JobListComponent extends Component {
   }
 
   handleFilter() {
-    let query = {...this.state.query};
+    let query = { ...this.state.query };
 
     let area = document.getElementById("select-area").value;
     if (area !== "0") query["area_province"] = area;
@@ -309,7 +309,7 @@ class JobListComponent extends Component {
   }
 
   renderFilter() {
-    let { jobTopic, areas } = this.props.GeneralReducer;
+    let { jobTopic, areas, isLoadingJobTopic, isLoadingAreas } = this.props.GeneralReducer;
     console.log(this.state.query);
     return (
       <div className="sidebar-container">
@@ -329,7 +329,11 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Khu vực</h3>
           <div className="input-with-icon">
-            {this.state.query["area_province"] !== undefined ? (
+            {isLoadingAreas ? (<div className="loading" key={1}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>) : (this.state.query["area_province"] !== undefined ? (
               <S_Selector
                 id="select-area"
                 className="with-border"
@@ -349,7 +353,7 @@ class JobListComponent extends Component {
                   value_tag="id_province"
                   text_tag="name"
                 ></S_Selector>
-              )}
+              ))}
           </div>
         </div>
 
@@ -357,7 +361,11 @@ class JobListComponent extends Component {
         <div className="sidebar-widget">
           <h3>Chủ đề</h3>
           <div className="input-with-icon">
-            {this.state.query["job_topic"] !== undefined ? (
+            {isLoadingJobTopic ? (<div className="loading" key={1}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>) : (this.state.query["job_topic"] !== undefined ? (
               <S_Selector
                 id="select-category"
                 className="with-border"
@@ -377,7 +385,7 @@ class JobListComponent extends Component {
                   value_tag="id_jobtopic"
                   text_tag="name"
                 ></S_Selector>
-              )}
+              ))}
           </div>
         </div>
 
@@ -495,7 +503,7 @@ class JobListComponent extends Component {
 
   render() {
     let { areas, jobTopic } = this.props.GeneralReducer;
-    let { page, total } = this.props.JobsListReducer;
+    let { page, total, isSending } = this.props.JobsListReducer;
     let sortType = [
       { type: 2, text: "Mới nhất" },
       { type: 1, text: "Đã đăng lâu nhất" },
@@ -563,16 +571,22 @@ class JobListComponent extends Component {
                     : "compact-list-layout")
                 }
               >
-                {(
-                  this.props.JobsListReducer.jobList.length > 0
-                  ?
+                {(isSending ? (<div className="loading" key={1}>
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>) :
                   (
-                    this.state.isGridMode
-                  ? this.generateJobListGridMode()
-                  : this.generateJobListListMode()
+                    this.props.JobsListReducer.jobList.length > 0
+                      ?
+                      (
+                        this.state.isGridMode
+                          ? this.generateJobListGridMode()
+                          : this.generateJobListListMode()
+                      )
+                      :
+                      'Danh sách công việc tìm kiếm rỗng !!!'
                   )
-                  :
-                  'Danh sách công việc tìm kiếm rỗng !!!'
                 )}
               </div>
               {/* Pagination */}
@@ -581,7 +595,7 @@ class JobListComponent extends Component {
                 <div className="col-md-12">
                   {/* Pagination */}
                   <div className="pagination-container margin-top-30 margin-bottom-60">
-                    <nav className="pagination">
+                    {isSending ? (<div></div>) : <nav className="pagination">
                       <ul>
                         <li
                           className={
@@ -615,7 +629,7 @@ class JobListComponent extends Component {
                           </div>
                         </li>
                       </ul>
-                    </nav>
+                    </nav>}
                   </div>
 
                 </div>

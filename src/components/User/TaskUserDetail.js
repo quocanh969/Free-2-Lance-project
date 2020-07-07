@@ -91,10 +91,14 @@ class TaskUserDetailComponent extends Component {
   }
 
   render() {
-    let { userDetail, tasks, totalTask, currentTaskPage } = this.props.UserDetailReducer;
+    let { userDetail, tasks, totalTask, currentTaskPage, isLoadingTaskReview } = this.props.UserDetailReducer;
     let totalPage = Math.ceil(totalTask / 8);
 
-    if (userDetail === null) return '';
+    if (userDetail === null || isLoadingTaskReview) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     else {
       return (
         <div>
@@ -102,7 +106,7 @@ class TaskUserDetailComponent extends Component {
 
           {/* Pagination */}
           {(
-            totalTask === 0
+            (totalTask === 0 || isLoadingTaskReview)
               ?
               ''
               :

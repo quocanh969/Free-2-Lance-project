@@ -116,7 +116,7 @@ class ReviewsComponent extends Component {
 
     renderReview(reviews) {
         let content = [];
-        if(reviews.length > 0) {
+        if (reviews.length > 0) {
             reviews.forEach((e, index) => {
                 content.push(
                     <li key={index}>
@@ -124,7 +124,7 @@ class ReviewsComponent extends Component {
                             <div className='col-3 profile-img'>
                                 <img src={getImageSrc(null, avatarPlaceholder)} style={{ width: '50px', height: '50px' }}></img>
                             </div>
-    
+
                             <div className='col-9'>
                                 <h4>{e.title}</h4>
                                 <div className='h5'>{e.fullname}</div>
@@ -148,13 +148,13 @@ class ReviewsComponent extends Component {
                     </div>
                 </li>
             )
-        }        
+        }
 
         return content;
     }
 
     render() {
-        let { jobs, totalJob, currentJobPage, tasks, totalTask, currentTaskPage } = this.props.UserDetailReducer;
+        let { jobs, totalJob, currentJobPage, isLoadingJobReview, tasks, totalTask, currentTaskPage, isLoadingTaskReview } = this.props.UserDetailReducer;
         let totalTaskPage = Math.ceil(totalTask / 8);
         let totalJobPage = Math.ceil(totalJob / 8);
 
@@ -176,12 +176,16 @@ class ReviewsComponent extends Component {
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
-                                    {this.renderReview(tasks)}
+                                    {isLoadingTaskReview ? (<div className="loading" key={1}>
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>
+                                    </div>) : this.renderReview(tasks)}
                                 </ul>
                             </div>
                         </div>
                         {(
-                            totalTask === 0
+                            (totalTask === 0 || isLoadingTaskReview)
                                 ?
                                 ''
                                 :
@@ -214,12 +218,16 @@ class ReviewsComponent extends Component {
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
-                                    {this.renderReview(jobs)}
+                                    {isLoadingJobReview ? (<div className="loading" key={1}>
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>
+                                    </div>) : this.renderReview(jobs)}
                                 </ul>
                             </div>
                         </div>
                         {(
-                            totalJob === 0
+                            (totalJob === 0 || isLoadingJobReview)
                                 ?
                                 ''
                                 :

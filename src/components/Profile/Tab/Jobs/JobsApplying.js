@@ -33,7 +33,7 @@ class JobsApplyingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentApplyingPage) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadJobListFunc(pageNum);
     }
   }
@@ -62,15 +62,20 @@ class JobsApplyingComponent extends Component {
     });
   }
 
-  showApplicantsList(jobId, title) {
+  showApplicantsList(jobId, title, number) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
-    onSelectJobApplying(jobId, title);
+    onSelectJobApplying(jobId, title, number);
     onLoadApplicants(jobId, 1, takenApplyingApplicantsPerPage);
   }
 
   generateListJobs() {
-    let { applyingJobsList } = this.props.EmployerReducer;
+    let { applyingJobsList, isLoadingApplyingJobsList } = this.props.EmployerReducer;
     let content = [];
+    if (isLoadingApplyingJobsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (applyingJobsList.length > 0) {
       applyingJobsList.forEach((e, index) => {
@@ -93,16 +98,23 @@ class JobsApplyingComponent extends Component {
                     {e.dealable ? (
                       ""
                     ) : (
-                      <span className="text-primary">
-                        <span className="font-weight-bold">Mức lương</span>{" "}
-                        {prettierNumber(e.salary) + " VNĐ"}
-                      </span>
-                    )}
+                        <span className="text-primary">
+                          <span className="font-weight-bold">Mức lương</span>{" "}
+                          {prettierNumber(e.salary) + " VNĐ"}
+                        </span>
+                      )}
                   </h4>
                   {/* Job Listing Footer */}
                   <div style={{ width: "100vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     {e.description}
+                  </div>
+                  <div style={{ width: "100vh" }} className="text-truncate">
+                    <span className="font-weight-bold">Số lượng cần tuyển: </span>
+                    {e.vacancy}
+                    <span style={{ display: "inline-block", width: "30px" }}></span>
+                    <span className="font-weight-bold">Đã tuyển được: </span>
+                    {e.participants}
                   </div>
                   <div className="text-primary font-weight-bold">
                     {e.dealable
@@ -154,8 +166,8 @@ class JobsApplyingComponent extends Component {
                           {prettierDate(e.deadline)}
                         </li>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </ul>
                     {!e.job_type ? (
                       <ul>
@@ -175,8 +187,8 @@ class JobsApplyingComponent extends Component {
                         </li>
                       </ul>
                     ) : (
-                      ""
-                    )}
+                        ""
+                      )}
                   </div>
                 </div>
               </div>
@@ -186,7 +198,7 @@ class JobsApplyingComponent extends Component {
               <button
                 data-toggle="modal"
                 data-target="#applyingApplicantsModal"
-                onClick={() => this.showApplicantsList(e.id_job, e.title)}
+                onClick={() => this.showApplicantsList(e.id_job, e.title, e.vacancy - e.participants)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i> Ứng
@@ -258,7 +270,7 @@ class JobsApplyingComponent extends Component {
   }
 
   render() {
-    let { totalApplyingJobs, currentApplyingPage } = this.props.EmployerReducer;
+    let { totalApplyingJobs, currentApplyingPage, isLoadingApplyingJobsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalApplyingJobs / 4);
 
     return (
@@ -289,49 +301,49 @@ class JobsApplyingComponent extends Component {
               </div>
             </div>
 
-            {totalApplyingJobs === 0 ? (
+            {(totalApplyingJobs === 0 || isLoadingApplyingJobsList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentApplyingPage === 1 ||
-                          totalPage - currentApplyingPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentApplyingPage === 1 ||
+                            totalPage - currentApplyingPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentApplyingPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentApplyingPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentApplyingPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentApplyingPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}
@@ -359,8 +371,8 @@ const mapDispatchToProps = (dispatch) => {
     onCancelRecruit: (jobId, page, take, isASC) => {
       dispatch(cancelRecruit(jobId, page, take, isASC));
     },
-    onSelectJobApplying: (jobId, title) => {
-      dispatch(selectJobApplying(jobId, title));
+    onSelectJobApplying: (jobId, title, number) => {
+      dispatch(selectJobApplying(jobId, title, number));
     },
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));

@@ -91,10 +91,14 @@ class JobUserDetailComponent extends Component {
     }
 
     render() {
-        let { userDetail, jobs, totalJob, currentJobPage } = this.props.UserDetailReducer;
+        let { userDetail, jobs, totalJob, currentJobPage, isLoadingJobReview } = this.props.UserDetailReducer;
         let totalPage = Math.ceil(totalJob / 8);
 
-        if (userDetail === null) return '';
+        if (userDetail === null || isLoadingJobReview) return (<div className="loading" key={1}>
+            <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+            </div>
+        </div>);
         else {
             return (
                 <div>
@@ -102,7 +106,7 @@ class JobUserDetailComponent extends Component {
 
                     {/* Pagination */}
                     {(
-                        totalJob === 0
+                        (totalJob === 0 || isLoadingJobReview)
                             ?
                             ''
                             :
