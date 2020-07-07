@@ -62,9 +62,9 @@ class JobsApplyingComponent extends Component {
     });
   }
 
-  showApplicantsList(jobId, title) {
+  showApplicantsList(jobId, title, number) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
-    onSelectJobApplying(jobId, title);
+    onSelectJobApplying(jobId, title, number);
     onLoadApplicants(jobId, 1, takenApplyingApplicantsPerPage);
   }
 
@@ -108,6 +108,13 @@ class JobsApplyingComponent extends Component {
                   <div style={{ width: "100vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     {e.description}
+                  </div>
+                  <div style={{ width: "100vh" }} className="text-truncate">
+                    <span className="font-weight-bold">Số lượng cần tuyển: </span>
+                    {e.vacancy}
+                    <span style={{ display: "inline-block", width: "30px" }}></span>
+                    <span className="font-weight-bold">Đã tuyển được: </span>
+                    {e.participants}
                   </div>
                   <div className="text-primary font-weight-bold">
                     {e.dealable
@@ -191,7 +198,7 @@ class JobsApplyingComponent extends Component {
               <button
                 data-toggle="modal"
                 data-target="#applyingApplicantsModal"
-                onClick={() => this.showApplicantsList(e.id_job, e.title)}
+                onClick={() => this.showApplicantsList(e.id_job, e.title, e.vacancy - e.participants)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i> Ứng
@@ -364,8 +371,8 @@ const mapDispatchToProps = (dispatch) => {
     onCancelRecruit: (jobId, page, take, isASC) => {
       dispatch(cancelRecruit(jobId, page, take, isASC));
     },
-    onSelectJobApplying: (jobId, title) => {
-      dispatch(selectJobApplying(jobId, title));
+    onSelectJobApplying: (jobId, title, number) => {
+      dispatch(selectJobApplying(jobId, title, number));
     },
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));

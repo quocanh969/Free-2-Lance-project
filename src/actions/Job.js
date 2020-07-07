@@ -495,11 +495,12 @@ export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
   }
 };
 
-export const selectJobApplying = (jobId, title) => {
+export const selectJobApplying = (jobId, title, number) => {
   return {
     type: "EMPLOYER_SELECT_JOB_APPLYING",
     jobId,
     title,
+    number
   };
 };
 
@@ -522,6 +523,7 @@ const GetResultTransactions = (
             .then((res) => {
               dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
               dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+              dispatch(success());
               Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
             })
             .catch((err) => {
@@ -548,6 +550,11 @@ const GetResultTransactions = (
         console.log(err);
       });
   };
+  function success() {
+    return {
+      type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
+    };
+  }
 };
 
 export const sendAcceptApplicant = (
@@ -565,11 +572,17 @@ export const sendAcceptApplicant = (
       .then((res) => {
         dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
         dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+        dispatch(success());
         Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
       })
       .catch((err) => {
         console.log(err);
       });
+    function success() {
+      return {
+        type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
+      };
+    }
 
     //TODO: enable momo here
     // doSendtransferMoneyMomoToF2L(applicantId)

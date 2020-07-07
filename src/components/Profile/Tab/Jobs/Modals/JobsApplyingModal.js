@@ -72,6 +72,13 @@ class JobsApplyingModalComponent extends Component {
   }
 
   acceptApplicant(userId, email, applicantId) {
+    //check number of vacancy
+    let { totalNeedApplicants } = this.props.EmployerReducer
+    if (totalNeedApplicants <= 0) {
+      Swal.fire("Đã đạt số lượng người cần tuyển", "Vui lòng bắt đầu công việc!!", "error");
+      return;
+    }
+    //accept applicant
     Swal.fire({
       title: "Bạn có chắc muốn tuyển ứng viên này??",
       text: "Bạn sẽ phải thanh toán trước",
@@ -105,6 +112,12 @@ class JobsApplyingModalComponent extends Component {
   }
 
   rejectApplicant(userId, email) {
+    //check number of vacancy
+    let { totalNeedApplicants } = this.props.EmployerReducer
+    if (totalNeedApplicants <= 0) {
+      Swal.fire("Đã đạt số lượng người cần tuyển", "Vui lòng bắt đầu công việc!!", "error");
+      return;
+    }
     Swal.fire({
       title: "Bạn có chắc muốn từ chối ứng viên này??",
       icon: "warning",

@@ -72,7 +72,7 @@ function getJobsList(page, take, isASC, query) {
 }
 
 function getJobsForEmployer(page, take, isASC, status) {
-  return axios.post("/jobs/getJobsByEmployerId", {
+  return axios.post("/jobs/getJobsByEmployerIdForWeb", {
     page,
     take,
     isASC,
