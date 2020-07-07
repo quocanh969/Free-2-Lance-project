@@ -144,7 +144,7 @@ class JobsDoneModalComponent extends Component {
             </div>
 
             {/* Buttons */}
-            <div className="container text-right">
+            <div className="container text-right" style={{ marginTop: "10px" }}>
               <span
                 data-toggle="modal"
                 data-target="#reviewModal"

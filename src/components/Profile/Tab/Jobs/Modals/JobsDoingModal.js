@@ -126,7 +126,7 @@ class JobsDoingModalComponent extends Component {
             </div>
 
             {/* Buttons */}
-            <div className="container text-right">
+            <div className="container text-right" style={{ marginTop: "10px" }}>
               <span
                 onClick={() => this.viewApplicantInfo(e.id_user)}
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"

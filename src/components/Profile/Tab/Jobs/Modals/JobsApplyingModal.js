@@ -11,6 +11,7 @@ import {
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
+import StarRatings from "react-star-ratings";
 
 export const takenApplyingApplicantsPerPage = 3;
 class JobsApplyingModalComponent extends Component {
@@ -208,6 +209,10 @@ class JobsApplyingModalComponent extends Component {
                       <span className="font-weight-bold">Email: </span>
                       {e.email}
                     </div>
+                    <div style={{ width: "100vh" }} className="text-truncate">
+                      <span className="font-weight-bold">Đã làm: </span>
+                      {e.employee_job} công việc
+                    </div>
                   </div>
                   <div className="col-xl-4">
                     <div style={{ width: "100vh" }} className="text-truncate">
@@ -215,8 +220,19 @@ class JobsApplyingModalComponent extends Component {
                       {e.dial}
                     </div>
                     <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Lương: </span>
+                      <span className="font-weight-bold">Lương yêu cầu: </span>
                       {prettierNumber(e.proposed_price)} VNĐ
+                    </div>
+                    <div style={{ width: "100vh" }} className="text-truncate">
+                      <span className="font-weight-bold">Được đánh giá: </span>
+                      <StarRatings
+                        rating={e.employer_rating}
+                        starRatedColor="ffd11a"
+                        starDimension="18px"
+                        starSpacing="3px"
+                        numberOfStars={5}
+                        name="rating"
+                      />
                     </div>
                   </div>
                 </div>
@@ -224,7 +240,7 @@ class JobsApplyingModalComponent extends Component {
             </div>
 
             {/* Buttons */}
-            <div className="container text-right">
+            <div className="container text-right" style={{ marginTop: "10px" }}>
               <span
                 onClick={() =>
                   this.acceptApplicant(e.id_user, e.email, e.id_applicant)
