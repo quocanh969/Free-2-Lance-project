@@ -32,4 +32,11 @@ function loadReviewByEmployeeId(page, take, employee) {
   });
 }
 
-export { getUser, getTopUsers, loadOtherUserDetail, loadReviewByEmployerId, loadReviewByEmployeeId};
+function loadTransactionByUserId(page, take) {
+  return axios.post("/users/getTransactionsByIdUser", {
+    take,
+    page
+  });
+}
+
+export { getUser, getTopUsers, loadOtherUserDetail, loadReviewByEmployerId, loadReviewByEmployeeId, loadTransactionByUserId};

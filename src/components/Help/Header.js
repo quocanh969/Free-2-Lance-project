@@ -225,7 +225,7 @@ class HeaderComponent extends Component {
       content.push(
         <NavLink
           key={count}
-          to="/dashboard"
+          to="/dashboard/tab=2"
           className="dropdown-item px-1 border-top border-secondary"
         >
           <div className="container-fluid px-3">

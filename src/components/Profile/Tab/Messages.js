@@ -128,15 +128,7 @@ class MessagesComponent extends Component {
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline">
-                    <h3>Messages</h3>
-                    {/* Breadcrumbs */}
-                    <nav id="breadcrumbs" className="dark">
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Dashboard</a></li>
-                            <li>Messages</li>
-                        </ul>
-                    </nav>
+                    <h3>Tin nhắn</h3>
                 </div>
                 <div className="messages-container margin-top-0">
                     <div className="messages-container-inner">
@@ -150,26 +142,29 @@ class MessagesComponent extends Component {
                             </div>
                             <ul>
                                 {
-
                                     chats.map((chat, index) => {
-                                        return (
-                                            <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>
-                                                <a href="#">
-                                                    <div className="message-avatar"><i className="status-icon status-online" /><img src={getImageSrc(chat.img.filter(el => el.email !== email)[0].img, UserAvatarPlaceholder)} alt="" /></div>
-                                                    <div className="message-by">
-                                                        <div className="message-by-headline">
-                                                            <h5>{chat.img.filter(el => el.email !== email)[0].fullname}</h5>
-                                                            {/* <span>4 hours ago</span> */}
+                                        let chatArray = chat.img.filter(el => el.email !== email);
+                                        if(chatArray.length > 0) {
+                                            return (
+                                                <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>
+                                                    <a href="#">
+                                                        <div className="message-avatar"><i className="status-icon status-online" /><img src={getImageSrc(chatArray[0].img, UserAvatarPlaceholder)} alt="" /></div>
+                                                        <div className="message-by">
+                                                            <div className="message-by-headline">
+                                                                <h5>{chatArray[0].fullname}</h5>
+                                                                {/* <span>4 hours ago</span> */}
+                                                            </div>
+                                                            {
+                                                                chat.messages.length>0 && (<p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>)
+                                                            } 
                                                         </div>
-
-
-                                                       {
-                                                           chat.messages.length>0 && (<p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>)
-                                                       } 
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        )
+                                                    </a>
+                                                </li>
+                                            )
+                                        }
+                                        else {
+                                            return '';
+                                        }
                                     })
                                 }
 

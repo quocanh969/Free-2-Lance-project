@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { prettierNumber, getImageSrc } from '../../../ultis/SHelper/helperFunctions';
 
 import avatarPlaceholder from '../../../assets/images/portrait_placeholder.png';
+import { getTransactionByUserId } from '../../../actions/UserDetail';
 
 class TransactionComponent extends Component {
 
@@ -11,44 +12,76 @@ class TransactionComponent extends Component {
         super(props);
     }
 
-
-    handlePagination(pageNum) {
-        // if (pageNum !== this.props.EmployerReducer.currentApplyingPage) {
-            //window.scrollTo(0,0);
-        //     this.loadJobListFunc(pageNum);
-        // }
+    componentWillMount() {
+        this.loadJobListFunc(1);
     }
 
-    renderTransactionList(transaction) {
+    loadJobListFunc(page) {
+        let { onLoadTransactionByUserId } = this.props;
+        onLoadTransactionByUserId(page);
+    }
+
+    handlePagination(pageNum) {
+        if (pageNum !== this.props.UserDetailReducer.currentTransactionPage) {
+            window.scrollTo(0,0);
+            this.loadJobListFunc(pageNum);
+        }
+    }
+
+    renderTransactionList(transaction, isLoading) {
         let content = [];
 
-        content.push(
-            <li key={0}>
-                <div className='row'>
-                    <div className='col-2'>
-                        <img src={getImageSrc(null, avatarPlaceholder)}></img>
-                    </div>
-                    <div className='col-10 row'>
-                        <div className='col-6'>
-                            <div><span className='text-primary font-weight-bold'>Người thuê:</span>&nbsp;John Cena</div>
-                            <div><span className='text-primary font-weight-bold'>Email:</span>&nbsp;cena@gmail.com</div>
-                            <div><span className='text-primary font-weight-bold'>Sđt:</span>&nbsp;0123456789</div>
+        if (isLoading) {
+            content.push(
+                <li key={0}>
+                    <div className='row my-3'>
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div className='col-6'>
-                            <div className="card text-white bg-primary">
-                                <div className="card-body text-center">
-                                    <h2 className='text-white d-inline'>{prettierNumber(1000000)}</h2>
-                                    <span>&nbsp;&nbsp;VNĐ</span>
+                    </div>
+                </li>
+            );
+        }
+        else if(transaction.length > 0) {
+            transaction.forEach((e, index) => {
+                content.push(
+                    <li key={index}>
+                        <div className='row'>
+                            <div className='col-2'>
+                                <img src={getImageSrc(e.avatarImg, avatarPlaceholder)}></img>
+                            </div>
+                            <div className='col-10 row'>
+                                <div className='col-6'>
+                                    <div><span className='text-primary font-weight-bold'>Người thuê:</span>&nbsp;{e.fullname}</div>
+                                    <div><span className='text-primary font-weight-bold'>Email:</span>&nbsp;{e.email}</div>
+                                    <div><span className='text-primary font-weight-bold'>Sđt:</span>&nbsp;{e.dial}</div>
                                 </div>
+                                <div className='col-6'>
+                                    <div className="card text-white bg-primary">
+                                        <div className="card-body text-center">
+                                            <h2 className='text-white d-inline'>{prettierNumber(e.amount * (100 - e.refund)/100)}</h2>
+                                            <span>&nbsp;&nbsp;VNĐ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='col-12'><span className='text-primary font-weight-bold'>Mã công việc:</span>&nbsp;{e.id_job}</div>
+                                <div className='col-12'><span className='text-primary font-weight-bold'>Công việc:</span>&nbsp;{e.title}</div>
                             </div>
                         </div>
-                        <div className='col-12'><span className='text-primary font-weight-bold'>Mã công việc:</span>&nbsp;123</div>
-                        <div className='col-12'><span className='text-primary font-weight-bold'>Công việc:</span>&nbsp;Đấm nhau</div>
-                    </div>                    
-                </div>
-                
-            </li>
-        )
+
+                    </li>
+                )
+            })
+        }
+        else {
+            content.push(
+                <li key={0}>
+                    <div className='row my-3 p-5'>
+                        Danh sách thu nhập của bạn hiện đang rỗng !!!
+                    </div>
+                </li>
+            );
+        }
 
         return content;
     }
@@ -89,8 +122,8 @@ class TransactionComponent extends Component {
     }
 
     render() {
-        let { totalApplyingJobs, currentApplyingPage } = {totalApplyingJobs: 8, currentApplyingPage: 1};
-        let totalPage = Math.ceil(totalApplyingJobs / 4);
+        let { transaction, totalTransaction, currentTransactionPage, sum, isLoadingTransactionReview } = this.props.UserDetailReducer;
+        let totalPage = Math.ceil(totalTransaction / 8);
 
         return (
             <div className="dashboard-content-inner">
@@ -99,15 +132,15 @@ class TransactionComponent extends Component {
                     <h3>Danh sách các nguồn thu từ công việc</h3>
                 </div>
                 <p>
-                ( Vui lòng đến trung tâm CSKH của Free2Lance để có thể rút tiền công )
+                    ( Vui lòng đến trung tâm CSKH của Free2Lance để có thể rút tiền công )
                 </p>
                 {/* Row */}
                 <div className="card text-white bg-primary mb-3">
                     <div className="card-header">Tổng doanh thu</div>
-                    <div className="card-body row">                        
+                    <div className="card-body row">
                         <div className="col-4 text-right">Tài khoản hiện tại:</div>
                         <div className="col text-white">
-                            <h2 className='text-white d-inline'>{prettierNumber(20000000)}</h2>
+                            <h2 className='text-white d-inline'>{prettierNumber(sum)}</h2>
                             <span>&nbsp;&nbsp;VNĐ</span>
                         </div>
                     </div>
@@ -124,12 +157,12 @@ class TransactionComponent extends Component {
                             </div>
                             <div>
                                 <ul className="dashboard-box-list">
-                                    {this.renderTransactionList([])}
+                                    {this.renderTransactionList(transaction, isLoadingTransactionReview)}
                                 </ul>
                             </div>
                         </div>
 
-                        {totalApplyingJobs === 0 ? (
+                        {totalTransaction === 0 ? (
                             ""
                         ) : (
                                 <div className="pagination-container margin-top-30 margin-bottom-60">
@@ -138,31 +171,31 @@ class TransactionComponent extends Component {
                                             <li
                                                 className={
                                                     "pagination-arrow " +
-                                                    ((currentApplyingPage === 1 ||
-                                                        totalPage - currentApplyingPage < 3) &&
+                                                    ((currentTransactionPage === 1 ||
+                                                        totalPage - currentTransactionPage < 3) &&
                                                         "d-none")
                                                 }
                                             >
                                                 <div
                                                     className="cursor-pointer"
                                                     onClick={() => {
-                                                        this.handlePagination(currentApplyingPage - 1);
+                                                        this.handlePagination(currentTransactionPage - 1);
                                                     }}
                                                 >
                                                     <i className="icon-material-outline-keyboard-arrow-left" />
                                                 </div>
                                             </li>
-                                            {this.renderPagination(currentApplyingPage, totalPage)}
+                                            {this.renderPagination(currentTransactionPage, totalPage)}
                                             <li
                                                 className={
                                                     "pagination-arrow " +
-                                                    (totalPage - currentApplyingPage < 3 && "d-none")
+                                                    (totalPage - currentTransactionPage < 3 && "d-none")
                                                 }
                                             >
                                                 <div
                                                     className="cursor-pointer"
                                                     onClick={() => {
-                                                        this.handlePagination(currentApplyingPage + 1);
+                                                        this.handlePagination(currentTransactionPage + 1);
                                                     }}
                                                 >
                                                     <i className="icon-material-outline-keyboard-arrow-right" />
@@ -186,7 +219,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        onLoadTransactionByUserId: (page) => {
+            dispatch(getTransactionByUserId(page, 8));
+        }
     }
 }
 
