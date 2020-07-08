@@ -26,25 +26,10 @@ class HeaderComponent extends Component {
       email: localStorage.getItem("item"),
       isReadNotify: true,
       notifications: [],
+      isNotiLoading: true,
       unreadMessage: 0,
-      messages: [
-        {
-          id_user: 1,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "John Cena",
-          message:
-            "All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time.",
-        },
-      ],
-      notices: [
-        {
-          id_user: 1,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "John Cena",
-          type: 1, // nhận
-          job: "Đấm nhau",
-        },
-      ],
+      messages: [],
+      isMessLoading: true,
     };
 
     // window.onscroll = this.handleScroll();
@@ -67,16 +52,16 @@ class HeaderComponent extends Component {
 
   componentDidMount = async () => {
     window.addEventListener("scroll", this.handleScroll);
-    const email = localStorage.getItem('email');
+    let email = localStorage.getItem('email');
     if (email) {
+      console.log('co load nha');
       const notifications = await
         firebase
           .firestore()
           .collection('notifications')
           .doc(email)
-          .get();
-      console.log('notification exists:', notifications.exists)
-      console.log();
+          .get()
+
       await firebase
         .firestore()
         .collection('chats')
@@ -106,11 +91,12 @@ class HeaderComponent extends Component {
           });
           await this.setState({
             email: email,
-            messages: rs,
-            unreadMessage
-
+            messages: rs.reverse(),
+            unreadMessage,
+            isMessLoading: false,
           });
         })
+
       if (!notifications.exists) {
         firebase
           .firestore()
@@ -121,23 +107,28 @@ class HeaderComponent extends Component {
             listNotify: [],
             isRead: true
           })
+        console.log('flag noti not exists');
+        this.setState({ isNotiLoading: false });
       }
       else {
+        console.log('flag noti exists');
         firebase
           .firestore()
           .collection('notifications')
           .where('email', '==', email)
           .onSnapshot(async res => {
             const data = res.docs.map(_doc => _doc.data());
-
+            console.log(data);
             await this.setState({
-              notifications: data[0].listNotify,
-              isReadNotify: data[0].isRead
+              notifications: data[0].listNotify.reverse(),
+              isReadNotify: data[0].isRead,
+              isNotiLoading: false,
+            }, () => {
+              console.log(data[0].listNotify);
             });
           })
       }
     }
-
   }
 
   componentDidUpdate() { }
@@ -165,6 +156,7 @@ class HeaderComponent extends Component {
     localStorage.clear();
     onLogOut();
     history.push("/login");
+    // window.location.replace('/login');
   }
 
   // handleTopicNavClick(e, topic) {
@@ -218,112 +210,267 @@ class HeaderComponent extends Component {
   }
 
   renderMessageContent() {
-    let content = [],
-      count = 0;
+    let content = [], count = 0;
     let { messages } = this.state;
-    for (let e of messages) {
+    if (this.state.isMessLoading === true) {
       content.push(
-        <NavLink
-          key={count}
-          to="/dashboard/tab=2"
-          className="dropdown-item px-1 border-top border-secondary"
-        >
-          <div className="container-fluid px-3">
-            <div className="row p-1">
-              {/* avatar */}
-              <div className="col-2 p-0">
-                <img
-                  className="rounded-circle"
-                  style={{ height: "auto" }}
-                  src={e.avatarImg}
-                ></img>
-              </div>
-              {/* message */}
-              <div className="col-10 px-3">
-                <div className="text-293FE4 font-weight-bold">{e.fullname}</div>
-                <div
-                  className="text-secondary d-inline-block text-truncate"
-                  style={{ width: "200px" }}
-                >
-                  {e.message}
+        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )
+    }
+    else if (messages.length === 0) {
+      content.push(
+        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
+          Bạn hiện không có tin nhắn
+        </div>
+      )
+    }
+    else {
+      for (let e of messages) {
+        content.push(
+          <NavLink
+            key={count}
+            to="/dashboard/tab=2"
+            className="dropdown-item px-1 border-top border-secondary"
+          >
+            <div className="container-fluid px-3">
+              <div className="row p-1">
+                {/* avatar */}
+                <div className="col-2 p-0">
+                  <img
+                    className="rounded-circle"
+                    style={{ height: "auto" }}
+                    src={e.avatarImg}
+                  ></img>
+                </div>
+                {/* message */}
+                <div className="col-10 px-3">
+                  <div className="text-293FE4 font-weight-bold">{e.fullname}</div>
+                  <div
+                    className="text-secondary d-inline-block text-truncate"
+                    style={{ width: "200px" }}
+                  >
+                    {e.message}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </NavLink>
-      );
-      count++;
+          </NavLink>
+        );
+        count++;
+      }
     }
     return content;
   }
 
   renderNotice(notice) {
     console.log("notice:", notice);
-    switch (notice.type) {
-      case 0: {
-        return (
-          <span className="text-wrap">
-            <span className="text-293FE4">{notice.fullname}</span> đã từ chối
-            bạn trong công việc{" "}
-            <span className="text-293FE4">{notice.job}</span>
-          </span>
-        );
+    if (notice) {
+      switch (notice.type) {
+        case 0: {
+          return (
+            <span className="text-wrap">
+              <span className="text-293FE4">{notice.fullname}</span> đã từ chối
+              bạn trong công việc{" "}
+              <span className="text-293FE4">{notice.job}</span>
+            </span>
+          );
+        }
+        case 1: {
+          return (
+            <span className="text-wrap">
+              Bạn đã được nhận công việc{" "}
+              <span className="text-293FE4">{notice.job}</span> từ{" "}
+              <span className="text-293FE4">{notice.fullname}</span>
+            </span>
+          );
+        }
+        case 2: {
+          return (
+            <span className="text-wrap">
+              <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
+              <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
+            </span>
+          );
+        }
+        case 3: {
+          return (
+            <span className="text-wrap">
+              <span className="text-293FE4"></span>Nhân Viên F2L đã thanh toán
+              cho bạn về công việc{" "}
+              <span className="text-293FE4">{notice.job}</span>
+            </span>
+          );
+        }
+        case 4: {
+          return (
+            <span className="text-wrap">
+              <span className="text-293FE4">{notice.job}</span> của
+              <span className="text-293FE4">{notice.fullname}</span> đã dừng lại
+            </span>
+          );
+        }
+        case 5: {
+          return (
+            <span className="text-wrap">
+              Công việc
+              <span className="text-293FE4">{notice.job}</span> của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã chuyển sang giai đoạn thực hiện
+            </span>
+          );
+        }
+        case 6: {
+          return (
+            <span className="text-wrap">
+              Công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã được khôi phục
+            </span>
+          );
+        }
+        case 7: {
+          return (
+            <span className="text-wrap">
+              Báo cáo của bạn về&nbsp;
+              <span className="text-293FE4">{notice.employee}</span>&nbsp;trong công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;đã được xử lý
+            </span>
+          );
+        }
+        case 8: {
+          return (
+            <span className="text-wrap">
+              Yêu cầu dừng và hoàn tiền công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;không được chấp thuận
+            </span>
+          );
+        }
+        case 9: {
+          return (
+            <span className="text-wrap">
+              Yêu cầu dừng và hoàn tiền công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;đã được chấp thuận, bạn được hoàn
+              50% tiền.
+            </span>
+          );
+        }
+        case 10: {
+          return (
+            <span className="text-wrap">
+              Công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã bị gỡ hoàn toàn
+            </span>
+          );
+        }
+        case 11: {
+          return (
+            <span className="text-wrap">
+              Tài khoản của bạn đã được xác thực
+            </span>
+          );
+        }
+        case 12: {
+          return (
+            <span className="text-wrap">
+              Tài khoản của bạn chuyển sang trạng thái&nbsp;
+              <span className="text-293FE4">Chờ xác thực</span>
+            </span>
+          );
+        }
+        case 13: {
+          return (
+            <span className="text-wrap">
+              Tài khoản của bạn được đánh giá là không đủ điều kiện để xác thực, vui lòng kiểm tra lại
+            </span>
+          );
+        }
+        case 14: {
+          return (
+            <span className="text-wrap">
+              Công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;vừa cập nhật thông tin
+            </span>
+          );
+        }
+        case 15: {
+          return (
+            <span className="text-wrap">
+              Nhân viên&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;ứng tuyển vào công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 16: {
+          return (
+            <span className="text-wrap">
+              Nhân viên&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;bổ sung hồ sơ ứng tuyển vào công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 17: {
+          return (
+            <span className="text-wrap">
+              Nhân viên&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;rút ứng tuyển khỏi công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        default:
+          return "";
       }
-      case 1: {
-        return (
-          <span className="text-wrap">
-            Bạn đã được nhận công việc{" "}
-            <span className="text-293FE4">{notice.job}</span> từ{" "}
-            <span className="text-293FE4">{notice.fullname}</span>
-          </span>
-        );
-      }
-      case 2: {
-        return (
-          <span className="text-wrap">
-            <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
-            <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
-          </span>
-        );
-      }
-      case 3: {
-        return (
-          <span className="text-wrap">
-            <span className="text-293FE4"></span>Nhân Viên F2L đã thanh toán
-            cho bạn về công việc{" "}
-            <span className="text-293FE4">{notice.job}</span>
-          </span>
-        );
-      }
-      default:
-        return "";
     }
+
   }
 
   renderNotiContent() {
-    let content = [],
-      count = 0;
+    let content = [], count = 0;
     const { notices, notifications, isRead } = this.state;
-    console.log("notifications:", notifications);
     // console.log("isRead:", isRead);
-    for (let e of notifications) {
+    if (this.state.isNotiLoading === true) {
       content.push(
-        <div key={count} className="dropdown-item px-1 border-top border-secondary cursor-pointer"
-        >
-          <div className="container-fluid px-3">
-            <div className="row p-1">
-              {/* avatar */}
-              <div className="col-2 p-0">
-                <img style={{ height: "auto" }} src={JobImgePlaceholder}></img>
-              </div>
-              {/* message */}
-              <div className="col-10 px-3">{this.renderNotice(e.content)}</div>
-            </div>
+        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         </div>
-      );
-      count++;
+      )
     }
+    else if (notifications.length === 0) {
+      content.push(
+        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
+          Bạn hiện không có thông báo
+        </div>
+      )
+    }
+    else {
+      for (let e of notifications) {
+        content.push(
+          <div key={count} className="dropdown-item px-1 border-top border-secondary cursor-pointer">
+            <div className="container-fluid px-3">
+              <div className="row p-1">
+                {/* avatar */}
+                <div className="col-2 p-0">
+                  <img style={{ height: "auto" }} src={JobImgePlaceholder}></img>
+                </div>
+                {/* message */}
+                <div className="col-10 px-3">{this.renderNotice(e.content)}</div>
+              </div>
+            </div>
+          </div>
+        );
+        count++;
+      }
+    }
+
     return content;
   }
 

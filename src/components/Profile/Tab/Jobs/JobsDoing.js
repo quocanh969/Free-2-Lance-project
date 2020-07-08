@@ -72,7 +72,7 @@ class JobsDoingComponent extends Component {
     let content = [];
     let { processingJobsList, isLoadingProcessingJobsList } = this.props.EmployerReducer;
     if (isLoadingProcessingJobsList) return (<div className="loading" key={1}>
-      <div className="spinner-border text-primary" role="status">
+      <div className="spinner-border text-primary my-4" role="status">
         <span className="sr-only">Loading...</span>
       </div>
     </div>);

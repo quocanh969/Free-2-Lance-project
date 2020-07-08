@@ -64,7 +64,7 @@ class ProfileComponent extends Component {
                         }
                     });
                     await this.setState({
-                        unreadMessage
+                        unreadMessage,
                     });
                 })
         }
@@ -141,6 +141,7 @@ class ProfileComponent extends Component {
         localStorage.clear();
         onLogOut();
         history.push("/login");
+        // window.location.replace('/login');
     }
 
     render() {

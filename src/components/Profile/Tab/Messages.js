@@ -44,7 +44,7 @@ class MessagesComponent extends Component {
                 .collection('chats')
                 .where('users', 'array-contains', email)
                 .onSnapshot(async res => {
-                    const chats = res.docs.map(_doc => _doc.data());
+                    const chats = res.docs.map(_doc => _doc.data()).reverse();
                     console.log('chats:', chats)
                     if(chats.length>0)
                     {

@@ -46,7 +46,8 @@ export const sendLogin = (email, password) => {
             {
               dispatch(updateUser(res.data.data.personal))
               dispatch(success(res.data.message));
-              history.push('/'); // quay về trang chủ
+              //history.push('/'); // quay về trang chủ
+              window.location.href = './';
             }
             else
             {

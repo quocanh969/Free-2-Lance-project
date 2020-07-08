@@ -50,7 +50,7 @@ class TasksDoingComponent extends Component {
     let { processingTasksList, isLoadingProcessingTasksList } = this.props.ApplicantReducer;
     let content = [];
     if (isLoadingProcessingTasksList) return (<div className="loading" key={1}>
-      <div className="spinner-border text-primary" role="status">
+      <div className="spinner-border text-primary my-4" role="status">
         <span className="sr-only">Loading...</span>
       </div>
     </div>);
