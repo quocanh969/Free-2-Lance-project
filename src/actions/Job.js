@@ -612,14 +612,12 @@ export const sendAcceptApplicant = (
 export const sendRejectApplicant = (
   jobId,
   userId,
-  email,
-  job_title,
   page,
   jobPage,
   take
 ) => {
   return (dispatch) => {
-    doSendRejectApplicant(jobId, userId, email, job_title)
+    doSendRejectApplicant(jobId, userId)
       .then((res) => {
         dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
         dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));

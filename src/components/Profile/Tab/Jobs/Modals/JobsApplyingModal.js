@@ -139,8 +139,6 @@ class JobsApplyingModalComponent extends Component {
         onSendRejectApplicant(
           selectedApplyingJobId,
           userId,
-          email,
-          selectedApplyingJobTitle,
           currentApplicantsPage,
           currentApplyingPage,
           takenApplyingApplicantsPerPage
@@ -411,8 +409,6 @@ const mapDispatchToProps = (dispatch) => {
     onSendRejectApplicant: (
       jobId,
       userId,
-      email,
-      job_title,
       page,
       jobPage,
       take
@@ -421,8 +417,6 @@ const mapDispatchToProps = (dispatch) => {
         sendRejectApplicant(
           jobId,
           userId,
-          email,
-          job_title,
           page,
           jobPage,
           take

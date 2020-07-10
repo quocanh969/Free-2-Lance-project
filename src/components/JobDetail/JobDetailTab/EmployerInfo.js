@@ -67,14 +67,20 @@ class EmployerInfoComponent extends Component {
             </div>
             <div className="row mb-3">
               <div className="col-5 font-weight-bold">Người dùng đánh giá:</div>
-              <div className="col-7"><StarRatings
-                rating={employer.employee ? employer.employee.employee_rating : 0}
-                starRatedColor="blue"
-                starDimension="18px"
-                starSpacing="3px"
-                numberOfStars={5}
-                name="rating"
-              /></div>
+              {(
+                employer.employee && employer.employee.employer_job > 1
+                ?
+                <div className="col-7"><StarRatings
+                  rating={employer.employee ? employer.employee.employee_rating : 0}
+                  starRatedColor="blue"
+                  starDimension="18px"
+                  starSpacing="3px"
+                  numberOfStars={5}
+                  name="rating"
+                /></div>
+                :
+                <div className='col-7'>{"(Người dùng chưa nhận được đánh giá)"}</div>
+              )}              
 
             </div>
             <div className="row mb-3">

@@ -161,12 +161,11 @@ function doSendAcceptApplicant(id_job, id_user, email, job_title) {
   });
 }
 
-function doSendRejectApplicant(id_job, id_user, email, job_title) {
+function doSendRejectApplicant(id_job, id_user) {
   return axios.post("/jobs/rejectApplicant", {
     id_job,
     id_user,
-    email,
-    job_title,
+    isEmployer: 1,
   });
 }
 
@@ -212,13 +211,10 @@ function getReviewList(id_job, page, take) {
 
 //#region dashboard job for applicant
 function doStopApply(id_user, id_job) {
-  let email = "haibinhbd2@gmail.com";
-  let job_title = "spam chu gi nua";
   return axios.post("/jobs/rejectApplicant", {
     id_job,
     id_user,
-    email,
-    job_title,
+    isEmployer: 0,
   });
 }
 

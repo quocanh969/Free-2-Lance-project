@@ -612,13 +612,12 @@ class PostJobComponent extends Component {
                               className="uploadButton-button ripple-effect"
                               onClick={this.runUploadFile}
                             >
-                              Upload Files
+                              Đăng ảnh công việc
                             </label>
                           </div>
                           <div>
                             <span className="uploadButton-file-name">
-                              Images or documents that might be helpful in
-                              describing your job
+                              Đăng ảnh liên quan và mô tả công việc
                             </span>
                           </div>
                         </div>
@@ -635,7 +634,7 @@ class PostJobComponent extends Component {
               className="button ripple-effect big margin-top-30"
               onClick={this.onSubmit}
             >
-              Post a Job
+              Đăng việc
             </button>
           </div>
         </div>

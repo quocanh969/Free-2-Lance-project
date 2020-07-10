@@ -9,9 +9,14 @@ const maxSize = 52428800;
 class ApplyFormConponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { isEditing: false, proposed_price: null };
+    this.state = { 
+      isEditing: false, 
+      proposed_price: null,
+      isCVReceive: false,
+    };
     this.applyJob = this.applyJob.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleChangeCV = this.handleChangeCV.bind(this);
   }
 
   componentDidMount() {
@@ -166,6 +171,12 @@ class ApplyFormConponent extends Component {
     this.setState({ proposed_price: event.target.value });
   }
 
+  handleChangeCV(e) {
+    if(this.state.isCVReceive === false) {
+      this.setState({isCVReceive: true});
+    }
+  }
+
   toCurrency(number) {
     if (number === null) return "Mức lương (từ 50% đến 100% giá gốc)";
     const formatter = new Intl.NumberFormat("sv-SE", {
@@ -216,11 +227,11 @@ class ApplyFormConponent extends Component {
                 >
                   {this.renderProposedPrice()}
                   <div className="uploadButton">
-                    <input
-                      className="uploadButton-input"
+                    <input style={{display: 'none'}}
                       type="file"
                       accept="image/*, application/pdf"
                       id="upload-cv"
+                      onChange={this.handleChangeCV}
                     />
                     <label
                       className="uploadButton-button ripple-effect"
@@ -232,6 +243,15 @@ class ApplyFormConponent extends Component {
                       Chỉ được chọn 1 <br /> Dung lượng tốc đa: 50 MB.
                     </span>
                   </div>
+                  {(
+                    this.state.isCVReceive
+                    ?
+                    <div className='text-center text-success'>
+                      Đã nhận 1 CV
+                    </div>
+                    :
+                    ''
+                  )}
                 </form>
                 {this.spinnerLoadingNotification()}
                 {/* Button */}

@@ -46,6 +46,9 @@ class JobListComponent extends Component {
         this.loadJobListFunc(1, this.state.query);
       });
     }
+    else if(this.props.history.location.pathname === '/job-list') {
+      this.setState({query: {}});
+    }
   }
 
   renderTags(tags) {
@@ -316,15 +319,32 @@ class JobListComponent extends Component {
         <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
           Bộ lọc
         </h2>
-        <div
-          className="btn btn-293FE4 button-sliding-icon ripple-effect w-100 mb-3"
-          onClick={() => {
-            this.handleFilter();
-          }}
-        >
-          Lọc&nbsp;&nbsp;&nbsp;
-          <i className="icon-line-awesome-search pt-1" />
+        <div className='row'>
+
+          <div className='col-6 p-1 mb-3'>
+            <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100"
+              onClick={() => {
+                this.handleFilter();
+              }}
+            >
+              Lọc&nbsp;&nbsp;&nbsp;
+              <i className="icon-line-awesome-search pt-1" />
+            </div>
+          </div>
+          
+          <div className='col-6 p-1 mb-3'>
+            <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100"
+              onClick={() => {
+                this.loadJobListFunc(1, this.state.query);
+              }}
+            >
+              Tải lại&nbsp;&nbsp;&nbsp;
+              <i className="icon-feather-refresh-ccw pt-1" />
+            </div>
+          </div> 
+
         </div>
+        
         {/* Khu vực */}
         <div className="sidebar-widget">
           <h3>Khu vực</h3>

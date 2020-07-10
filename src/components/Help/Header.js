@@ -23,10 +23,13 @@ class HeaderComponent extends Component {
     this.state = {
       isTopicHover: false,
       isCurrentTop: false,
+      
       email: localStorage.getItem("item"),
+      
       isReadNotify: true,
       notifications: [],
       isNotiLoading: true,
+      
       unreadMessage: 0,
       messages: [],
       isMessLoading: true,
@@ -108,7 +111,8 @@ class HeaderComponent extends Component {
             isRead: true
           })
         console.log('flag noti not exists');
-        this.setState({ isNotiLoading: false });
+        let {onFailureLoadNoti} = this.props;
+        onFailureLoadNoti();
       }
       else {
         console.log('flag noti exists');
@@ -118,14 +122,9 @@ class HeaderComponent extends Component {
           .where('email', '==', email)
           .onSnapshot(async res => {
             const data = res.docs.map(_doc => _doc.data());
-            console.log(data);
-            await this.setState({
-              notifications: data[0].listNotify.reverse(),
-              isReadNotify: data[0].isRead,
-              isNotiLoading: false,
-            }, () => {
-              console.log(data[0].listNotify);
-            });
+            //console.log(data);
+            let {onSuccessLoadNoti} = this.props;
+            await onSuccessLoadNoti(data[0].isRead, data[0].listNotify.reverse());
           })
       }
     }
@@ -433,9 +432,9 @@ class HeaderComponent extends Component {
 
   renderNotiContent() {
     let content = [], count = 0;
-    const { notices, notifications, isRead } = this.state;
+    const { notifications, isReadNotify, isNotiLoading } = this.props.HeaderReducer;
     // console.log("isRead:", isRead);
-    if (this.state.isNotiLoading === true) {
+    if (isNotiLoading === true) {
       content.push(
         <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
           <div className="spinner-border text-primary" role="status">
@@ -456,13 +455,8 @@ class HeaderComponent extends Component {
         content.push(
           <div key={count} className="dropdown-item px-1 border-top border-secondary cursor-pointer">
             <div className="container-fluid px-3">
-              <div className="row p-1">
-                {/* avatar */}
-                <div className="col-2 p-0">
-                  <img style={{ height: "auto" }} src={JobImgePlaceholder}></img>
-                </div>
-                {/* message */}
-                <div className="col-10 px-3">{this.renderNotice(e.content)}</div>
+              <div className="p-1">
+                {this.renderNotice(e.content)}
               </div>
             </div>
           </div>
@@ -777,6 +771,18 @@ const mapDispatchToProps = (dispatch) => {
     },
     onLoadJobByTopic: (query) => {
       dispatch(loadJobList(1, 8, 2, query));
+    },
+    onFailureLoadNoti: () => {
+      dispatch({
+          type: 'LOAD_NOTI_FAILURE',
+        })      
+    },
+    onSuccessLoadNoti: (isReadNotifyList, notiList) => {
+      dispatch({
+          type: 'LOAD_NOTI_SUCCESS',
+          isReadNotifyList,
+          notiList,
+        })
     },
   };
 };

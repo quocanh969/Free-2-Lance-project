@@ -45,7 +45,7 @@ export const sendLogin = (email, password) => {
             if(res.data.code === '200')
             {
               dispatch(updateUser(res.data.data.personal))
-              dispatch(success(res.data.message));
+              dispatch(success("Đăng nhập thành công"));
               //history.push('/'); // quay về trang chủ
               window.location.href = './';
             }

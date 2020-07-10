@@ -3,8 +3,10 @@ import Header from './Help/Header';
 
 import MapContainer from './map_JobsList';
 
-import {withRouter, NavLink} from 'react-router-dom';
-import {connect} from 'react-redux';
+import Logo from '../assets/images/logo4.png';
+
+import { withRouter, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class ContactComponent extends Component {
     componentDidMount() {
@@ -12,7 +14,7 @@ class ContactComponent extends Component {
         let iframe = document.createElement("iframe");
         // <iframe style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
         iframe.style.height = "90vh";
-        iframe.style.width='100%';
+        iframe.style.width = '100%';
         iframe.style.border = '0';
         iframe.frameBorder = '0';
 
@@ -20,11 +22,11 @@ class ContactComponent extends Component {
         map.innerHTML = "";
         map.appendChild(iframe);
 
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
 
     render() {
-        let {places} = this.props.ContactUsReducer;
+        let { places } = this.props.ContactUsReducer;
 
         return (
             <div>
@@ -43,18 +45,25 @@ class ContactComponent extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-xl-12">
-                            <div className="contact-location-info margin-bottom-50">
-                                <div className="contact-address">
-                                    <ul>
-                                        <li className="contact-address-headline"></li>
-                                        <li>Địa chỉ: 1051 Nguyễn Trãi, Phường 14, Quận 5, TPHCM</li>
-                                        <li>Số điện thoại: (036) 563-58729</li>
-                                        <li>Email: free2lance@gmail.com</li>
-                                    </ul>
+                            <div className="contact-location-info margin-bottom-50 row">
+                                <div className='col-6 pt-5'>
+                                    <div className='text-center' style={{fontSize: '70px'}}>
+                                        <span className="font-weight-bold">
+                                            <span className="text-primary">FREE</span>
+                                            <span className="text-danger">2</span>
+                                            <span className="text-dark">
+                                                LANCE
+                                            </span>
+                                        </span>
+                                    </div>                                        
+                                    <div className="contact-address-headline mt-5"></div>
+                                    <div>Địa chỉ: 1051 Nguyễn Trãi, Phường 14, Quận 5, TPHCM</div>
+                                    <div>Số điện thoại: (036) 563-58729</div>
+                                    <div>Email: free2lance@gmail.com</div>
                                 </div>
-                                <div id="single-job-map-container">
+                                <div className='col-6'>
                                     {/* <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" /> */}
-                                    <div id='contact-map'>                                        
+                                    <div id='contact-map'>
                                     </div>
                                     {/* <a href="#" id="streetView">Street View</a> */}
                                 </div>
@@ -76,7 +85,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+
     }
 }
 

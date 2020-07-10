@@ -223,7 +223,7 @@ class JobDetailComponent extends Component {
         </div>
       </div>
     );
-    applicants.forEach((applicant, i) => {
+    applicants.filter(e => {return e.id_status === 0}).forEach((applicant, i) => {
       content.push(
         <div className="row task-listing" key={i} style={{ height: "50px" }}>
           <NavLink to={'/user-detail/' + applicant.id_user} className="col-md-4">{applicant.fullname}</NavLink>
@@ -284,21 +284,19 @@ class JobDetailComponent extends Component {
                     <div className="single-page-header-inner">
                       <div className="left-side">
                         <div className="header-image">
-                          <a href="single-company-profile.html">
+                          <span href="single-company-profile.html">
                             {this.renderLogo(jobDetail.imgs)}
-                          </a>
+                          </span>
                         </div>
                         <div className="header-details text-white">
                           <h3 className="text-white">{jobDetail.title}</h3>
                           <h5 className="text-white">{jobDetail.topic}</h5>
                           <ul>
                             <li>
-                              <span
-                                href="single-company-profile.html"
-                                className="text-white"
+                              <NavLink className="text-white" to={'/user-detail/'+jobDetail.employer}
                               >
                                 {jobDetail.name_employer}
-                              </span>
+                              </NavLink>
                             </li>
                             <li>
                               <i className="icon-material-outline-location-city" />{" "}

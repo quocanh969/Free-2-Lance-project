@@ -167,7 +167,7 @@ class JobsDoingComponent extends Component {
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i>{" "}
-                Danh sách người tham gia: {e.candidates}
+                Danh sách người tham gia: {e.participants}
               </button>
               <span
                 className="btn mx-2 py-2 px-4 bg-silver rounded"

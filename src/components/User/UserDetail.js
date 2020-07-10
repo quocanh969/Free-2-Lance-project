@@ -63,14 +63,21 @@ class UserDetailComponent extends Component {
                         <div className='text-warning font-weight-bold'>{(userDetail.personal.isBusinessUser === false ? 'Người dùng cá nhân' : 'Người dùng doanh nghiệp')}</div>
                         <div className='row'>
                           <div className='col-6 text-white'>
-                            Đánh giá từ người làm:  <StarRatings
-                              rating={userDetail.employee.employee_rating}
-                              starRatedColor="ffd11a"
-                              starDimension="15px"
-                              starSpacing="3px"
-                              numberOfStars={5}
-                              name="rating"
-                            />
+                            Đánh giá từ người làm:&nbsp;
+                            {(
+                              userDetail.employee.employer_job > 1
+                              ?
+                              <StarRatings
+                                rating={userDetail.employee.employee_rating}
+                                starRatedColor="ffd11a"
+                                starDimension="15px"
+                                starSpacing="3px"
+                                numberOfStars={5}
+                                name="rating"
+                              />
+                              :
+                              <span>{"( Chưa nhận được đánh giá )"}</span>
+                            )}                            
                           </div>
                           {(
                             userDetail.personal.isBusinessUser
@@ -78,14 +85,22 @@ class UserDetailComponent extends Component {
                               ''
                               :
                               <div className='col-6 text-white'>
-                                Đánh giá từ người thuê:  <StarRatings
-                                  rating={userDetail.employer.employer_rating}
-                                  starRatedColor="ffd11a"
-                                  starDimension="15px"
-                                  starSpacing="3px"
-                                  numberOfStars={5}
-                                  name="rating"
-                                />
+                                Đánh giá từ người thuê:&nbsp;
+                                {(
+                                  userDetail.employer.employee_job > 1
+                                  ?
+                                  <StarRatings
+                                    rating={userDetail.employer.employer_rating}
+                                    starRatedColor="ffd11a"
+                                    starDimension="15px"
+                                    starSpacing="3px"
+                                    numberOfStars={5}
+                                    name="rating"
+                                  />
+                                  :
+                                  <span>{"( Chưa nhận được đánh giá )"}</span>
+                                )}
+                                
                               </div>
                           )}
                         </div>

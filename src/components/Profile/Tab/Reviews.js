@@ -115,11 +115,49 @@ class ReviewsComponent extends Component {
         return content;
     }
 
-
-    renderReview(reviews) {
+    renderEmployeeReview(reviews) {
         let content = [];
         if (reviews.length > 0) {
-            reviews.forEach((e, index) => {
+            reviews.forEach((e, index) => {                
+                content.push(
+                    <li key={index}>
+                        <div className='row mb-2 pb-2 mx-1 border-bottom border-dark'>
+                            <div className='col-3 profile-img'>
+                                <img src={getImageSrc(null, avatarPlaceholder)} style={{ width: '50px', height: '50px' }}></img>
+                            </div>
+
+                            <div className='col-9'>
+                                <h4>{e.title}</h4>
+                                <div className='h5'>{e.fullname}</div>
+                            </div>
+                            <div className='col'>
+                                <div className='h5'>{e.email}</div>
+                                <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployer}/5 <i className="icon-material-outline-star text-warning"></i></div>
+                                <div className='font-weight-bold'>Nội dung phản hồi:</div>
+                                <p>{e.feedback_fromEmployer}</p>
+                            </div>
+                        </div>
+                    </li>
+                )
+            })
+        }
+        else {
+            content.push(
+                <li key={0}>
+                    <div className='mb-2 pb-2 mx-1'>
+                        Bạn hiện vẫn chưa có phản hồi nào !!!
+                    </div>
+                </li>
+            )
+        }
+
+        return content;
+    }
+
+    renderEmployerReview(reviews) {
+        let content = [];
+        if (reviews.length > 0) {
+            reviews.forEach((e, index) => {                
                 content.push(
                     <li key={index}>
                         <div className='row mb-2 pb-2 mx-1 border-bottom border-dark'>
@@ -160,6 +198,9 @@ class ReviewsComponent extends Component {
         let totalTaskPage = Math.ceil(totalTask / 8);
         let totalJobPage = Math.ceil(totalJob / 8);
 
+        console.log(jobs);
+        console.log(tasks);
+
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
@@ -182,7 +223,7 @@ class ReviewsComponent extends Component {
                                         <div className="spinner-border text-primary" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div>
-                                    </div>) : this.renderReview(tasks)}
+                                    </div>) : this.renderEmployeeReview(tasks)}
                                 </ul>
                             </div>
                         </div>
@@ -224,7 +265,7 @@ class ReviewsComponent extends Component {
                                         <div className="spinner-border text-primary" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div>
-                                    </div>) : this.renderReview(jobs)}
+                                    </div>) : this.renderEmployerReview(jobs)}
                                 </ul>
                             </div>
                         </div>
