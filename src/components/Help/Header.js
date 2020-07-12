@@ -209,63 +209,6 @@ class HeaderComponent extends Component {
     return content;
   }
 
-  renderMessageContent() {
-    let content = [], count = 0;
-    let { messages } = this.state;
-    if (this.state.isMessLoading === true) {
-      content.push(
-        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      )
-    }
-    else if (messages.length === 0) {
-      content.push(
-        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
-          Bạn hiện không có tin nhắn
-        </div>
-      )
-    }
-    else {
-      for (let e of messages) {
-        content.push(
-          <NavLink
-            key={count}
-            to="/dashboard/tab=2"
-            className="dropdown-item px-1 border-top border-secondary"
-          >
-            <div className="container-fluid px-3">
-              <div className="row p-1">
-                {/* avatar */}
-                <div className="col-2 p-0">
-                  <img
-                    className="rounded-circle"
-                    style={{ height: "auto" }}
-                    src={e.avatarImg}
-                  ></img>
-                </div>
-                {/* message */}
-                <div className="col-10 px-3">
-                  <div className="text-293FE4 font-weight-bold">{e.fullname}</div>
-                  <div
-                    className="text-secondary d-inline-block text-truncate"
-                    style={{ width: "200px" }}
-                  >
-                    {e.message}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </NavLink>
-        );
-        count++;
-      }
-    }
-    return content;
-  }
-
   renderNotice(notice) {
     if (notice) {
       switch (notice.type) {
@@ -760,29 +703,15 @@ class HeaderComponent extends Component {
           </div>
         </li>
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 ml-2 mr-3">
-          <button
-            className="nav-link nav-link-header mt-0 dropdown-toggle px-0 pt-1 pb-0"
+          <NavLink to='/dashboard/tab=2'
+            className="nav-link nav-link-header mt-0 px-0 pt-1 pb-0"
             id="MessMenuDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
           >
             <Badge color="secondary" badgeContent={unreadMessage}>
               {/* <i className="icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25"></i> */}
               <MailIcon />
             </Badge>
-          </button>
-          <div
-            className="shadow dropdown-menu dropdown-menu-right mt-1"
-            style={{ width: "300px" }}
-            aria-labelledby="MessMenuDropdown"
-          >
-            <h5 className="dropddown-header font-weight-bold mb-2 px-2" key={1}>
-              Messages
-            </h5>
-            <div className="header-menu">{this.renderMessageContent()}</div>
-          </div>
+          </NavLink>
         </li>
         <li
           className={

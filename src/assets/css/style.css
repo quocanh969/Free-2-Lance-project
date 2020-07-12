@@ -15518,7 +15518,7 @@ ul.dashboard-box-list > li:hover {
   border-radius: 50%;
 }
 
-.messages-inbox ul li a {
+.messages-inbox ul li .messages-cell {
   position: relative;
   display: block;
   padding: 30px;

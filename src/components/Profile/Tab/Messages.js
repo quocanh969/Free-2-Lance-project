@@ -120,9 +120,6 @@ class MessagesComponent extends Component {
     }
     render() {
         const { chats, email, selectedIndex, chatChoosen, chatText } = this.state;
-        console.log('chats:', chats)
-        console.log('chatChoosen:', chatChoosen);
-        console.log('chatText:', chatText)
         const styleUnseen = { fontWeight: 'bold', color: 'black' };
         return (
             <div className="dashboard-content-inner">
@@ -135,10 +132,11 @@ class MessagesComponent extends Component {
                         {/* Messages */}
                         <div className="messages-inbox" ref={this.messagesEndRef} >
                             <div className="messages-headline">
-                                <div className="input-with-icon">
+                                {/* <div className="input-with-icon">
                                     <input id="autocomplete-input" type="text" placeholder="Search" />
                                     <i className="icon-material-outline-search" />
-                                </div>
+                                </div> */}
+                                Danh sách người dùng
                             </div>
                             <ul>
                                 {
@@ -147,7 +145,7 @@ class MessagesComponent extends Component {
                                         if(chatArray.length > 0) {
                                             return (
                                                 <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>
-                                                    <a href="#">
+                                                    <div className='cursor-pointer messages-cell'>
                                                         <div className="message-avatar"><i className="status-icon status-online" /><img src={getImageSrc(chatArray[0].img, UserAvatarPlaceholder)} alt="" /></div>
                                                         <div className="message-by">
                                                             <div className="message-by-headline">
@@ -158,7 +156,7 @@ class MessagesComponent extends Component {
                                                                 chat.messages.length>0 && (<p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>)
                                                             } 
                                                         </div>
-                                                    </a>
+                                                    </div>
                                                 </li>
                                             )
                                         }
@@ -177,14 +175,10 @@ class MessagesComponent extends Component {
                             <div className="message-content" ref={this.messagesEndRef}>
                                 <div className="messages-headline">
                                     <h4>{chatChoosen.img.filter(el => el.email !== email)[0].fullname}</h4>
-                                    <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a>
+                                    {/* <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a> */}
                                 </div>
                                 {/* Message Content Inner */}
                                 <div className="message-content-inner" id="message-content-inner">
-                                    {/* Time Sign */}
-                                    <div className="message-time-sign">
-                                        <span>28 June, 2018</span>
-                                    </div>
                                     {
                                         chatChoosen.messages.map((el, index) => {
                                             return (<div key={index} className={el.sender == email ? "message-bubble me" : "message-bubble "}>
@@ -211,10 +205,10 @@ class MessagesComponent extends Component {
                                 <div className="message-reply">
                                     <input
                                         onClick={this.sendReadMessage}
-                                        placeholder='Type your message..'
+                                        placeholder='Nhập tin nhắn ...'
                                         onKeyUp={(e) => this.userTyping(e)}
-                                        cols={1} rows={1} placeholder="Your Message" data-autoresize defaultValue={""} />
-                                    <button className="button ripple-effect" onClick={this.submitMessage} >Send</button>
+                                        cols={1} rows={1} data-autoresize defaultValue={""} />
+                                    <button className="button ripple-effect" onClick={this.submitMessage} >Gửi</button>
                                 </div>
                             </div>
                         }
