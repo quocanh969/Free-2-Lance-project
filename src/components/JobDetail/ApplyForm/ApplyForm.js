@@ -9,8 +9,8 @@ const maxSize = 52428800;
 class ApplyFormConponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      isEditing: false, 
+    this.state = {
+      isEditing: false,
       proposed_price: null,
       isCVReceive: false,
     };
@@ -91,16 +91,43 @@ class ApplyFormConponent extends Component {
             fileInBase64
           );
         }
-
-
-
       });
     } else {
-      Swal.fire({
-        title: "Vui lòng chọn CV",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      // Swal.fire({
+      //   title: "Vui lòng chọn CV",
+      //   icon: "error",
+      //   confirmButtonText: "OK",
+      // });
+      let { user } = this.props.HeaderReducer;
+      let { jobDetail } = this.props.JobDetailReducer;
+
+      //check proposed price (valid from 50% to 100% of salary)
+      let proposed_price = jobDetail.dealable
+        ? this.state.proposed_price
+        : jobDetail.salary;
+      if (proposed_price < jobDetail.salary / 2) {
+        Swal.fire({
+          title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      else if (proposed_price > jobDetail.salary) {
+        Swal.fire({
+          title: "Lương mong muốn không được lớn hơn " + this.toCurrency(jobDetail.salary),
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      else {//send apply job
+        let { doApplyJob } = this.props;
+        doApplyJob(
+          user.id_user,
+          jobDetail.id_job,
+          proposed_price,
+          '',
+        );
+      }
     }
   }
 
@@ -172,8 +199,8 @@ class ApplyFormConponent extends Component {
   }
 
   handleChangeCV(e) {
-    if(this.state.isCVReceive === false) {
-      this.setState({isCVReceive: true});
+    if (this.state.isCVReceive === false) {
+      this.setState({ isCVReceive: true });
     }
   }
 
@@ -227,7 +254,7 @@ class ApplyFormConponent extends Component {
                 >
                   {this.renderProposedPrice()}
                   <div className="uploadButton">
-                    <input style={{display: 'none'}}
+                    <input style={{ display: 'none' }}
                       type="file"
                       accept="image/*, application/pdf"
                       id="upload-cv"
@@ -245,12 +272,12 @@ class ApplyFormConponent extends Component {
                   </div>
                   {(
                     this.state.isCVReceive
-                    ?
-                    <div className='text-center text-success'>
-                      Đã nhận 1 CV
+                      ?
+                      <div className='text-center text-success'>
+                        Đã nhận 1 CV
                     </div>
-                    :
-                    ''
+                      :
+                      ''
                   )}
                 </form>
                 {this.spinnerLoadingNotification()}

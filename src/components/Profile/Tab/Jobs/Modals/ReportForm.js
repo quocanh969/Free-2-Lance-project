@@ -15,8 +15,8 @@ class ReportFormConponent extends Component {
     e.preventDefault();
     let content = this.refs.content.value;
     let { doReportUser } = this.props;
-    let { selectedReportedUser, selectedReportType, selectedReportedIdApplicant } = this.props.EmployerReducer;
-    doReportUser(content, selectedReportedUser, 1, selectedReportType, selectedReportedIdApplicant);
+    let { selectedDoingJobId, selectedReportedUser, selectedReportType, selectedReportedIdApplicant } = this.props.EmployerReducer;
+    doReportUser(selectedDoingJobId, content, selectedReportedUser, 1, selectedReportType, selectedReportedIdApplicant);
     document.getElementById("btnCloseReportForm").click();
   }
 
@@ -48,6 +48,7 @@ class ReportFormConponent extends Component {
                 <div className="welcome-text">
                   <h3>{selectedReportType == 0 ? "Nhập nội dung bạn muốn báo cáo" : "Nhập lý do sa thải"}</h3>
                 </div>
+                <p>{"Bạn chỉ được gửi 1 báo cáo / yêu cầu sa thải cho 1 người 1 lần. Những lần sau sẽ mạng ý nghĩa là cập nhật lại nội dung"}</p>
                 {/* Form */}
                 <form
                   method="post"
@@ -67,9 +68,10 @@ class ReportFormConponent extends Component {
                     />
                   </div>
                 </form>
+                <p className='text-danger'>{"*Nếu là yêu cầu sa thải, bạn nên ghi thêm % tiền muồn hoàn vào phàn nội dung, nếu không quản lý sẽ tự quyết định"}</p>
                 {/* Button */}
                 <button
-                  className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
+                  className="button margin-top-15 w-100 button-sliding-icon ripple-effect"
                   type="submit"
                   form="report-now-form"
                 >
@@ -94,8 +96,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doReportUser: (content, reporterId, role, type, applicantId) => {
-      dispatch(reportUser(content, reporterId, role, type, applicantId));
+    doReportUser: (id_job, content, reporterId, role, type, applicantId) => {
+      dispatch(reportUser(id_job, content, reporterId, role, type, applicantId));
     },
   };
 };

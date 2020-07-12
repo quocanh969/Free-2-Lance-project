@@ -120,6 +120,7 @@ function doApplyJob(id_user, id_job, proposed_price, attachment) {
     id_job,
     proposed_price,
     attachment,
+    introduction_string: '',
   });
 }
 //#endregion Job detail
@@ -176,13 +177,14 @@ function doEndJob(id_job, job_title) {
   });
 }
 
-function doReportUser(content, reporterId, yourRole, type, applicantId) {
+function doReportUser(id_job, content, reporterId, yourRole, type, applicantId) {
   return axios.post("/users/addReport", {
+    id_job,
     content,
     reporterId,
     yourRole,
     type,
-    applicantId
+    applicantId,
   });
 }
 

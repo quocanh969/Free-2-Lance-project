@@ -160,14 +160,20 @@ class JobsDoneModalComponent extends Component {
                 <i className="icon-material-outline-supervisor-account"></i> Xem
                 thông tin
               </span>
-              <span
-                data-toggle="modal"
-                data-target="#CVModal"
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => this.viewApplicantCV(e.attachment)}
-              >
-                <i className="icon-line-awesome-clone" /> Xem CV
-              </span>
+              {(
+                e.attachment === ''
+                ?
+                ''
+                :
+                <span
+                  data-toggle="modal"
+                  data-target="#CVModal"
+                  className="btn m-2 py-2 px-4 bg-silver rounded"
+                  onClick={() => this.viewApplicantCV(e.attachment)}
+                >
+                  <i className="icon-line-awesome-clone" /> Xem CV
+                </span>
+              )}
             </div>
           </li>
         );

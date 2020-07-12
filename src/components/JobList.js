@@ -46,7 +46,7 @@ class JobListComponent extends Component {
         this.loadJobListFunc(1, this.state.query);
       });
     }
-    else if(this.props.history.location.pathname === '/job-list') {
+    else if(this.props.location.state === null && this.props.history.location.pathname === '/job-list') {
       this.setState({query: {}});
     }
   }
@@ -313,7 +313,6 @@ class JobListComponent extends Component {
 
   renderFilter() {
     let { jobTopic, areas, isLoadingJobTopic, isLoadingAreas } = this.props.GeneralReducer;
-    console.log(this.state.query);
     return (
       <div className="sidebar-container">
         <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
@@ -353,7 +352,7 @@ class JobListComponent extends Component {
               <div className="spinner-border text-primary" role="status">
                 <span className="sr-only">Loading...</span>
               </div>
-            </div>) : (this.state.query["area_province"] !== undefined ? (
+            </div>) : (this.state.query["area_province"] !== undefined ? (              
               <S_Selector
                 id="select-area"
                 className="with-border"

@@ -15,8 +15,9 @@ class ReportFormConponent extends Component {
     e.preventDefault();
     let content = this.refs.content.value;
     let { doReportUser } = this.props;
-    let { selectedReportedUser, selectedReportedApplicantId } = this.props.ApplicantReducer;
-    doReportUser(content, selectedReportedUser, 0, 0, selectedReportedApplicantId);
+    let { selectedReportedJobId, selectedReportedUser, selectedReportedApplicantId } = this.props.ApplicantReducer;
+    console.log({ selectedReportedJobId, selectedReportedUser, selectedReportedApplicantId });
+    doReportUser(selectedReportedJobId, content, selectedReportedUser, 0, 0, selectedReportedApplicantId);
     document.getElementById("btnCloseReportForm").click();
   }
 
@@ -47,6 +48,7 @@ class ReportFormConponent extends Component {
                 <div className="welcome-text">
                   <h3>Nhập nội dung bạn muốn báo cáo</h3>
                 </div>
+                <p>{"Bạn chỉ được gửi 1 báo cáo / yêu cầu sa thải cho 1 người 1 lần. Những lần sau sẽ mạng ý nghĩa là cập nhật lại nội dung"}</p>                
                 {/* Form */}
                 <form
                   method="post"
@@ -65,7 +67,7 @@ class ReportFormConponent extends Component {
                       autoFocus
                     />
                   </div>
-                </form>
+                </form>                
                 {/* Button */}
                 <button
                   className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
@@ -92,8 +94,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doReportUser: (content, reporterId, role, type, applicantId) => {
-      dispatch(reportUser(content, reporterId, role, type, applicantId));
+    doReportUser: (id_job, content, reporterId, role, type, applicantId) => {
+      dispatch(reportUser(id_job, content, reporterId, role, type, applicantId));
     },
   };
 };

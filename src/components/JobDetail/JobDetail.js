@@ -241,8 +241,18 @@ class JobDetailComponent extends Component {
 
   renderApplyButton() {
     let { user } = this.props.HeaderReducer;
-    let { jobDetail } = this.props.JobDetailReducer;
-    if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
+    let { jobDetail } = this.props.JobDetailReducer;    
+    let isAccepted = false;
+    if(user && jobDetail.dealers.filter(e=>{return e.id_user = user.id_user}).length > 0) {
+      isAccepted =  true;
+    }
+    
+    if(isAccepted === true) {
+      return (
+        <div className='btn mb-2 py-2 font-size-bold text-light w-100 bg-293FE4' style={{fontSize: '20px'}}>Bạn đã được nhận</div>
+      )
+    }
+    else if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
         <button
           className="apply-now-button popup-with-zoom-anim w-100"

@@ -215,9 +215,9 @@ class JobsApplyingComponent extends Component {
               {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
               <span
                 onClick={() => this.StopRecuit(e.id_job)}
-                className="btn m-2 py-2 px-4 bg-danger text-white rounded"
+                className="btn m-2 py-2 px-4 bg-success text-white rounded"
               >
-                <i className="icon-line-awesome-hand-stop-o" /> Ngừng tuyển
+                <i className="icon-material-outline-check" /> Bắt đầu công việc
               </span>
             </div>
           </li>

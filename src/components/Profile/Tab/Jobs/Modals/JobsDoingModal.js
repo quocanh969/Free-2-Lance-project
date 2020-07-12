@@ -76,12 +76,14 @@ class JobsDoingModalComponent extends Component {
 
   reportEmployee(userId, applicantId) {
     let { onSelectReportedUser } = this.props;
-    onSelectReportedUser(userId, applicantId);
+    let {selectedDoingJobId} = this.props.EmployerReducer;
+    onSelectReportedUser(userId, applicantId, selectedDoingJobId);
   }
 
   fireEmployee(userId, applicantId) {
     let { onSelectFiredUser } = this.props;
-    onSelectFiredUser(userId, applicantId);
+    let {selectedDoingJobId} = this.props.EmployerReducer;
+    onSelectFiredUser(userId, applicantId, selectedDoingJobId);
   }
 
   generateApplicantsList() {
@@ -283,11 +285,11 @@ const mapDispatchToProps = (dispatch) => {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadDoingApplicantsForEmployer(jobId, page, take));
     },
-    onSelectReportedUser: (userId, applicantId) => {
-      dispatch(selectReportedUser(userId, applicantId));
+    onSelectReportedUser: (userId, applicantId, jobId) => {
+      dispatch(selectReportedUser(userId, applicantId, jobId));
     },
-    onSelectFiredUser: (userId, applicantId) => {
-      dispatch(selectFiredUser(userId, applicantId));
+    onSelectFiredUser: (userId, applicantId, jobId) => {
+      dispatch(selectFiredUser(userId, applicantId, jobId));
     },
   };
 };

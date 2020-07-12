@@ -179,11 +179,10 @@ class JobsDoingComponent extends Component {
               </span>
               {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
               <span
-                className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
+                className="btn mx-2 py-2 px-4 bg-success text-white rounded"
                 onClick={() => this.EndJob(e.id_job, e.title)}
               >
-                <i className="icon-line-awesome-hand-stop-o" /> Kết thúc công
-                việc
+                <i className="icon-material-outline-check" /> Hoàn thành công việc
               </span>
             </div>
           </li>

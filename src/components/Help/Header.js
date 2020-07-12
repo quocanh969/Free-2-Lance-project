@@ -14,6 +14,7 @@ import { loadJobList } from "../../actions/Job";
 import { updateUserState } from "../../actions/Account";
 import { history } from "../../ultis/history/history";
 import { getImageSrc } from "../../ultis/SHelper/helperFunctions";
+import Swal from "sweetalert2";
 const firebase = require("firebase");
 
 class HeaderComponent extends Component {
@@ -23,13 +24,13 @@ class HeaderComponent extends Component {
     this.state = {
       isTopicHover: false,
       isCurrentTop: false,
-      
+
       email: localStorage.getItem("item"),
-      
+
       isReadNotify: true,
       notifications: [],
       isNotiLoading: true,
-      
+
       unreadMessage: 0,
       messages: [],
       isMessLoading: true,
@@ -111,7 +112,7 @@ class HeaderComponent extends Component {
             isRead: true
           })
         console.log('flag noti not exists');
-        let {onFailureLoadNoti} = this.props;
+        let { onFailureLoadNoti } = this.props;
         onFailureLoadNoti();
       }
       else {
@@ -123,7 +124,7 @@ class HeaderComponent extends Component {
           .onSnapshot(async res => {
             const data = res.docs.map(_doc => _doc.data());
             //console.log(data);
-            let {onSuccessLoadNoti} = this.props;
+            let { onSuccessLoadNoti } = this.props;
             await onSuccessLoadNoti(data[0].isRead, data[0].listNotify.reverse());
           })
       }
@@ -266,12 +267,11 @@ class HeaderComponent extends Component {
   }
 
   renderNotice(notice) {
-    console.log("notice:", notice);
     if (notice) {
       switch (notice.type) {
         case 0: {
           return (
-            <span className="text-wrap">
+            <span className="text-wrap cursor-pointer" title='Nhấp vào để đến trang chi tiết công việc' onClick={() => { this.handleNoticeClick(notice) }}>
               <span className="text-293FE4">{notice.fullname}</span> đã từ chối
               bạn trong công việc{" "}
               <span className="text-293FE4">{notice.job}</span>
@@ -280,7 +280,7 @@ class HeaderComponent extends Component {
         }
         case 1: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để đến trang chi tiết công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Bạn đã được nhận công việc{" "}
               <span className="text-293FE4">{notice.job}</span> từ{" "}
               <span className="text-293FE4">{notice.fullname}</span>
@@ -289,7 +289,7 @@ class HeaderComponent extends Component {
         }
         case 2: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để đến trang quản lý việc làm' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
               <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
             </span>
@@ -297,7 +297,7 @@ class HeaderComponent extends Component {
         }
         case 3: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để đến trang quản lý doanh thu' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               <span className="text-293FE4"></span>Nhân Viên F2L đã thanh toán
               cho bạn về công việc{" "}
               <span className="text-293FE4">{notice.job}</span>
@@ -306,7 +306,7 @@ class HeaderComponent extends Component {
         }
         case 4: {
           return (
-            <span className="text-wrap">
+            <span className="text-wrap cursor-pointer">
               <span className="text-293FE4">{notice.job}</span> của
               <span className="text-293FE4">{notice.fullname}</span> đã dừng lại
             </span>
@@ -314,7 +314,7 @@ class HeaderComponent extends Component {
         }
         case 5: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để đến trang quản lý việc làm' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Công việc
               <span className="text-293FE4">{notice.job}</span> của&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã chuyển sang giai đoạn thực hiện
@@ -323,7 +323,7 @@ class HeaderComponent extends Component {
         }
         case 6: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để đến trang chi tiết việc làm' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã được khôi phục
@@ -332,7 +332,7 @@ class HeaderComponent extends Component {
         }
         case 7: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Báo cáo của bạn về&nbsp;
               <span className="text-293FE4">{notice.employee}</span>&nbsp;trong công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;đã được xử lý
@@ -341,16 +341,16 @@ class HeaderComponent extends Component {
         }
         case 8: {
           return (
-            <span className="text-wrap">
-              Yêu cầu dừng và hoàn tiền công việc&nbsp;
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Yêu cầu sa thải và hoàn tiền công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;không được chấp thuận
             </span>
           );
         }
         case 9: {
           return (
-            <span className="text-wrap">
-              Yêu cầu dừng và hoàn tiền công việc&nbsp;
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Yêu cầu sa thải và hoàn tiền công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;đã được chấp thuận, bạn được hoàn
               50% tiền.
             </span>
@@ -358,7 +358,7 @@ class HeaderComponent extends Component {
         }
         case 10: {
           return (
-            <span className="text-wrap">
+            <span className="text-wrap cursor-pointer">
               Công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã bị gỡ hoàn toàn
@@ -367,14 +367,14 @@ class HeaderComponent extends Component {
         }
         case 11: {
           return (
-            <span className="text-wrap">
+            <span className="text-wrap cursor-pointer">
               Tài khoản của bạn đã được xác thực
             </span>
           );
         }
         case 12: {
           return (
-            <span className="text-wrap">
+            <span className="text-wrap cursor-pointer">
               Tài khoản của bạn chuyển sang trạng thái&nbsp;
               <span className="text-293FE4">Chờ xác thực</span>
             </span>
@@ -382,14 +382,14 @@ class HeaderComponent extends Component {
         }
         case 13: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào vào trang quản lý thông tin' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Tài khoản của bạn được đánh giá là không đủ điều kiện để xác thực, vui lòng kiểm tra lại
             </span>
           );
         }
         case 14: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để xem chi tiết công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;vừa cập nhật thông tin
@@ -398,7 +398,7 @@ class HeaderComponent extends Component {
         }
         case 15: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để chuyển đến trang quản lý công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Nhân viên&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;ứng tuyển vào công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;
@@ -407,7 +407,7 @@ class HeaderComponent extends Component {
         }
         case 16: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để chuyển đến trang quản lý công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Nhân viên&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;bổ sung hồ sơ ứng tuyển vào công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;
@@ -416,18 +416,260 @@ class HeaderComponent extends Component {
         }
         case 17: {
           return (
-            <span className="text-wrap">
+            <span title='Nhấp vào để chuyển đến trang quản lý công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
               Nhân viên&nbsp;
               <span className="text-293FE4">{notice.fullname}</span>&nbsp;rút ứng tuyển khỏi công việc&nbsp;
               <span className="text-293FE4">{notice.job}</span>&nbsp;
             </span>
           );
         }
+        case 18: {
+          return (
+            <span title='Nhấp vào để xem chi tiết công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;
+              đã vào giai đoạn thực hiện và bạn không được tuyển
+            </span>
+          );
+        }
+        case 19: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã bị&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;sa thải từ công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;và hoàn lại&nbsp;
+              <span className="text-293FE4">{notice.refundPercentage}</span>&nbsp;tiền lương
+            </span>
+          );
+        }
+        case 20: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được khiếu nại trong công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 21: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được yêu cầu sa thải trong công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+              . Tạm thời bạn không cần tiếp tục thực hiện công việc này.
+            </span>
+          );
+        }        
+        case 22: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý phản hồi' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được phản hồi từ người thuê&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;
+            </span>
+          );
+        }        
+        case 23: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý phản hồi' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được phản hồi từ người làm&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;
+            </span>
+          );
+        }        
         default:
           return "";
       }
     }
 
+  }
+
+  handleNoticeClick(notice) {
+    if (notice) {
+      switch (notice.type) {
+        case 0: {
+          history.push('/job-detail' + notice.id_job);
+          return;
+        }
+        case 1: {
+          history.push('/job-detail' + notice.id_job);
+          return;
+        }
+        case 2: {
+          history.push('/dashboard/tab=10');
+          return;
+        }
+        case 3: {
+          history.push('/dashboard/tab=14');
+          return;
+        }
+        case 5: {
+          history.push('/dashboard/tab=8');
+          return;
+        }
+        case 6: {
+          history.push('/job-detail' + notice.id_job);
+          return;
+        }
+        case 7: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Báo cáo của bạn về&nbsp;<span class='font-weight-bold'>${notice.employee_name}</span>&nbsp;trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>&nbsp;đã được xử lý bằng:
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>                      
+                      <span class='font-weight-bold'>${notice.solution}</span>                  
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 8: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Người làm&nbsp;<span class='font-weight-bold'>${notice.employee_name}</span>&nbsp;đã ngưng dịch vụ trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>.Yêu cầu hoàn tiền của bạn đã không được quản lý thông qua.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 9: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Người làm&nbsp;<span class='font-weight-bold'>${notice.employee_name}</span>&nbsp;đã ngưng dịch vụ trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Phần trăm số tiền mà bạn được hoàn lại hoàn lại là&nbsp;
+                      <span class='font-weight-bold'>${notice.refundPercentage}</span>%
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 13: {
+          history.push('/dashboard/tab=11');
+          return;
+        }
+        case 14: {
+          history.push('/job-detail' + notice.id_job);
+          return;
+        }
+        case 15: {
+          history.push('/dashboard/tab=4');
+          return;
+        }
+        case 16: {
+          history.push('/dashboard/tab=4');
+          return;
+        }
+        case 17: {
+          history.push('/dashboard/tab=4');
+          return;
+        }
+        case 18: {
+          history.push('/job-detail' + notice.id_job);
+          return;
+        }
+        case 19: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Bạn đã bị ngưng dịch vụ làm thuê trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>
+                      &nbsp;và bị trừ đi
+                      &nbsp;<span class='font-weight-bold'>${notice.refundPercentage}</span>% số tiền trong thỏa thuận
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 20: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Bạn nhận được 1 khiếu nại từ
+                      &nbsp;<span class='font-weight-bold'>${notice.fullname}</span>
+                      &nbsp;trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng gửi các thông tin, hình ảnh chứng thức giúp bảo vệ bạn đến email: free2lance2020@gmail.com để hổ trợ quản lý giải quyết vấn đề.
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 21: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Bạn nhận được 1 yêu cầu ngưng việc từ
+                      &nbsp;<span class='font-weight-bold'>${notice.fullname}</span>
+                      &nbsp;trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>. Tạm
+                      thời bạn không cần tiếp tục thực hiện công việc này.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng gửi các thông tin, hình ảnh chứng thức giúp bảo vệ bạn đến email: free2lance2020@gmail.com để hổ trợ quản lý giải quyết vấn đề.
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 22: {
+          history.push('/dashboard/tab=3');
+          return;
+        }
+        case 23: {
+          history.push('/dashboard/tab=3');
+          return;
+        }
+        default:
+          return;
+      }
+    }
   }
 
   renderNotiContent() {
@@ -774,15 +1016,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     onFailureLoadNoti: () => {
       dispatch({
-          type: 'LOAD_NOTI_FAILURE',
-        })      
+        type: 'LOAD_NOTI_FAILURE',
+      })
     },
     onSuccessLoadNoti: (isReadNotifyList, notiList) => {
       dispatch({
-          type: 'LOAD_NOTI_SUCCESS',
-          isReadNotifyList,
-          notiList,
-        })
+        type: 'LOAD_NOTI_SUCCESS',
+        isReadNotifyList,
+        notiList,
+      })
     },
   };
 };

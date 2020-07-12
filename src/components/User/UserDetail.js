@@ -59,7 +59,16 @@ class UserDetailComponent extends Component {
                         <img src={getImageSrc(userDetail.personal.avatarImg, avatarPlaceholder)} alt="" />
                       </div>
                       <div className="header-details">
-                        <h3 className='text-white'>{userDetail.personal ? userDetail.personal.fullname : ""}{" "}</h3>
+                        <h3 className='text-white'>
+                          {userDetail.personal ? userDetail.personal.fullname : ""}{" "}
+                          {(
+                            userDetail.personal.account_status === 2
+                            ?
+                            <i className='icon-material-outline-check text-light bg-success rounded-circle' style={{fontSize: '15px'}}></i>
+                            :
+                            ''
+                          )}
+                        </h3>
                         <div className='text-warning font-weight-bold'>{(userDetail.personal.isBusinessUser === false ? 'Người dùng cá nhân' : 'Người dùng doanh nghiệp')}</div>
                         <div className='row'>
                           <div className='col-6 text-white'>

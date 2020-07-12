@@ -406,6 +406,7 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
         //show success
         Swal.fire({
           title: "Đăng kí thành công, xin vui lòng đợi duyệt",
+          text: "*Trong quá trình làm việc, bạn nên lưu lại thông tin, hình ảnh để giải quyết các vấn đề phát sinh khác trong quá trình làm việc",
           icon: "success",
           confirmButtonText: "OK",
         }).then((result) => {
@@ -636,7 +637,8 @@ export const endJob = (jobId, title, page, take, isASC) => {
     doEndJob(jobId, title)
       .then((res) => {
         dispatch(loadProcessingJobsForEmployer(page, take, isASC));
-        Swal.fire("Thành công!", "Công việc của bạn đã kết thúc", "success");
+        Swal.fire("Thành công!", "Bạn nên đánh giá người làm để tăng tính khách quan !!", "success");
+        history.push('/dashboard/tab=6');
       })
       .catch((err) => {
         console.log(err);
@@ -690,42 +692,65 @@ export const selectJobDoing = (jobId) => {
   };
 };
 
-export const selectReportedUser = (userId, applicantId) => {
+export const selectReportedUser = (userId, applicantId, jobId) => {
   return {
     type: "EMPLOYER_SELECT_REPORTED_USER",
     userId,
-    applicantId
+    applicantId,
+    jobId,
   };
 };
 
-export const selectFiredUser = (userId, applicantId) => {
+export const selectFiredUser = (userId, applicantId, jobId) => {
   return {
     type: "EMPLOYER_SELECT_FIRED_USER",
     userId,
-    applicantId
+    applicantId,
+    jobId,
   };
 };
 
-export const reportUser = (content, reporterId, role, type, applicantId) => {
+export const reportUser = (id_job, content, reporterId, role, type, applicantId) => {
   return (dispatch) => {
-    doReportUser(content, reporterId, role, type, applicantId)
+    doReportUser(id_job, content, reporterId, role, type, applicantId)
       .then((res) => {
-        if (type == 0) {
-          Swal.fire({
-            title: "Báo cáo người dùng thành công",
-            text: "Vui lòng đợi quản trị viên xử lý",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
+        if(res.data.data.code === 1) { // chưa giải quyết, mang ý nghĩa thêm mới - cập nhật
+          if (type == 0) {
+            Swal.fire({
+              title: "Báo cáo người dùng thành công",
+              text: "Vui lòng đợi quản trị viên xử lý",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
+          else if (type == 1) {
+            Swal.fire({
+              title: "Gửi yêu cầu sa thải thành công",
+              text: "Vui lòng đợi quản trị viên xử lý",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          }
         }
-        else if (type == 1) {
-          Swal.fire({
-            title: "Gửi yêu cầu sa thải thành công",
-            text: "Vui lòng đợi quản trị viên xử lý",
-            icon: "success",
-            confirmButtonText: "OK",
-          });
+        else { // đã giải quyết
+          if (type === 0) {
+            Swal.fire({
+              title: "Báo cáo này đã được xử lý, không thể cập nhật lại",
+              text: "Vui lòng liên lạc free2lance2020@gmail.com để biết thêm thông tin",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+          else if (type === 1) {
+            Swal.fire({
+              title: "Yêu cầu này đã được xử lý, không thể cập nhật lại",
+              text: "Vui lòng liên lạc free2lance2020@gmail.com để biết thêm thông tin",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
         }
+        
       })
       .catch((err) => {
         console.log(err);
@@ -870,11 +895,12 @@ export const stopApply = (userId, jobId, page, take, isASC) => {
   };
 };
 
-export const selectReportedEmployer = (userId, applicantId) => {
+export const selectReportedEmployer = (userId, applicantId, jobId) => {
   return {
     type: "APPLICANT_SELECT_REPORTED_USER",
     userId,
-    applicantId
+    applicantId,
+    jobId,
   };
 };
 

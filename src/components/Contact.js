@@ -59,7 +59,7 @@ class ContactComponent extends Component {
                                     <div className="contact-address-headline mt-5"></div>
                                     <div>Địa chỉ: 1051 Nguyễn Trãi, Phường 14, Quận 5, TPHCM</div>
                                     <div>Số điện thoại: (036) 563-58729</div>
-                                    <div>Email: free2lance@gmail.com</div>
+                                    <div>Email: free2lance2020@gmail.com</div>
                                 </div>
                                 <div className='col-6'>
                                     {/* <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" /> */}

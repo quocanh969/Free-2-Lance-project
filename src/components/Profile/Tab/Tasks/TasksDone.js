@@ -45,9 +45,9 @@ class TasksDoneComponent extends Component {
     onLoadFinishedTask(page, 4, 0);
   }
 
-  reportEmployer(userId) {
+  reportEmployer(userId, applicantId, jobId) {
     let { onSelectReportedEmployer } = this.props;
-    onSelectReportedEmployer(userId);
+    onSelectReportedEmployer(userId, applicantId, jobId);
   }
 
   reviewEmployer(applicantId, jobId) {
@@ -201,7 +201,7 @@ class TasksDoneComponent extends Component {
                     <span
                       data-toggle="modal"
                       data-target="#reportEmployerModal"
-                      onClick={() => this.reportEmployer(e.employer)}
+                      onClick={() => this.reportEmployer(e.employer, e.id_applicant, e.id_job)}
                       className="btn col mx-2 p-2 bg-danger text-white rounded"
                     >
                       <i className="icon-line-awesome-warning" /> Báo cáo người
@@ -370,8 +370,8 @@ const mapDispatchToProps = (dispatch) => {
     onLoadFinishedTask: (page, take, isASC) => {
       dispatch(loadFinishedJobsForApplicant(page, take, isASC));
     },
-    onSelectReportedEmployer: (userId) => {
-      dispatch(selectReportedEmployer(userId));
+    onSelectReportedEmployer: (userId, applicantId, jobId) => {
+      dispatch(selectReportedEmployer(userId, applicantId, jobId));
     },
     onSelectReviewEmployer: (applicantId, jobId) => {
       dispatch(selectReviewEmployer(applicantId, jobId));
