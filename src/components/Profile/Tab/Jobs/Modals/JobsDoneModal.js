@@ -103,7 +103,7 @@ class JobsDoneModalComponent extends Component {
   }
 
   generateApplicantsList() {
-    let { doneApplicantsList, isLoadingDoneApplicantsList } = this.props.EmployerReducer;
+    let { doneApplicantsList, isLoadingDoneApplicantsList, selectedFinishApplicantId } = this.props.EmployerReducer;
     let content = [];
     if (isLoadingDoneApplicantsList) return (<div className="loading my-2 py-4" key={1}>
       <div className="spinner-border text-primary" role="status">
@@ -143,38 +143,51 @@ class JobsDoneModalComponent extends Component {
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="container text-right" style={{ marginTop: "10px" }}>
-              <span
-                data-toggle="modal"
-                data-target="#reviewModal"
-                onClick={() => this.reviewEmployee(e.id_applicant)}
-                className="btn mx-2 py-2 px-4 bg-warning rounded"
-              >
-                <i className="icon-material-outline-speaker-notes" /> Phản hồi
-              </span>
-              <span
-                onClick={() => this.viewApplicantInfo(e.id_user)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Xem
-                thông tin
-              </span>
-              {(
-                e.attachment === ''
-                ?
-                ''
-                :
-                <span
-                  data-toggle="modal"
-                  data-target="#CVModal"
-                  className="btn m-2 py-2 px-4 bg-silver rounded"
-                  onClick={() => this.viewApplicantCV(e.attachment)}
-                >
-                  <i className="icon-line-awesome-clone" /> Xem CV
-                </span>
-              )}
-            </div>
+            {(
+              e.id_applicant === selectedFinishApplicantId
+              ?
+              <div className='text-center w-100'>
+                <div className="loading" key={1}>
+                  <div className="spinner-border text-primary my-2 py-2" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              :
+                <div className="container text-right" style={{ marginTop: "10px" }}>
+                  <span
+                    data-toggle="modal"
+                    data-target="#reviewModal"
+                    onClick={() => this.reviewEmployee(e.id_applicant)}
+                    className="btn mx-2 py-2 px-4 bg-warning rounded"
+                  >
+                    <i className="icon-material-outline-speaker-notes" /> Phản hồi
+                  </span>
+                  <span
+                    onClick={() => this.viewApplicantInfo(e.id_user)}
+                    className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Xem
+                    thông tin
+                  </span>
+                  {(
+                    e.attachment === ''
+                      ?
+                      ''
+                      :
+                      <span
+                        data-toggle="modal"
+                        data-target="#CVModal"
+                        className="btn m-2 py-2 px-4 bg-silver rounded"
+                        onClick={() => this.viewApplicantCV(e.attachment)}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem CV
+                      </span>
+                  )}
+                </div>
+
+            )}
+
           </li>
         );
       });

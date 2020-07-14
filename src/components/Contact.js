@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import Header from './Help/Header';
-
-import MapContainer from './map_JobsList';
 
 import Logo from '../assets/images/logo4.png';
 
@@ -26,7 +23,6 @@ class ContactComponent extends Component {
     }
 
     render() {
-        let { places } = this.props.ContactUsReducer;
 
         return (
             <div>

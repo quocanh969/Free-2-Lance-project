@@ -35,6 +35,9 @@ const initState = {
   finishedJobsList: [],
   totalFinishedJobs: 0,
   currentFinishedPage: 0,
+
+  selectedProccessingApplicantId: null,
+  selectedProccessingJobById: null,
   // for list applicants of done job list
   selectedDoneJobId: null,
   selectedReviewApplicantId: null,
@@ -48,6 +51,8 @@ const initState = {
   reviewList: [],
   totalReviews: 0,
   currentReviewPage: 0,
+
+  selectedFinishApplicantId: null,
 };
 
 const EmployerReducer = (state = initState, action) => {
@@ -207,7 +212,19 @@ const EmployerReducer = (state = initState, action) => {
         totalDoingApplicants: 0,
         currentDoingApplicantsPage: 0,
       };
-    // done job cases
+    case "EMPLOYER_PROCCESSING_SELECT_APPLICANT": 
+      return {
+        ...state,
+        selectedProccessingApplicantId: action.id_applicant,
+      };
+    case "EMPLOYER_PROCCESSING_SELECT_JOB": 
+      return {
+        ...state,
+        selectedProccessingJobById: action.id_job,
+      };
+  
+    
+      // done job cases
     case "EMPLOYER_FINISHED_JOBS_UPDATE":
       return {
         ...state,
@@ -299,7 +316,13 @@ const EmployerReducer = (state = initState, action) => {
         totalReviews: 0,
         currentReviewPage: 0,
       };
-    default:
+      
+    case "EMPLOYER_FINISH_SELECT_APPLICANT": 
+      return {
+        ...state,
+        selectedFinishApplicantId: action.id_applicant,
+      };
+      default:
       return state;
   }
 };

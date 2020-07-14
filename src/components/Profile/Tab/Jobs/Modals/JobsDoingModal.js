@@ -76,18 +76,18 @@ class JobsDoingModalComponent extends Component {
 
   reportEmployee(userId, applicantId) {
     let { onSelectReportedUser } = this.props;
-    let {selectedDoingJobId} = this.props.EmployerReducer;
+    let { selectedDoingJobId } = this.props.EmployerReducer;
     onSelectReportedUser(userId, applicantId, selectedDoingJobId);
   }
 
   fireEmployee(userId, applicantId) {
     let { onSelectFiredUser } = this.props;
-    let {selectedDoingJobId} = this.props.EmployerReducer;
+    let { selectedDoingJobId } = this.props.EmployerReducer;
     onSelectFiredUser(userId, applicantId, selectedDoingJobId);
   }
 
   generateApplicantsList() {
-    let { doingApplicantsList, isLoadingDoingApplicantsList } = this.props.EmployerReducer;
+    let { doingApplicantsList, isLoadingDoingApplicantsList, selectedProccessingApplicantId } = this.props.EmployerReducer;
     let content = [];
     if (isLoadingDoingApplicantsList) return (<div className="loading my-2 py-4" key={1}>
       <div className="spinner-border text-primary" role="status">
@@ -127,32 +127,45 @@ class JobsDoingModalComponent extends Component {
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="container text-right" style={{ marginTop: "10px" }}>
-              <span
-                onClick={() => this.viewApplicantInfo(e.id_user)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Xem
-                thông tin
-              </span>
-              <span
-                data-toggle="modal"
-                data-target="#reportModal"
-                onClick={() => this.reportEmployee(e.id_user, e.id_applicant)}
-                className="btn mx-2 py-2 px-4 bg-warning text-white rounded"
-              >
-                <i className="icon-material-outline-speaker-notes" /> Báo cáo
-              </span>
-              <span
-                data-toggle="modal"
-                data-target="#reportModal"
-                onClick={() => this.fireEmployee(e.id_user, e.id_applicant)}
-                className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
-              >
-                <i className="icon-line-awesome-hand-stop-o" /> Sa thải
-              </span>
-            </div>
+            {(
+              e.id_applicant === selectedProccessingApplicantId
+              ?
+              <div className='text-center w-100'>
+                <div className="loading" key={1}>
+                  <div className="spinner-border text-primary my-2 py-2" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              :
+                <div className="container text-right" style={{ marginTop: "10px" }}>
+                  <span
+                    onClick={() => this.viewApplicantInfo(e.id_user)}
+                    className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Xem
+                  thông tin
+                  </span>
+                  <span
+                    data-toggle="modal"
+                    data-target="#reportModal"
+                    onClick={() => this.reportEmployee(e.id_user, e.id_applicant)}
+                    className="btn mx-2 py-2 px-4 bg-warning text-white rounded"
+                  >
+                    <i className="icon-material-outline-speaker-notes" /> Báo cáo
+                  </span>
+                  <span
+                    data-toggle="modal"
+                    data-target="#reportModal"
+                    onClick={() => this.fireEmployee(e.id_user, e.id_applicant)}
+                    className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
+                  >
+                    <i className="icon-line-awesome-hand-stop-o" /> Sa thải
+                  </span>
+                </div>
+
+            )}
+
           </li>
         );
       });

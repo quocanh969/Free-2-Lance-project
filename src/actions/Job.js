@@ -729,15 +729,31 @@ export const sendRejectApplicant = (
 //#region doing job for employer
 export const endJob = (jobId, title, page, take, isASC) => {
   return (dispatch) => {
+    dispatch(requestEndJob(jobId));
     doEndJob(jobId, title)
       .then((res) => {
+        dispatch(finishEndJob());
         dispatch(loadProcessingJobsForEmployer(page, take, isASC));
         Swal.fire("Thành công!", "Bạn nên đánh giá người làm để tăng tính khách quan !!", "success");
         history.push('/dashboard/tab=6');
       })
       .catch((err) => {
+        dispatch(finishEndJob());
         console.log(err);
       });
+  };
+
+  function requestEndJob(id_job) {
+    return {
+      type: 'EMPLOYER_PROCCESSING_SELECT_JOB',
+      id_job,
+    }
+  };
+  function finishEndJob() {
+    return {
+      type: 'EMPLOYER_PROCCESSING_SELECT_JOB',
+      id_job: null,
+    }
   };
 };
 
@@ -807,8 +823,10 @@ export const selectFiredUser = (userId, applicantId, jobId) => {
 
 export const reportUser = (id_job, content, reporterId, role, type, applicantId) => {
   return (dispatch) => {
+    dispatch(requestReport(applicantId));
     doReportUser(id_job, content, reporterId, role, type, applicantId)
       .then((res) => {
+        dispatch(finishReport());
         if(res.data.data.code === 1) { // chưa giải quyết, mang ý nghĩa thêm mới - cập nhật
           if (type == 0) {
             Swal.fire({
@@ -848,7 +866,7 @@ export const reportUser = (id_job, content, reporterId, role, type, applicantId)
         
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(finishReport());
         //show error;
         Swal.fire({
           title: "Đã xảy ra lỗi, vui lòng thử lại sau",
@@ -857,6 +875,19 @@ export const reportUser = (id_job, content, reporterId, role, type, applicantId)
         });
       });
   };
+
+  function requestReport(applicantId) {
+    return {
+      type: 'EMPLOYER_PROCCESSING_SELECT_APPLICANT',
+      id_applicant: applicantId,
+    }
+  }
+  function finishReport() {
+    return {
+      type: 'EMPLOYER_PROCCESSING_SELECT_APPLICANT',
+      id_user: null,
+    }
+  }
 };
 //#endregion doing job for employer
 
@@ -951,23 +982,47 @@ export const selectReviewUser = (applicantId) => {
 
 export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
   return (dispatch) => {
-    doReviewEmployee(applicantId, jobId, feedback, rating)
-      .then((res) => {
-        Swal.fire({
-          title: "Đánh giá người làm thành công",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        //show error;
-        Swal.fire({
-          title: "Đã xảy ra lỗi, vui lòng thử lại sau",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      });
+    dispatch(requestReview(applicantId));
+    // doReviewEmployee(applicantId, jobId, feedback, rating)
+    //   .then((res) => {
+    //     dispatch(finishReview());
+    //     if(res.data.data.code === 1) {
+    //       Swal.fire({
+    //         title: "Đánh giá người làm thành công",
+    //         icon: "success",
+    //         confirmButtonText: "OK",
+    //       });
+    //     }
+    //     else {
+    //       Swal.fire({
+    //         title: "Bạn không thể đánh giá tiếp tục",
+    //         text: 'Người dùng này đã được bạn đánh giá',
+    //         icon: "error",
+    //         confirmButtonText: "OK",
+    //       });
+    //     }        
+    //   })
+    //   .catch((err) => {
+    //     dispatch(finishReview());
+    //     Swal.fire({
+    //       title: "Đã xảy ra lỗi, vui lòng thử lại sau",
+    //       icon: "error",
+    //       confirmButtonText: "OK",
+    //     });
+    //   });
+  };
+
+  function requestReview(id_applicant) {
+    return {
+      type: 'EMPLOYER_FINISH_SELECT_APPLICANT',
+      id_applicant,
+    }
+  };
+  function finishReview() {
+    return {
+      type: 'EMPLOYER_FINISH_SELECT_APPLICANT',
+      id_applicant: null,
+    }
   };
 };
 //#endregion done job for employer
@@ -1009,23 +1064,47 @@ export const selectReviewEmployer = (applicantId, jobId) => {
 
 export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
   return (dispatch) => {
-    doReviewEmployer(applicantId, jobId, feedback, rating)
-      .then((res) => {
-        Swal.fire({
-          title: "Đánh giá người thuê thành công",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        //show error;
-        Swal.fire({
-          title: "Đã xảy ra lỗi, vui lòng thử lại sau",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      });
+    dispatch(requestReview(applicantId));
+    // doReviewEmployer(applicantId, jobId, feedback, rating)
+    //   .then((res) => {
+    //     dispatch(finishReview());
+    //     if(res.data.data.code === 1) {
+    //       Swal.fire({
+    //         title: "Đánh giá người thuê thành công",
+    //         icon: "success",
+    //         confirmButtonText: "OK",
+    //       });
+    //     }
+    //     else {
+    //       Swal.fire({
+    //         title: "Bạn không thể đánh giá tiếp tục",
+    //         text: 'Người dùng này đã được bạn đánh giá',
+    //         icon: "error",
+    //         confirmButtonText: "OK",
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     dispatch(finishReview());
+    //     Swal.fire({
+    //       title: "Đã xảy ra lỗi, vui lòng thử lại sau",
+    //       icon: "error",
+    //       confirmButtonText: "OK",
+    //     });
+    //   });
+  };
+  
+  function requestReview(id_applicant) {
+    return {
+      type: 'EMPLOYER_FINISH_SELECT_APPLICANT',
+      id_applicant,
+    }
+  };
+  function finishReview() {
+    return {
+      type: 'EMPLOYER_FINISH_SELECT_APPLICANT',
+      id_applicant: null,
+    }
   };
 };
 

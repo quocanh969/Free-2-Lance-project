@@ -22,6 +22,7 @@ class ReportFormConponent extends Component {
 
   render() {
     let { selectedReportType } = this.props.EmployerReducer;
+    let { sendingReport } = this.props.ContactUsReducer;
     return (
       <div className="modal-content">
         <div className="modal-header">
@@ -79,6 +80,7 @@ class ReportFormConponent extends Component {
                   {" "}
                   <i className="icon-material-outline-arrow-right-alt" />
                 </button>
+                
               </div>
             </div>
           </div>

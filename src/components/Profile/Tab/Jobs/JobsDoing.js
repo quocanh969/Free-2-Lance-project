@@ -70,7 +70,7 @@ class JobsDoingComponent extends Component {
 
   renderJobList() {
     let content = [];
-    let { processingJobsList, isLoadingProcessingJobsList } = this.props.EmployerReducer;
+    let { processingJobsList, isLoadingProcessingJobsList, selectedProccessingJobById} = this.props.EmployerReducer;
     if (isLoadingProcessingJobsList) return (<div className="loading" key={1}>
       <div className="spinner-border text-primary my-4" role="status">
         <span className="sr-only">Loading...</span>
@@ -158,33 +158,45 @@ class JobsDoingComponent extends Component {
                 </div>
               </div>
             </div>
-            {/* Buttons */}
-            <div>
-              <button
-                data-toggle="modal"
-                data-target="#doingApplicantsModal"
-                onClick={() => this.showApplicantsList(e.id_job)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i>{" "}
-                Danh sách người tham gia: {e.participants}
-              </button>
-              <span
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => {
-                  history.push(`/job-detail/${e.id_job}`);
-                }}
-              >
-                <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
-              </span>
-              {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
-              <span
-                className="btn mx-2 py-2 px-4 bg-success text-white rounded"
-                onClick={() => this.EndJob(e.id_job, e.title)}
-              >
-                <i className="icon-material-outline-check" /> Hoàn thành công việc
-              </span>
-            </div>
+            {(
+              e.id_job === selectedProccessingJobById
+              ?
+              <div className='text-center w-100'>
+                <div className="loading" key={1}>
+                  <div className="spinner-border text-primary my-2 py-2" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              :
+                <div>
+                  <button
+                    data-toggle="modal"
+                    data-target="#doingApplicantsModal"
+                    onClick={() => this.showApplicantsList(e.id_job)}
+                    className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i>{" "}
+                    Danh sách người tham gia: {e.participants}
+                  </button>
+                  <span
+                    className="btn mx-2 py-2 px-4 bg-silver rounded"
+                    onClick={() => {
+                      history.push(`/job-detail/${e.id_job}`);
+                    }}
+                  >
+                    <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
+                  </span>
+                  {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
+                  <span
+                    className="btn mx-2 py-2 px-4 bg-success text-white rounded"
+                    onClick={() => this.EndJob(e.id_job, e.title)}
+                  >
+                    <i className="icon-material-outline-check" /> Hoàn thành công việc
+                  </span>
+                </div>
+
+            )}
           </li>
         );
       });
