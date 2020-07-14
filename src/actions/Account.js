@@ -1,4 +1,4 @@
-import { editPersonalInfo, getUserInfo, editCompanyInfo } from '../services/account.services';
+import { editPersonalInfo, getUserInfo, editCompanyInfo, checkExpireJobs } from '../services/account.services';
 import Swal from 'sweetalert2';
 
 export const updatePersonalInfo = (personal) => {
@@ -128,6 +128,7 @@ export const updateUserState = () => {
                         company: res.data.data.company,
                     })
                 }
+
             }
             else {
                 Swal.fire({
@@ -150,6 +151,44 @@ export const updateUserState = () => {
         return {
             type: 'LOAD_USER_INFO_FAILURE'
         }
+    }
+}
+
+export const checkExpiredJob = () => {
+    return dispatch => {
+        checkExpireJobs()
+        .then(res => {
+            if(res.data.code === '200') {
+                if(res.data.data.code === 3) {
+                    Swal.fire({
+                        title: 'Các công việc quá hạn',
+                        html: 
+                            'Bạn có công việc đang thực hiện đã đến thời gian kết thúc nên chung tôi đã kết thúc.<br/>'+
+                            'Bạn có công việc đang tuyển đã quá hạn, nếu không có ai ứng tuyển vào thì chúng tôi đã kết thúc, còn lại chúng tôi có hiển thị bên trong trình quản lý đăng việc',                        
+                        icon: 'warning',
+                    })
+                }
+                else if(res.data.data.code === 2) {
+                    Swal.fire({
+                        title: 'Các công việc quá hạn',
+                        html:
+                            'Bạn có công việc đang thực hiện đã đến thời gian kết thúc nên chung tôi đã kết thúc.<br/>',
+                        icon: 'warning',
+                    })
+                }
+                else if(res.data.data.code === 1) {
+                    Swal.fire({
+                        title: 'Các công việc quá hạn',
+                        html:
+                            'Bạn có công việc đang tuyển đã quá hạn, nếu không có ai ứng tuyển vào thì chúng tôi đã kết thúc, còn lại chúng tôi có hiển thị bên trong trình quản lý công việc',
+                        icon: 'warning',
+                    })
+                }
+                else {
+                    // do nothing
+                }
+            }
+        })
     }
 }
 

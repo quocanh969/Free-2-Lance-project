@@ -114,13 +114,13 @@ function getEmployerDetail(id) {
   return axios.get("/getUserInfoNotPrivate/" + id);
 }
 
-function doApplyJob(id_user, id_job, proposed_price, attachment) {
+function doApplyJob(id_user, id_job, proposed_price, attachment, introductionText) {
   return axios.post("/applicants/addApplicant", {
     id_user,
     id_job,
     proposed_price,
     attachment,
-    introduction_string: '',
+    introduction_string: introductionText,
   });
 }
 //#endregion Job detail
@@ -128,6 +128,12 @@ function doApplyJob(id_user, id_job, proposed_price, attachment) {
 //#region dashboard job for employer
 function doCancelRecruit(id_job) {
   return axios.post("/jobs/cancelRecruit", {
+    id_job,
+  });
+}
+
+function doRemoveJob(id_job) {
+  return axios.post("/jobs/removeJob", {
     id_job,
   });
 }
@@ -247,6 +253,7 @@ export {
   getEmployerDetail,
   getSimilarJobs,
   doCancelRecruit,
+  doRemoveJob,
   getApplicantsByJobId,
   doSendAcceptApplicant,
   doSendRejectApplicant,

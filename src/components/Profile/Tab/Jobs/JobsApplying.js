@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import {
   loadApplyingJobsForEmployer,
   cancelRecruit,
+  removeJob,
   selectJobApplying,
   loadApplyingApplicantsForEmployer,
 } from "../../../../actions/Job";
@@ -62,6 +63,25 @@ class JobsApplyingComponent extends Component {
     });
   }
 
+  removeJob(jobId) {
+    Swal.fire({
+      title: "Bạn có chắc muốn gỡ bỏ công việc và các ứng viên?",
+      text: "Công việc sẽ chuyển qua trạng thái 'Bị gỡ' và",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ok, tôi đồng ý",
+      cancelButtonText: "Hủy bỏ",
+    }).then((result) => {
+      if (result.value) {
+        let { onRemoveApplyingJob } = this.props;
+        let { currentApplyingPage } = this.props.EmployerReducer;
+        onRemoveApplyingJob(jobId, currentApplyingPage, 4, 0);
+      }
+    });
+  }
+
   showApplicantsList(jobId, title, number) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
     onSelectJobApplying(jobId, title, number);
@@ -69,7 +89,7 @@ class JobsApplyingComponent extends Component {
   }
 
   generateListJobs() {
-    let { applyingJobsList, isLoadingApplyingJobsList } = this.props.EmployerReducer;
+    let { applyingJobsList, isLoadingApplyingJobsList, selectedApplyingJobById } = this.props.EmployerReducer;
     let content = [];
     if (isLoadingApplyingJobsList) return (<div className="loading" key={1}>
       <div className="spinner-border text-primary my-4" role="status">
@@ -80,7 +100,7 @@ class JobsApplyingComponent extends Component {
     if (applyingJobsList.length > 0) {
       applyingJobsList.forEach((e, index) => {
         content.push(
-          <li key={index}>
+          <li key={index} className={e.id_status === 4 ? 'border border-danger' : ''}>
             {/* Job Listing */}
             <div className="job-listing">
               {/* Job Listing Details */}
@@ -194,32 +214,66 @@ class JobsApplyingComponent extends Component {
               </div>
             </div>
             {/* Buttons */}
-            <div>
-              <button
-                data-toggle="modal"
-                data-target="#applyingApplicantsModal"
-                onClick={() => this.showApplicantsList(e.id_job, e.title, e.vacancy - e.participants)}
-                className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Ứng
-                viên đăng ký: {e.candidates}
-              </button>
-              <span
-                className="btn m-2 py-2 px-4 bg-silver rounded"
-                onClick={() => {
-                  history.push(`/job-detail/${e.id_job}`);
-                }}
-              >
-                <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
-              </span>
-              {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
-              <span
-                onClick={() => this.StopRecuit(e.id_job)}
-                className="btn m-2 py-2 px-4 bg-success text-white rounded"
-              >
-                <i className="icon-material-outline-check" /> Bắt đầu công việc
-              </span>
-            </div>
+            {(
+              e.id_status === 4
+                ?
+                <div className='font-weight-bold text-danger'>Công việc đã quá hạn nhưng vẫn còn các trường hợp người dùng ứng tuyển</div>
+                :
+                ''
+            )}
+            {(
+              e.id_job === selectedApplyingJobById
+                ?
+                <div className='text-center my-2 w-100'>
+                  <div className="loading" key={1}>
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+                
+                :
+                <div>
+                  <button
+                    data-toggle="modal"
+                    data-target="#applyingApplicantsModal"
+                    onClick={() => this.showApplicantsList(e.id_job, e.title, e.vacancy - e.participants)}
+                    className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Ứng viên đăng ký: {e.candidates}
+                  </button>
+                  <span
+                    className="btn m-2 py-2 px-4 bg-silver rounded"
+                    onClick={() => {
+                      history.push(`/job-detail/${e.id_job}`);
+                    }}
+                  >
+                    <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
+                  </span>
+                  {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
+                  <span
+                    onClick={() => this.StopRecuit(e.id_job)}
+                    className="btn m-2 py-2 px-4 bg-success text-white rounded"
+                  >
+                    <i className="icon-material-outline-check" /> Bắt đầu công việc
+                  </span>
+                  {(
+                    e.id_status === 4
+                      ?
+                      <span
+                        onClick={() => this.removeJob(e.id_job)}
+                        className="btn m-2 py-2 px-4 bg-danger text-white rounded"
+                      >
+                        <i className="icon-line-awesome-hand-stop-o" /> Kết thúc công việc
+                </span>
+                      :
+                      ''
+                  )}
+
+                </div>
+
+            )}
+
           </li>
         );
       });
@@ -370,6 +424,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onCancelRecruit: (jobId, page, take, isASC) => {
       dispatch(cancelRecruit(jobId, page, take, isASC));
+    },
+    onRemoveApplyingJob: (jobId, page, take, isASC) => {
+      dispatch(removeJob(jobId, page, take, isASC));
     },
     onSelectJobApplying: (jobId, title, number) => {
       dispatch(selectJobApplying(jobId, title, number));

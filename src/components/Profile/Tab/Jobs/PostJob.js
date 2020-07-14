@@ -241,6 +241,7 @@ class PostJobComponent extends Component {
   }
 
   render() {
+    let {sending} = this.props.AddJobReducer;
     return (
       <div className="dashboard-content-inner">
         {/* Dashboard Headline */}
@@ -630,12 +631,25 @@ class PostJobComponent extends Component {
           </div>
           <div className="col-xl-12">
             {/* <a href="#" className="button ripple-effect big margin-top-30" onClick={this.onSubmit}><i className="icon-feather-plus" /> Post a Job</a> */}
-            <button
-              className="button ripple-effect big margin-top-30"
-              onClick={this.onSubmit}
-            >
-              Đăng việc
-            </button>
+            {(
+              sending
+              ?
+              <div className='text-center'>
+                <div className="loading">
+                  <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              :
+              <button
+                className="button ripple-effect big margin-top-30"
+                onClick={this.onSubmit}
+              >
+                Đăng việc
+              </button>
+            )}
+            
           </div>
         </div>
         {/* Row / End */}

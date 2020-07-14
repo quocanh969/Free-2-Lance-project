@@ -55,7 +55,8 @@ class ApplyFormConponent extends Component {
   applyJob(e) {
     e.preventDefault();
 
-    let selectedFile = document.getElementById("upload-cv").files[0];
+    let introductionText = document.getElementById('introduction-text').value;
+    let selectedFile = document.getElementById("upload-cv").files[0];    
     // get base64 of selectedFile
 
     if (selectedFile) {
@@ -67,6 +68,7 @@ class ApplyFormConponent extends Component {
         let proposed_price = jobDetail.dealable
           ? this.state.proposed_price
           : jobDetail.salary;
+        
         if (proposed_price < jobDetail.salary / 2) {
           Swal.fire({
             title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
@@ -88,7 +90,8 @@ class ApplyFormConponent extends Component {
             user.id_user,
             jobDetail.id_job,
             proposed_price,
-            fileInBase64
+            fileInBase64,
+            introductionText
           );
         }
       });
@@ -126,6 +129,7 @@ class ApplyFormConponent extends Component {
           jobDetail.id_job,
           proposed_price,
           '',
+          introductionText,
         );
       }
     }
@@ -270,6 +274,15 @@ class ApplyFormConponent extends Component {
                       Chỉ được chọn 1 <br /> Dung lượng tốc đa: 50 MB.
                     </span>
                   </div>
+                  <div>
+                    <label className='font-weight-bold'
+                      htmlFor="introduction-text"
+                    >
+                      Tự giới thiệu:
+                    </label>
+                    <textarea class="form-control" id="introduction-text" placeholder="Tự giới thiệu bản thân .." required></textarea>
+                  </div>
+
                   {(
                     this.state.isCVReceive
                       ?
@@ -307,8 +320,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doApplyJob: (id_user, id_job, proposed_price, attachment) => {
-      dispatch(applyJob(id_user, id_job, proposed_price, attachment));
+    doApplyJob: (id_user, id_job, proposed_price, attachment, introductionText) => {
+      dispatch(applyJob(id_user, id_job, proposed_price, attachment, introductionText));
     },
   };
 };

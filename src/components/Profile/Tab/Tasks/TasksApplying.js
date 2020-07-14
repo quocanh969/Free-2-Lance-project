@@ -193,8 +193,7 @@ class TasksApplyingComponent extends Component {
                       onClick={() => this.StopApply(e.id_job)}
                       className="btn mx-2 p-2 bg-danger text-white rounded"
                     >
-                      <i className="icon-line-awesome-hand-stop-o" /> Rút ứng
-                      tuyển
+                      <i className="icon-line-awesome-hand-stop-o" /> Rút ứng tuyển
                     </span>) : ''}
 
                   </div>

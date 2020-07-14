@@ -87,6 +87,11 @@ class JobDetailInfoComponent extends Component {
           <div className="col-3 font-weight-bold">Yêu cầu thêm:</div>
           <div className="col-9">{jobDetail.requirement}</div>
         </div>
+
+        <div className="row mt-3">
+          <div className="col-3 font-weight-bold">Phúc lợi:</div>
+          <div className="col-9">{jobDetail.benefit}</div>
+        </div>
       </div>
     );
   }

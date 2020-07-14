@@ -8,10 +8,14 @@ const initState = {
   selectedApplyingJobId: null,
   selectedApplyingJobTitle: null,
   isLoadingApplicantsList: false,
+  isAcceptingApplicant: false,
   totalNeedApplicants: 0, //Số lượng người cần tuyển
   applicantsList: [],
   totalApplicants: 0,
   currentApplicantsPage: 0,
+
+  selectedApplyingUserId: null,
+  selectedApplyingJobById: null,
   // =====
   isLoadingProcessingJobsList: false,
   processingJobsList: [],
@@ -101,7 +105,6 @@ const EmployerReducer = (state = initState, action) => {
         totalNeedApplicants: action.number,
       };
     case "EMPLOYER_ACCEPT_APPLICANT_SUCCESS":
-      console.log(state.totalNeedApplicants);
       return {
         ...state,
         totalNeedApplicants: state.totalNeedApplicants - 1,
@@ -117,7 +120,18 @@ const EmployerReducer = (state = initState, action) => {
         totalApplicants: 0,
         currentApplicantsPage: 0,
       };
-    // doing job cases
+    case "EMPLOYER_APPLYING_SELECT_USER": 
+      return {
+        ...state,
+        selectedApplyingUserId: action.id_user,
+      };
+    case "EMPLOYER_APPLYING_SELECT_JOB": 
+      return {
+        ...state,
+        selectedApplyingJobById: action.id_job,
+      };
+    
+      // doing job cases
     case "EMPLOYER_PROCESSING_JOBS_UPDATE":
       return {
         ...state,

@@ -18,6 +18,7 @@ import {
   doReviewEmployee,
   doStopApply,
   doReviewEmployer,
+  doRemoveJob,
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
@@ -397,10 +398,10 @@ export const loadSimilarJobs = (jobTopic) => {
   }
 };
 
-export const applyJob = (id_user, id_job, proposed_price, attachment) => {
+export const applyJob = (id_user, id_job, proposed_price, attachment, introductionText) => {
   return (dispatch) => {
     dispatch(loading());
-    doApplyJob(id_user, id_job, proposed_price, attachment)
+    doApplyJob(id_user, id_job, proposed_price, attachment, introductionText)
       .then((res) => {
         dispatch(success());
         //show success
@@ -442,8 +443,10 @@ export const applyJob = (id_user, id_job, proposed_price, attachment) => {
 //#region applying job for employer
 export const cancelRecruit = (jobId, page, take, isASC) => {
   return (dispatch) => {
+    dispatch(request(jobId));
     doCancelRecruit(jobId)
       .then((res) => {
+        dispatch(finishSelect());
         dispatch(loadApplyingJobsForEmployer(page, take, isASC));
         Swal.fire(
           "Thành công!",
@@ -452,9 +455,58 @@ export const cancelRecruit = (jobId, page, take, isASC) => {
         );
       })
       .catch((err) => {
+        dispatch(finishSelect());
         console.log(err);
       });
   };
+  
+  function request(id_job) {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      id_job,
+    }
+  }
+
+  function finishSelect() {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      id_job: null,
+    }
+  }
+};
+
+export const removeJob = (jobId, page, take, isASC) => {
+  return (dispatch) => {
+    dispatch(request(jobId));
+    doRemoveJob(jobId)
+      .then((res) => {
+        dispatch(finishSelect());
+        dispatch(loadApplyingJobsForEmployer(page, take, isASC));
+        Swal.fire(
+          "Thành công!",
+          "Công việc của bạn đã được gỡ",
+          "success"
+        );
+      })
+      .catch((err) => {
+        dispatch(finishSelect());
+        console.log(err);
+      });
+  };
+
+  function request(id_job) {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      id_job,
+    }
+  }
+
+  function finishSelect() {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      id_job: null,
+    }
+  }
 };
 
 export const loadApplyingApplicantsForEmployer = (jobId, page, take) => {
@@ -525,6 +577,7 @@ const GetResultTransactions = (
               dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
               dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
               dispatch(success());
+              dispatch(finishSelect());
               Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
             })
             .catch((err) => {
@@ -548,6 +601,7 @@ const GetResultTransactions = (
         }
       })
       .catch((err) => {
+        dispatch(finishSelect());
         console.log(err);
       });
   };
@@ -555,6 +609,13 @@ const GetResultTransactions = (
     return {
       type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
     };
+  };
+  
+  function finishSelect() {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      id_user: null,
+    }
   }
 };
 
@@ -569,45 +630,62 @@ export const sendAcceptApplicant = (
   take
 ) => {
   return (dispatch) => {
-    doSendAcceptApplicant(jobId, userId, email, job_title)
-      .then((res) => {
-        dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
-        dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
-        dispatch(success());
-        Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    function success() {
-      return {
-        type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
-      };
-    }
-
-    //TODO: enable momo here
-    // doSendtransferMoneyMomoToF2L(applicantId)
+    // doSendAcceptApplicant(jobId, userId, email, job_title)
     //   .then((res) => {
-    //     if (res.data.code == 200) {
-    //       dispatch(
-    //         GetResultTransactions(
-    //           jobId,
-    //           userId,
-    //           email,
-    //           applicantId,
-    //           job_title,
-    //           page,
-    //           jobPage,
-    //           take
-    //         )
-    //       );
-    //       window.open(res.data.data);
-    //     }
+    //     dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
+    //     dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
+    //     dispatch(success());
+    //     Swal.fire("Thành công!", "Đã chấp nhận ứng viên!!", "success");
     //   })
     //   .catch((err) => {
     //     console.log(err);
     //   });
+    // function success() {
+    //   return {
+    //     type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
+    //   };
+    // }
+
+    //TODO: enable momo here
+    dispatch(request(userId));
+    doSendtransferMoneyMomoToF2L(applicantId)
+      .then((res) => {
+        if (res.data.code == 200) {
+          dispatch(
+            GetResultTransactions(
+              jobId,
+              userId,
+              email,
+              applicantId,
+              job_title,
+              page,
+              jobPage,
+              take
+            )
+          );
+          window.open(res.data.data);
+        }
+      })
+      .catch((err) => {
+        dispatch(finishSelect());
+        console.log(err);
+      });
   };
+
+  
+  function request(id_user) {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      id_user,
+    }
+  }
+
+  function finishSelect() {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      id_user: null,
+    }
+  }
 };
 
 export const sendRejectApplicant = (
@@ -618,16 +696,33 @@ export const sendRejectApplicant = (
   take
 ) => {
   return (dispatch) => {
+    dispatch(request(userId));
     doSendRejectApplicant(jobId, userId)
       .then((res) => {
+        dispatch(finishSelect());
         dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));
         dispatch(loadApplyingJobsForEmployer(jobPage, 4, 0));
         Swal.fire("Thành công!", "Đã Từ chối ứng viên!!", "success");
       })
       .catch((err) => {
+        dispatch(finishSelect());
         console.log(err);
       });
   };
+
+  function request(id_user) {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      id_user,
+    }
+  }
+
+  function finishSelect() {
+    return {
+      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      id_user: null,
+    }
+  }
 };
 //#endregion applying job for employer
 

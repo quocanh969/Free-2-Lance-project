@@ -11,7 +11,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import { loadTopics, loadAreas, loadTags } from "../../actions/Home";
 import { loadJobList } from "../../actions/Job";
-import { updateUserState } from "../../actions/Account";
+import { updateUserState, checkExpiredJob } from "../../actions/Account";
 import { history } from "../../ultis/history/history";
 import { getImageSrc } from "../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
@@ -41,11 +41,12 @@ class HeaderComponent extends Component {
   }
 
   componentWillMount() {
-    let { onUpdateUser, onLoadTopics, onLoadAreas, onLoadTags } = this.props;
+    let { onUpdateUser, onCheckExpireJobs, onLoadTopics, onLoadAreas, onLoadTags } = this.props;
 
     // kiêm tra local storage
     if (localStorage.getItem("token")) {
       onUpdateUser();
+      onCheckExpireJobs();
     }
 
     // loadTopics
@@ -925,6 +926,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateUser: () => {
       dispatch(updateUserState());
+    },
+    onCheckExpireJobs: () => {
+      dispatch(checkExpiredJob());
     },
     onLogOut: () => {
       dispatch({

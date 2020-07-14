@@ -105,7 +105,7 @@ class JobsDoneModalComponent extends Component {
   generateApplicantsList() {
     let { doneApplicantsList, isLoadingDoneApplicantsList } = this.props.EmployerReducer;
     let content = [];
-    if (isLoadingDoneApplicantsList) return (<div className="loading" key={1}>
+    if (isLoadingDoneApplicantsList) return (<div className="loading my-2 py-4" key={1}>
       <div className="spinner-border text-primary" role="status">
         <span className="sr-only">Loading...</span>
       </div>

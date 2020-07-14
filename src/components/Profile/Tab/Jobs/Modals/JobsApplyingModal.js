@@ -182,10 +182,10 @@ class JobsApplyingModalComponent extends Component {
   }
 
   generateApplicantsList() {
-    let { applicantsList, isLoadingApplicantsList } = this.props.EmployerReducer;
+    let { applicantsList, isLoadingApplicantsList, selectedApplyingUserId } = this.props.EmployerReducer;
     let content = [];
-    if (isLoadingApplicantsList) return (<div className="loading" key={1}>
-      <div className="spinner-border text-primary" role="status">
+    if (isLoadingApplicantsList) return (<div className="loading my-2 py-4" key={1}>
+      <div className="spinner-border text-primary " role="status">
         <span className="sr-only">Loading...</span>
       </div>
     </div>);
@@ -211,7 +211,7 @@ class JobsApplyingModalComponent extends Component {
                       <span className="font-weight-bold">Đã làm: </span>
                       {e.employee_job} công việc
                     </div>
-                    
+
                   </div>
                   <div className="col-xl-4">
                     <div style={{ width: "80vh" }} className="text-truncate">
@@ -234,7 +234,7 @@ class JobsApplyingModalComponent extends Component {
                       />
                     </div>
                   </div>
-                
+
                 </div>
                 <div style={{ width: '450px' }} className="text-truncate">
                   <span className="font-weight-bold">Tự giới thiệu: </span>
@@ -243,47 +243,59 @@ class JobsApplyingModalComponent extends Component {
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="container text-right" style={{ marginTop: "10px" }}>
-              <span
-                onClick={() =>
-                  this.acceptApplicant(e.id_user, e.email, e.id_applicant)
-                }
-                className="btn m-2 py-2 px-4 bg-success text-white rounded"
-              >
-                <i className="icon-material-outline-check-circle"></i> Phê duyệt
-              </span>
-              <span
-                onClick={() => this.viewApplicantInfo(e.id_user)}
-                className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Xem
-                thông tin
-              </span>
-
-              {(
-                e.attachment === ''
+            {(
+              selectedApplyingUserId === e.id_user
                 ?
-                ''
+                <div className='text-center w-100 my-2'>
+                  <div className="loading my-2 text-center" key={1}>
+                    <div className="spinner-border text-primary " role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>                
                 :
-                <span
-                  data-toggle="modal"
-                  data-target="#CVModal"
-                  className="btn m-2 py-2 px-4 bg-silver rounded"
-                  onClick={() => this.viewApplicantCV(e.attachment)}
-                >
-                  <i className="icon-line-awesome-clone" /> Xem CV
-                </span>
-              )}
-              
+                <div className="container text-right" style={{ marginTop: "10px" }}>
+                  <span
+                    onClick={() =>
+                      this.acceptApplicant(e.id_user, e.email, e.id_applicant)
+                    }
+                    className="btn m-2 py-2 px-4 bg-success text-white rounded"
+                  >
+                    <i className="icon-material-outline-check-circle"></i> Phê duyệt
+                  </span>
+                  <span
+                    onClick={() => this.viewApplicantInfo(e.id_user)}
+                    className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Xem
+                    thông tin
+                  </span>
 
-              <span
-                onClick={() => this.rejectApplicant(e.id_user, e.email)}
-                className="btn m-2 py-2 px-4 bg-danger text-white rounded"
-              >
-                <i className="icon-line-awesome-hand-stop-o" /> Từ chối
-              </span>
-            </div>
+                  {(
+                    e.attachment === ''
+                      ?
+                      ''
+                      :
+                      <span
+                        data-toggle="modal"
+                        data-target="#CVModal"
+                        className="btn m-2 py-2 px-4 bg-silver rounded"
+                        onClick={() => this.viewApplicantCV(e.attachment)}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem CV
+                      </span>
+                  )}
+
+
+                  <span
+                    onClick={() => this.rejectApplicant(e.id_user, e.email)}
+                    className="btn m-2 py-2 px-4 bg-danger text-white rounded"
+                  >
+                    <i className="icon-line-awesome-hand-stop-o" /> Từ chối
+                  </span>
+                </div>
+            )}
+
           </li>
         );
       });
