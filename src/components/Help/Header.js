@@ -160,18 +160,6 @@ class HeaderComponent extends Component {
     // window.location.replace('/login');
   }
 
-  // handleTopicNavClick(e, topic) {
-  //   let currentTopic = Number.parseInt(this.props.match.params.job_topic);
-  //   console.log(currentTopic);
-  //   console.log(topic);
-  //   if (currentTopic !== topic) {
-  //     let { onLoadJobByTopic } = this.props;
-  //     onLoadJobByTopic({ job_topic: topic });
-  //   } else {
-  //     e.preventDefault();
-  //   }
-  // }
-
   sendReadNotfication = async () => {
     const { email } = this.state;
     if (email) {
@@ -430,11 +418,11 @@ class HeaderComponent extends Component {
     if (notice) {
       switch (notice.type) {
         case 0: {
-          history.push('/job-detail' + notice.id_job);
+          history.push('/job-detail/' + notice.id_job);
           return;
         }
         case 1: {
-          history.push('/job-detail' + notice.id_job);
+          history.push('/job-detail/' + notice.id_job);
           return;
         }
         case 2: {
@@ -450,7 +438,7 @@ class HeaderComponent extends Component {
           return;
         }
         case 6: {
-          history.push('/job-detail' + notice.id_job);
+          history.push('/job-detail/' + notice.id_job);
           return;
         }
         case 7: {
@@ -519,7 +507,7 @@ class HeaderComponent extends Component {
           return;
         }
         case 14: {
-          history.push('/job-detail' + notice.id_job);
+          history.push('/job-detail/' + notice.id_job);
           return;
         }
         case 15: {
@@ -535,7 +523,7 @@ class HeaderComponent extends Component {
           return;
         }
         case 18: {
-          history.push('/job-detail' + notice.id_job);
+          history.push('/job-detail/' + notice.id_job);
           return;
         }
         case 19: {
@@ -547,7 +535,7 @@ class HeaderComponent extends Component {
                       Bạn đã bị ngưng dịch vụ làm thuê trong công việc
                       &nbsp;<span class='font-weight-bold'>${notice.job}</span>
                       &nbsp;và bị trừ đi
-                      &nbsp;<span class='font-weight-bold'>${notice.refundPercentage}</span>% số tiền trong thỏa thuận
+                      &nbsp;<span class='font-weight-bold'>${notice.leftover}</span>% số tiền trong thỏa thuận
                     </div>
                     <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
                       *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
@@ -656,7 +644,8 @@ class HeaderComponent extends Component {
 
   renderUserLoginContent(user) {
     let userAvatar = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
-    const { isReadNotify, unreadMessage } = this.state;
+    let {isReadNotify} = this.props.HeaderReducer;
+    const { unreadMessage } = this.state;
     // console.log("isReadNotify:", isReadNotify);
     return (
       <ul className="navbar-nav ml-auto">
