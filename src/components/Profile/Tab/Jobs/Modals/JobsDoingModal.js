@@ -87,7 +87,8 @@ class JobsDoingModalComponent extends Component {
   }
 
   generateApplicantsList() {
-    let { doingApplicantsList, isLoadingDoingApplicantsList, selectedProccessingApplicantId } = this.props.EmployerReducer;
+    let { doingApplicantsList, isLoadingDoingApplicantsList } = this.props.EmployerReducer;
+    let { reportApplicantId } = this.props.ContactUsReducer;
     let content = [];
     if (isLoadingDoingApplicantsList) return (<div className="loading my-2 py-4" key={1}>
       <div className="spinner-border text-primary" role="status">
@@ -128,7 +129,7 @@ class JobsDoingModalComponent extends Component {
             </div>
 
             {(
-              e.id_applicant === selectedProccessingApplicantId
+              e.id_applicant === reportApplicantId
               ?
               <div className='text-center w-100'>
                 <div className="loading" key={1}>

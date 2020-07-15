@@ -131,6 +131,9 @@ class TransactionComponent extends Component {
                 <div className="dashboard-headline">
                     <h3>Danh sách các nguồn thu từ công việc</h3>
                 </div>
+                <h4 className='text-danger font-weight-bold'>
+                    Bạn chỉ có thể nhậnn thanh toán cho giao dịch cách 3 ngày từ ngày kết thúc thực tế.
+                </h4>
                 <p>
                     ( Vui lòng đến trung tâm CSKH của Free2Lance để có thể rút tiền công )
                 </p>

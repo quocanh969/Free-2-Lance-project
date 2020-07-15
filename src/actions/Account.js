@@ -163,7 +163,7 @@ export const checkExpiredJob = () => {
                     Swal.fire({
                         title: 'Các công việc quá hạn',
                         html: 
-                            'Bạn có công việc đang thực hiện đã đến thời gian kết thúc nên chung tôi đã kết thúc.<br/>'+
+                            'Bạn có công việc đang thực hiện nhưng không có người làm, vì vậy chúng tôi đã gỡ bỏ<br/>'+
                             'Bạn có công việc đang tuyển đã quá hạn, nếu không có ai ứng tuyển vào thì chúng tôi đã kết thúc, còn lại chúng tôi có hiển thị bên trong trình quản lý đăng việc',                        
                         icon: 'warning',
                     })
@@ -172,7 +172,7 @@ export const checkExpiredJob = () => {
                     Swal.fire({
                         title: 'Các công việc quá hạn',
                         html:
-                            'Bạn có công việc đang thực hiện đã đến thời gian kết thúc nên chung tôi đã kết thúc.<br/>',
+                            'Bạn có công việc đang thực hiện nhưng không có người làm, vì vậy chúng tôi đã gỡ bỏ.<br/>',
                         icon: 'warning',
                     })
                 }

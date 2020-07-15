@@ -1,13 +1,19 @@
 const initState = {
-    sendingReport: false,
+    reportApplicantId: null,
+    reviewApplicantId: null,
 }
 
 const ContactUsReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'REPORT_UPDATE_SENDING':
+        case 'REPORT_SELECT_APPLICANT':
             return {
                 ...state,
-                sendingReport: action.status,
+                reportApplicantId: action.id_applicant,
+            }
+        case 'REVIEW_SELECT_APPLICANT':
+            return {
+                ...state,
+                reviewApplicantId: action.id_applicant,
             }
         default:
             return state

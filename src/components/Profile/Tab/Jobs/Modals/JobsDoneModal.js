@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadDoneApplicantsForEmployer, selectReviewUser } from "../../../../../actions/Job";
+import { loadDoneApplicantsForEmployer, selectReviewUser, selectReportedUser } from "../../../../../actions/Job";
 import {
   prettierNumber,
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
 import ReviewForm from "./ReviewForm";
+import ReportForm from "./ReportForm";
 export const takenDoneApplicantsPerPage = 3;
 class JobsDoneModalComponent extends Component {
   componentDidMount() {
@@ -97,13 +98,20 @@ class JobsDoneModalComponent extends Component {
     window.open(url);
   }
 
+  reportEmployee(userId, applicantId) {
+    let { onSelectReportedUser } = this.props;
+    let { selectedDoneJobId } = this.props.EmployerReducer;
+    onSelectReportedUser(userId, applicantId, selectedDoneJobId);
+  }
+
   reviewEmployee(applicantId) {
     let { onSelectReviewUser } = this.props;
     onSelectReviewUser(applicantId);
   }
 
   generateApplicantsList() {
-    let { doneApplicantsList, isLoadingDoneApplicantsList, selectedFinishApplicantId } = this.props.EmployerReducer;
+    let { doneApplicantsList, isLoadingDoneApplicantsList } = this.props.EmployerReducer;
+    let {reviewApplicantId, reportApplicantId} = this.props.ContactUsReducer;
     let content = [];
     if (isLoadingDoneApplicantsList) return (<div className="loading my-2 py-4" key={1}>
       <div className="spinner-border text-primary" role="status">
@@ -144,7 +152,7 @@ class JobsDoneModalComponent extends Component {
             </div>
 
             {(
-              e.id_applicant === selectedFinishApplicantId
+              e.id_applicant === reviewApplicantId || e.id_applicant === reportApplicantId
               ?
               <div className='text-center w-100'>
                 <div className="loading" key={1}>
@@ -155,6 +163,14 @@ class JobsDoneModalComponent extends Component {
               </div>
               :
                 <div className="container text-right" style={{ marginTop: "10px" }}>
+                  <span
+                    data-toggle="modal"
+                    data-target="#reportModal"
+                    onClick={() => this.reportEmployee(e.id_user, e.id_applicant)}
+                    className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
+                  >
+                    <i className="icon-line-awesome-warning" /> Báo cáo
+                  </span>
                   <span
                     data-toggle="modal"
                     data-target="#reviewModal"
@@ -297,6 +313,11 @@ class JobsDoneModalComponent extends Component {
         <div id="CVModal" className="modal fade" role="dialog">
           <div id="cv-modal-dialog" className="modal-dialog modal-xl"></div>
         </div>
+        <div id="reportModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <ReportForm></ReportForm>
+          </div>
+        </div>
         <div id="reviewModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
             <ReviewForm></ReviewForm>
@@ -317,6 +338,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadDoneApplicantsForEmployer(jobId, page, take));
+    },
+    onSelectReportedUser: (userId, applicantId, jobId) => {
+      dispatch(selectReportedUser(userId, applicantId, jobId));
     },
     onSelectReviewUser: (applicantId) => {
       dispatch(selectReviewUser(applicantId));

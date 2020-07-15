@@ -61,7 +61,7 @@ class TasksApplyingComponent extends Component {
   }
 
   renderJobList() {
-    let { applyingTasksList, isLoadingApplyingTasksList } = this.props.ApplicantReducer;
+    let { applyingTasksList, isLoadingApplyingTasksList, selectApplyingTaskId} = this.props.ApplicantReducer;
     let content = [];
     if (isLoadingApplyingTasksList) return (<div className="loading" key={1}>
       <div className="spinner-border text-primary my-4" role="status">
@@ -175,28 +175,44 @@ class TasksApplyingComponent extends Component {
                         </div>
                       </div>
                     )}
-                  <div className="mt-3">
-                    {/* <span className="btn mx-2 p-2 bg-293FE4 text-white rounded">
-                      <i className="icon-feather-refresh-ccw"></i> Cập nhật
-                      thông tin
-                    </span> */}
-                    <span
-                      className="btn mx-2 p-2 bg-silver rounded"
-                      onClick={() => {
-                        history.push(`/job-detail/${e.id_job}`);
-                      }}
-                    >
-                      <i className="icon-line-awesome-clone" /> Xem chi tiết
-                      công việc
-                    </span>
-                    {e.applicant_status == 0 ? (<span
-                      onClick={() => this.StopApply(e.id_job)}
-                      className="btn mx-2 p-2 bg-danger text-white rounded"
-                    >
-                      <i className="icon-line-awesome-hand-stop-o" /> Rút ứng tuyển
-                    </span>) : ''}
+                  
+                  {(
+                    e.id_job === selectApplyingTaskId
+                    ?
+                    <div className='text-center w-100 my-2'>
+                      <div className="loading my-2 text-center" key={1}>
+                        <div className="spinner-border text-primary " role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div> 
+                    :
+                    <div className="mt-3">
+                      {/* <span className="btn mx-2 p-2 bg-293FE4 text-white rounded">
+                        <i className="icon-feather-refresh-ccw"></i> Cập nhật
+                        thông tin
+                      </span> */}
+                      <span
+                        className="btn mx-2 p-2 bg-silver rounded"
+                        onClick={() => {
+                          history.push(`/job-detail/${e.id_job}`);
+                        }}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem chi tiết
+                        công việc
+                      </span>
+                      {e.applicant_status == 0 ? (<span
+                        onClick={() => this.StopApply(e.id_job)}
+                        className="btn mx-2 p-2 bg-danger text-white rounded"
+                      >
+                        <i className="icon-line-awesome-hand-stop-o" /> Rút ứng tuyển
+                      </span>) : ''}
 
-                  </div>
+                    </div>
+                
+                  )}
+
+                  
                 </div>
               </div>
             </div>

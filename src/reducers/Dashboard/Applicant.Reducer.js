@@ -4,6 +4,8 @@ const initState = {
   applyingTasksList: [],
   totalApplyingTasks: 0,
   currentApplyingPage: 0,
+
+  selectApplyingTaskId: null,
   // =====
   isLoadingProcessingTasksList: false,
   processingTasksList: [],
@@ -51,6 +53,13 @@ const ApplicantReducer = (state = initState, action) => {
         totalApplyingTasks: 0,
         currentApplyingPage: 0,
       };
+    case "APPLICANT_APPLYING_SELECT_JOB": 
+      return {
+        ...state,
+        selectApplyingTaskId: action.id_job,
+      };
+// ===========================================================================================
+
     case "APPLICANT_PROCESSING_TASK_UPDATE":
       return {
         ...state,
@@ -76,6 +85,7 @@ const ApplicantReducer = (state = initState, action) => {
         totalProcessingTasks: 0,
         currentProcessingPage: 0,
       };
+  // ===========================================================================================
     case "APPLICANT_FINISHED_TASK_UPDATE":
       return {
         ...state,

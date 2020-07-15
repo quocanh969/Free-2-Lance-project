@@ -571,7 +571,7 @@ class HeaderComponent extends Component {
                       &nbsp;<span class='font-weight-bold'>${notice.job}</span>.
                     </div>
                     <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
-                      *Vui lòng gửi các thông tin, hình ảnh chứng thức giúp bảo vệ bạn đến email: free2lance2020@gmail.com để hổ trợ quản lý giải quyết vấn đề.
+                      *Vui lòng gửi các thông tin, hình ảnh chứng thực giúp bảo vệ bạn đến email: free2lance2020@gmail.com để hổ trợ quản lý giải quyết vấn đề.
                     </div>
                 </div>`,
             showCloseButton: true,

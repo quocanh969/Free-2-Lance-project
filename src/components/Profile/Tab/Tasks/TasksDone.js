@@ -62,6 +62,7 @@ class TasksDoneComponent extends Component {
 
   renderJobList() {
     let { finishedTasksList, isLoadingFinishedTasksList } = this.props.ApplicantReducer;
+    let { reportApplicantId, reviewApplicantId } = this.props.ContactUsReducer;
     let content = [];
     if (isLoadingFinishedTasksList) return (<div className="loading" key={1}>
       <div className="spinner-border text-primary my-4" role="status">
@@ -167,47 +168,61 @@ class TasksDoneComponent extends Component {
                       </div>
                     )}
                   {/* <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span> */}
-                  <div
-                    className="btn mt-3 p-2 bg-silver rounded w-100"
-                    onClick={() => {
-                      history.push(`/job-detail/${e.id_job}`);
-                    }}
-                  >
-                    <i className="icon-line-awesome-clone" /> Xem chi tiết công
-                    việc
-                  </div>
+                  {(
+                    e.id_applicant === reviewApplicantId || e.id_applicant === reportApplicantId
+                    ?
+                    <div className='text-center w-100 my-2'>
+                      <div className="loading my-2 text-center" key={1}>
+                        <div className="spinner-border text-primary " role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div> 
+                    :
+                    <div>
+                      <div
+                        className="btn mt-3 p-2 bg-silver rounded w-100"
+                        onClick={() => {
+                          history.push(`/job-detail/${e.id_job}`);
+                        }}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
+                      </div>
 
-                  <div className="mt-2 row">
-                    <span
-                      data-toggle="modal"
-                      data-target="#reviewFromEmployerModal"
-                      onClick={() => this.loadReview(e.id_job)}
-                      className="btn col mx-2 p-2 bg-primary text-white rounded"
-                    >
-                      <i className="icon-material-outline-rate-review" /> Xem
-                      phản hồi
-                    </span>
-                    <span
-                      data-toggle="modal"
-                      data-target="#reviewEmployerModal"
-                      onClick={() =>
-                        this.reviewEmployer(e.id_applicant, e.id_job)
-                      }
-                      className="btn col mx-2 p-2 bg-warning rounded"
-                    >
-                      <i className="icon-material-outline-speaker-notes" /> Viết
-                      nhận xét
-                    </span>
-                    <span
-                      data-toggle="modal"
-                      data-target="#reportEmployerModal"
-                      onClick={() => this.reportEmployer(e.employer, e.id_applicant, e.id_job)}
-                      className="btn col mx-2 p-2 bg-danger text-white rounded"
-                    >
-                      <i className="icon-line-awesome-warning" /> Báo cáo người
-                      thuê
-                    </span>
-                  </div>
+                      <div className="mt-2 row">
+                        <span
+                          data-toggle="modal"
+                          data-target="#reviewFromEmployerModal"
+                          onClick={() => this.loadReview(e.id_job)}
+                          className="btn col mx-2 p-2 bg-primary text-white rounded"
+                        >
+                          <i className="icon-material-outline-rate-review" /> Xem
+                        phản hồi
+                        </span>
+                        <span
+                          data-toggle="modal"
+                          data-target="#reviewEmployerModal"
+                          onClick={() =>
+                            this.reviewEmployer(e.id_applicant, e.id_job)
+                          }
+                          className="btn col mx-2 p-2 bg-warning rounded"
+                        >
+                          <i className="icon-material-outline-speaker-notes" /> Viết
+                        nhận xét
+                        </span>
+                        <span
+                          data-toggle="modal"
+                          data-target="#reportEmployerModal"
+                          onClick={() => this.reportEmployer(e.employer, e.id_applicant, e.id_job)}
+                          className="btn col mx-2 p-2 bg-danger text-white rounded"
+                        >
+                          <i className="icon-line-awesome-warning" /> Báo cáo người
+                        thuê
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
                 </div>
               </div>
             </div>

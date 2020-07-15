@@ -247,7 +247,10 @@ class JobDetailComponent extends Component {
       isAccepted = jobDetail.dealers.filter(e=>{return e.id_user === user.id_user});
     }
     
-    if(isAccepted.length > 0 && isAccepted[0].id_status === 1) {
+    if(jobDetail && jobDetail.id_status !== 1) {
+      return [];
+    }
+    else if(isAccepted.length > 0 && isAccepted[0].id_status === 1) {
       return (
         <div className='btn mb-2 py-2 font-size-bold text-light w-100 bg-293FE4' style={{fontSize: '20px'}}>Bạn đã được nhận</div>
       )
