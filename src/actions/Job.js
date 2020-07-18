@@ -398,7 +398,13 @@ export const loadSimilarJobs = (jobTopic) => {
   }
 };
 
-export const applyJob = (id_user, id_job, proposed_price, attachment, introductionText) => {
+export const applyJob = (
+  id_user,
+  id_job,
+  proposed_price,
+  attachment,
+  introductionText
+) => {
   return (dispatch) => {
     dispatch(loading());
     doApplyJob(id_user, id_job, proposed_price, attachment, introductionText)
@@ -422,6 +428,7 @@ export const applyJob = (id_user, id_job, proposed_price, attachment, introducti
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure());
         //show error;
         Swal.fire({
           title: "Đã xảy ra lỗi, vui lòng thử lại sau",
@@ -438,6 +445,12 @@ export const applyJob = (id_user, id_job, proposed_price, attachment, introducti
   function loading() {
     return {
       type: "APPLY_JOB_SENDING",
+    };
+  }
+
+  function failure() {
+    return {
+      type: "APPLY_JOB_FAILURE",
     };
   }
 };
@@ -463,19 +476,19 @@ export const cancelRecruit = (jobId, page, take, isASC) => {
         console.log(err);
       });
   };
-  
+
   function request(id_job) {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      type: "EMPLOYER_APPLYING_SELECT_JOB",
       id_job,
-    }
+    };
   }
 
   function finishSelect() {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      type: "EMPLOYER_APPLYING_SELECT_JOB",
       id_job: null,
-    }
+    };
   }
 };
 
@@ -486,11 +499,7 @@ export const removeJob = (jobId, page, take, isASC) => {
       .then((res) => {
         dispatch(finishSelect());
         dispatch(loadApplyingJobsForEmployer(page, take, isASC));
-        Swal.fire(
-          "Thành công!",
-          "Công việc của bạn đã được gỡ",
-          "success"
-        );
+        Swal.fire("Thành công!", "Công việc của bạn đã được gỡ", "success");
       })
       .catch((err) => {
         dispatch(finishSelect());
@@ -500,16 +509,16 @@ export const removeJob = (jobId, page, take, isASC) => {
 
   function request(id_job) {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      type: "EMPLOYER_APPLYING_SELECT_JOB",
       id_job,
-    }
+    };
   }
 
   function finishSelect() {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_JOB',
+      type: "EMPLOYER_APPLYING_SELECT_JOB",
       id_job: null,
-    }
+    };
   }
 };
 
@@ -557,7 +566,7 @@ export const selectJobApplying = (jobId, title, number) => {
     type: "EMPLOYER_SELECT_JOB_APPLYING",
     jobId,
     title,
-    number
+    number,
   };
 };
 
@@ -613,13 +622,13 @@ const GetResultTransactions = (
     return {
       type: "EMPLOYER_ACCEPT_APPLICANT_SUCCESS",
     };
-  };
-  
+  }
+
   function finishSelect() {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      type: "EMPLOYER_APPLYING_SELECT_USER",
       id_user: null,
-    }
+    };
   }
 };
 
@@ -676,29 +685,22 @@ export const sendAcceptApplicant = (
       });
   };
 
-  
   function request(id_user) {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      type: "EMPLOYER_APPLYING_SELECT_USER",
       id_user,
-    }
+    };
   }
 
   function finishSelect() {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      type: "EMPLOYER_APPLYING_SELECT_USER",
       id_user: null,
-    }
+    };
   }
 };
 
-export const sendRejectApplicant = (
-  jobId,
-  userId,
-  page,
-  jobPage,
-  take
-) => {
+export const sendRejectApplicant = (jobId, userId, page, jobPage, take) => {
   return (dispatch) => {
     dispatch(request(userId));
     doSendRejectApplicant(jobId, userId)
@@ -716,16 +718,16 @@ export const sendRejectApplicant = (
 
   function request(id_user) {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      type: "EMPLOYER_APPLYING_SELECT_USER",
       id_user,
-    }
+    };
   }
 
   function finishSelect() {
     return {
-      type: 'EMPLOYER_APPLYING_SELECT_USER',
+      type: "EMPLOYER_APPLYING_SELECT_USER",
       id_user: null,
-    }
+    };
   }
 };
 //#endregion applying job for employer
@@ -738,8 +740,12 @@ export const endJob = (jobId, title, page, take, isASC) => {
       .then((res) => {
         dispatch(finishEndJob());
         dispatch(loadProcessingJobsForEmployer(page, take, isASC));
-        Swal.fire("Thành công!", "Bạn nên đánh giá người làm để tăng tính khách quan !!", "success");
-        history.push('/dashboard/tab=6');
+        Swal.fire(
+          "Thành công!",
+          "Bạn nên đánh giá người làm để tăng tính khách quan !!",
+          "success"
+        );
+        history.push("/dashboard/tab=6");
       })
       .catch((err) => {
         dispatch(finishEndJob());
@@ -749,16 +755,16 @@ export const endJob = (jobId, title, page, take, isASC) => {
 
   function requestEndJob(id_job) {
     return {
-      type: 'EMPLOYER_PROCCESSING_SELECT_JOB',
+      type: "EMPLOYER_PROCCESSING_SELECT_JOB",
       id_job,
-    }
-  };
+    };
+  }
   function finishEndJob() {
     return {
-      type: 'EMPLOYER_PROCCESSING_SELECT_JOB',
+      type: "EMPLOYER_PROCCESSING_SELECT_JOB",
       id_job: null,
-    }
-  };
+    };
+  }
 };
 
 export const loadDoingApplicantsForEmployer = (jobId, page, take) => {
@@ -825,13 +831,21 @@ export const selectFiredUser = (userId, applicantId, jobId) => {
   };
 };
 
-export const reportUser = (id_job, content, reporterId, role, type, applicantId) => {
+export const reportUser = (
+  id_job,
+  content,
+  reporterId,
+  role,
+  type,
+  applicantId
+) => {
   return (dispatch) => {
     dispatch(requestReport(applicantId));
     doReportUser(id_job, content, reporterId, role, type, applicantId)
       .then((res) => {
         dispatch(finishReport());
-        if(res.data.data.code === 1) { // chưa giải quyết, mang ý nghĩa thêm mới - cập nhật
+        if (res.data.data.code === 1) {
+          // chưa giải quyết, mang ý nghĩa thêm mới - cập nhật
           if (type == 0) {
             Swal.fire({
               title: "Báo cáo người dùng thành công",
@@ -839,8 +853,7 @@ export const reportUser = (id_job, content, reporterId, role, type, applicantId)
               icon: "success",
               confirmButtonText: "OK",
             });
-          }
-          else if (type == 1) {
+          } else if (type == 1) {
             Swal.fire({
               title: "Gửi yêu cầu sa thải thành công",
               text: "Vui lòng đợi quản trị viên xử lý",
@@ -848,26 +861,26 @@ export const reportUser = (id_job, content, reporterId, role, type, applicantId)
               confirmButtonText: "OK",
             });
           }
-        }
-        else { // đã giải quyết
+        } else {
+          // đã giải quyết
           if (type === 0) {
             Swal.fire({
               title: "Báo cáo này đã được xử lý, không thể cập nhật lại",
-              text: "Vui lòng liên lạc free2lance2020@gmail.com để biết thêm thông tin",
+              text:
+                "Vui lòng liên lạc free2lance2020@gmail.com để biết thêm thông tin",
               icon: "error",
               confirmButtonText: "OK",
             });
-          }
-          else if (type === 1) {
+          } else if (type === 1) {
             Swal.fire({
               title: "Yêu cầu này đã được xử lý, không thể cập nhật lại",
-              text: "Vui lòng liên lạc free2lance2020@gmail.com để biết thêm thông tin",
+              text:
+                "Vui lòng liên lạc free2lance2020@gmail.com để biết thêm thông tin",
               icon: "error",
               confirmButtonText: "OK",
             });
           }
         }
-        
       })
       .catch((err) => {
         dispatch(finishReport());
@@ -882,15 +895,15 @@ export const reportUser = (id_job, content, reporterId, role, type, applicantId)
 
   function requestReport(applicantId) {
     return {
-      type: 'REPORT_SELECT_APPLICANT',
+      type: "REPORT_SELECT_APPLICANT",
       id_applicant: applicantId,
-    }
+    };
   }
   function finishReport() {
     return {
-      type: 'REPORT_SELECT_APPLICANT',
+      type: "REPORT_SELECT_APPLICANT",
       id_user: null,
-    }
+    };
   }
 };
 //#endregion doing job for employer
@@ -990,21 +1003,20 @@ export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
     doReviewEmployee(applicantId, jobId, feedback, rating)
       .then((res) => {
         dispatch(finishReview());
-        if(res.data.data.code === 1) {
+        if (res.data.data.code === 1) {
           Swal.fire({
             title: "Đánh giá người làm thành công",
             icon: "success",
             confirmButtonText: "OK",
           });
-        }
-        else {
+        } else {
           Swal.fire({
             title: "Bạn không thể đánh giá tiếp tục",
-            text: 'Người dùng này đã được bạn đánh giá',
+            text: "Người dùng này đã được bạn đánh giá",
             icon: "error",
             confirmButtonText: "OK",
           });
-        }        
+        }
       })
       .catch((err) => {
         dispatch(finishReview());
@@ -1018,16 +1030,16 @@ export const reviewEmployee = (applicantId, jobId, feedback, rating) => {
 
   function requestReview(id_applicant) {
     return {
-      type: 'REVIEW_SELECT_APPLICANT',
+      type: "REVIEW_SELECT_APPLICANT",
       id_applicant,
-    }
-  };
+    };
+  }
   function finishReview() {
     return {
-      type: 'REVIEW_SELECT_APPLICANT',
+      type: "REVIEW_SELECT_APPLICANT",
       id_applicant: null,
-    }
-  };
+    };
+  }
 };
 //#endregion done job for employer
 
@@ -1052,16 +1064,16 @@ export const stopApply = (userId, jobId, page, take, isASC) => {
   };
   function requestStopApply(id_job) {
     return {
-      type: 'APPLICANT_APPLYING_SELECT_JOB',
+      type: "APPLICANT_APPLYING_SELECT_JOB",
       id_job,
-    }
-  };
+    };
+  }
   function finishStopApply() {
     return {
-      type: 'APPLICANT_APPLYING_SELECT_JOB',
+      type: "APPLICANT_APPLYING_SELECT_JOB",
       id_job: null,
-    }
-  };
+    };
+  }
 };
 
 export const selectReportedEmployer = (userId, applicantId, jobId) => {
@@ -1087,17 +1099,16 @@ export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
     doReviewEmployer(applicantId, jobId, feedback, rating)
       .then((res) => {
         dispatch(finishReview());
-        if(res.data.data.code === 1) {
+        if (res.data.data.code === 1) {
           Swal.fire({
             title: "Đánh giá người thuê thành công",
             icon: "success",
             confirmButtonText: "OK",
           });
-        }
-        else {
+        } else {
           Swal.fire({
             title: "Bạn không thể đánh giá tiếp tục",
-            text: 'Người dùng này đã được bạn đánh giá',
+            text: "Người dùng này đã được bạn đánh giá",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -1112,19 +1123,19 @@ export const reviewEmployer = (applicantId, jobId, feedback, rating) => {
         });
       });
   };
-  
+
   function requestReview(id_applicant) {
     return {
-      type: 'REVIEW_SELECT_APPLICANT',
+      type: "REVIEW_SELECT_APPLICANT",
       id_applicant,
-    }
-  };
+    };
+  }
   function finishReview() {
     return {
-      type: 'REVIEW_SELECT_APPLICANT',
+      type: "REVIEW_SELECT_APPLICANT",
       id_applicant: null,
-    }
-  };
+    };
+  }
 };
 
 export const loadReviewFromEmployer = (jobId) => {
@@ -1132,13 +1143,11 @@ export const loadReviewFromEmployer = (jobId) => {
     dispatch(loading());
     getReviewList(jobId, 1, 9999)
       .then((res) => {
-        dispatch(
-          success(res.data.data.list)
-        );
+        dispatch(success(res.data.data.list));
       })
       .catch((err) => {
         console.log(err);
-        dispatch(failure())
+        dispatch(failure());
       });
   };
 
