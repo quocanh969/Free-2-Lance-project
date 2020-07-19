@@ -11,6 +11,10 @@ class ReportFormConponent extends Component {
     this.reportUser = this.reportUser.bind(this);
   }
 
+  componentWillMount() {
+    
+  }
+
   reportUser(e) {
     e.preventDefault();
     let content = this.refs.content.value;

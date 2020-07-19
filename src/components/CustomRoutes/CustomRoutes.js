@@ -5,6 +5,7 @@ import Footer from '../Help/Footer';
 import axios from '../../ultis/axios/axios.default';
 import { verify } from '../../services/account.services';
 import { MyStore } from '../..';
+import Login from '../Login/Login';
 
 export const SRoute = ({ component: Component, ...rest }) => {
     return (
@@ -48,6 +49,48 @@ export const SRoute = ({ component: Component, ...rest }) => {
     );
 }
 
+export class SingInRoute extends Component {
+    constructor(props) {
+        super(props);
+    }    
+
+    componentWillMount() {
+    }
+
+    render() {
+        let token = JSON.parse(localStorage.getItem('client_token'));
+        const { component: Component, ...rest } = this.props;
+        if (token === null) {
+            return (
+                <Route {...rest} render={
+                    (props) => {                        
+                        return (                        
+                            <div id="wrapper">
+                                <header id="header-container">
+                                    <Header home={false}></Header>
+                                </header>
+                                <div className="clearfix" />
+
+                                <div className='content'>
+                                    <Component {...props}></Component>
+                                </div>
+
+                                <Footer></Footer>
+                            </div>
+                        )                
+                    }
+                }
+                ></Route >
+            )
+        }
+        else {            
+            return (            
+                <Redirect to='/'></Redirect>
+            );
+        }
+    }
+}
+
 export class PrivateRoute extends Component {
     constructor(props) {
         super(props);
@@ -59,6 +102,7 @@ export class PrivateRoute extends Component {
 
     componentWillMount() {
         verify().then(res=>{
+            localStorage.clear();
             this.setState({isLoaded: true, isAuthorized: true});
         }).catch(err=>{
             this.setState({isLoaded: true, isAuthorized: false});

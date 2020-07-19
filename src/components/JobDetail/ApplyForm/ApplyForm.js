@@ -69,14 +69,15 @@ class ApplyFormConponent extends Component {
           ? this.state.proposed_price
           : jobDetail.salary;
         
-        if (proposed_price < jobDetail.salary / 2) {
-          Swal.fire({
-            title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-        else if (proposed_price > jobDetail.salary) {
+        // if (proposed_price < jobDetail.salary / 2) {
+        //   Swal.fire({
+        //     title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
+        //     icon: "error",
+        //     confirmButtonText: "OK",
+        //   });
+        // }
+        // else 
+        if (proposed_price > jobDetail.salary) {
           Swal.fire({
             title: "Lương mong muốn không được lớn hơn " + this.toCurrency(jobDetail.salary),
             icon: "error",

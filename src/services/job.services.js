@@ -3,7 +3,7 @@ import axios from "../ultis/axios/axios.default";
 function postJob(header) {
   // return axios.post('/jobs/addJob', {
   //     headers: {
-  //         "Authorization": "Bearer " + JSON.parse(localStorage.getItem("token")),
+  //         "Authorization": "Bearer " + JSON.parse(localStorage.getItem("client_token")),
   //     },
   //     employer: header.employer,
   //     title: header.title,
@@ -53,7 +53,7 @@ function postJob(header) {
       benefit: header.benefit,
     },
     headers: {
-      Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+      Authorization: "Bearer " + JSON.parse(localStorage.getItem("client_token")),
     },
   });
 }

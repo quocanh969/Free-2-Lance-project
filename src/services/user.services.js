@@ -1,11 +1,7 @@
 import axios from "../ultis/axios/axios.default";
 
-function getUser() {
-  return axios.get("/users/getUser", {
-    headers: {
-      Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
-    },
-  });
+function getUserStatistic() {
+  return axios.get("/users/getUserStatistic");
 }
 
 function getTopUsers() {
@@ -39,4 +35,4 @@ function loadTransactionByUserId(page, take) {
   });
 }
 
-export { getUser, getTopUsers, loadOtherUserDetail, loadReviewByEmployerId, loadReviewByEmployeeId, loadTransactionByUserId};
+export { getUserStatistic, getTopUsers, loadOtherUserDetail, loadReviewByEmployerId, loadReviewByEmployeeId, loadTransactionByUserId};

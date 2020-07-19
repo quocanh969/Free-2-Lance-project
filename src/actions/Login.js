@@ -38,7 +38,7 @@ export const sendLogin = (email, password) => {
         } else {
           // thành công
           
-          localStorage.setItem("token", JSON.stringify(res.data.data.token));
+          localStorage.setItem("client_token", JSON.stringify(res.data.data.token));
           localStorage.setItem("email",email);
           // lấy thông tin user
           getUserInfo().then(res=>{

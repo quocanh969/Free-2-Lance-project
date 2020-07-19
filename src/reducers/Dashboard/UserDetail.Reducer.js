@@ -2,6 +2,10 @@ const initState = {
   userDetail: null,
   isLoadingUserDetail: false,
 
+  numOfJob: null,
+  numOfTask: null,
+  numOfTransaction: null,
+
   jobs: [],
   totalJob: 0,
   currentJobPage: 0,
@@ -91,6 +95,13 @@ const UserDetailReducer = (state = initState, action) => {
       return {
         ...state,
         isLoadingTransactionReview: false,
+      };
+    case "UPDATE_USER_STATISTIC":
+      return {
+        ...state,
+        numOfTask: action.numOfTask,
+        numOfJob: action.numOfJob,
+        numOfTransaction: action.numOfTransaction,
       };
     default:
       return state;

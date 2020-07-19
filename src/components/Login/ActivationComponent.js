@@ -44,7 +44,7 @@ class accountActivationComponent extends Component {
             content.push(
                 <div className="alert alert-login alert-danger" key={1} role="alert">
                     {message} <br></br>
-                    <NavLink to="/requestActivation">Request new activation token?</NavLink>
+                    <NavLink to="/requestActivation">Gửi lại mã mới?</NavLink>
                 </div>
             );
 

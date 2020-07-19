@@ -1,5 +1,6 @@
 import { editPersonalInfo, getUserInfo, editCompanyInfo, checkExpireJobs } from '../services/account.services';
 import Swal from 'sweetalert2';
+import { getUserStatistic } from '../services/user.services';
 
 export const updatePersonalInfo = (personal) => {
     return dispatch => {
@@ -189,6 +190,26 @@ export const checkExpiredJob = () => {
                 }
             }
         })
+    }
+}
+
+export const loadUserStatistic = () => {
+    return dispatch => {
+        getUserStatistic()
+        .then(res => {
+            if(res.data.code === '200') {
+                dispatch(finish(res.data.data.numOfTask, res.data.data.numOfJob, res.data.data.numOfTransaction))
+            }
+        })
+    }
+
+    function finish(numOfTask, numOfJob, numOfTransaction) {
+        return {
+            type: 'UPDATE_USER_STATISTIC',
+            numOfTask,
+            numOfJob,
+            numOfTransaction,
+        }
     }
 }
 

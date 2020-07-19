@@ -25,7 +25,7 @@ class HeaderComponent extends Component {
       isTopicHover: false,
       isCurrentTop: false,
 
-      email: localStorage.getItem("item"),
+      email: localStorage.getItem("email"),
 
       isReadNotify: true,
       notifications: [],
@@ -44,7 +44,7 @@ class HeaderComponent extends Component {
     let { onUpdateUser, onCheckExpireJobs, onLoadTopics, onLoadAreas, onLoadTags } = this.props;
 
     // kiêm tra local storage
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("client_token")) {
       onUpdateUser();
       onCheckExpireJobs();
     }

@@ -260,7 +260,6 @@ class HomeComponent extends Component {
             <img src={getImageSrc(e.img, UserAvatarPlaceholder)} alt=""></img>
             <div className="photo-box-content">
               <h3>{e.name}</h3>
-              <span>{e.count}</span>
             </div>
           </NavLink>
         </div>
