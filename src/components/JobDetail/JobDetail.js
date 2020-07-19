@@ -65,6 +65,12 @@ class JobDetailComponent extends Component {
       window.scrollTo(0, 0);
     }
   }
+  
+  searchByTag(tag_name) {
+    history.push('/job-list', {
+      tags: [tag_name],
+    })
+  }
 
   renderLogo(images) {
     //get logo
@@ -319,9 +325,24 @@ class JobDetailComponent extends Component {
     }
   }
 
+  renderTags(tags) {
+    let content = [];
+
+    tags.forEach((e, index) => {
+      content.push(
+        <span key={index} className='m-1 rounded text-white bg-primary px-2 py-1 cursor-pointer'
+         onClick={()=>{this.searchByTag(e.id_tag)}}>
+            {e.tag_name}
+        </span>
+      )
+    })
+
+    return content;
+  }
+
   render() {
     let { jobDetail, isLoadingJobDetail } = this.props.JobDetailReducer;
-
+    
     return (
       <div>
         {!isLoadingJobDetail ?
@@ -477,6 +498,21 @@ class JobDetailComponent extends Component {
                 <div className="col-xl-4 col-lg-4">
                   <div className="sidebar-container">
                     {this.renderApplyButton()}
+                    
+                    {(
+                      jobDetail.tags && jobDetail.tags.length > 0
+                      ?
+                      <div className="sidebar-widget">
+                        <div className="job-overview">
+                          <div className="job-overview-headline">Tags</div>
+                          <div className="job-overview-inner d-flex flex-wrap">
+                            {this.renderTags(jobDetail.tags)}
+                          </div>
+                        </div>
+                      </div>
+                      :
+                      ''
+                    )}                    
 
                     {/* Sidebar Widget */}
                     <div className="sidebar-widget">
@@ -513,7 +549,6 @@ class JobDetailComponent extends Component {
                         </div>
                       </div>
                     </div>
-
                     {/* Sidebar Widget */}
                     {/*
                                 <div className="sidebar-widget">

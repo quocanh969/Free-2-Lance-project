@@ -281,7 +281,7 @@ class ApplyFormConponent extends Component {
                     >
                       Tự giới thiệu:
                     </label>
-                    <textarea class="form-control" id="introduction-text" placeholder="Tự giới thiệu bản thân .." required></textarea>
+                    <textarea className="form-control" id="introduction-text" placeholder="Tự giới thiệu bản thân .." required></textarea>
                   </div>
 
                   {(
