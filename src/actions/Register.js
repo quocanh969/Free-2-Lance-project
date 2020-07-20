@@ -10,6 +10,7 @@ export const sendRegister = (account) => {
         console.log(res);
         if (res.data.code === "-103") {
           // thất bại
+          dispatch(failure(res.data.message));
           Swal.fire({
             title: "Đăng kí tài khoản không thành công",
             text:
@@ -22,6 +23,7 @@ export const sendRegister = (account) => {
           });
         } else {
           // thành công
+          dispatch(success(res.data.message));
           Swal.fire({
             title: "Đăng kí thành công",
             text: "Vui lòng kiểm tra email để kích hoạt tài khoản",
