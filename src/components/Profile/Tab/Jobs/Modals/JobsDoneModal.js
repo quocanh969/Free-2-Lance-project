@@ -100,9 +100,10 @@ class JobsDoneModalComponent extends Component {
   }
 
   reportEmployee(userId, applicantId) {
-    let { onSelectReportedUser } = this.props;
+    let { onSelectReportedUser, onLoadDetailReport } = this.props;
     let { selectedDoneJobId } = this.props.EmployerReducer;
     onSelectReportedUser(userId, applicantId, selectedDoneJobId);
+    onLoadDetailReport(userId, applicantId, selectedDoneJobId)
   }
 
   reviewEmployee(applicantId) {
@@ -349,6 +350,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     onLoadDetailReview: (applicantId) => {
       dispatch(loadDetailReview(applicantId, true));
+    },
+    onLoadDetailReport: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReview(id_user2, 0, applicantId, jobId));
+    },
+    onLoadDetailFire: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReview(id_user2, 1, applicantId, jobId));
     }
   };
 };

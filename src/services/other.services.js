@@ -19,5 +19,14 @@ function getDetailReview(id_applicant) {
     })
 }
 
+function getDetailReport(id_user2, type, applicantId, jobId) {
+    return axios.post('/getDetailReport', {
+        id_user2,
+        type,
+        applicantId,
+        jobId,
+    })
+}
 
-export { getAllAreas, getStatistic, getAllDistrictsFromArea, getDetailReview };
+
+export { getAllAreas, getStatistic, getAllDistrictsFromArea, getDetailReview, getDetailReport };

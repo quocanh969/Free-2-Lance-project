@@ -6,6 +6,10 @@ const initState = {
     isReviewExist: -2, // -2 -- trạng thái mặc định, -1 -- loading, 0 -- not exist, 1 -- exist
     rating: null,
     feedback: '',
+
+    // detail report - fire
+    isReportExist: -1, // -2 -- trạng thái mặc định, -1 -- loading, 0 -- not exist, 1 -- exist
+    content: '',
 }
 
 const ContactUsReducer = (state = initState, action) => {
@@ -31,6 +35,12 @@ const ContactUsReducer = (state = initState, action) => {
             return {
                 ...state,
                 rating: action.rating,
+            }
+        case 'LOAD_DETAIL_REPORT':
+            return {
+                ...state,
+                isReportExist: action.code,
+                content: action.content
             }
         default:
             return state
