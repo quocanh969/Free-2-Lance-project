@@ -27,6 +27,7 @@ import { history } from "../ultis/history/history";
 export const loadJobList = (page, take, isASC, query) => {
   return (dispatch) => {
     dispatch(loading());
+    query["id_status"] = 1;
     getJobsList(page, take, isASC, query)
       .then((res) => {
         dispatch(
