@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { history } from "../../ultis/history/history";
 
 let axios = Axios.create({
-  baseURL: "http://localhost:8001/",
+  baseURL: "https://f2l-client.herokuapp.com/",
   headers: { "Content-Type": "application/json" },
 });
 
