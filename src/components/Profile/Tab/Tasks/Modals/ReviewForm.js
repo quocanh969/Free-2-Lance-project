@@ -35,13 +35,20 @@ class ReviewFormConponent extends Component {
     document.getElementById("btnCloseReviewForm").click();
   }
 
-  changeRating(newRating, name) {
+  changeRating(newRating) {
+    let {isReviewExist, rating} = this.props.ContactUsReducer;
+    if(isReviewExist === 1 && rating !== null) {
+      let {doChangeRating} = this.props;
+      doChangeRating(newRating);
+    }
+
     this.setState({
       rating: newRating,
     });
   }
 
   render() {
+    let { rating, isReviewExist, feedback } = this.props.ContactUsReducer;
     return (
       <div className="modal-content">
         <div className="modal-header">
@@ -60,59 +67,129 @@ class ReviewFormConponent extends Component {
             &times;
           </button>
         </div>
+        
         <div className="modal-body">
-          <div className="sign-in-form">
-            <div className="popup-tabs-container">
-              {/* Tab */}
-              <div className="popup-tab-content" id="tab">
-                {/* Welcome Text */}
-                <div className="welcome-text">
-                  <h3>Chọn độ hài lòng và nhập phản hồi</h3>
-                </div>
-                {/* Form */}
-                <form
-                  method="post"
-                  id="review-now-form"
-                  onSubmit={this.reviewUser}
-                >
-                  <div className="input-with-icon-left">
-                    <StarRatings
-                      rating={this.state.rating}
-                      starRatedColor="blue"
-                      starDimension="55px"
-                      starSpacing="13px"
-                      changeRating={this.changeRating}
-                      numberOfStars={5}
-                      name="rating"
-                    />
-                  </div>
-                  <br></br>
-                  <div className="input-with-icon-left">
-                    <textarea
-                      type="text"
-                      className="input-text with-border"
-                      name="content-review-form"
-                      id="content-review-form"
-                      ref="content"
-                      placeholder="Nội dung"
-                      required
-                      autoFocus
-                    />
-                  </div>
-                </form>
-                {/* Button */}
-                <button
-                  className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
-                  type="submit"
-                  form="review-now-form"
-                >
-                  Đánh giá người thuê{" "}
-                  <i className="icon-material-outline-arrow-right-alt" />
-                </button>
+          {(
+            isReviewExist === -1
+            ?
+            <div className='w-100 text-center my-3'>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
               </div>
             </div>
-          </div>
+            :
+            (
+              isReviewExist === 1 && rating !== null
+              ?
+              <div className="sign-in-form">
+                <div className="popup-tabs-container">
+                  {/* Tab */}
+                  <div className="popup-tab-content" id="tab">
+                    {/* Welcome Text */}
+                    <div className="welcome-text">
+                      <h3>Chọn độ hài lòng và nhập phản hồi</h3>
+                    </div>
+                    {/* Form */}
+                    <form
+                      method="post"
+                      id="review-now-form"
+                      onSubmit={this.reviewUser}
+                    >
+                      <div className="input-with-icon-left">
+                        <StarRatings
+                          rating={rating}
+                          starRatedColor="blue"
+                          starDimension="55px"
+                          starSpacing="13px"
+                          changeRating={this.changeRating}
+                          numberOfStars={5}
+                          name="rating"
+                        />
+                      </div>
+                      <br></br>
+                      <div className="input-with-icon-left">
+                        <textarea
+                          type="text"
+                          className="input-text with-border"
+                          name="content-review-form"
+                          id="content-review-form"
+                          ref="content"
+                          defaultValue={feedback}
+                          placeholder="Nội dung"
+                          required
+                          autoFocus
+                        />
+                      </div>
+                    </form>
+                    {/* Button */}
+                    <button
+                      className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
+                      type="submit"
+                      form="review-now-form"
+                    >
+                      Cập nhật đánh giá mới{" "}
+                      <i className="icon-material-outline-arrow-right-alt" />
+                    </button>
+                  </div>
+                </div>
+              </div>        
+              :
+              <div className="sign-in-form">
+                <div className="popup-tabs-container">
+                  {/* Tab */}
+                  <div className="popup-tab-content" id="tab">
+                    {/* Welcome Text */}
+                    <div className="welcome-text">
+                      <h3>Chọn độ hài lòng và nhập phản hồi</h3>
+                    </div>
+                    {/* Form */}
+                    <form
+                      method="post"
+                      id="review-now-form"
+                      onSubmit={this.reviewUser}
+                    >
+                      <div className="input-with-icon-left">
+                        <StarRatings
+                          rating={this.state.rating}
+                          starRatedColor="blue"
+                          starDimension="55px"
+                          starSpacing="13px"
+                          changeRating={this.changeRating}
+                          numberOfStars={5}
+                          name="rating"
+                        />
+                      </div>
+                      <br></br>
+                      <div className="input-with-icon-left">
+                        <textarea
+                          type="text"
+                          className="input-text with-border"
+                          name="content-review-form"
+                          id="content-review-form"
+                          ref="content"
+                          placeholder="Nội dung"
+                          required
+                          autoFocus
+                        />
+                      </div>
+                    </form>
+                    {/* Button */}
+                    <button
+                      className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
+                      type="submit"
+                      form="review-now-form"
+                    >
+                      Đánh giá người làm{" "}
+                      <i className="icon-material-outline-arrow-right-alt" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )
+          )}
+          
         </div>
+
       </div>
     );
   }
@@ -128,6 +205,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     doReviewUser: (applicantId, jobId, feedback, rating) => {
       dispatch(reviewEmployer(applicantId, jobId, feedback, rating));
+    },
+    doChangeRating: (rating) => {
+      dispatch({
+        type: 'CHANGE_DETAIL_REVIEW_RATING',
+        rating,
+      });
     },
   };
 };

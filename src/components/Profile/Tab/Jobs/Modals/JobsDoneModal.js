@@ -9,6 +9,7 @@ import {
 import Swal from "sweetalert2";
 import ReviewForm from "./ReviewForm";
 import ReportForm from "./ReportForm";
+import { loadDetailReview } from "../../../../../actions/ContactUs";
 export const takenDoneApplicantsPerPage = 3;
 class JobsDoneModalComponent extends Component {
   componentDidMount() {
@@ -105,8 +106,9 @@ class JobsDoneModalComponent extends Component {
   }
 
   reviewEmployee(applicantId) {
-    let { onSelectReviewUser } = this.props;
+    let { onSelectReviewUser, onLoadDetailReview } = this.props;
     onSelectReviewUser(applicantId);
+    onLoadDetailReview(applicantId);
   }
 
   generateApplicantsList() {
@@ -345,6 +347,9 @@ const mapDispatchToProps = (dispatch) => {
     onSelectReviewUser: (applicantId) => {
       dispatch(selectReviewUser(applicantId));
     },
+    onLoadDetailReview: (applicantId) => {
+      dispatch(loadDetailReview(applicantId, true));
+    }
   };
 };
 

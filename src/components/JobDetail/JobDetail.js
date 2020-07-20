@@ -301,6 +301,10 @@ class JobDetailComponent extends Component {
 
   renderJobStatus(id_status) {
     switch(id_status) {
+      case -1:
+        return (
+          <span className='text-danger font-weight-bold'>Quá hạn</span>
+        );
       case 0:
         return (
           <span className='text-danger font-weight-bold'>Bị gỡ</span>
@@ -331,8 +335,8 @@ class JobDetailComponent extends Component {
     tags.forEach((e, index) => {
       content.push(
         <span key={index} className='m-1 rounded text-white bg-primary px-2 py-1 cursor-pointer'
-         onClick={()=>{this.searchByTag(e.id_tag)}}>
-            {e.tag_name}
+         onClick={()=>{this.searchByTag(e.id)}}>
+            {e.name}
         </span>
       )
     })

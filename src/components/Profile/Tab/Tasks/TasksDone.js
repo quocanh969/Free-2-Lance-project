@@ -19,6 +19,7 @@ import { history } from "../../../../ultis/history/history";
 import ReportForm from "./Modals/ReportForm";
 import ReviewForm from "./Modals/ReviewForm";
 import ReviewModal from "./Modals/ReviewModal";
+import { loadDetailReview } from "../../../../actions/ContactUs";
 
 class TasksDoneComponent extends Component {
   constructor(props) {
@@ -51,8 +52,9 @@ class TasksDoneComponent extends Component {
   }
 
   reviewEmployer(applicantId, jobId) {
-    let { onSelectReviewEmployer } = this.props;
+    let { onSelectReviewEmployer, onLoadDetailReview } = this.props;
     onSelectReviewEmployer(applicantId, jobId);
+    onLoadDetailReview(applicantId);
   }
 
   loadReview(jobId) {
@@ -394,6 +396,9 @@ const mapDispatchToProps = (dispatch) => {
     onLoadReviewFromEmployer: (jobId) => {
       dispatch(loadReviewFromEmployer(jobId));
     },
+    onLoadDetailReview: (applicantId) => {
+      dispatch(loadDetailReview(applicantId, false));
+    }
   };
 };
 
