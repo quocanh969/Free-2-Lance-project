@@ -246,7 +246,7 @@ class TasksDoneComponent extends Component {
     let content = [];
     let start = 1,
       end = 4;
-    if (totalPage - 4 < page) {
+    if (totalPage - 4 <= page) {
       if (totalPage - 4 < 0) {
         start = 1;
       } else {
