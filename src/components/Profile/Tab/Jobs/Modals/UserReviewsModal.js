@@ -26,7 +26,7 @@ class UserReviewsModalComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -101,7 +101,7 @@ class UserReviewsModalComponent extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                <div className="row mt-2">
                   <div className="col-xl-9">
                     <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Phản hồi: </span>

@@ -47,7 +47,7 @@ class ReviewModalConponent extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                <div className="row mt-2">
                   <div className="col-xl-9">
                     <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Phản hồi: </span>
