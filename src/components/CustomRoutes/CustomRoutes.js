@@ -101,10 +101,10 @@ export class PrivateRoute extends Component {
     }    
 
     componentWillMount() {
-        verify().then(res=>{
-            localStorage.clear();
+        verify().then(res=>{            
             this.setState({isLoaded: true, isAuthorized: true});
         }).catch(err=>{
+            localStorage.clear();
             this.setState({isLoaded: true, isAuthorized: false});
         })
     }
