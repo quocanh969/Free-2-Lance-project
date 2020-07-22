@@ -189,6 +189,7 @@ const EmployerReducer = (state = initState, action) => {
         selectedReportedUser: action.userId,
         selectedReportedIdApplicant: action.applicantId,
         selectedReportType: 0,
+        selectedDoingJobId: action.jobId,    
       };
     case "EMPLOYER_SELECT_FIRED_USER":
       return {
@@ -196,6 +197,7 @@ const EmployerReducer = (state = initState, action) => {
         selectedReportedUser: action.userId,
         selectedReportedIdApplicant: action.applicantId,
         selectedReportType: 1,
+        selectedDoingJobId: action.jobId, 
       };
     case "EMPLOYER_DOING_APPLICANTS_RESET":
       return {

@@ -4,6 +4,7 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import { reportUser } from "../../../../../actions/Job";
+import { getDetailReport } from "../../../../../services/other.services";
 
 class ReportFormConponent extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class ReportFormConponent extends Component {
     this.reportUser = this.reportUser.bind(this);
   }
 
-  componentWillMount() {
+  componentDidUpdate() {
 
   }
 
@@ -26,7 +27,6 @@ class ReportFormConponent extends Component {
 
   render() {
     let { selectedReportType } = this.props.EmployerReducer;
-    let { sendingReport } = this.props.ContactUsReducer;
     let { isReportExist, content } = this.props.ContactUsReducer;
     return (
       <div className="modal-content">
@@ -39,7 +39,10 @@ class ReportFormConponent extends Component {
             data-toggle="modal"
             data-target="#reportModal"
             onClick={() => {
-              document.getElementById("content-report-form").value = "";
+              let reportForm = document.getElementById("content-report-form");
+              if(reportForm) {
+                reportForm.value = "";
+              }
             }}
           >
             &times;
@@ -95,7 +98,7 @@ class ReportFormConponent extends Component {
                             type="submit"
                             form="report-now-form"
                           >
-                            {selectedReportType == 0 ? "Báo cáo người làm" : "Sa thải người làm"}
+                            {selectedReportType == 0 ? "Cập nhật báo cáo" : "Cập nhật yêu cầu sa thải"}
                             {" "}
                             <i className="icon-material-outline-arrow-right-alt" />
                           </button>
@@ -170,6 +173,9 @@ const mapDispatchToProps = (dispatch) => {
     doReportUser: (id_job, content, reporterId, role, type, applicantId) => {
       dispatch(reportUser(id_job, content, reporterId, role, type, applicantId));
     },
+    doLoadDetailReport: (id_user2, type, applicantId, jobId) => {
+      dispatch(getDetailReport(id_user2, type, applicantId, jobId));
+    }
   };
 };
 

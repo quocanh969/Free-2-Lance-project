@@ -20,7 +20,7 @@ function getDetailReview(id_applicant) {
 }
 
 function getDetailReport(id_user2, type, applicantId, jobId) {
-    return axios.post('/getDetailReport', {
+    return axios.post('/accepted/getDetailReport', {
         id_user2,
         type,
         applicantId,

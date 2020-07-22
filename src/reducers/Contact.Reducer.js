@@ -8,7 +8,7 @@ const initState = {
     feedback: '',
 
     // detail report - fire
-    isReportExist: -1, // -2 -- trạng thái mặc định, -1 -- loading, 0 -- not exist, 1 -- exist
+    isReportExist: -2, // -2 -- trạng thái mặc định, -1 -- loading, 0 -- not exist, 1 -- exist
     content: '',
 }
 

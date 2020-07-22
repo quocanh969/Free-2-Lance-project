@@ -12,6 +12,7 @@ import {
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
 import ReportForm from "./ReportForm";
+import { loadDetailReport } from "../../../../../actions/ContactUs";
 
 export const takenDoingApplicantsPerPage = 3;
 class JobsDoingModalComponent extends Component {
@@ -75,15 +76,17 @@ class JobsDoingModalComponent extends Component {
   }
 
   reportEmployee(userId, applicantId) {
-    let { onSelectReportedUser } = this.props;
+    let { onSelectReportedUser, onLoadDetailReport } = this.props;
     let { selectedDoingJobId } = this.props.EmployerReducer;
     onSelectReportedUser(userId, applicantId, selectedDoingJobId);
+    onLoadDetailReport(userId, applicantId, selectedDoingJobId)
   }
 
   fireEmployee(userId, applicantId) {
-    let { onSelectFiredUser } = this.props;
+    let { onSelectFiredUser, onLoadDetailFire } = this.props;
     let { selectedDoingJobId } = this.props.EmployerReducer;
     onSelectFiredUser(userId, applicantId, selectedDoingJobId);
+    onLoadDetailFire(userId, applicantId, selectedDoingJobId);
   }
 
   generateApplicantsList() {
@@ -305,6 +308,12 @@ const mapDispatchToProps = (dispatch) => {
     onSelectFiredUser: (userId, applicantId, jobId) => {
       dispatch(selectFiredUser(userId, applicantId, jobId));
     },
+    onLoadDetailReport: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReport(id_user2, 0, applicantId, jobId));
+    },
+    onLoadDetailFire: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReport(id_user2, 1, applicantId, jobId));
+    }
   };
 };
 

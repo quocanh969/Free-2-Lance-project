@@ -9,7 +9,7 @@ import {
 import Swal from "sweetalert2";
 import ReviewForm from "./ReviewForm";
 import ReportForm from "./ReportForm";
-import { loadDetailReview } from "../../../../../actions/ContactUs";
+import { loadDetailReview, loadDetailReport } from "../../../../../actions/ContactUs";
 export const takenDoneApplicantsPerPage = 3;
 class JobsDoneModalComponent extends Component {
   componentDidMount() {
@@ -352,11 +352,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(loadDetailReview(applicantId, true));
     },
     onLoadDetailReport: (id_user2, applicantId, jobId) => {
-      dispatch(loadDetailReview(id_user2, 0, applicantId, jobId));
+      dispatch(loadDetailReport(id_user2, 0, applicantId, jobId));
     },
-    onLoadDetailFire: (id_user2, applicantId, jobId) => {
-      dispatch(loadDetailReview(id_user2, 1, applicantId, jobId));
-    }
   };
 };
 
