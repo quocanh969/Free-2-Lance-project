@@ -197,7 +197,7 @@ class ProfileComponent extends Component {
                                                         :
                                                         <li className={(this.state.tab === 14 ? 'active' : '')}>
                                                             <NavLink className='cursor-pointer' to='/dashboard/tab=14'>
-                                                                <i className="icon-material-outline-account-balance" /> Xem oanh thu
+                                                                <i className="icon-material-outline-account-balance" /> Xem doanh thu
                                                             </NavLink>
                                                         </li>
                                                     )}

@@ -26,22 +26,34 @@ class FooterComponent extends Component {
                                     <ul>
                                         <li><NavLink to="/job-list"><span>Xem tất cả công việc</span></NavLink></li>
                                         <li><NavLink to="/search"><span>Tìm kiếm công việc</span></NavLink></li>
-                                        <li><NavLink to="/dashboard/tab=4"><span>Đăng việc</span></NavLink></li>
+                                        {(
+                                            user === null
+                                            ?
+                                            ''
+                                            :
+                                            <li><NavLink to="/dashboard/tab=4"><span>Đăng việc</span></NavLink></li>
+                                        )}                                        
                                     </ul>
                                 </div>
                             </div>
 
                             {/* Tài khoản */}
-                            <div className="col-xl-3 col-lg-3 col-md-4">
-                                <div className="footer-links">
-                                    <h3>Tài khoản người dùng</h3>
-                                    <ul>
-                                        <li><NavLink to="/dashboard/tab=1"><span>Thông tin chung</span></NavLink></li>
-                                        <li><NavLink to="/dashboard/tab=4"><span>Quản lý đăng việc</span></NavLink></li>
-                                        <li><NavLink to="/dashboard/tab=8"><span>Quản lý việc làm</span></NavLink></li>
-                                    </ul>
+                            {(
+                                user === null
+                                ?
+                                ''
+                                :
+                                <div className="col-xl-3 col-lg-3 col-md-4">
+                                    <div className="footer-links">
+                                        <h3>Tài khoản người dùng</h3>
+                                        <ul>
+                                            <li><NavLink to="/dashboard/tab=1"><span>Thông tin chung</span></NavLink></li>
+                                            <li><NavLink to="/dashboard/tab=4"><span>Quản lý đăng việc</span></NavLink></li>
+                                            <li><NavLink to="/dashboard/tab=8"><span>Quản lý việc làm</span></NavLink></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            )}                            
 
                             <div className="col-xl-3 col-lg-3 col-md-4">
                                 <div className="footer-links">
