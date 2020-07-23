@@ -60,6 +60,11 @@ class ContactComponent extends Component {
                                 <div className='col-6'>
                                     {/* <div id="singleListingMap" data-latitude="37.777842" data-longitude="-122.391805" data-map-icon="im im-icon-Hamburger" /> */}
                                     <div id='contact-map'>
+                                        <div className="loading w-100 text-center" key={1}>
+                                            <div className="spinner-border text-primary" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     {/* <a href="#" id="streetView">Street View</a> */}
                                 </div>

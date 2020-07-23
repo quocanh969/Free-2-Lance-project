@@ -65,7 +65,7 @@ class JobDetailComponent extends Component {
       window.scrollTo(0, 0);
     }
   }
-  
+
   searchByTag(tag_name) {
     history.push('/job-list', {
       tags: [tag_name],
@@ -101,10 +101,15 @@ class JobDetailComponent extends Component {
   renderPhoto(images) {
     let content = [];
 
-    images.forEach((image, i) => {
-      let logo = getImageSrc(image, CompanyLogoPlaceholder);
-      content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
-    });
+    if (images.length > 0) {
+      images.forEach((image, i) => {
+        let logo = getImageSrc(image, CompanyLogoPlaceholder);
+        content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
+      });
+    }
+    else {
+      content.push(<div key='0' className='my-2'>Công việc không có hình ảnh minh họa</div>)
+    }
 
     return <div className="text-center">{content}</div>;
   }
@@ -228,18 +233,25 @@ class JobDetailComponent extends Component {
           Mức lương ứng tuyển
         </div>
       </div>
-    );    
-    applicants.filter(e => {return e.id_status === 0}).forEach((applicant, i) => {
-      content.push(
-        <div className="row task-listing" key={i} style={{ height: "50px" }}>
-          <NavLink to={'/user-detail/' + applicant.id_user} className="col-md-4">{applicant.fullname}</NavLink>
-          <div className="col-md-4">{applicant.email}</div>
-          <div className="col-md-4">
-            {prettierNumber(applicant.proposed_price)} VNĐ
+    );
+    let candidate = applicants.filter(e => { return e.id_status === 0 });
+    if (candidate.length === 0) {
+      content.push(<div key={0} className="row task-listing" style={{ height: "50px" }}>Hiện vẫn chưa có ứng viên</div>);
+    }
+    else {
+      candidate.forEach((applicant, i) => {
+        content.push(
+          <div className="row task-listing" key={i} style={{ height: "50px" }}>
+            <NavLink to={'/user-detail/' + applicant.id_user} className="col-md-4">{applicant.fullname}</NavLink>
+            <div className="col-md-4">{applicant.email}</div>
+            <div className="col-md-4">
+              {prettierNumber(applicant.proposed_price)} VNĐ
+            </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
+    }
+
     return (
       <div className="tasks-list-container compact-list p-0">{content}</div>
     );
@@ -247,21 +259,21 @@ class JobDetailComponent extends Component {
 
   renderApplyButton() {
     let { user } = this.props.HeaderReducer;
-    let { jobDetail } = this.props.JobDetailReducer;    
+    let { jobDetail } = this.props.JobDetailReducer;
     let isAccepted = [];
-    if(user && jobDetail.dealers) {
-      isAccepted = jobDetail.dealers.filter(e=>{return e.id_user === user.id_user});
+    if (user && jobDetail.dealers) {
+      isAccepted = jobDetail.dealers.filter(e => { return e.id_user === user.id_user });
     }
-    
-    if(jobDetail && jobDetail.id_status !== 1) {
+
+    if (jobDetail && jobDetail.id_status !== 1) {
       return [];
     }
-    else if(isAccepted.length > 0 && isAccepted[0].id_status === 1) {
+    else if (isAccepted.length > 0 && isAccepted[0].id_status === 1) {
       return (
-        <div className='btn mb-2 py-2 font-size-bold text-light w-100 bg-293FE4' style={{fontSize: '20px'}}>Bạn đã được nhận</div>
+        <div className='btn mb-2 py-2 font-size-bold text-light w-100 bg-293FE4' style={{ fontSize: '20px' }}>Bạn đã được nhận</div>
       )
     }
-    else if(isAccepted.length > 0 && isAccepted[0].id_status === 0) {
+    else if (isAccepted.length > 0 && isAccepted[0].id_status === 0) {
       return (
         <button
           className="apply-now-button popup-with-zoom-anim w-100"
@@ -300,7 +312,7 @@ class JobDetailComponent extends Component {
   }
 
   renderJobStatus(id_status) {
-    switch(id_status) {
+    switch (id_status) {
       case -1:
         return (
           <span className='text-danger font-weight-bold'>Quá hạn</span>
@@ -335,8 +347,8 @@ class JobDetailComponent extends Component {
     tags.forEach((e, index) => {
       content.push(
         <span key={index} className='m-1 rounded text-white bg-primary px-2 py-1 cursor-pointer'
-         onClick={()=>{this.searchByTag(e.id)}}>
-            {e.name}
+          onClick={() => { this.searchByTag(e.id_tag) }}>
+          {e.tag_name}
         </span>
       )
     })
@@ -346,7 +358,7 @@ class JobDetailComponent extends Component {
 
   render() {
     let { jobDetail, isLoadingJobDetail } = this.props.JobDetailReducer;
-    
+
     return (
       <div>
         {!isLoadingJobDetail ?
@@ -371,7 +383,7 @@ class JobDetailComponent extends Component {
                               <i className='incon-feather-user'></i>
                               <span>{jobDetail.name_employer}</span>
                               &nbsp;&nbsp;&nbsp;&nbsp;
-                              <NavLink title='Đến trang chi tiết cá nhân' className="text-white" to={'/user-detail/'+jobDetail.employer}>
+                              <NavLink title='Đến trang chi tiết cá nhân' className="text-white" to={'/user-detail/' + jobDetail.employer}>
                                 {"( "}<u>đi đến trang cá nhân</u> {" )"}
                               </NavLink>
                             </li>
@@ -502,21 +514,21 @@ class JobDetailComponent extends Component {
                 <div className="col-xl-4 col-lg-4">
                   <div className="sidebar-container">
                     {this.renderApplyButton()}
-                    
+
                     {(
                       jobDetail.tags && jobDetail.tags.length > 0
-                      ?
-                      <div className="sidebar-widget">
-                        <div className="job-overview">
-                          <div className="job-overview-headline">Tags</div>
-                          <div className="job-overview-inner d-flex flex-wrap">
-                            {this.renderTags(jobDetail.tags)}
+                        ?
+                        <div className="sidebar-widget">
+                          <div className="job-overview">
+                            <div className="job-overview-headline">Tags</div>
+                            <div className="job-overview-inner d-flex flex-wrap">
+                              {this.renderTags(jobDetail.tags)}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      :
-                      ''
-                    )}                    
+                        :
+                        ''
+                    )}
 
                     {/* Sidebar Widget */}
                     <div className="sidebar-widget">

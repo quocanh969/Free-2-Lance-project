@@ -64,9 +64,10 @@ class UserDetailComponent extends Component {
                           {(
                             userDetail.personal.account_status === 2
                             ?
-                            <i className='icon-material-outline-check text-light bg-success rounded-circle' style={{fontSize: '15px'}}></i>
+                            // <i className='icon-material-outline-check text-light bg-success rounded-circle' style={{fontSize: '15px'}}></i>
+                            <span className='text-success font-weight-bold'>{'( Người dùng đã được xác thực )'}</span>
                             :
-                            ''
+                            <span className='text-warning font-weight-bold'>{'( Người dùng chưa được xác thực )'}</span>
                           )}
                         </h3>
                         <div className='text-warning font-weight-bold'>{(userDetail.personal.isBusinessUser === false ? 'Người dùng cá nhân' : 'Người dùng doanh nghiệp')}</div>

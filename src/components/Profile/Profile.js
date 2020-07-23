@@ -180,7 +180,6 @@ class ProfileComponent extends Component {
                                                     </li>
                                                     <li className={(this.state.tab === 2 ? 'active' : '')}>
                                                         <NavLink className='cursor-pointer' to='/dashboard/tab=2'>
-
                                                             <i className="icon-material-outline-question-answer" /> Tin nhắn {
                                                                 unreadMessage > 0 && <span className="nav-tag">{unreadMessage}</span>
                                                             }
@@ -191,11 +190,17 @@ class ProfileComponent extends Component {
                                                             <i className="icon-material-outline-rate-review" /> Phản hồi
                                                         </NavLink>
                                                     </li>
-                                                    <li className={(this.state.tab === 14 ? 'active' : '')}>
-                                                        <NavLink className='cursor-pointer' to='/dashboard/tab=14'>
-                                                            <i className="icon-material-outline-account-balance" /> Quản lý thu chi
-                                                        </NavLink>
-                                                    </li>
+                                                    {(
+                                                    user.isBusinessUser
+                                                        ?
+                                                        ""
+                                                        :
+                                                        <li className={(this.state.tab === 14 ? 'active' : '')}>
+                                                            <NavLink className='cursor-pointer' to='/dashboard/tab=14'>
+                                                                <i className="icon-material-outline-account-balance" /> Xem oanh thu
+                                                            </NavLink>
+                                                        </li>
+                                                    )}
                                                 </ul>
                                                 <ul data-submenu-title="Quản lý đăng công việc">
                                                     <li className={(this.state.tab === 4 ? 'active' : '')}>

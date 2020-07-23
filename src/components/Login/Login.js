@@ -92,6 +92,9 @@ class LoginComponent extends Component {
                     <NavLink to="/register">Tạo mới!</NavLink>
                   </span>
                 </div>
+                <div className="text-danger">
+                  *Nếu bạn đăng nhập không đúng tài khoản, mật khẩu thì vui lòng kiểm tra lại email xem có thông tin yêu cầu "Quên mật khẩu" không!
+                </div>
                 {/* Form */}
                 <form
                   method="post"

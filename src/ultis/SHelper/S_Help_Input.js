@@ -124,7 +124,7 @@ class S_Selector extends Component {
                     {(
                         this.props.disabled
                         ?
-                        <div className={"s-btn-select bg-cloud w-100 d-flex justify-content-between " + (this.props.className)}>
+                        <div className={"s-btn-select bg-cloud w-100 text-truncate " + (this.props.className)}>
                             {this.state.selected !== undefined ? this.state.selected[this.props.text_tag] : this.props.placeholder}                      
                         </div>
                         :

@@ -20,6 +20,7 @@ class JobListComponent extends Component {
     super(props);
 
     this.state = {
+      isReset: true,
       isGridMode: true,
       isASC: 2,
       query: {},
@@ -47,7 +48,7 @@ class JobListComponent extends Component {
       });
     }
     else if(this.props.location.state === null && this.props.history.location.pathname === '/job-list') {
-      this.setState({query: {}});
+      this.setState({query: {}, isReset: false});
     }
   }
 
@@ -95,7 +96,6 @@ class JobListComponent extends Component {
           </div>
           {/* Job Listing Footer */}
           <div className="job-listing-footer">
-            <span className="bookmark-icon" />
             <ul>
               <li>
                 <i className="icon-material-outline-location-on" />{" "}
@@ -143,7 +143,7 @@ class JobListComponent extends Component {
               {/* <h4 className="job-listing-company">{e.company} <span className="verified-badge" title="Verified Employer" data-tippy-placement="top" /></h4> */}
               <NavLink
                 to={"/job-detail/" + e.id_job}
-                className="d-block font-weight-bold text-dark"
+                className="d-block font-weight-bold text-dark h4"
               >
                 {e.title}
               </NavLink>
@@ -180,8 +180,6 @@ class JobListComponent extends Component {
                 </ul>
               </div>
             </div>
-            {/* Bookmark */}
-            <span className="bookmark-icon col-2" />
           </div>
         </div>
       );
@@ -280,7 +278,7 @@ class JobListComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -313,215 +311,222 @@ class JobListComponent extends Component {
 
   renderFilter() {
     let { jobTopic, areas, isLoadingJobTopic, isLoadingAreas } = this.props.GeneralReducer;
-    return (
-      <div className="sidebar-container">
-        <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
-          Bộ lọc
-        </h2>
-        <div className='row'>
-
-          <div className='col-6 p-1 mb-3'>
-            <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100"
-              onClick={() => {
-                this.handleFilter();
-              }}
-            >
-              Lọc&nbsp;&nbsp;&nbsp;
-              <i className="icon-line-awesome-search pt-1" />
+    if(this.state.isReset === false) {
+      this.setState({isReset: true});
+    }
+    else {
+      return (
+        <div className="sidebar-container">
+          <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
+            Bộ lọc
+          </h2>
+          <div className='row'>
+  
+            <div className='col-6 p-1 mb-3'>
+              <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100"
+                onClick={() => {
+                  this.handleFilter();
+                }}
+              >
+                Lọc&nbsp;&nbsp;&nbsp;
+                <i className="icon-line-awesome-search pt-1" />
+              </div>
             </div>
+            
+            <div className='col-6 p-1 mb-3'>
+              <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100"
+                onClick={() => {
+                  this.setState({isReset: false},() => {
+                    this.loadJobListFunc(1, this.state.query);
+                  })
+                }}
+              >
+                Tải lại&nbsp;&nbsp;&nbsp;
+                <i className="icon-feather-refresh-ccw pt-1" />
+              </div>
+            </div> 
+  
           </div>
           
-          <div className='col-6 p-1 mb-3'>
-            <div className="btn btn-293FE4 button-sliding-icon ripple-effect w-100"
-              onClick={() => {
-                this.loadJobListFunc(1, this.state.query);
-              }}
-            >
-              Tải lại&nbsp;&nbsp;&nbsp;
-              <i className="icon-feather-refresh-ccw pt-1" />
-            </div>
-          </div> 
-
-        </div>
-        
-        {/* Khu vực */}
-        <div className="sidebar-widget">
-          <h3>Khu vực</h3>
-          <div className="input-with-icon">
-            {isLoadingAreas ? (<div className="loading" key={1}>
-              <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>) : (this.state.query["area_province"] !== undefined ? (              
-              <S_Selector
-                id="select-area"
-                className="with-border"
-                placeholder="Chọn khu vực"
-                disabled={true}
-                value={Number.parseInt(this.state.query["area_province"])}
-                data={areas}
-                value_tag="id_province"
-                text_tag="name"
-              ></S_Selector>
-            ) : (
+          {/* Khu vực */}
+          <div className="sidebar-widget">
+            <h3>Khu vực</h3>
+            <div className="input-with-icon">
+              {isLoadingAreas ? (<div className="loading" key={1}>
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>) : (this.state.query["area_province"] !== undefined ? (              
                 <S_Selector
                   id="select-area"
                   className="with-border"
                   placeholder="Chọn khu vực"
+                  disabled={true}
+                  value={Number.parseInt(this.state.query["area_province"])}
                   data={areas}
                   value_tag="id_province"
                   text_tag="name"
                 ></S_Selector>
-              ))}
+              ) : (
+                  <S_Selector
+                    id="select-area"
+                    className="with-border"
+                    placeholder="Chọn khu vực"
+                    data={areas}
+                    value_tag="id_province"
+                    text_tag="name"
+                  ></S_Selector>
+                ))}
+            </div>
           </div>
-        </div>
-
-        {/* Chủ đề */}
-        <div className="sidebar-widget">
-          <h3>Chủ đề</h3>
-          <div className="input-with-icon">
-            {isLoadingJobTopic ? (<div className="loading" key={1}>
-              <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>) : (this.state.query["job_topic"] !== undefined ? (
-              <S_Selector
-                id="select-category"
-                className="with-border"
-                placeholder="Chọn chủ đề"
-                disabled={true}
-                value={Number.parseInt(this.state.query["job_topic"])}
-                data={jobTopic}
-                value_tag="id_jobtopic"
-                text_tag="name"
-              ></S_Selector>
-            ) : (
+  
+          {/* Chủ đề */}
+          <div className="sidebar-widget">
+            <h3>Chủ đề</h3>
+            <div className="input-with-icon">
+              {isLoadingJobTopic ? (<div className="loading" key={1}>
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>) : (this.state.query["job_topic"] !== undefined ? (
                 <S_Selector
                   id="select-category"
                   className="with-border"
                   placeholder="Chọn chủ đề"
+                  disabled={true}
+                  value={Number.parseInt(this.state.query["job_topic"])}
                   data={jobTopic}
                   value_tag="id_jobtopic"
                   text_tag="name"
                 ></S_Selector>
-              ))}
+              ) : (
+                  <S_Selector
+                    id="select-category"
+                    className="with-border"
+                    placeholder="Chọn chủ đề"
+                    data={jobTopic}
+                    value_tag="id_jobtopic"
+                    text_tag="name"
+                  ></S_Selector>
+                ))}
+            </div>
           </div>
-        </div>
-
-        {/* Tính chất công việc */}
-        {/*                 
-                <div className="sidebar-widget">
-                    <h3>Tính chất công việc</h3>
-                    <div className="switches-list">
-                        <div className="switch-container">
-                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Online</label>
-                        </div>
-                        <div className="switch-container">
-                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Việc công ty</label>
-                        </div>
-                        <div className="switch-container">
-                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Việc bán thời gian</label>
-                        </div>
-                        <div className="switch-container">
-                            <label className="switch"><input type="checkbox" /><span className="switch-button" /> Đấu giá</label>
-                        </div>
-                    </div>
-                </div> */}
-
-        {/* Mức lương */}
-        <div className="sidebar-widget">
-          <h3>Salary</h3>
-          <div className="input-with-icon">
-            {this.state.query["salary"] !== undefined ? (
-              <select
-                disabled
-                className="btn bg-cloud with-border dropdown-toggle bs-placeholder btn-default"
-                id="salary-select"
-                defaultValue={this.state.query["salary"].top}
-              >
-                <option value={1} disabled>
-                  Giá tiền
-                </option>
-                <option value={100000}>Nhỏ hơn 100.000 đ</option>
-                <option value={500000}>100.000đ - 500.000đ</option>
-                <option value={1000000}>500.000đ - 1.000.000đ</option>
-                <option value={10000000}>1.000.000đ - 10.000.000đ</option>
-                <option value={0}>Lớn hơn 10.000.000đ</option>
-              </select>
-            ) : (
+  
+          {/* Tính chất công việc */}
+          {/*                 
+                  <div className="sidebar-widget">
+                      <h3>Tính chất công việc</h3>
+                      <div className="switches-list">
+                          <div className="switch-container">
+                              <label className="switch"><input type="checkbox" /><span className="switch-button" /> Online</label>
+                          </div>
+                          <div className="switch-container">
+                              <label className="switch"><input type="checkbox" /><span className="switch-button" /> Việc công ty</label>
+                          </div>
+                          <div className="switch-container">
+                              <label className="switch"><input type="checkbox" /><span className="switch-button" /> Việc bán thời gian</label>
+                          </div>
+                          <div className="switch-container">
+                              <label className="switch"><input type="checkbox" /><span className="switch-button" /> Đấu giá</label>
+                          </div>
+                      </div>
+                  </div> */}
+  
+          {/* Mức lương */}
+          <div className="sidebar-widget">
+            <h3>Salary</h3>
+            <div className="input-with-icon">
+              {this.state.query["salary"] !== undefined ? (
                 <select
-                  className="btn with-border dropdown-toggle bs-placeholder btn-default"
+                  disabled
+                  className="btn bg-cloud with-border dropdown-toggle bs-placeholder btn-default"
                   id="salary-select"
-                  defaultValue={0}
+                  defaultValue={this.state.query["salary"].top}
                 >
-                  <option value={0} disabled>
+                  <option value={1} disabled>
                     Giá tiền
-                </option>
-                  <option value={1}>Nhỏ hơn 100.000 đ</option>
-                  <option value={2}>100.000đ - 500.000đ</option>
-                  <option value={3}>500.000đ - 1.000.000đ</option>
-                  <option value={4}>1.000.000đ - 10.000.000đ</option>
-                  <option value={5}>Lớn hơn 10.000.000đ</option>
+                  </option>
+                  <option value={100000}>Nhỏ hơn 100.000 đ</option>
+                  <option value={500000}>100.000đ - 500.000đ</option>
+                  <option value={1000000}>500.000đ - 1.000.000đ</option>
+                  <option value={10000000}>1.000.000đ - 10.000.000đ</option>
+                  <option value={0}>Lớn hơn 10.000.000đ</option>
                 </select>
-              )}
+              ) : (
+                  <select
+                    className="btn with-border dropdown-toggle bs-placeholder btn-default"
+                    id="salary-select"
+                    defaultValue={0}
+                  >
+                    <option value={0} disabled>
+                      Giá tiền
+                  </option>
+                    <option value={1}>Nhỏ hơn 100.000 đ</option>
+                    <option value={2}>100.000đ - 500.000đ</option>
+                    <option value={3}>500.000đ - 1.000.000đ</option>
+                    <option value={4}>1.000.000đ - 10.000.000đ</option>
+                    <option value={5}>Lớn hơn 10.000.000đ</option>
+                  </select>
+                )}
+            </div>
           </div>
-        </div>
-
-        {/* Ngày hết hạn */}
-        <div className="sidebar-widget">
-          <h3>Ngày hết hạn</h3>
-          <div className="input-with-icon">
-            {this.state.query["expire_date"] !== undefined ? (
-              <input
-                id="expired-input"
-                className="bg-cloud with-border"
-                disabled
-                value={this.state.query["expire_date"]}
-                type="date"
-                min="2020-01-01"
-                max="2050-12-31"
-              />
-            ) : (
+  
+          {/* Ngày hết hạn */}
+          <div className="sidebar-widget">
+            <h3>Ngày hết hạn</h3>
+            <div className="input-with-icon">
+              {this.state.query["expire_date"] !== undefined ? (
                 <input
                   id="expired-input"
-                  className="with-border"
+                  className="bg-cloud with-border"
+                  disabled
+                  value={this.state.query["expire_date"]}
                   type="date"
                   min="2020-01-01"
                   max="2050-12-31"
                 />
-              )}
+              ) : (
+                  <input
+                    id="expired-input"
+                    className="with-border"
+                    type="date"
+                    min="2020-01-01"
+                    max="2050-12-31"
+                  />
+                )}
+            </div>
           </div>
-        </div>
-
-        {/* Số lượng tuyển ( ít nhất ) */}
-        <div className="sidebar-widget">
-          <h3>Số lượng tuyển ( ít nhất )</h3>
-          <div className="input-with-icon">
-            {this.state.query["vacancy"] !== undefined ? (
-              <input
-                id="vacancy-input"
-                className="bg-cloud with-border"
-                disabled
-                value={this.state.query["vacancy"]}
-                type="number"
-                min="1"
-              />
-            ) : (
+  
+          {/* Số lượng tuyển ( ít nhất ) */}
+          <div className="sidebar-widget">
+            <h3>Số lượng tuyển ( ít nhất )</h3>
+            <div className="input-with-icon">
+              {this.state.query["vacancy"] !== undefined ? (
                 <input
                   id="vacancy-input"
-                  className="with-border"
+                  className="bg-cloud with-border"
+                  disabled
+                  value={this.state.query["vacancy"]}
                   type="number"
                   min="1"
                 />
-              )}
+              ) : (
+                  <input
+                    id="vacancy-input"
+                    className="with-border"
+                    type="number"
+                    min="1"
+                  />
+                )}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    
   }
 
   render() {
-    let { areas, jobTopic } = this.props.GeneralReducer;
     let { page, total, isSending } = this.props.JobsListReducer;
     let sortType = [
       { type: 2, text: "Mới nhất" },
@@ -590,7 +595,7 @@ class JobListComponent extends Component {
                     : "compact-list-layout")
                 }
               >
-                {(isSending ? (<div className="loading" key={1}>
+                {(isSending ? (<div className="loading w-100 text-center" key={1}>
                   <div className="spinner-border text-primary" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>

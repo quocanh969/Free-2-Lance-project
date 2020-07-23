@@ -76,9 +76,8 @@ class JobUserDetailComponent extends Component {
                         <div className='col-9'>
                             <h3>{e.title}</h3>
                             <div>
-                                <span className='h5'>{e.fullname}</span>
-                                <span>&nbsp;-&nbsp;</span>
-                                <span className='h5'>{e.email}</span>
+                                <h3 className='text-primary'>{e.fullname}</h3>
+                                <h5>{e.email}</h5>
                             </div>
                             <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployee}/5 <i className="icon-material-outline-star text-warning"></i></div>
                             <div className='font-weight-bold'>Nội dung phản hồi:</div>
