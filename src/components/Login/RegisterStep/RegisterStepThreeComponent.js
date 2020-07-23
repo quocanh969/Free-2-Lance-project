@@ -141,7 +141,7 @@ class RegisterStepThreeComponent extends Component {
           className="button full-width button-sliding-icon ripple-effect margin-top-10"
           form="register-account-form"
         >
-          Register <i className="icon-material-outline-arrow-right-alt" />
+          Đăng ký <i className="icon-material-outline-arrow-right-alt" />
         </button>
       </div>
     );

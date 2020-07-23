@@ -15,6 +15,7 @@ import {
 import UserAvatarPlaceholder from "../../../../assets/images/portrait_placeholder.png";
 import { history } from "../../../../ultis/history/history";
 import ReportForm from "./Modals/ReportForm";
+import { loadDetailReport } from "../../../../actions/ContactUs";
 
 class TasksDoingComponent extends Component {
   constructor(props) {
@@ -42,8 +43,9 @@ class TasksDoingComponent extends Component {
   }
 
   reportEmployer(userId, applicantId, jobId) {
-    let { onSelectReportedEmployer } = this.props;
+    let { onSelectReportedEmployer, onLoadDetailReport } = this.props;
     onSelectReportedEmployer(userId, applicantId, jobId);
+    onLoadDetailReport(userId, applicantId, jobId);
   }
 
   renderJobList() {
@@ -340,6 +342,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelectReportedEmployer: (userId, applicantId, jobId) => {
       dispatch(selectReportedEmployer(userId, applicantId, jobId));
+    },    
+    onLoadDetailReport: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReport(id_user2, 0, applicantId, jobId));
     },
   };
 };

@@ -12,11 +12,16 @@ class ForgetPasswordComponent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillMount() {
+    let {onResetForgetPW} = this.props;
+    onResetForgetPW();
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     let { onSendForgetPW } = this.props;
     let email = this.refs.email.value;
-    console.log(email);
+    this.refs.email.value = '';
     onSendForgetPW(email);
   }
 
@@ -62,16 +67,7 @@ class ForgetPasswordComponent extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h2>Forgot Password</h2>
-                {/* Breadcrumbs */}
-                <nav id="breadcrumbs" className="dark">
-                  <ul>
-                    <li>
-                      <NavLink to="/">Home</NavLink>
-                    </li>
-                    <li>Forgot Password</li>
-                  </ul>
-                </nav>
+                <h2>Quên mật khẩu</h2>
               </div>
             </div>
           </div>
@@ -79,18 +75,18 @@ class ForgetPasswordComponent extends Component {
         {/* Page Content ================================================== */}
         <div className="container">
           <div className="row">
-            <div className="col-xl-5 offset-xl-3">
+            <div className="col-xl-7 offset-xl-3">
               <div className="login-register-page">
                 {/* Welcome Text */}
-                <div className="welcome-text">
-                  <h3>We're sorry to heard that you forgot your password</h3>
+                <div className="welcome-text text-left">
+                  <h3>Chúng tôi rất tiếc khi bạn quên mất mật khẩu</h3>
                   <br></br>
                   <span>
-                    Type in your email to get it back via email confirmation
+                    Nhập vào email tài khoản của bạn và hệ thống sẽ giúp bạn khôi phục lại mật khẩu của mình
                   </span>
                   <span>
-                    If you remembered it, get back to{" "}
-                    <NavLink to="/login">Sign In!</NavLink>
+                    Nếu bạn đã nhớ ra rồi, chúng ta hay quay lại trang{" "}
+                    <NavLink to="/login">Đăng nhập!</NavLink>
                   </span>
                 </div>
                 {/* Form */}
@@ -107,7 +103,7 @@ class ForgetPasswordComponent extends Component {
                       name="emailaddress"
                       id="emailaddress"
                       ref="email"
-                      placeholder="Email Address"
+                      placeholder="Địa chỉ Email"
                       required
                     />
                   </div>
@@ -119,7 +115,7 @@ class ForgetPasswordComponent extends Component {
                   type="submit"
                   form="forget-pw-form"
                 >
-                  Send Email{" "}
+                  Gửi email{" "}
                   <i className="icon-material-outline-arrow-right-alt" />
                 </button>
               </div>
@@ -144,6 +140,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSendForgetPW: (email) => {
       dispatch(sendForgetPassword(email));
+    },
+    onResetForgetPW: () => {
+      dispatch({
+        type: 'FORGET_PW_RESET',
+      });
     },
   };
 };

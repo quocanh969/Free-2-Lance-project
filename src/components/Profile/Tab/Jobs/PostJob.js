@@ -149,8 +149,12 @@ class PostJobComponent extends Component {
 
     let startDate = document.getElementById("startDateSelector").value;
     let endDate = document.getElementById("endDateSelector").value;
-
+    let today = new Date();
+    let exprDate = new Date(exprValue);
+    let start = new Date(startDate);
+    let end = new Date(endDate);
     if (
+      (exprDate < today || start < today || end < today) ||
       (jobTypeValue == 1 && (startDate >= endDate || startDate <= exprValue)) ||
       (jobTypeValue == 2 && endDate <= exprValue)
     ) {
@@ -183,7 +187,6 @@ class PostJobComponent extends Component {
         end_date: document.getElementById("endDateSelector").value,
         benefit: fields.benefit,
       };
-      console.log(header);
       onSend(header);
     } else {
       let alertString = "";
@@ -191,18 +194,35 @@ class PostJobComponent extends Component {
         alertString += "Vui lòng nhập đủ các thông tin cần thiết!\n";
       }
       if (dateViolation === 0) {
+        if(exprDate < today) {
+          alertString +=
+            "Ngày hết hạn phải ở sau ngày hiện tại.\n";
+        }
+        if(start < today) {
+          alertString +=
+            "Ngày bắt đầu phải ở sau ngày hiện tại.\n";
+        }
+        if(end < today) {
+          alertString +=
+            "Ngày kết thúc phải ở sau ngày hiện tại.\n";
+        }
+        if (jobTypeValue == 1 && exprValue >= endDate) {
+          alertString +=
+            "Ngày hết hạn phải ở trước ngày kết thúc công việc.\n";
+        }
         if (jobTypeValue == 1 && startDate >= endDate) {
           alertString +=
-            "Ngày kết thúc phải cách ngày bắt đầu 1 ngày. Vui lòng sửa lại!\n";
+            "Ngày kết thúc phải cách ngày bắt đầu 1 ngày.\n";
         }
         if (jobTypeValue == 1 && exprValue >= startDate) {
           alertString +=
-            "Công việc bắt đầu trước khi hết đợt tuyểt, vui lòng sửa lại!\n";
+            "Công việc bắt đầu trước khi hết đợt tuyểt.\n";
         }
         if (jobTypeValue == 2 && exprValue >= endDate) {
           alertString +=
-            "Công việc kết trước khi hết đợt tuyểt, vui lòng sửa lại!\n";
+            "Công việc kết trước khi hết đợt tuyểt.\n";
         }
+        alertString += 'Vui lòng sửa lại !'
       }
       alert(alertString);
       window.scrollTo(0, 0);

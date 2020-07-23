@@ -49,7 +49,7 @@ function App() {
             component={NotFoundComponent}
           ></SRoute>
 
-          <SRoute path="/dashboard/tab=:id" exact component={Profile}></SRoute>
+          <PrivateRoute path="/dashboard/tab=:id" exact component={Profile}></PrivateRoute>
 
           <SRoute
             path="/job-detail/:id_job"

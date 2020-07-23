@@ -67,16 +67,7 @@ class accountActivationComponent extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                <h2>Account Activation</h2>
-                                {/* Breadcrumbs */}
-                                <nav id="breadcrumbs" className="dark">
-                                    <ul>
-                                        <li>
-                                            <NavLink to="/">Home</NavLink>
-                                        </li>
-                                        <li>Account Activation</li>
-                                    </ul>
-                                </nav>
+                                <h2>Kích hoạt tài khoản</h2>
                             </div>
                         </div>
                     </div>
@@ -88,7 +79,7 @@ class accountActivationComponent extends Component {
                             <div className="login-register-page">
                                 {/* Welcome Text */}
                                 <div className="welcome-text">
-                                    <h3>Activating your newly signed up account</h3>
+                                    <h3>Kích hoạt tài khoản được tạo mới nhất của bạn</h3>
                                     <br></br>
                                 </div>
                                 {this.spinnerLoadingNotification()}

@@ -73,46 +73,48 @@ class UserReviewsModalComponent extends Component {
     </div>);
     if (reviewList.length > 0) {
       reviewList.forEach((e, index) => {
-        content.push(
-          <li key={index}>
-            {/* Infomation */}
-            <div>
-              <div className="container">
-                <div className="row">
-                  <div className="col-xl-5">
-                    <div style={{ width: "80vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Họ và tên: </span>
-                      {e.employee_name}
+        if (e.rating_fromEmployee !== null) {
+          content.push(
+            <li key={index}>
+              {/* Infomation */}
+              <div>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xl-5">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Họ và tên: </span>
+                        {e.employee_name}
+                      </div>
+                    </div>
+                    <div className="col-xl-4">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Đánh giá: </span>
+                        <span style={{ marginBottom: "5px" }}>
+                          <StarRatings
+                            rating={e.rating_fromEmployee}
+                            starRatedColor="blue"
+                            starDimension="23px"
+                            starSpacing="10px"
+                            numberOfStars={5}
+                            name="rating"
+                          />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-xl-4">
-                    <div style={{ width: "80vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Đánh giá: </span>
-                      <span style={{ marginBottom: "5px" }}>
-                        <StarRatings
-                          rating={e.rating_fromEmployee}
-                          starRatedColor="blue"
-                          starDimension="23px"
-                          starSpacing="10px"
-                          numberOfStars={5}
-                          name="rating"
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="row mt-2">
-                  <div className="col-xl-9">
-                    <div style={{ width: "80vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Phản hồi: </span>
-                      {e.feedback_fromEmployee}
+                  <div className="row mt-2">
+                    <div className="col-xl-9">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Phản hồi: </span>
+                        {e.feedback_fromEmployee}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </li>
-        );
+            </li>
+          );
+        }
       });
     } else {
       content.push(

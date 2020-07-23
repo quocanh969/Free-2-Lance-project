@@ -1,4 +1,4 @@
-import { login, getUserInfo } from "../services/account.services";
+import { login, getUserInfo, forgetPassword } from "../services/account.services";
 import Swal from "sweetalert2";
 
 import { history } from "../ultis/history/history";
@@ -6,6 +6,15 @@ import { history } from "../ultis/history/history";
 export const sendForgetPassword = (email) => {
   return (dispatch) => {
     dispatch(request());
+    forgetPassword(email)
+    .then(res => {
+      if(res.data.code === '108') {
+        dispatch(success('Vui lòng kiểm tra mail để nhận được thông tin mật khẩu mới'));
+      }
+      else {
+        dispatch(failure(res.data.data.message));
+      }
+    })
   };
 
   function request() {

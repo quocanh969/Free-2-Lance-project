@@ -18,12 +18,12 @@ const HeaderReducer = (state = initState, action) => {
                 user: action.user,
                 isLoadingUser: false,
             };
-            case 'LOADING_USER_INFO':            
+        case 'LOADING_USER_INFO':            
             return {
                 ...state,
                 isLoadingUser: true,
             };
-            case 'LOAD_USER_INFO_FAILURE':            
+        case 'LOAD_USER_INFO_FAILURE':            
             return {
                 ...state,
                 isLoadingUser: false,
