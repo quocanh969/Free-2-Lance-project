@@ -101,8 +101,7 @@ export class PrivateRoute extends Component {
     }    
 
     componentWillMount() {
-        verify().then(res=>{
-            
+        verify().then(res=>{         
             this.setState({isLoaded: true, isAuthorized: true});
         }).catch(err=>{
             localStorage.clear();
