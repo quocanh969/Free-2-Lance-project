@@ -868,7 +868,10 @@ class HeaderComponent extends Component {
             >
               <NavLink
                 className="nav-link-header nav-link dropdown-toggle"
-                to="/job-list"
+                to={{
+                  pathname: '/job-list',
+                  state: {},
+                }}
                 id="navbarDropdown"
                 onMouseEnter={() => {
                   this.setState({ isTopicHover: true });

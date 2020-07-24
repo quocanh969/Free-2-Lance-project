@@ -42,14 +42,21 @@ class JobListComponent extends Component {
       // khác path
       let splitted = this.props.history.location.pathname.split("=", 2);
       let newTopic = Number.parseInt(splitted[1]);
-
-      this.setState({ query: { job_topic: newTopic } }, () => {
-        this.loadJobListFunc(1, this.state.query);
-      });
+      if(Number.isNaN(newTopic)) {
+        this.setState({ query: {}, isReset: false }, () => {
+          this.loadJobListFunc(1, this.state.query);
+        });  
+      }
+      else {
+        this.setState({ query: { job_topic: newTopic }, isReset: false }, () => {
+          this.loadJobListFunc(1, this.state.query);
+        });
+      }
     }
-    else if(this.props.location.state === null && this.props.history.location.pathname === '/job-list') {
+    else if(this.props.location.state === {} && this.props.history.location.pathname === '/job-list') {
       this.setState({query: {}, isReset: false});
     }
+
   }
 
   renderTags(tags) {
@@ -315,6 +322,7 @@ class JobListComponent extends Component {
       this.setState({isReset: true});
     }
     else {
+      console.log(this.state);
       return (
         <div className="sidebar-container">
           <h2 className="font-weight-bold text-293FE4 mb-3 border-bottom border-293FE4">
