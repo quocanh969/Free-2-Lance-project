@@ -232,7 +232,7 @@ class FindJobComponent extends Component {
         }
 
         // console.log(QueryObject);
-        history.push('/job-list', QueryObject);
+        history.push('/job-list/search', QueryObject);
     }
 
     render() {

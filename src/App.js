@@ -63,6 +63,11 @@ function App() {
             exact
             component={JobList}
           ></SRoute>
+          <SRoute
+            path="/job-list/search"
+            exact
+            component={JobList}
+          ></SRoute>
 
           <SRoute
             path="/user-detail/:id_user"
