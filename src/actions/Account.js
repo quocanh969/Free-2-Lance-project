@@ -129,7 +129,6 @@ export const updateUserState = () => {
                         company: res.data.data.company,
                     })
                 }
-
             }
             else {
                 Swal.fire({

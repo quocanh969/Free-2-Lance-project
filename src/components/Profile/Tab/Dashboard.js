@@ -502,7 +502,7 @@ class DashboardComponent extends Component {
     else if (transaction.length > 0) {
       transaction.forEach((e, index) => {
         content.push(
-          <div key={index}>
+          <div key={index} className='my-2 py-2 border-bottom border-dark'>
             <div className='row'>
               <div className='col-6'>
                 <div><span className='text-primary font-weight-bold'>Mã công việc:</span>&nbsp;{e.id_job}</div>

@@ -647,6 +647,13 @@ class HeaderComponent extends Component {
     let {isReadNotify} = this.props.HeaderReducer;
     const { unreadMessage } = this.state;
     // console.log("isReadNotify:", isReadNotify);
+    // if(user.id_status) {
+    //   Swal.fire({
+    //     title: 'Tài khoản của bạn chưa kích hoạt',
+    //     text: 'Vui lòng cập nhật thông tin xác thực đầy đủ hoặc liện hệ free2lance2020@gmail.com để xác thực tài khoản',
+    //   })
+    // }
+
     return (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
@@ -748,6 +755,16 @@ class HeaderComponent extends Component {
               &nbsp;&nbsp; Tài khoản của bạn
             </NavLink>
             <div className="dropdown-divider" />
+            {(
+              user.id_status !== 2
+              ?
+              <div>
+                <div className='px-2 m-1 border border-danger'>Tài khoản của bạn chưa được xác thực, vui lòng cập nhật thông tin và liên hệ free2lance2020@gmail.com</div>
+                <div className="dropdown-divider" />
+              </div>
+              :
+              ''
+            )}
             <a
               className="dropdown-item"
               href="#"
