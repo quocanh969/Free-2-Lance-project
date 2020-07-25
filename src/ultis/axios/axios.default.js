@@ -34,8 +34,8 @@ axios.interceptors.response.use(
       console.log(error.response);
       // alert(error.response);
       Swal.fire({
-        title: 'Tài khoản của bạn đã hết hạn đăng nhập',
-        text: 'Vui lòng đăng nhập lại',
+        text: 'Tài khoản của bạn đã hết hạn đăng nhập hoặc là có ai khác đã đăng nhập vào',
+        title: 'Vui lòng đăng nhập lại',
         icon: "warning",
         confirmButtonText: 'OK'
       }).then((result) => {
