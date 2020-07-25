@@ -15,7 +15,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import { SRoute, PrivateRoute } from "./components/CustomRoutes/CustomRoutes";
+import { SRoute, PrivateRoute, SingInRoute } from "./components/CustomRoutes/CustomRoutes";
 
 import JobDetail from "./components/JobDetail/JobDetail";
 import JobList from "./components/JobList";
@@ -49,7 +49,7 @@ function App() {
             component={NotFoundComponent}
           ></SRoute>
 
-          <SRoute path="/dashboard/tab=:id" exact component={Profile}></SRoute>
+          <PrivateRoute path="/dashboard/tab=:id" exact component={Profile}></PrivateRoute>
 
           <SRoute
             path="/job-detail/:id_job"
@@ -63,6 +63,11 @@ function App() {
             exact
             component={JobList}
           ></SRoute>
+          <SRoute
+            path="/job-list/search"
+            exact
+            component={JobList}
+          ></SRoute>
 
           <SRoute
             path="/user-detail/:id_user"
@@ -70,23 +75,23 @@ function App() {
             component={UserDetail}
           ></SRoute>
 
-          <SRoute path="/login" exact component={Login}></SRoute>
-          <SRoute path="/register" exact component={Register}></SRoute>
-          <SRoute
+          <SingInRoute path="/login" exact component={Login}></SingInRoute>
+          <SingInRoute path="/register" exact component={Register}></SingInRoute>
+          <SingInRoute
             path="/forgot-password"
             exact
             component={ForgetPassword}
-          ></SRoute>
-          <SRoute
+          ></SingInRoute>
+          <SingInRoute
             path="/activation/:activationToken"
             exact
             component={AccountActivation}
-          ></SRoute>
-          <SRoute
+          ></SingInRoute>
+          <SingInRoute
             path="/resendActivation"
             exact
             component={ResendAccountActivation}
-          ></SRoute>
+          ></SingInRoute>
 
           <SRoute path="/contact" exact component={Contact}></SRoute>
 

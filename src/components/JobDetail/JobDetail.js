@@ -10,7 +10,6 @@ import {
 } from "../../ultis/SHelper/helperFunctions";
 import { loadJobDetail, loadSimilarJobs } from "../../actions/Job";
 import CompanyLogoPlaceholder from "../../assets/images/company-logo-placeholder.png";
-import BackgroundSingleJob from "../../assets/images/single-job.jpg";
 
 import MapContainer from "../map_JobsList";
 import ApplyForm from "./ApplyForm/ApplyForm";
@@ -67,6 +66,12 @@ class JobDetailComponent extends Component {
     }
   }
 
+  searchByTag(tag_name) {
+    history.push('/job-list', {
+      tags: [tag_name],
+    })
+  }
+
   renderLogo(images) {
     //get logo
     let logo = CompanyLogoPlaceholder;
@@ -96,10 +101,15 @@ class JobDetailComponent extends Component {
   renderPhoto(images) {
     let content = [];
 
-    images.forEach((image, i) => {
-      let logo = getImageSrc(image, CompanyLogoPlaceholder);
-      content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
-    });
+    if (images.length > 0) {
+      images.forEach((image, i) => {
+        let logo = getImageSrc(image, CompanyLogoPlaceholder);
+        content.push(<img src={logo} className="my-2" key={i} alt=""></img>);
+      });
+    }
+    else {
+      content.push(<div key='0' className='my-2'>Công việc không có hình ảnh minh họa</div>)
+    }
 
     return <div className="text-center">{content}</div>;
   }
@@ -125,7 +135,12 @@ class JobDetailComponent extends Component {
   }
 
   renderSimilarJobs() {
-    let { similarJobs } = this.props.JobDetailReducer;
+    let { similarJobs, isLoadingSimilarJob } = this.props.JobDetailReducer;
+    if (isLoadingSimilarJob) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     let jobList = similarJobs.jobList;
     if (jobList && jobList.length > 0) {
       let listSimilarJobs = [];
@@ -219,17 +234,24 @@ class JobDetailComponent extends Component {
         </div>
       </div>
     );
-    applicants.forEach((applicant, i) => {
-      content.push(
-        <div className="row task-listing" key={i} style={{ height: "50px" }}>
-          <div className="col-md-4">{applicant.fullname}</div>
-          <div className="col-md-4">{applicant.email}</div>
-          <div className="col-md-4">
-            {prettierNumber(applicant.proposed_price)} VNĐ
+    let candidate = applicants.filter(e => { return e.id_status === 0 });
+    if (candidate.length === 0) {
+      content.push(<div key={0} className="row task-listing" style={{ height: "50px" }}>Hiện vẫn chưa có ứng viên</div>);
+    }
+    else {
+      candidate.forEach((applicant, i) => {
+        content.push(
+          <div className="row task-listing" key={i} style={{ height: "50px" }}>
+            <NavLink to={'/user-detail/' + applicant.id_user} className="col-md-4">{applicant.fullname}</NavLink>
+            <div className="col-md-4">{applicant.email}</div>
+            <div className="col-md-4">
+              {prettierNumber(applicant.proposed_price)} VNĐ
+            </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
+    }
+
     return (
       <div className="tasks-list-container compact-list p-0">{content}</div>
     );
@@ -238,7 +260,31 @@ class JobDetailComponent extends Component {
   renderApplyButton() {
     let { user } = this.props.HeaderReducer;
     let { jobDetail } = this.props.JobDetailReducer;
-    if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
+    let isAccepted = [];
+    if (user && jobDetail.dealers) {
+      isAccepted = jobDetail.dealers.filter(e => { return e.id_user === user.id_user });
+    }
+
+    if (jobDetail && jobDetail.id_status !== 1) {
+      return [];
+    }
+    else if (isAccepted.length > 0 && isAccepted[0].id_status === 1) {
+      return (
+        <div className='btn mb-2 py-2 font-size-bold text-light w-100 bg-293FE4' style={{ fontSize: '20px' }}>Bạn đã được nhận</div>
+      )
+    }
+    else if (isAccepted.length > 0 && isAccepted[0].id_status === 0) {
+      return (
+        <button
+          className="apply-now-button popup-with-zoom-anim w-100"
+          data-toggle="modal"
+          data-target="#applyModal"
+        >
+          Cập nhật hồ sơ <i className="icon-material-outline-arrow-right-alt" />
+        </button>
+      );
+    }
+    else if (user && !user.isBusinessUser && user.id_user !== jobDetail.employer) {
       return (
         <button
           className="apply-now-button popup-with-zoom-anim w-100"
@@ -265,198 +311,262 @@ class JobDetailComponent extends Component {
     } else return [];
   }
 
+  renderJobStatus(id_status) {
+    switch (id_status) {
+      case -1:
+        return (
+          <span className='text-danger font-weight-bold'>Quá hạn</span>
+        );
+      case 0:
+        return (
+          <span className='text-danger font-weight-bold'>Bị gỡ</span>
+        );
+      case 1:
+        return (
+          <span className='text-warning font-weight-bold'>Đang tuyển</span>
+        );
+      case 2:
+        return (
+          <span className='text-primary font-weight-bold'>Đang thực hiện</span>
+        );
+      case 3:
+        return (
+          <span className='text-success font-weight-bold'>Hoàn thành</span>
+        );
+      case 4:
+        return (
+          <span className='text-info font-weight-bold'>Tạm khóa</span>
+        );
+      default: return;
+    }
+  }
+
+  renderTags(tags) {
+    let content = [];
+
+    tags.forEach((e, index) => {
+      content.push(
+        <span key={index} className='m-1 rounded text-white bg-primary px-2 py-1 cursor-pointer'
+          onClick={() => { this.searchByTag(e.id_tag) }}>
+          {e.tag_name}
+        </span>
+      )
+    })
+
+    return content;
+  }
+
   render() {
-    let { jobDetail } = this.props.JobDetailReducer;
+    let { jobDetail, isLoadingJobDetail } = this.props.JobDetailReducer;
 
     return (
       <div>
-        {/* Thông tin cơ bản */}
-        <div id="job-detail-background" className="single-page-header">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="single-page-header-inner">
-                  <div className="left-side">
-                    <div className="header-image">
-                      <a href="single-company-profile.html">
-                        {this.renderLogo(jobDetail.imgs)}
-                      </a>
-                    </div>
-                    <div className="header-details text-white">
-                      <h3 className="text-white">{jobDetail.title}</h3>
-                      <h5 className="text-white">{jobDetail.topic}</h5>
-                      <ul>
-                        <li>
-                          <span
-                            href="single-company-profile.html"
-                            className="text-white"
-                          >
-                            {jobDetail.name_employer}
+        {!isLoadingJobDetail ?
+          (<div>
+            {/* Thông tin cơ bản */}
+            <div id="job-detail-background" className="single-page-header">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="single-page-header-inner">
+                      <div className="left-side">
+                        <div className="header-image">
+                          <span href="single-company-profile.html">
+                            {this.renderLogo(jobDetail.imgs)}
                           </span>
-                        </li>
-                        <li>
-                          <div className="bg-warning text-white rounded font-weight-bold px-2 font-size-15">
-                            {4.9}
+                        </div>
+                        <div className="header-details text-white">
+                          <h3 className="text-white">{jobDetail.title}</h3>
+                          <h5 className="text-white">{jobDetail.topic}</h5>
+                          <ul>
+                            <li>
+                              <i className='incon-feather-user'></i>
+                              <span>{jobDetail.name_employer}</span>
+                              &nbsp;&nbsp;&nbsp;&nbsp;
+                              <NavLink title='Đến trang chi tiết cá nhân' className="text-white" to={'/user-detail/' + jobDetail.employer}>
+                                {"( "}<u>đi đến trang cá nhân</u> {" )"}
+                              </NavLink>
+                            </li>
+                            {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
+                          </ul>
+                          <ul>
+                            <li>
+                              <i className="icon-material-outline-location-city" />{" "}
+                              {jobDetail.district_name}, {jobDetail.province_name}
+                            </li>
+                            <li>
+                              <div className='bg-light rounded px-2 py-1 border-0'>
+                                {this.renderJobStatus(jobDetail.id_status)}
+                              </div>
+                            </li>
+                            {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
+                          </ul>
+                          <div className="font-weight-bold">
+                            <i className="icon-line-awesome-calendar"></i>{" "}
+                            {prettierDate(jobDetail.post_date)}
                           </div>
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-location-city" />{" "}
-                          {jobDetail.district_name}, {jobDetail.province_name}
-                        </li>
-                        {/* <li><div className="verified-badge-with-title">Verified</div></li> */}
-                      </ul>
-                      <div className="font-weight-bold">
-                        <i className="icon-line-awesome-calendar"></i>{" "}
-                        {prettierDate(jobDetail.post_date)}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="right-side">
-                    <div className="salary-box">
-                      <div className="salary-type">Tiền công</div>
-                      <div className="salary-amount">
-                        {prettierNumber(jobDetail.salary)} VNĐ
+                      <div className="right-side">
+                        <div className="salary-box">
+                          <div className="salary-type">Tiền công</div>
+                          <div className="salary-amount">
+                            {prettierNumber(jobDetail.salary)} VNĐ
+                      </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Page Content */}
-        <div className="container">
-          <div className="row">
-            {/* Job detail infomation */}
-            <div className="col-xl-8 col-lg-8 content-right-offset">
-              <div className="single-page-section">
-                <ul className="nav nav-tabs mb-0">
-                  <li className="nav-item">
-                    <h4
-                      className={
-                        "nav-link cursor-pointer mb-0 " +
-                        (this.state.tab === 1 ? "active" : "")
-                      }
-                      onClick={() => {
-                        this.setState({ tab: 1 });
-                      }}
-                    >
-                      Mô tả công việc
+            {/* Page Content */}
+            <div className="container">
+              <div className="row">
+                {/* Job detail infomation */}
+                <div className="col-xl-8 col-lg-8 content-right-offset">
+                  <div className="single-page-section">
+                    <ul className="nav nav-tabs mb-0">
+                      <li className="nav-item">
+                        <h4
+                          className={
+                            "nav-link cursor-pointer mb-0 " +
+                            (this.state.tab === 1 ? "active" : "")
+                          }
+                          onClick={() => {
+                            this.setState({ tab: 1 });
+                          }}
+                        >
+                          Mô tả công việc
                     </h4>
-                  </li>
-                  <li className="nav-item">
-                    <h4
-                      className={
-                        "nav-link cursor-pointer mb-0 " +
-                        (this.state.tab === 2 ? "active" : "")
-                      }
-                      onClick={() => {
-                        this.setState({ tab: 2 });
-                      }}
-                    >
-                      Thông tin người thuê
+                      </li>
+                      <li className="nav-item">
+                        <h4
+                          className={
+                            "nav-link cursor-pointer mb-0 " +
+                            (this.state.tab === 2 ? "active" : "")
+                          }
+                          onClick={() => {
+                            this.setState({ tab: 2 });
+                          }}
+                        >
+                          Thông tin người thuê
                     </h4>
-                  </li>
-                  <li className="nav-item">
-                    <h4
-                      className={
-                        "nav-link cursor-pointer mb-0 " +
-                        (this.state.tab === 3 ? "active" : "")
-                      }
-                      onClick={() => {
-                        this.setState({ tab: 3 });
-                      }}
-                    >
-                      Bản đồ
+                      </li>
+                      <li className="nav-item">
+                        <h4
+                          className={
+                            "nav-link cursor-pointer mb-0 " +
+                            (this.state.tab === 3 ? "active" : "")
+                          }
+                          onClick={() => {
+                            this.setState({ tab: 3 });
+                          }}
+                        >
+                          Bản đồ
                     </h4>
-                  </li>
-                  <li className="nav-item">
-                    <h4
-                      className={
-                        "nav-link cursor-pointer mb-0 " +
-                        (this.state.tab === 4 ? "active" : "")
-                      }
-                      onClick={() => {
-                        this.setState({ tab: 4 });
-                      }}
-                    >
-                      Hình ảnh
+                      </li>
+                      <li className="nav-item">
+                        <h4
+                          className={
+                            "nav-link cursor-pointer mb-0 " +
+                            (this.state.tab === 4 ? "active" : "")
+                          }
+                          onClick={() => {
+                            this.setState({ tab: 4 });
+                          }}
+                        >
+                          Hình ảnh
                     </h4>
-                  </li>
-                  {this.renderAuctionTab(jobDetail.dealable)}
-                </ul>
+                      </li>
+                      {this.renderAuctionTab(jobDetail.dealable)}
+                    </ul>
 
-                <div className="mt-0 p-4 tab-component">
-                  {this.state.tab === 1 ? (
-                    <JobDetailInfo></JobDetailInfo>
-                  ) : this.state.tab === 2 ? (
-                    <EmployerInfo></EmployerInfo>
-                  ) : this.state.tab === 3 ? (
-                    <div id="single-job-map-container">
-                      {/* <div
+                    <div className="mt-0 p-4 tab-component">
+                      {this.state.tab === 1 ? (
+                        <JobDetailInfo></JobDetailInfo>
+                      ) : this.state.tab === 2 ? (
+                        <EmployerInfo></EmployerInfo>
+                      ) : this.state.tab === 3 ? (
+                        <div id="single-job-map-container">
+                          {/* <div
                         id="singleListingMap"
                         data-latitude="51.507717"
                         data-longitude="-0.131095"
                         data-map-icon="im im-icon-Hamburger"
                       ></div> */}
-                      {/* <a href="#" id="streetView">Street View</a> */}
-                      {this.renderMap()}
-                      {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
-                    </div>
-                  ) : this.state.tab === 4 ? (
-                    this.renderPhoto(jobDetail.imgs)
-                  ) : (
-                    this.renderApplicants(jobDetail.dealers)
-                  )}
-                </div>
-              </div>
-              {this.renderSimilarJobs()}
-            </div>
-
-            {/* Sidebar */}
-            <div className="col-xl-4 col-lg-4">
-              <div className="sidebar-container">
-                {this.renderApplyButton()}
-
-                {/* Sidebar Widget */}
-                <div className="sidebar-widget">
-                  <div className="job-overview">
-                    <div className="job-overview-headline">Tóm tắt</div>
-                    <div className="job-overview-inner">
-                      <ul>
-                        <li>
-                          <i className="icon-material-outline-location-on" />
-                          <span>Vị trí</span>
-                          <h5>
-                            {jobDetail.district_name}, {jobDetail.province_name}
-                          </h5>
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-business-center" />
-                          <span>Tính chất</span>
-                          <h5>
-                            {jobDetail.isCompany ? "Công ty" : "Cá nhân"},{" "}
-                            {jobDetail.isOnline ? "Online" : "Offline"}
-                          </h5>
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-local-atm" />
-                          <span>Tiền công</span>
-                          <h5>{prettierNumber(jobDetail.salary)}</h5>
-                        </li>
-                        <li>
-                          <i className="icon-material-outline-access-time" />
-                          <span>Đã đăng</span>
-                          <h5>{prettierDateAgo(jobDetail.post_date)}</h5>
-                        </li>
-                      </ul>
+                          {/* <a href="#" id="streetView">Street View</a> */}
+                          {this.renderMap()}
+                          {/* Chức năng hiện đang trong quá trình phát triển, vui lòng quay lại sau */}
+                        </div>
+                      ) : this.state.tab === 4 ? (
+                        this.renderPhoto(jobDetail.imgs)
+                      ) : (
+                                this.renderApplicants(jobDetail.dealers)
+                              )}
                     </div>
                   </div>
+                  {this.renderSimilarJobs()}
                 </div>
 
-                {/* Sidebar Widget */}
-                {/*
+                {/* Sidebar */}
+                <div className="col-xl-4 col-lg-4">
+                  <div className="sidebar-container">
+                    {this.renderApplyButton()}
+
+                    {(
+                      jobDetail.tags && jobDetail.tags.length > 0
+                        ?
+                        <div className="sidebar-widget">
+                          <div className="job-overview">
+                            <div className="job-overview-headline">Tags</div>
+                            <div className="job-overview-inner d-flex flex-wrap">
+                              {this.renderTags(jobDetail.tags)}
+                            </div>
+                          </div>
+                        </div>
+                        :
+                        ''
+                    )}
+
+                    {/* Sidebar Widget */}
+                    <div className="sidebar-widget">
+                      <div className="job-overview">
+                        <div className="job-overview-headline">Tóm tắt</div>
+                        <div className="job-overview-inner">
+                          <ul>
+                            <li>
+                              <i className="icon-material-outline-location-on" />
+                              <span>Vị trí</span>
+                              <h5>
+                                {jobDetail.district_name}, {jobDetail.province_name}
+                              </h5>
+                            </li>
+                            <li>
+                              <i className="icon-material-outline-business-center" />
+                              <span>Tính chất</span>
+                              <h5>
+                                {jobDetail.isCompany ? "Công ty" : "Cá nhân"},{" "}
+                                {jobDetail.isOnline ? "Online" : "Offline"}
+                              </h5>
+                            </li>
+                            <li>
+                              <i className="icon-material-outline-local-atm" />
+                              <span>Tiền công</span>
+                              <h5>{prettierNumber(jobDetail.salary)}</h5>
+                            </li>
+                            <li>
+                              <i className="icon-material-outline-access-time" />
+                              <span>Đã đăng</span>
+                              <h5>{prettierDateAgo(jobDetail.post_date)}</h5>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Sidebar Widget */}
+                    {/*
                                 <div className="sidebar-widget">
                                     <h3>Bookmark or Share</h3>
                                     
@@ -485,15 +595,22 @@ class JobDetailComponent extends Component {
                                     </div>
                                 </div>
                                 */}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        {/* Wrapper / End */}
+            {/* Wrapper / End */}
 
-        {/* Apply for a job popup */}
-        {this.renderApplyFormPopup()}
-        {/* Apply for a job popup / End */}
+            {/* Apply for a job popup */}
+            {this.renderApplyFormPopup()}
+            {/* Apply for a job popup / End */}
+          </div>) :
+          (<div className="loading" key={1}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>)}
+
       </div>
     );
   }

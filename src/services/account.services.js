@@ -21,6 +21,10 @@ function getUserInfo() {
   return axios.get('/users/me');
 }
 
+function checkExpireJobs() {
+  return axios.get('/users/checkExpiredJob');
+}
+
 function verify() {
   return axios.get("/users/")  
 }
@@ -32,7 +36,7 @@ function register(account) {
 }
 
 function forgetPassword(email) {
-  return axios.post("/forgetPassword", {
+  return axios.put("/forget", {
     email,
   });
 }
@@ -57,4 +61,4 @@ function editCompanyInfo(company) {
   return axios.put('/users/editCompanyInfo',company);
 }
 
-export { login, getUserInfo, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo, editCompanyInfo};
+export { login, getUserInfo, checkExpireJobs, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo, editCompanyInfo};

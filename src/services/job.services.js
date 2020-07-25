@@ -3,7 +3,7 @@ import axios from "../ultis/axios/axios.default";
 function postJob(header) {
   // return axios.post('/jobs/addJob', {
   //     headers: {
-  //         "Authorization": "Bearer " + JSON.parse(localStorage.getItem("token")),
+  //         "Authorization": "Bearer " + JSON.parse(localStorage.getItem("client_token")),
   //     },
   //     employer: header.employer,
   //     title: header.title,
@@ -53,7 +53,7 @@ function postJob(header) {
       benefit: header.benefit,
     },
     headers: {
-      Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+      Authorization: "Bearer " + JSON.parse(localStorage.getItem("client_token")),
     },
   });
 }
@@ -72,7 +72,7 @@ function getJobsList(page, take, isASC, query) {
 }
 
 function getJobsForEmployer(page, take, isASC, status) {
-  return axios.post("/jobs/getJobsByEmployerId", {
+  return axios.post("/jobs/getJobsByEmployerIdForWeb", {
     page,
     take,
     isASC,
@@ -114,12 +114,13 @@ function getEmployerDetail(id) {
   return axios.get("/getUserInfoNotPrivate/" + id);
 }
 
-function doApplyJob(id_user, id_job, proposed_price, attachment) {
+function doApplyJob(id_user, id_job, proposed_price, attachment, introductionText) {
   return axios.post("/applicants/addApplicant", {
     id_user,
     id_job,
     proposed_price,
     attachment,
+    introduction_string: introductionText,
   });
 }
 //#endregion Job detail
@@ -127,6 +128,12 @@ function doApplyJob(id_user, id_job, proposed_price, attachment) {
 //#region dashboard job for employer
 function doCancelRecruit(id_job) {
   return axios.post("/jobs/cancelRecruit", {
+    id_job,
+  });
+}
+
+function doRemoveJob(id_job) {
+  return axios.post("/jobs/removeJob", {
     id_job,
   });
 }
@@ -161,12 +168,11 @@ function doSendAcceptApplicant(id_job, id_user, email, job_title) {
   });
 }
 
-function doSendRejectApplicant(id_job, id_user, email, job_title) {
+function doSendRejectApplicant(id_job, id_user) {
   return axios.post("/jobs/rejectApplicant", {
     id_job,
     id_user,
-    email,
-    job_title,
+    isEmployer: 1,
   });
 }
 
@@ -177,11 +183,14 @@ function doEndJob(id_job, job_title) {
   });
 }
 
-function doReportUser(content, reporterId, yourRole) {
+function doReportUser(id_job, content, reporterId, yourRole, type, applicantId) {
   return axios.post("/users/addReport", {
+    id_job,
     content,
     reporterId,
     yourRole,
+    type,
+    applicantId,
   });
 }
 
@@ -210,13 +219,10 @@ function getReviewList(id_job, page, take) {
 
 //#region dashboard job for applicant
 function doStopApply(id_user, id_job) {
-  let email = "haibinhbd2@gmail.com";
-  let job_title = "spam chu gi nua";
   return axios.post("/jobs/rejectApplicant", {
     id_job,
     id_user,
-    email,
-    job_title,
+    isEmployer: 0,
   });
 }
 
@@ -247,6 +253,7 @@ export {
   getEmployerDetail,
   getSimilarJobs,
   doCancelRecruit,
+  doRemoveJob,
   getApplicantsByJobId,
   doSendAcceptApplicant,
   doSendRejectApplicant,

@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import '../../assets/css/detail.css';
+import StarRatings from "react-star-ratings"
 
 // Image
-import SingleFreelancer from "../../assets/images/single-freelancer.jpg";
 import avatarPlaceholder from "../../assets/images/portrait_placeholder.png";
-import FlagDE from "../../assets/images/flags/de.svg";
-import BrowseCompanies03 from "../../assets/images/browse-companies-03.png";
-import BrowseCompanies04 from "../../assets/images/browse-companies-04.png";
 
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
@@ -42,8 +39,12 @@ class UserDetailComponent extends Component {
   }
 
   render() {
-    let { userDetail } = this.props.UserDetailReducer;
-    if (userDetail === null) return '';
+    let { userDetail, isLoadingUserDetail } = this.props.UserDetailReducer;
+    if (isLoadingUserDetail || userDetail == null) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     else {
       return (
         <div>
@@ -58,11 +59,35 @@ class UserDetailComponent extends Component {
                         <img src={getImageSrc(userDetail.personal.avatarImg, avatarPlaceholder)} alt="" />
                       </div>
                       <div className="header-details">
-                        <h3 className='text-white'>{userDetail.personal ? userDetail.personal.fullname : ""}{" "}</h3>
+                        <h3 className='text-white'>
+                          {userDetail.personal ? userDetail.personal.fullname : ""}{" "}
+                          {(
+                            userDetail.personal.account_status === 2
+                            ?
+                            // <i className='icon-material-outline-check text-light bg-success rounded-circle' style={{fontSize: '15px'}}></i>
+                            <span className='text-success font-weight-bold'>{'( Người dùng đã được xác thực )'}</span>
+                            :
+                            <span className='text-warning font-weight-bold'>{'( Người dùng chưa được xác thực )'}</span>
+                          )}
+                        </h3>
                         <div className='text-warning font-weight-bold'>{(userDetail.personal.isBusinessUser === false ? 'Người dùng cá nhân' : 'Người dùng doanh nghiệp')}</div>
                         <div className='row'>
                           <div className='col-6 text-white'>
-                            Đánh giá từ người làm: {userDetail.employee.employee_rating} / 5 <i className="icon-material-outline-star text-warning"></i>
+                            Đánh giá từ người làm:&nbsp;
+                            {(
+                              userDetail.employee.employer_job > 1
+                              ?
+                              <StarRatings
+                                rating={userDetail.employee.employee_rating}
+                                starRatedColor="ffd11a"
+                                starDimension="15px"
+                                starSpacing="3px"
+                                numberOfStars={5}
+                                name="rating"
+                              />
+                              :
+                              <span>{"( Chưa nhận được đánh giá )"}</span>
+                            )}                            
                           </div>
                           {(
                             userDetail.personal.isBusinessUser
@@ -70,7 +95,22 @@ class UserDetailComponent extends Component {
                               ''
                               :
                               <div className='col-6 text-white'>
-                                Đánh giá từ người thuê: {userDetail.employer.employer_rating} / 5 <i className="icon-material-outline-star text-warning"></i>
+                                Đánh giá từ người thuê:&nbsp;
+                                {(
+                                  userDetail.employer.employee_job > 1
+                                  ?
+                                  <StarRatings
+                                    rating={userDetail.employer.employer_rating}
+                                    starRatedColor="ffd11a"
+                                    starDimension="15px"
+                                    starSpacing="3px"
+                                    numberOfStars={5}
+                                    name="rating"
+                                  />
+                                  :
+                                  <span>{"( Chưa nhận được đánh giá )"}</span>
+                                )}
+                                
                               </div>
                           )}
                         </div>

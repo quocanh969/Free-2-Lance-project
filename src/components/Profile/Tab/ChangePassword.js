@@ -3,10 +3,6 @@ import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { S_Selector } from "../../../ultis/SHelper/S_Help_Input";
-
-import avatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
-import browseCompoanies from "../../../assets/images/browse-companies-03.png";
 import { sendchangePassword } from "../../../actions/ChangePassword";
 
 class ChangePasswordComponent extends Component {
@@ -19,16 +15,16 @@ class ChangePasswordComponent extends Component {
     window.scrollTo(0, 0);
 
     // mật khẩu mới không đưuọc giống mật khẩu cũ
-    let oldPWElement = document.getElementById("old-change-password");
-    oldPWElement.addEventListener("change", () => {
-      let password = this.refs.newPW.value;
-      let oldPW = this.refs.oldPW.value;
-      if (password !== oldPW)
-        passwordElement.setCustomValidity(
-          "Mật khẩu mới không được trùng với mật khẩu cũ"
-        );
-      else passwordElement.setCustomValidity("");
-    });
+    // let oldPWElement = document.getElementById("old-change-password");
+    // oldPWElement.addEventListener("change", () => {
+    //   let password = this.refs.newPW.value;
+    //   let oldPW = this.refs.oldPW.value;
+    //   if (password === oldPW)
+    //     passwordElement.setCustomValidity(
+    //       "Mật khẩu mới không được trùng với mật khẩu cũ"
+    //     );
+    //   else passwordElement.setCustomValidity("");
+    // });
 
     let passwordElement = document.getElementById("new-change-password");
     passwordElement.addEventListener("change", () => {
@@ -73,7 +69,7 @@ class ChangePasswordComponent extends Component {
     if (sending) {
       // sending ...
       content.push(
-        <div className="loading" key={1}>
+        <div className="loading w-100 text-center" key={1}>
           <div className="spinner-border text-primary" role="status">
             <span className="sr-only">Loading...</span>
           </div>

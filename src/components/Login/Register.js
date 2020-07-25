@@ -46,15 +46,6 @@ class RegisterComponent extends Component {
             <div className="row">
               <div className="col-md-12">
                 <h2>Đăng kí</h2>
-                {/* Breadcrumbs */}
-                <nav id="breadcrumbs" className="dark">
-                  <ul>
-                    <li>
-                      <NavLink to="/">Trang chủ</NavLink>
-                    </li>
-                    <li>Đăng kí</li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>
@@ -80,20 +71,6 @@ class RegisterComponent extends Component {
                 {/* Form */}
                 {this.renderRegisterForm()}
 
-                {/* Social Login */}
-                <div className="social-login-separator">
-                  <span>or</span>
-                </div>
-                <div className="social-login-buttons">
-                  <button className="facebook-login ripple-effect">
-                    <i className="icon-brand-facebook-f" /> Đăng kí bằng
-                    Facebook
-                  </button>
-                  <button className="google-login ripple-effect">
-                    <i className="icon-brand-google-plus-g" /> Đăng kí bằng
-                    Google+
-                  </button>
-                </div>
               </div>
             </div>
           </div>

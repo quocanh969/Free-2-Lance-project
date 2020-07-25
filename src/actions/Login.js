@@ -1,11 +1,20 @@
-import { login, getUserInfo } from "../services/account.services";
-import Swal from 'sweetalert2';
+import { login, getUserInfo, forgetPassword } from "../services/account.services";
+import Swal from "sweetalert2";
 
 import { history } from "../ultis/history/history";
 
 export const sendForgetPassword = (email) => {
   return (dispatch) => {
     dispatch(request());
+    forgetPassword(email)
+    .then(res => {
+      if(res.data.code === '108') {
+        dispatch(success('Vui lòng kiểm tra mail để nhận được thông tin mật khẩu mới'));
+      }
+      else {
+        dispatch(failure(res.data.data.message));
+      }
+    })
   };
 
   function request() {
@@ -38,35 +47,36 @@ export const sendLogin = (email, password) => {
         } else {
           // thành công
           
-          localStorage.setItem("token", JSON.stringify(res.data.data.token));
+          localStorage.setItem("client_token", JSON.stringify(res.data.data.token));
           localStorage.setItem("email",email);
           // lấy thông tin user
-          getUserInfo().then(res=>{
-            if(res.data.code === '200')
-            {
-              dispatch(updateUser(res.data.data.personal))
-              dispatch(success(res.data.message));
-              history.push('/'); // quay về trang chủ
-            }
-            else
-            {
-              Swal.fire({
-                title: "Tải dữ liệu cá nhân thất bại",
-                icon: "error",
-                confirmButtonText: 'OK'
-              });
-            }            
-          }).catch(err=>{
-            console.log(err);
-          })
+          getUserInfo()
+            .then((res) => {
+              if (res.data.code === "200") {
+                dispatch(updateUser(res.data.data.personal));
+                dispatch(success("Đăng nhập thành công"));
+                //history.push('/'); // quay về trang chủ
+                window.location.href = "./";
+              } else {
+                Swal.fire({
+                  title: "Tải dữ liệu cá nhân thất bại",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       })
       .catch((err) => {
         console.log(err);
+        dispatch(failure("Đã có lỗi server, vui lòng thử lại sau"));
         Swal.fire({
           title: "Có lỗi trong quá trình đăng nhập",
           icon: "error",
-          confirmButtonText: 'OK'
+          confirmButtonText: "OK",
         });
       });
   };

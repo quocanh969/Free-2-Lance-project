@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadDoneApplicantsForEmployer, selectReviewUser } from "../../../../../actions/Job";
+import { loadDoneApplicantsForEmployer, selectReviewUser, selectReportedUser } from "../../../../../actions/Job";
 import {
   prettierNumber,
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
 import ReviewForm from "./ReviewForm";
+import ReportForm from "./ReportForm";
+import { loadDetailReview, loadDetailReport } from "../../../../../actions/ContactUs";
 export const takenDoneApplicantsPerPage = 3;
 class JobsDoneModalComponent extends Component {
   componentDidMount() {
@@ -16,6 +18,7 @@ class JobsDoneModalComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentDoneApplicantsPage) {
+      window.scrollTo(0, 0);
       this.loadApplicantListFunc(pageNum);
     }
   }
@@ -25,7 +28,7 @@ class JobsDoneModalComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -96,14 +99,28 @@ class JobsDoneModalComponent extends Component {
     window.open(url);
   }
 
+  reportEmployee(userId, applicantId) {
+    let { onSelectReportedUser, onLoadDetailReport } = this.props;
+    let { selectedDoneJobId } = this.props.EmployerReducer;
+    onSelectReportedUser(userId, applicantId, selectedDoneJobId);
+    onLoadDetailReport(userId, applicantId, selectedDoneJobId)
+  }
+
   reviewEmployee(applicantId) {
-    let { onSelectReviewUser } = this.props;
+    let { onSelectReviewUser, onLoadDetailReview } = this.props;
     onSelectReviewUser(applicantId);
+    onLoadDetailReview(applicantId);
   }
 
   generateApplicantsList() {
-    let { doneApplicantsList } = this.props.EmployerReducer;
+    let { doneApplicantsList, isLoadingDoneApplicantsList } = this.props.EmployerReducer;
+    let {reviewApplicantId, reportApplicantId} = this.props.ContactUsReducer;
     let content = [];
+    if (isLoadingDoneApplicantsList) return (<div className="loading my-2 py-4" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (doneApplicantsList.length > 0) {
       doneApplicantsList.forEach((e, index) => {
@@ -114,21 +131,21 @@ class JobsDoneModalComponent extends Component {
               <div className="container">
                 <div className="row">
                   <div className="col-xl-5">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Họ và tên: </span>
                       {e.fullname}
                     </div>
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Email: </span>
                       {e.email}
                     </div>
                   </div>
                   <div className="col-xl-4">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Số điện thoại: </span>
                       {e.dial}
                     </div>
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Lương: </span>
                       {prettierNumber(e.proposed_price)} VNĐ
                     </div>
@@ -137,32 +154,59 @@ class JobsDoneModalComponent extends Component {
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="container text-right">
-              <span
-                data-toggle="modal"
-                data-target="#reviewModal"
-                onClick={() => this.reviewEmployee(e.id_applicant)}
-                className="btn mx-2 py-2 px-4 bg-warning rounded"
-              >
-                <i className="icon-material-outline-speaker-notes" /> Phản hồi
-              </span>
-              <span
-                onClick={() => this.viewApplicantInfo(e.id_user)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Xem
-                thông tin
-              </span>
-              <span
-                data-toggle="modal"
-                data-target="#CVModal"
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => this.viewApplicantCV(e.attachment)}
-              >
-                <i className="icon-line-awesome-clone" /> Xem CV
-              </span>
-            </div>
+            {(
+              e.id_applicant === reviewApplicantId || e.id_applicant === reportApplicantId
+              ?
+              <div className='text-center w-100'>
+                <div className="loading" key={1}>
+                  <div className="spinner-border text-primary my-2 py-2" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              :
+                <div className="container text-right" style={{ marginTop: "10px" }}>
+                  <span
+                    data-toggle="modal"
+                    data-target="#reportModal"
+                    onClick={() => this.reportEmployee(e.id_user, e.id_applicant)}
+                    className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
+                  >
+                    <i className="icon-line-awesome-warning" /> Báo cáo
+                  </span>
+                  <span
+                    data-toggle="modal"
+                    data-target="#reviewModal"
+                    onClick={() => this.reviewEmployee(e.id_applicant)}
+                    className="btn mx-2 py-2 px-4 bg-warning rounded"
+                  >
+                    <i className="icon-material-outline-speaker-notes" /> Phản hồi
+                  </span>
+                  <span
+                    onClick={() => this.viewApplicantInfo(e.id_user)}
+                    className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Xem
+                    thông tin
+                  </span>
+                  {(
+                    e.attachment === ''
+                      ?
+                      ''
+                      :
+                      <span
+                        data-toggle="modal"
+                        data-target="#CVModal"
+                        className="btn m-2 py-2 px-4 bg-silver rounded"
+                        onClick={() => this.viewApplicantCV(e.attachment)}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem CV
+                      </span>
+                  )}
+                </div>
+
+            )}
+
           </li>
         );
       });
@@ -181,6 +225,7 @@ class JobsDoneModalComponent extends Component {
     let {
       totalDoneApplicants,
       currentDoneApplicantsPage,
+      isLoadingDoneApplicantsList
     } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalDoneApplicants / takenDoneApplicantsPerPage);
     return (
@@ -214,62 +259,67 @@ class JobsDoneModalComponent extends Component {
                 </div>
               </div>
 
-              {totalDoneApplicants === 0 ? (
+              {(totalDoneApplicants === 0 || isLoadingDoneApplicantsList) ? (
                 ""
               ) : (
-                <div className="pagination-container margin-top-20">
-                  <nav className="pagination">
-                    <ul>
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          ((currentDoneApplicantsPage === 1 ||
-                            totalPage - currentDoneApplicantsPage < 3) &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(
-                              currentDoneApplicantsPage - 1
-                            );
-                          }}
+                  <div className="pagination-container margin-top-20">
+                    <nav className="pagination">
+                      <ul>
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            ((currentDoneApplicantsPage === 1 ||
+                              totalPage - currentDoneApplicantsPage < 3) &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-left" />
-                        </div>
-                      </li>
-                      {this.renderPagination(
-                        currentDoneApplicantsPage,
-                        totalPage
-                      )}
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          (totalPage - currentDoneApplicantsPage < 3 &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(
-                              currentDoneApplicantsPage + 1
-                            );
-                          }}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(
+                                currentDoneApplicantsPage - 1
+                              );
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-left" />
+                          </div>
+                        </li>
+                        {this.renderPagination(
+                          currentDoneApplicantsPage,
+                          totalPage
+                        )}
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            (totalPage - currentDoneApplicantsPage < 3 &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-right" />
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(
+                                currentDoneApplicantsPage + 1
+                              );
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-right" />
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
             </div>
           </div>
         </div>
         <div id="CVModal" className="modal fade" role="dialog">
           <div id="cv-modal-dialog" className="modal-dialog modal-xl"></div>
+        </div>
+        <div id="reportModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <ReportForm></ReportForm>
+          </div>
         </div>
         <div id="reviewModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
@@ -292,8 +342,17 @@ const mapDispatchToProps = (dispatch) => {
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadDoneApplicantsForEmployer(jobId, page, take));
     },
+    onSelectReportedUser: (userId, applicantId, jobId) => {
+      dispatch(selectReportedUser(userId, applicantId, jobId));
+    },
     onSelectReviewUser: (applicantId) => {
       dispatch(selectReviewUser(applicantId));
+    },
+    onLoadDetailReview: (applicantId) => {
+      dispatch(loadDetailReview(applicantId, true));
+    },
+    onLoadDetailReport: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReport(id_user2, 0, applicantId, jobId));
     },
   };
 };

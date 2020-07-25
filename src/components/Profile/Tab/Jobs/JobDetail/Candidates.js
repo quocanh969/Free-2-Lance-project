@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import avatarPlaceholder from '../../../../../assets/images/user-avatar-placeholder.png';
+import avatarPlaceholder from '../../../../../assets/images/portrait_placeholder.png';
 
 class CandidatesComponent extends Component {
     constructor(props) {

@@ -1,44 +1,47 @@
 const initState = {
-    places: [{
-        name: "HCMUS",
-        title: "HCMUS",
-        position: { lat: 0.0, lng: 0.0 }
-    }],
-    info: {
-        name: "",
-        email: "",
-        subject: "",
-        messageContent: "",
-    },
-    status: 0,
-    sending: false,
+    reportApplicantId: null,
+    reviewApplicantId: null,
+
+    // detail review
+    isReviewExist: -2, // -2 -- trạng thái mặc định, -1 -- loading, 0 -- not exist, 1 -- exist
+    rating: null,
+    feedback: '',
+
+    // detail report - fire
+    isReportExist: -2, // -2 -- trạng thái mặc định, -1 -- loading, 0 -- not exist, 1 -- exist
+    content: '',
 }
 
 const ContactUsReducer = (state = initState, action) => {
     switch (action.type) {
-        case 'CONTACT_US_REQUEST':
+        case 'REPORT_SELECT_APPLICANT':
             return {
                 ...state,
-                status: 0,
-                message: 'Sending...',
-                sending: true,
-            };
-        case 'CONTACT_US_SUCCESS':
+                reportApplicantId: action.id_applicant,
+            }
+        case 'REVIEW_SELECT_APPLICANT':
             return {
                 ...state,
-                status: 1,
-                message: action.message,
-                sending: false,
-            };
-        case 'CONTACT_US_FAILURE':
+                reviewApplicantId: action.id_applicant,
+            }
+        case 'LOAD_DETAIL_REVIEW':
             return {
                 ...state,
-                status: -1,
-                message: action.message,
-                sending: false,
-            };
-        case 'CONTACT_US_RESET':
-            return initState;
+                isReviewExist: action.code,
+                rating: action.rating,
+                feedback: action.feedback,
+            }
+        case 'CHANGE_DETAIL_REVIEW_RATING':
+            return {
+                ...state,
+                rating: action.rating,
+            }
+        case 'LOAD_DETAIL_REPORT':
+            return {
+                ...state,
+                isReportExist: action.code,
+                content: action.content
+            }
         default:
             return state
     }

@@ -2,10 +2,13 @@
 @import "~@fullcalendar/daygrid/main.css";
 
 body {
+  padding-right: 0 !important;
   min-width: 800px; /* Suppose you want minimum width of 1000px */
   width: auto !important; /* Firefox will set width as auto */
   width: 800px; /* As IE6 ignores !important it will set width as 1000px; */
 }
+
+.modal-open{overflow:hidden;padding-right:0 !important;}
 
 #header .font-weight-bold {
   font-weight: bold !important;
@@ -62,6 +65,10 @@ body {
 
 .dropdown-toggle::after {
   display: none !important;
+}
+
+.dropdown-item:hover {
+  color: inherit !important;
 }
 /* 
 .full-page-map-container,.full-page-content-container {

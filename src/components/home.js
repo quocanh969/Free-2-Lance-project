@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import "../assets/css/testimonial.css";
 
 // Image, khi mà vào project cần dùng ảnh của mình thì phải xóa mấy cái này
-import UserAvatarPlaceholder from "../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../assets/images/portrait_placeholder.png";
 
 import { S_Selector } from "../ultis/SHelper/S_Help_Input";
 import {
@@ -20,10 +20,13 @@ import {
   prettierDate,
   getImageSrc,
 } from "../ultis/SHelper/helperFunctions";
+import { history } from "../ultis/history/history";
 
 class HomeComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -41,6 +44,28 @@ class HomeComponent extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+  }
+
+  handleSearchSubmit(e) {
+    e.preventDefault();
+    let query = {};
+    let title = document.getElementById('input-title').value;
+    let area_province = document.getElementById('select-area').value;
+    let job_topic = document.getElementById('select-category').value;
+
+    if (title.length > 0) {
+      query['title'] = title;
+    }
+    if (area_province != 0) {
+      query['area_province'] = area_province;
+    }
+    if (job_topic != 0) {
+      query['job_topic'] = job_topic;
+    }
+
+    if (query.length !== {}) {
+      history.push('/job-list', query);
+    }
   }
 
   areaSession(areas) {
@@ -74,7 +99,7 @@ class HomeComponent extends Component {
   }
 
   bannerSession() {
-    let { jobTopic, areas } = this.props.GeneralReducer;
+    let { jobTopic, areas, isLoadingJobTopic, isLoadingAreas } = this.props.GeneralReducer;
     let {
       memberNum,
       finishedJobNum,
@@ -108,7 +133,7 @@ class HomeComponent extends Component {
           {/* Search Bar */}
           <div className="row">
             <div className="col-md-12">
-              <form className="intro-banner-search-form margin-top-95">
+              <form id='search-field' onSubmit={this.handleSearchSubmit} className="intro-banner-search-form margin-top-95">
                 {/* Search Field */}
                 <div className="intro-search-field">
                   <label
@@ -132,13 +157,18 @@ class HomeComponent extends Component {
                   >
                     Tại nơi nào?
                   </label>
-                  <S_Selector
+                  {isLoadingAreas ? (<div className="loading" key={1}>
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>) : <S_Selector
                     id="select-area"
                     placeholder="Khu vực"
                     data={areas}
                     value_tag="id_province"
                     text_tag="name"
-                  ></S_Selector>
+                  ></S_Selector>}
+
                 </div>
                 {/* Search Field */}
                 <div className="intro-search-field">
@@ -148,13 +178,18 @@ class HomeComponent extends Component {
                   >
                     Nhóm cộng việc là gì?
                   </label>
-                  <S_Selector
+                  {isLoadingJobTopic ? (<div className="loading" key={1}>
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>) : <S_Selector
                     id="select-category"
                     placeholder="Loại công việc"
                     data={jobTopic}
                     value_tag="id_jobtopic"
                     text_tag="name"
-                  ></S_Selector>
+                  ></S_Selector>}
+
                 </div>
 
                 <div className="intro-search-button">
@@ -199,7 +234,7 @@ class HomeComponent extends Component {
   }
 
   topicSession() {
-    let { jobTopic } = this.props.GeneralReducer;
+    let { jobTopic, isLoadingJobTopic } = this.props.GeneralReducer;
     let content = [];
     let count = 0;
     let copyJobTopicList = [...jobTopic];
@@ -209,7 +244,11 @@ class HomeComponent extends Component {
         return b.count - a.count;
       })
       .slice(0, 8);
-
+    if (isLoadingJobTopic) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     for (let e of copyJobTopicList) {
       content.push(
         <div className="col-xl-3 col-md-6" key={count}>
@@ -221,7 +260,6 @@ class HomeComponent extends Component {
             <img src={getImageSrc(e.img, UserAvatarPlaceholder)} alt=""></img>
             <div className="photo-box-content">
               <h3>{e.name}</h3>
-              <span>{e.count}</span>
             </div>
           </NavLink>
         </div>
@@ -235,8 +273,12 @@ class HomeComponent extends Component {
   renderProductionJobsList() {
     let content = [],
       count = 0;
-    let { productionJobList } = this.props.HomeReducer;
-
+    let { productionJobList, isLoadingProductionJobList } = this.props.HomeReducer;
+    if (isLoadingProductionJobList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     for (let e of productionJobList) {
       content.push(
         <NavLink
@@ -247,8 +289,9 @@ class HomeComponent extends Component {
           <div className="task-listing-details">
             <div className="task-listing-description">
               <h3
-                className="task-listing-title d-inline-block text-truncate"
-                style={{ maxWidth: "40vh" }}
+                title={e.title}
+                className="task-listing-title text-truncate"
+                style={{ maxWidth: "25vh" }}
               >
                 {e.title}
               </h3>
@@ -263,8 +306,8 @@ class HomeComponent extends Component {
                 </li>
               </ul>
               <p
-                className="d-inline-block text-truncate"
-                style={{ maxWidth: "40vh" }}
+                className="text-truncate"
+                style={{ maxWidth: "25vh" }}
               >
                 {e.description}
               </p>
@@ -292,8 +335,12 @@ class HomeComponent extends Component {
   renderTemporalJobsList() {
     let content = [],
       count = 0;
-    let { temporalJoblist } = this.props.HomeReducer;
-
+    let { temporalJoblist, isLoadingTemporalJoblist } = this.props.HomeReducer;
+    if (isLoadingTemporalJoblist) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     for (let e of temporalJoblist) {
       content.push(
         <NavLink
@@ -304,8 +351,9 @@ class HomeComponent extends Component {
           <div className="task-listing-details">
             <div className="task-listing-description">
               <h3
-                className="task-listing-title d-inline-block text-truncate"
-                style={{ maxWidth: "40vh" }}
+                title={e.title}
+                className="task-listing-title text-truncate"
+                style={{ maxWidth: "25vh" }}
               >
                 {e.title}
               </h3>
@@ -320,8 +368,8 @@ class HomeComponent extends Component {
                 </li>
               </ul>
               <p
-                className="d-inline-block text-truncate"
-                style={{ maxWidth: "40vh" }}
+                className="text-truncate"
+                style={{ maxWidth: "25vh" }}
               >
                 {e.description}
               </p>
@@ -349,7 +397,12 @@ class HomeComponent extends Component {
   renderTestimonials() {
     let content = [],
       count = 0;
-    let { topUsers } = this.props.HomeReducer;
+    let { topUsers, isLoadingTopUsers } = this.props.HomeReducer;
+    if (isLoadingTopUsers) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     if (topUsers.length > 0) {
       for (let e of topUsers) {
         let userAvatar = getImageSrc(e.avatarImg, UserAvatarPlaceholder);
@@ -357,6 +410,7 @@ class HomeComponent extends Component {
           <div
             className={"item carousel-item " + (count === 0 && "active")}
             key={count}
+            onClick={() => { history.push('user-detail/' + e.id_user) }}
           >
             <div className="img-box">
               <img src={userAvatar} alt="" />
@@ -391,8 +445,14 @@ class HomeComponent extends Component {
       finishedJobNum,
       applyingJobNum,
       proccessingJobNum,
+      isLoadingStatistic,
     } = this.props.HomeReducer;
-    return (
+    if (isLoadingStatistic) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
+    else return (
       <div className="section padding-top-70 padding-bottom-75">
         <div className="container">
           <div className="row">
@@ -486,7 +546,7 @@ class HomeComponent extends Component {
                   </p>
                 </div>
                 {/* Jobs Container */}
-                <div className="tasks-list-container compact-list margin-top-20">
+                <div className="tasks-list-container compact-list margin-top-20 px-3">
                   {this.renderTemporalJobsList()}
                 </div>
                 {/* Jobs Container / End */}
@@ -499,7 +559,7 @@ class HomeComponent extends Component {
                   </p>
                 </div>
                 {/* Jobs Container */}
-                <div className="tasks-list-container compact-list margin-top-20">
+                <div className="tasks-list-container compact-list margin-top-20 px-3">
                   {this.renderProductionJobsList()}
                 </div>
                 {/* Jobs Container / End */}

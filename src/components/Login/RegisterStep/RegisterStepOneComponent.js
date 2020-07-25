@@ -36,39 +36,45 @@ class RegisterStepOneComponent extends Component {
     account.address = this.refs.address.value;
     account.gender = this.refs.gender.value === "male" ? 1 : 0;
     account.dob = this.refs.birthday.value;
+    account.identity = this.refs.identity.value;
     onUpdateProfile(account);
     goToNextStep();
   }
 
   render() {
     let { account } = this.props.RegisterReducer;
+    let thisYear = new Date();
     return (
       <div>
         <div className="account-type">
           <div>
-            <input
-              type="radio"
-              name="account-type-radio"
-              id="freelancer-radio"
-              className="account-type-radio"
-              value="freelancer"
-              defaultChecked
-            />
-            <label htmlFor="freelancer-radio" className="ripple-effect-dark">
+            <div className='w-100 text-center'>
+              <input
+                type="radio"
+                name="account-type-radio"
+                id="freelancer-radio"
+                className="account-type-radio"
+                value="freelancer"
+                defaultChecked
+              />
+            </div>
+            <label htmlFor="freelancer-radio">
               <i className="icon-material-outline-account-circle" /> Người lao
               động
             </label>
           </div>
           <div>
-            <input
-              type="radio"
-              name="account-type-radio"
-              id="employer-radio"
-              className="account-type-radio"
-              value="employer"
-              defaultChecked={account.isBusinessUser}
-            />
-            <label htmlFor="employer-radio" className="ripple-effect-dark">
+            <div className='w-100 text-center'>
+              <input
+                type="radio"
+                name="account-type-radio"
+                id="employer-radio"
+                className="account-type-radio"
+                value="employer"
+                defaultChecked={account.isBusinessUser}
+              />
+            </div>            
+            <label htmlFor="employer-radio">
               <i className="icon-material-outline-business-center" /> Doanh
               nghiệp
             </label>
@@ -103,8 +109,23 @@ class RegisterStepOneComponent extends Component {
               name="dial-register"
               id="dial-register"
               ref="dial"
-              placeholder="Số điện thoại"
+              placeholder="Số điện thoại (từ 7 đến 11 số)"
               defaultValue={account.dial}
+              required
+            />
+          </div>
+          <div className="input-with-icon-left" data-tippy-placement="bottom">
+            <i className="icon-material-outline-info" />
+            <input
+              type="tel"
+              pattern="[0-9]{10,}"
+              maxLength="15"
+              className="input-text with-border"
+              name="identity-register"
+              id="identity-register"
+              ref="identity"
+              placeholder="Số CMND / Passport (từ 10 đến 15 số)"
+              defaultValue={account.identity}
               required
             />
           </div>
@@ -130,8 +151,8 @@ class RegisterStepOneComponent extends Component {
               name="birthday-register"
               id="birthday-register"
               ref="birthday"
-              min="1990-01-01"
-              max="2019-12-31"
+              min="1980-01-01"
+              max={`${thisYear.getFullYear()-10}-12-31`}
               defaultValue={account.dob}
               required
             />

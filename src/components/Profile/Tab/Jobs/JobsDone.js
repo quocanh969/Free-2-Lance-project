@@ -34,6 +34,7 @@ class JobsDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentFinishedPage) {
+      window.scrollTo(0, 0);
       this.loadJobList(pageNum);
     }
   }
@@ -57,7 +58,12 @@ class JobsDoneComponent extends Component {
 
   renderJobList() {
     let content = [];
-    let { finishedJobsList } = this.props.EmployerReducer;
+    let { finishedJobsList, isLoadingFinishedJobsList } = this.props.EmployerReducer;
+    if (isLoadingFinishedJobsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary my-4" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (finishedJobsList.length > 0) {
       finishedJobsList.forEach((e, index) => {
@@ -71,19 +77,19 @@ class JobsDoneComponent extends Component {
                 <div className="job-listing-description">
                   <h3 className="job-listing-title">{e.title}</h3>
                   <h4 className="d-flex justify-content-between">
-                    <span>
+                    <div>
                       <span className="font-weight-bold">Loại công việc: </span>
                       {!e.job_type
                         ? "Công việc thời vụ"
                         : "Công việc theo sản phẩm"}
-                    </span>
-                    <span className="text-primary">
+                    </div>
+                    <div className="text-primary">
                       <span className="font-weight-bold">Mức lương</span>{" "}
                       {prettierNumber(e.salary) + " VNĐ"}
-                    </span>
+                    </div>
                   </h4>
                   {/* Job Listing Footer */}
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     {e.description}
                   </div>
@@ -119,23 +125,23 @@ class JobsDoneComponent extends Component {
                         </li>
                       </ul>
                     ) : (
-                      <ul>
-                        <li>
-                          <span className="font-weight-bold">
-                            <i className="icon-line-awesome-calendar-o" />
+                        <ul>
+                          <li>
+                            <span className="font-weight-bold">
+                              <i className="icon-line-awesome-calendar-o" />
                             Ngày bắt đầu công việc:{" "}
-                          </span>
-                          {prettierDate(e.start_date)}
-                        </li>
-                        <li>
-                          <span className="font-weight-bold">
-                            <i className="icon-material-outline-date-range" />
+                            </span>
+                            {prettierDate(e.start_date)}
+                          </li>
+                          <li>
+                            <span className="font-weight-bold">
+                              <i className="icon-material-outline-date-range" />
                             Ngày kết thúc công việc:{" "}
-                          </span>
-                          {prettierDate(e.end_date)}
-                        </li>
-                      </ul>
-                    )}
+                            </span>
+                            {prettierDate(e.end_date)}
+                          </li>
+                        </ul>
+                      )}
                   </div>
                 </div>
               </div>
@@ -149,7 +155,7 @@ class JobsDoneComponent extends Component {
                 className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
               >
                 <i className="icon-material-outline-supervisor-account"></i>{" "}
-                Danh sách người tham gia: {e.candidates}
+                Xem danh sách người tham gia và phản hồi
               </button>
               <span
                 data-toggle="modal"
@@ -188,7 +194,7 @@ class JobsDoneComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -219,7 +225,7 @@ class JobsDoneComponent extends Component {
   }
 
   render() {
-    let { totalFinishedJobs, currentFinishedPage } = this.props.EmployerReducer;
+    let { totalFinishedJobs, currentFinishedPage, isLoadingFinishedJobsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalFinishedJobs / 4);
 
     return (
@@ -247,49 +253,49 @@ class JobsDoneComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalFinishedJobs === 0 ? (
+            {(totalFinishedJobs === 0 || isLoadingFinishedJobsList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentFinishedPage === 1 ||
-                          totalPage - currentFinishedPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentFinishedPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentFinishedPage === 1 ||
+                            totalPage - currentFinishedPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentFinishedPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentFinishedPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentFinishedPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentFinishedPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentFinishedPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentFinishedPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentFinishedPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}

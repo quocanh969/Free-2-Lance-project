@@ -3,7 +3,7 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Logo2 from "../../assets/images/logo4.png";
-import UserAvatarPlaceholder from "../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../assets/images/portrait_placeholder.png";
 import JobImgePlaceholder from "../../assets/images/company-logo-placeholder-alt.png";
 import Badge from "@material-ui/core/Badge";
 import MailIcon from "@material-ui/icons/Mail";
@@ -11,9 +11,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import { loadTopics, loadAreas, loadTags } from "../../actions/Home";
 import { loadJobList } from "../../actions/Job";
-import { updateUserState } from "../../actions/Account";
+import { updateUserState, checkExpiredJob } from "../../actions/Account";
 import { history } from "../../ultis/history/history";
 import { getImageSrc } from "../../ultis/SHelper/helperFunctions";
+import Swal from "sweetalert2";
 const firebase = require("firebase");
 
 class HeaderComponent extends Component {
@@ -23,62 +24,16 @@ class HeaderComponent extends Component {
     this.state = {
       isTopicHover: false,
       isCurrentTop: false,
-      email: localStorage.getItem("item"),
+
+      email: localStorage.getItem("email"),
+
       isReadNotify: true,
       notifications: [],
+      isNotiLoading: true,
+
       unreadMessage: 0,
-      messages: [
-        {
-          id_user: 1,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "John Cena",
-          message:
-            "All music used in the creation of this video are the intellectual property of those who owns it. No copyright infringement is, or will be intended on this channel whatsoever. If you wish to have the video removed, please contact the email at the bottom of this description. Your content will be promptly removed within 24 hours time.",
-        },
-        {
-          id_user: 2,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "Triple H",
-          message: "All music used in the creation of this video are t",
-        },
-        {
-          id_user: 3,
-          avatarImg: UserAvatarPlaceholder,
-          fullname: "Garen",
-          message:
-            "All music used in the creation of this video are the intellectual property of those who owns it. ",
-        },
-      ],
-      notices: [
-        {
-          id_user: 1,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "John Cena",
-          type: 1, // nhận
-          job: "Đấm nhau",
-        },
-        {
-          id_user: 2,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Triple H",
-          type: 0, // ko nhận
-          job: "Đấm nhau",
-        },
-        {
-          id_user: 3,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Garen",
-          type: 2, // kết thúc công việc
-          job: "Cày rank LOL",
-        },
-        {
-          id_user: 4,
-          jobTopicImg: JobImgePlaceholder,
-          fullname: "Ronaldo",
-          type: 3, // nhận thanh toán
-          job: "Đá bóng",
-        },
-      ],
+      messages: [],
+      isMessLoading: true,
     };
 
     // window.onscroll = this.handleScroll();
@@ -86,11 +41,12 @@ class HeaderComponent extends Component {
   }
 
   componentWillMount() {
-    let { onUpdateUser, onLoadTopics, onLoadAreas, onLoadTags } = this.props;
+    let { onUpdateUser, onCheckExpireJobs, onLoadTopics, onLoadAreas, onLoadTags } = this.props;
 
     // kiêm tra local storage
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("client_token")) {
       onUpdateUser();
+      onCheckExpireJobs();
     }
 
     // loadTopics
@@ -101,16 +57,16 @@ class HeaderComponent extends Component {
 
   componentDidMount = async () => {
     window.addEventListener("scroll", this.handleScroll);
-    const email = localStorage.getItem('email');
+    let email = localStorage.getItem('email');
     if (email) {
+      console.log('co load nha');
       const notifications = await
         firebase
           .firestore()
           .collection('notifications')
           .doc(email)
-          .get();
-      console.log('notification exists:', notifications.exists)
-      console.log();
+          .get()
+
       await firebase
         .firestore()
         .collection('chats')
@@ -123,13 +79,12 @@ class HeaderComponent extends Component {
           chats.forEach(element => {
             console.log(element);
             let realPerson = element.img.filter(el => el.email !== email);
-            if(realPerson.length > 0) {
+            if (realPerson.length > 0) {
               rs.push({
                 fullname: realPerson[0].fullname,
                 avatarImg: getImageSrc(realPerson[0].img),
                 message: element.messages.lenght > 0 ? element.messages[element.messages.length - 1].message.substring(0, 30) : ''
               })
-              
               if (element.messages.length > 0) {
                 if (element.messages[element.messages.length - 1].sender !== email && !element.receiverHasRead) {
                   unreadMessage++;
@@ -140,11 +95,12 @@ class HeaderComponent extends Component {
           });
           await this.setState({
             email: email,
-            messages: rs,
-            unreadMessage
-
+            messages: rs.reverse(),
+            unreadMessage,
+            isMessLoading: false,
           });
         })
+
       if (!notifications.exists) {
         firebase
           .firestore()
@@ -155,26 +111,27 @@ class HeaderComponent extends Component {
             listNotify: [],
             isRead: true
           })
+        console.log('flag noti not exists');
+        let { onFailureLoadNoti } = this.props;
+        onFailureLoadNoti();
       }
       else {
+        console.log('flag noti exists');
         firebase
           .firestore()
           .collection('notifications')
           .where('email', '==', email)
           .onSnapshot(async res => {
             const data = res.docs.map(_doc => _doc.data());
-
-            await this.setState({
-              notifications: data[0].listNotify,
-              isReadNotify: data[0].isRead
-            });
+            //console.log(data);
+            let { onSuccessLoadNoti } = this.props;
+            await onSuccessLoadNoti(data[0].isRead, data[0].listNotify.reverse());
           })
       }
     }
-
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   componentWillReceiveProps() {
     this.handleScroll();
@@ -199,17 +156,9 @@ class HeaderComponent extends Component {
     localStorage.clear();
     onLogOut();
     history.push("/login");
+    // window.location.replace('/login');
   }
 
-  handleTopicNavClick(e, topic) {
-    let currentTopic = Number.parseInt(this.props.match.params.job_topic);
-    if (currentTopic !== topic) {
-      let { onLoadJobByJob } = this.props;
-      onLoadJobByJob({ job_topic: topic });
-    } else {
-      e.preventDefault();
-    }
-  }
   sendReadNotfication = async () => {
     const { email } = this.state;
     if (email) {
@@ -218,9 +167,16 @@ class HeaderComponent extends Component {
       });
     }
   };
-  renderTopicsHeader() {
-    let { jobTopic } = this.props.GeneralReducer;
 
+  renderTopicsHeader() {
+    let { jobTopic, isLoadingJobTopic } = this.props.GeneralReducer;
+    if (isLoadingJobTopic) {
+      return (<div className="loading" key={1}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>);
+    }
     let content = [],
       count = 0;
 
@@ -241,123 +197,462 @@ class HeaderComponent extends Component {
     return content;
   }
 
-  renderMessageContent() {
-    let content = [],
-      count = 0;
-    let { messages } = this.state;
-    for (let e of messages) {
-      content.push(
-        <NavLink
-          key={count}
-          to="/dashboard"
-          className="dropdown-item px-1 border-top border-secondary"
-        >
-          <div className="container-fluid px-3">
-            <div className="row p-1">
-              {/* avatar */}
-              <div className="col-2 p-0">
-                <img
-                  className="rounded-circle"
-                  style={{ height: "auto" }}
-                  src={e.avatarImg}
-                ></img>
-              </div>
-              {/* message */}
-              <div className="col-10 px-3">
-                <div className="text-293FE4 font-weight-bold">{e.fullname}</div>
-                <div
-                  className="text-secondary d-inline-block text-truncate"
-                  style={{ width: "200px" }}
-                >
-                  {e.message}
-                </div>
-              </div>
-            </div>
-          </div>
-        </NavLink>
-      );
-      count++;
+  renderNotice(notice) {
+    if (notice) {
+      switch (notice.type) {
+        case 0: {
+          return (
+            <span className="text-wrap cursor-pointer" title='Nhấp vào để đến trang chi tiết công việc' onClick={() => { this.handleNoticeClick(notice) }}>
+              <span className="text-293FE4">{notice.fullname}</span> đã từ chối
+              bạn trong công việc{" "}
+              <span className="text-293FE4">{notice.job}</span>
+            </span>
+          );
+        }
+        case 1: {
+          return (
+            <span title='Nhấp vào để đến trang chi tiết công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã được nhận công việc{" "}
+              <span className="text-293FE4">{notice.job}</span> từ{" "}
+              <span className="text-293FE4">{notice.fullname}</span>
+            </span>
+          );
+        }
+        case 2: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý việc làm' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
+              <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
+            </span>
+          );
+        }
+        case 3: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý doanh thu' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              <span className="text-293FE4"></span>Nhân Viên F2L đã thanh toán
+              cho bạn về công việc{" "}
+              <span className="text-293FE4">{notice.job}</span>
+            </span>
+          );
+        }
+        case 4: {
+          return (
+            <span className="text-wrap cursor-pointer">
+              <span className="text-293FE4">{notice.job}</span> của
+              <span className="text-293FE4">{notice.fullname}</span> đã dừng lại
+            </span>
+          );
+        }
+        case 5: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý việc làm' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Công việc
+              <span className="text-293FE4">{notice.job}</span> của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã chuyển sang giai đoạn thực hiện
+            </span>
+          );
+        }
+        case 6: {
+          return (
+            <span title='Nhấp vào để đến trang chi tiết việc làm' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã được khôi phục
+            </span>
+          );
+        }
+        case 7: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Báo cáo của bạn về&nbsp;
+              <span className="text-293FE4">{notice.employee}</span>&nbsp;trong công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;đã được xử lý
+            </span>
+          );
+        }
+        case 8: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Yêu cầu sa thải và hoàn tiền công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;không được chấp thuận
+            </span>
+          );
+        }
+        case 9: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Yêu cầu sa thải và hoàn tiền công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;đã được chấp thuận, bạn được hoàn
+              50% tiền.
+            </span>
+          );
+        }
+        case 10: {
+          return (
+            <span className="text-wrap cursor-pointer">
+              Công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;đã bị gỡ hoàn toàn
+            </span>
+          );
+        }
+        case 11: {
+          return (
+            <span className="text-wrap cursor-pointer">
+              Tài khoản của bạn đã được xác thực
+            </span>
+          );
+        }
+        case 12: {
+          return (
+            <span className="text-wrap cursor-pointer">
+              Tài khoản của bạn chuyển sang trạng thái&nbsp;
+              <span className="text-293FE4">Chờ xác thực</span>
+            </span>
+          );
+        }
+        case 13: {
+          return (
+            <span title='Nhấp vào vào trang quản lý thông tin' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Tài khoản của bạn được đánh giá là không đủ điều kiện để xác thực, vui lòng kiểm tra lại
+            </span>
+          );
+        }
+        case 14: {
+          return (
+            <span title='Nhấp vào để xem chi tiết công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;vừa cập nhật thông tin
+            </span>
+          );
+        }
+        case 15: {
+          return (
+            <span title='Nhấp vào để chuyển đến trang quản lý công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Nhân viên&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;ứng tuyển vào công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 16: {
+          return (
+            <span title='Nhấp vào để chuyển đến trang quản lý công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Nhân viên&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;bổ sung hồ sơ ứng tuyển vào công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 17: {
+          return (
+            <span title='Nhấp vào để chuyển đến trang quản lý công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Nhân viên&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;rút ứng tuyển khỏi công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 18: {
+          return (
+            <span title='Nhấp vào để xem chi tiết công việc' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              <span className="text-293FE4">{notice.job}</span>&nbsp;của
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;
+              đã vào giai đoạn thực hiện và bạn không được tuyển
+            </span>
+          );
+        }
+        case 19: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã bị&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;sa thải từ công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;và hoàn lại&nbsp;
+              <span className="text-293FE4">{notice.refundPercentage}</span>&nbsp;tiền lương
+            </span>
+          );
+        }
+        case 20: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được khiếu nại trong công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+            </span>
+          );
+        }
+        case 21: {
+          return (
+            <span title='Nhấp vào để xem chi tiết' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được yêu cầu sa thải trong công việc&nbsp;
+              <span className="text-293FE4">{notice.job}</span>&nbsp;
+              . Tạm thời bạn không cần tiếp tục thực hiện công việc này.
+            </span>
+          );
+        }        
+        case 22: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý phản hồi' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được phản hồi từ người thuê&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;
+            </span>
+          );
+        }        
+        case 23: {
+          return (
+            <span title='Nhấp vào để đến trang quản lý phản hồi' className="text-wrap cursor-pointer" onClick={() => { this.handleNoticeClick(notice) }}>
+              Bạn đã nhận được phản hồi từ người làm&nbsp;
+              <span className="text-293FE4">{notice.fullname}</span>&nbsp;
+            </span>
+          );
+        }        
+        default:
+          return "";
+      }
     }
-    return content;
+
   }
 
-  renderNotice(notice) {
-    console.log("notice:", notice);
-    switch (notice.type) {
-      case 0: {
-        return (
-          <span className="text-wrap">
-            <span className="text-293FE4">{notice.fullname}</span> đã từ chối
-            bạn trong công việc{" "}
-            <span className="text-293FE4">{notice.job}</span>
-          </span>
-        );
+  handleNoticeClick(notice) {
+    if (notice) {
+      switch (notice.type) {
+        case 0: {
+          history.push('/job-detail/' + notice.id_job);
+          return;
+        }
+        case 1: {
+          history.push('/job-detail/' + notice.id_job);
+          return;
+        }
+        case 2: {
+          history.push('/dashboard/tab=10');
+          return;
+        }
+        case 3: {
+          history.push('/dashboard/tab=14');
+          return;
+        }
+        case 5: {
+          history.push('/dashboard/tab=8');
+          return;
+        }
+        case 6: {
+          history.push('/job-detail/' + notice.id_job);
+          return;
+        }
+        case 7: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Báo cáo của bạn về&nbsp;<span class='font-weight-bold'>${notice.employee_name}</span>&nbsp;trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>&nbsp;đã được xử lý bằng:
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>                      
+                      <span class='font-weight-bold'>${notice.solution}</span>                  
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 8: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Người làm&nbsp;<span class='font-weight-bold'>${notice.employee_name}</span>&nbsp;đã ngưng dịch vụ trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>.Yêu cầu hoàn tiền của bạn đã không được quản lý thông qua.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 9: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Người làm&nbsp;<span class='font-weight-bold'>${notice.employee_name}</span>&nbsp;đã ngưng dịch vụ trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Phần trăm số tiền mà bạn được hoàn lại hoàn lại là&nbsp;
+                      <span class='font-weight-bold'>${notice.refundPercentage}</span>%
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 13: {
+          history.push('/dashboard/tab=11');
+          return;
+        }
+        case 14: {
+          history.push('/job-detail/' + notice.id_job);
+          return;
+        }
+        case 15: {
+          history.push('/dashboard/tab=4');
+          return;
+        }
+        case 16: {
+          history.push('/dashboard/tab=4');
+          return;
+        }
+        case 17: {
+          history.push('/dashboard/tab=4');
+          return;
+        }
+        case 18: {
+          history.push('/job-detail/' + notice.id_job);
+          return;
+        }
+        case 19: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Bạn đã bị ngưng dịch vụ làm thuê trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>
+                      &nbsp;và bị trừ đi
+                      &nbsp;<span class='font-weight-bold'>${notice.leftover}</span>% số tiền trong thỏa thuận
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng liên hệ đến email: free2lance2020@gmail.com để nhận được những giải đáp từ phía quản lý.                 
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 20: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Bạn nhận được 1 khiếu nại từ
+                      &nbsp;<span class='font-weight-bold'>${notice.fullname}</span>
+                      &nbsp;trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng gửi các thông tin, hình ảnh chứng thực giúp bảo vệ bạn đến email: free2lance2020@gmail.com để hổ trợ quản lý giải quyết vấn đề.
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 21: {
+          Swal.fire({
+            title: '<b>Chi tiết thông báo</b>',
+            html:
+              `<div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3'>
+                      Bạn nhận được 1 yêu cầu ngưng việc từ
+                      &nbsp;<span class='font-weight-bold'>${notice.fullname}</span>
+                      &nbsp;trong công việc
+                      &nbsp;<span class='font-weight-bold'>${notice.job}</span>. Tạm
+                      thời bạn không cần tiếp tục thực hiện công việc này.
+                    </div>
+                    <div class='my-1 py-2 text-left rounded bg-f0eee3 text-danger'>
+                      *Vui lòng gửi các thông tin, hình ảnh chứng thức giúp bảo vệ bạn đến email: free2lance2020@gmail.com để hổ trợ quản lý giải quyết vấn đề.
+                    </div>
+                </div>`,
+            showCloseButton: true,
+            showConfirmButton: false,
+            focusConfirm: false
+          })
+          return;
+        }
+        case 22: {
+          history.push('/dashboard/tab=3');
+          return;
+        }
+        case 23: {
+          history.push('/dashboard/tab=3');
+          return;
+        }
+        default:
+          return;
       }
-      case 1: {
-        return (
-          <span className="text-wrap">
-            Bạn đã được nhận công việc{" "}
-            <span className="text-293FE4">{notice.job}</span> từ{" "}
-            <span className="text-293FE4">{notice.fullname}</span>
-          </span>
-        );
-      }
-      case 2: {
-        return (
-          <span className="text-wrap">
-            <span className="text-293FE4">{notice.job}</span> giữa bạn và{" "}
-            <span className="text-293FE4">{notice.fullname}</span> đã kết thúc
-          </span>
-        );
-      }
-      case 3: {
-        return (
-          <span className="text-wrap">
-            <span className="text-293FE4">{notice.fullname}</span> đã thanh toán
-            cho bạn về công việc{" "}
-            <span className="text-293FE4">{notice.job}</span>
-          </span>
-        );
-      }
-      default:
-        return "";
     }
   }
 
   renderNotiContent() {
-    let content = [],
-      count = 0;
-    const { notices, notifications, isRead } = this.state;
-    console.log("notifications:", notifications);
-    console.log("isRead:", isRead);
-    for (let e of notifications) {
+    let content = [], count = 0;
+    const { notifications, isReadNotify, isNotiLoading } = this.props.HeaderReducer;
+    // console.log("isRead:", isRead);
+    if (isNotiLoading === true) {
       content.push(
-        <NavLink
-          key={count}
-          to="/job-detail"
-          className="dropdown-item px-1 border-top border-secondary"
-        >
-          <div className="container-fluid px-3">
-            <div className="row p-1">
-              {/* avatar */}
-              <div className="col-2 p-0">
-                <img style={{ height: "auto" }} src={JobImgePlaceholder}></img>
+        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )
+    }
+    else if (notifications.length === 0) {
+      content.push(
+        <div key={0} className="dropdown-item p-2 border-top border-secondary cursor-pointer text-center">
+          Bạn hiện không có thông báo
+        </div>
+      )
+    }
+    else {
+      for (let e of notifications) {
+        content.push(
+          <div key={count} className="dropdown-item px-1 border-top border-secondary cursor-pointer">
+            <div className="container-fluid px-3">
+              <div className="p-1">
+                {this.renderNotice(e.content)}
               </div>
-              {/* message */}
-              <div className="col-10 px-3">{this.renderNotice(e)}</div>
             </div>
           </div>
-        </NavLink>
-      );
-      count++;
+        );
+        count++;
+      }
     }
+
     return content;
   }
 
   renderUserLoginContent(user) {
     let userAvatar = getImageSrc(user.avatarImg, UserAvatarPlaceholder);
-    const { isReadNotify, unreadMessage } = this.state;
-    console.log("isReadNotify:", isReadNotify);
+    let {isReadNotify} = this.props.HeaderReducer;
+    const { unreadMessage } = this.state;
+    // console.log("isReadNotify:", isReadNotify);
+    // if(user.id_status) {
+    //   Swal.fire({
+    //     title: 'Tài khoản của bạn chưa kích hoạt',
+    //     text: 'Vui lòng cập nhật thông tin xác thực đầy đủ hoặc liện hệ free2lance2020@gmail.com để xác thực tài khoản',
+    //   })
+    // }
+
     return (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 mx-2">
@@ -404,29 +699,15 @@ class HeaderComponent extends Component {
           </div>
         </li>
         <li className="nav-item dropdown mx-0 px-0 pt-3 pb-2 ml-2 mr-3">
-          <button
-            className="nav-link nav-link-header mt-0 dropdown-toggle px-0 pt-1 pb-0"
+          <NavLink to='/dashboard/tab=2'
+            className="nav-link nav-link-header mt-0 px-0 pt-1 pb-0"
             id="MessMenuDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
           >
             <Badge color="secondary" badgeContent={unreadMessage}>
               {/* <i className="icon-material-baseline-mail-outline mt-0 mx-0 p-2 font-size-25"></i> */}
               <MailIcon />
             </Badge>
-          </button>
-          <div
-            className="shadow dropdown-menu dropdown-menu-right mt-1"
-            style={{ width: "300px" }}
-            aria-labelledby="MessMenuDropdown"
-          >
-            <h5 className="dropddown-header font-weight-bold mb-2 px-2" key={1}>
-              Messages
-            </h5>
-            <div className="header-menu">{this.renderMessageContent()}</div>
-          </div>
+          </NavLink>
         </li>
         <li
           className={
@@ -462,17 +743,27 @@ class HeaderComponent extends Component {
             {user.isBusinessUser ? (
               ""
             ) : (
-              <NavLink className="dropdown-item" to="/dashboard/tab=8">
-                <i className="icon-line-awesome-tasks"></i>
+                <NavLink className="dropdown-item" to="/dashboard/tab=8">
+                  <i className="icon-line-awesome-tasks"></i>
                 &nbsp;&nbsp; Quản lý việc làm
-              </NavLink>
-            )}
+                </NavLink>
+              )}
 
             <NavLink className="dropdown-item" to="/dashboard/tab=11">
               <i className="icon-material-outline-account-circle"></i>
               &nbsp;&nbsp; Tài khoản của bạn
             </NavLink>
             <div className="dropdown-divider" />
+            {(
+              user.id_status !== 2
+              ?
+              <div>
+                <div className='px-2 m-1 border border-danger'>Tài khoản của bạn chưa được xác thực, vui lòng cập nhật thông tin và liên hệ free2lance2020@gmail.com</div>
+                <div className="dropdown-divider" />
+              </div>
+              :
+              ''
+            )}
             <a
               className="dropdown-item"
               href="#"
@@ -531,7 +822,7 @@ class HeaderComponent extends Component {
   }
 
   render() {
-    let { user } = this.props.HeaderReducer;
+    let { user, isLoadingUser } = this.props.HeaderReducer;
     return (
       <nav
         className={
@@ -593,7 +884,10 @@ class HeaderComponent extends Component {
             >
               <NavLink
                 className="nav-link-header nav-link dropdown-toggle"
-                to="/job-list"
+                to={{
+                  pathname: '/job-list',
+                  state: {},
+                }}
                 id="navbarDropdown"
                 onMouseEnter={() => {
                   this.setState({ isTopicHover: true });
@@ -617,9 +911,13 @@ class HeaderComponent extends Component {
               </NavLink>
             </li>
           </ul>
-          {user === null
+          {isLoadingUser ? (<div className="loading" key={1}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>) : (user === null
             ? this.renderUserNotLoginContent()
-            : this.renderUserLoginContent(user)}
+            : this.renderUserLoginContent(user))}
         </div>
       </nav>
     );
@@ -637,6 +935,9 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateUser: () => {
       dispatch(updateUserState());
     },
+    onCheckExpireJobs: () => {
+      dispatch(checkExpiredJob());
+    },
     onLogOut: () => {
       dispatch({
         type: "USER_LOG_OUT",
@@ -651,8 +952,20 @@ const mapDispatchToProps = (dispatch) => {
     onLoadTags: () => {
       dispatch(loadTags());
     },
-    onLoadJobByJob: (query) => {
+    onLoadJobByTopic: (query) => {
       dispatch(loadJobList(1, 8, 2, query));
+    },
+    onFailureLoadNoti: () => {
+      dispatch({
+        type: 'LOAD_NOTI_FAILURE',
+      })
+    },
+    onSuccessLoadNoti: (isReadNotifyList, notiList) => {
+      dispatch({
+        type: 'LOAD_NOTI_SUCCESS',
+        isReadNotifyList,
+        notiList,
+      })
     },
   };
 };

@@ -14,6 +14,7 @@ class ResendActivationComponent extends Component {
         e.preventDefault();
         let { onSendRequest } = this.props;
         let email = this.refs.email.value;
+        this.refs.email.value = '';
         onSendRequest(email);
     }
 
@@ -58,16 +59,7 @@ class ResendActivationComponent extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-12">
-                                <h2>Account Activation</h2>
-                                {/* Breadcrumbs */}
-                                <nav id="breadcrumbs" className="dark">
-                                    <ul>
-                                        <li>
-                                            <NavLink to="/">Home</NavLink>
-                                        </li>
-                                        <li>Account Activation</li>
-                                    </ul>
-                                </nav>
+                                <h2>Kích hoạt tài khoản</h2>
                             </div>
                         </div>
                     </div>
@@ -79,10 +71,10 @@ class ResendActivationComponent extends Component {
                             <div className="login-register-page">
                                 {/* Welcome Text */}
                                 <div className="welcome-text">
-                                    <h3>Request a new activation mail</h3>
+                                    <h3>Yêu cầu gửi lại mã kích hoạt thông qua mail</h3>
                                     <br></br>
                                     <span>
-                                        Type in your email and we will send a new activation link to your email
+                                        Nhập vào địa chỉ mail của bạn và hệ thống sẽ gửi lại một mail kích hoạt khác
                                     </span>
                                     <br/>
                                     {/* Form */}
@@ -111,7 +103,7 @@ class ResendActivationComponent extends Component {
                                         type="submit"
                                         form="request-activation-form"
                                     >
-                                        Send Email{" "}
+                                        Gửi yêu cầu{" "}
                                         <i className="icon-material-outline-arrow-right-alt" />
                                     </button>
                                 </div>

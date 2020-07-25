@@ -9,9 +9,14 @@ const maxSize = 52428800;
 class ApplyFormConponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { isEditing: false, proposed_price: null };
+    this.state = {
+      isEditing: false,
+      proposed_price: null,
+      isCVReceive: false,
+    };
     this.applyJob = this.applyJob.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleChangeCV = this.handleChangeCV.bind(this);
   }
 
   componentDidMount() {
@@ -49,34 +54,109 @@ class ApplyFormConponent extends Component {
 
   applyJob(e) {
     e.preventDefault();
-    let selectedFile = document.getElementById("upload-cv").files[0];
+
+    let introductionText = document.getElementById('introduction-text').value;
+    let selectedFile = document.getElementById("upload-cv").files[0];    
     // get base64 of selectedFile
 
     if (selectedFile) {
       this.getBase64(selectedFile, (fileInBase64) => {
         let { user } = this.props.HeaderReducer;
         let { jobDetail } = this.props.JobDetailReducer;
+
+        //check proposed price (valid from 50% to 100% of salary)
         let proposed_price = jobDetail.dealable
           ? this.state.proposed_price
           : jobDetail.salary;
+        
+        // if (proposed_price < jobDetail.salary / 2) {
+        //   Swal.fire({
+        //     title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
+        //     icon: "error",
+        //     confirmButtonText: "OK",
+        //   });
+        // }
+        // else 
+        if (proposed_price > jobDetail.salary) {
+          Swal.fire({
+            title: "Lương mong muốn không được lớn hơn " + this.toCurrency(jobDetail.salary),
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+        else {//send apply job
+          let { doApplyJob } = this.props;
+          fileInBase64 = fileInBase64.split(",")[1];
+          doApplyJob(
+            user.id_user,
+            jobDetail.id_job,
+            proposed_price,
+            fileInBase64,
+            introductionText
+          );
+        }
+      });
+    } else {
+      // Swal.fire({
+      //   title: "Vui lòng chọn CV",
+      //   icon: "error",
+      //   confirmButtonText: "OK",
+      // });
+      let { user } = this.props.HeaderReducer;
+      let { jobDetail } = this.props.JobDetailReducer;
+
+      //check proposed price (valid from 50% to 100% of salary)
+      let proposed_price = jobDetail.dealable
+        ? this.state.proposed_price
+        : jobDetail.salary;
+      if (proposed_price < jobDetail.salary / 2) {
+        Swal.fire({
+          title: "Lương mong muốn không được nhỏ hơn " + this.toCurrency(jobDetail.salary / 2),
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      else if (proposed_price > jobDetail.salary) {
+        Swal.fire({
+          title: "Lương mong muốn không được lớn hơn " + this.toCurrency(jobDetail.salary),
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      else {//send apply job
         let { doApplyJob } = this.props;
-        fileInBase64 = fileInBase64.split(",")[1];
         doApplyJob(
           user.id_user,
           jobDetail.id_job,
           proposed_price,
-          fileInBase64
+          '',
+          introductionText,
         );
-        document.getElementById("btnCloseApplyForm").click();
-      });
-    } else {
-      Swal.fire({
-        title: "Vui lòng chọn CV",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      }
     }
   }
+
+  spinnerLoadingNotification() {
+    let content = [];
+    let { isApplying, appliedStatus } = this.props.JobDetailReducer;
+    if (isApplying) {
+      // sending ...
+      content.push(
+        <div className="loading" key={1}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      );
+    } else {
+      content = [];
+    }
+    if (appliedStatus === 1) {//success -> close form
+      document.getElementById("btnCloseApplyForm").click();
+    }
+    return content;
+  }
+
   renderProposedPrice() {
     let { jobDetail } = this.props.JobDetailReducer;
     if (jobDetail.dealable) {
@@ -100,18 +180,20 @@ class ApplyFormConponent extends Component {
               value={this.state.proposed_price}
               onChange={this.onChange.bind(this)}
               onBlur={this.toggleEditing.bind(this)}
+              min={10}
+              max={100}
               required
             />
           ) : (
-            <input
-              type="text"
-              className="input-text with-border"
-              name="proposed_price"
-              value={this.toCurrency(this.state.proposed_price)}
-              onFocus={this.toggleEditing.bind(this)}
-              readOnly
-            />
-          )}
+              <input
+                type="text"
+                className="input-text with-border"
+                name="proposed_price"
+                value={this.toCurrency(this.state.proposed_price)}
+                onFocus={this.toggleEditing.bind(this)}
+                readOnly
+              />
+            )}
         </div>
       );
     } else return [];
@@ -121,8 +203,14 @@ class ApplyFormConponent extends Component {
     this.setState({ proposed_price: event.target.value });
   }
 
+  handleChangeCV(e) {
+    if (this.state.isCVReceive === false) {
+      this.setState({ isCVReceive: true });
+    }
+  }
+
   toCurrency(number) {
-    if (number === null) return "Mức lương mong muốn (VNĐ)";
+    if (number === null) return "Mức lương (từ 50% đến 100% giá gốc)";
     const formatter = new Intl.NumberFormat("sv-SE", {
       style: "decimal",
       currency: "SEK",
@@ -171,11 +259,11 @@ class ApplyFormConponent extends Component {
                 >
                   {this.renderProposedPrice()}
                   <div className="uploadButton">
-                    <input
-                      className="uploadButton-input"
+                    <input style={{ display: 'none' }}
                       type="file"
                       accept="image/*, application/pdf"
                       id="upload-cv"
+                      onChange={this.handleChangeCV}
                     />
                     <label
                       className="uploadButton-button ripple-effect"
@@ -187,7 +275,26 @@ class ApplyFormConponent extends Component {
                       Chỉ được chọn 1 <br /> Dung lượng tốc đa: 50 MB.
                     </span>
                   </div>
+                  <div>
+                    <label className='font-weight-bold'
+                      htmlFor="introduction-text"
+                    >
+                      Tự giới thiệu:
+                    </label>
+                    <textarea className="form-control" id="introduction-text" placeholder="Tự giới thiệu bản thân .." required></textarea>
+                  </div>
+
+                  {(
+                    this.state.isCVReceive
+                      ?
+                      <div className='text-center text-success'>
+                        Đã nhận 1 CV
+                    </div>
+                      :
+                      ''
+                  )}
                 </form>
+                {this.spinnerLoadingNotification()}
                 {/* Button */}
                 <button
                   className="button margin-top-35 w-100 button-sliding-icon ripple-effect"
@@ -214,8 +321,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doApplyJob: (id_user, id_job, proposed_price, attachment) => {
-      dispatch(applyJob(id_user, id_job, proposed_price, attachment));
+    doApplyJob: (id_user, id_job, proposed_price, attachment, introductionText) => {
+      dispatch(applyJob(id_user, id_job, proposed_price, attachment, introductionText));
     },
   };
 };

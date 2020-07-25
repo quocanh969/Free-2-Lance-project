@@ -14,11 +14,12 @@ import {
   prettierNumber,
 } from "../../../../ultis/SHelper/helperFunctions";
 
-import UserAvatarPlaceholder from "../../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../../assets/images/portrait_placeholder.png";
 import { history } from "../../../../ultis/history/history";
 import ReportForm from "./Modals/ReportForm";
 import ReviewForm from "./Modals/ReviewForm";
 import ReviewModal from "./Modals/ReviewModal";
+import { loadDetailReview, loadDetailReport } from "../../../../actions/ContactUs";
 
 class TasksDoneComponent extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class TasksDoneComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentFinishedPage) {
+      window.scrollTo(0, 0);
       this.loadJobList(pageNum);
     }
   }
@@ -44,14 +46,16 @@ class TasksDoneComponent extends Component {
     onLoadFinishedTask(page, 4, 0);
   }
 
-  reportEmployer(userId) {
-    let { onSelectReportedEmployer } = this.props;
-    onSelectReportedEmployer(userId);
+  reportEmployer(userId, applicantId, jobId) {
+    let { onSelectReportedEmployer, onLoadDetailReport } = this.props;
+    onSelectReportedEmployer(userId, applicantId, jobId);
+    onLoadDetailReport(userId, applicantId, jobId);
   }
 
   reviewEmployer(applicantId, jobId) {
-    let { onSelectReviewEmployer } = this.props;
+    let { onSelectReviewEmployer, onLoadDetailReview } = this.props;
     onSelectReviewEmployer(applicantId, jobId);
+    onLoadDetailReview(applicantId);
   }
 
   loadReview(jobId) {
@@ -60,8 +64,14 @@ class TasksDoneComponent extends Component {
   }
 
   renderJobList() {
-    let { finishedTasksList } = this.props.ApplicantReducer;
+    let { finishedTasksList, isLoadingFinishedTasksList } = this.props.ApplicantReducer;
+    let { reportApplicantId, reviewApplicantId } = this.props.ContactUsReducer;
     let content = [];
+    if (isLoadingFinishedTasksList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary my-4" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (finishedTasksList.length > 0) {
       finishedTasksList.forEach((e, index) => {
@@ -83,20 +93,20 @@ class TasksDoneComponent extends Component {
                     {e.fullname}
                   </h4>
                   <div className="d-flex justify-content-between">
-                    <span className="freelancer-detail-item">
+                    <div className="freelancer-detail-item">
                       <span className="font-weight-bold">
                         <i className="icon-feather-mail" />
                         &nbsp;Email:{" "}
                       </span>{" "}
                       {e.email}
-                    </span>
-                    <span className="freelancer-detail-item">
+                    </div>
+                    <div className="freelancer-detail-item">
                       <span className="font-weight-bold">
                         <i className="icon-feather-phone" />
                         &nbsp;Liên lạc:{" "}
                       </span>{" "}
                       {e.dial}
-                    </span>
+                    </div>
                   </div>
                   <h4 className="mt-3 row">
                     <div className="col">
@@ -110,7 +120,7 @@ class TasksDoneComponent extends Component {
                       {prettierNumber(e.salary)} VNĐ
                     </div>
                   </h4>
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     <span>{e.description}</span>
                   </div>
@@ -150,58 +160,72 @@ class TasksDoneComponent extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="row">
-                      <div className="col">
-                        <span className="font-weight-bold">
-                          <i className="icon-material-outline-date-range" />
+                      <div className="row">
+                        <div className="col">
+                          <span className="font-weight-bold">
+                            <i className="icon-material-outline-date-range" />
                           Ngày kết thúc công việc:{" "}
+                          </span>
+                          {prettierDate(e.deadline)}
+                        </div>
+                      </div>
+                    )}
+                  {/* <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span> */}
+                  {(
+                    e.id_applicant === reviewApplicantId || e.id_applicant === reportApplicantId
+                    ?
+                    <div className='text-center w-100 my-2'>
+                      <div className="loading my-2 text-center" key={1}>
+                        <div className="spinner-border text-primary " role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div> 
+                    :
+                    <div>
+                      <div
+                        className="btn mt-3 p-2 bg-silver rounded w-100"
+                        onClick={() => {
+                          history.push(`/job-detail/${e.id_job}`);
+                        }}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
+                      </div>
+
+                      <div className="mt-2 row">
+                        <span
+                          data-toggle="modal"
+                          data-target="#reviewFromEmployerModal"
+                          onClick={() => this.loadReview(e.id_job)}
+                          className="btn col mx-2 p-2 bg-primary text-white rounded"
+                        >
+                          <i className="icon-material-outline-rate-review" /> Xem
+                        phản hồi
                         </span>
-                        {prettierDate(e.deadline)}
+                        <span
+                          data-toggle="modal"
+                          data-target="#reviewEmployerModal"
+                          onClick={() =>
+                            this.reviewEmployer(e.id_applicant, e.id_job)
+                          }
+                          className="btn col mx-2 p-2 bg-warning rounded"
+                        >
+                          <i className="icon-material-outline-speaker-notes" /> Viết
+                        nhận xét
+                        </span>
+                        <span
+                          data-toggle="modal"
+                          data-target="#reportEmployerModal"
+                          onClick={() => this.reportEmployer(e.employer, e.id_applicant, e.id_job)}
+                          className="btn col mx-2 p-2 bg-danger text-white rounded"
+                        >
+                          <i className="icon-line-awesome-warning" /> Báo cáo người
+                        thuê
+                        </span>
                       </div>
                     </div>
                   )}
-                  {/* <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span> */}
-                  <div
-                    className="btn mt-3 p-2 bg-silver rounded w-100"
-                    onClick={() => {
-                      history.push(`/job-detail/${e.id_job}`);
-                    }}
-                  >
-                    <i className="icon-line-awesome-clone" /> Xem chi tiết công
-                    việc
-                  </div>
-
-                  <div className="mt-2 row">
-                    <span
-                      data-toggle="modal"
-                      data-target="#reviewFromEmployerModal"
-                      onClick={() => this.loadReview(e.id_job)}
-                      className="btn col mx-2 p-2 bg-primary text-white rounded"
-                    >
-                      <i className="icon-material-outline-rate-review" /> Xem
-                      phản hồi
-                    </span>
-                    <span
-                      data-toggle="modal"
-                      data-target="#reviewEmployerModal"
-                      onClick={() =>
-                        this.reviewEmployer(e.id_applicant, e.id_job)
-                      }
-                      className="btn col mx-2 p-2 bg-warning rounded"
-                    >
-                      <i className="icon-material-outline-speaker-notes" /> Viết
-                      nhận xét
-                    </span>
-                    <span
-                      data-toggle="modal"
-                      data-target="#reportEmployerModal"
-                      onClick={() => this.reportEmployer(e.employer)}
-                      className="btn col mx-2 p-2 bg-danger text-white rounded"
-                    >
-                      <i className="icon-line-awesome-warning" /> Báo cáo người
-                      thuê
-                    </span>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -224,7 +248,7 @@ class TasksDoneComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -258,6 +282,7 @@ class TasksDoneComponent extends Component {
     let {
       totalFinishedTasks,
       currentFinishedPage,
+      isLoadingFinishedTasksList
     } = this.props.ApplicantReducer;
     let totalPage = Math.ceil(totalFinishedTasks / 4);
 
@@ -286,49 +311,49 @@ class TasksDoneComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalFinishedTasks === 0 ? (
+            {(totalFinishedTasks === 0 || isLoadingFinishedTasksList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentFinishedPage === 1 ||
-                          totalPage - currentFinishedPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentFinishedPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentFinishedPage === 1 ||
+                            totalPage - currentFinishedPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentFinishedPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentFinishedPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentFinishedPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentFinishedPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentFinishedPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentFinishedPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentFinishedPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}
@@ -363,14 +388,20 @@ const mapDispatchToProps = (dispatch) => {
     onLoadFinishedTask: (page, take, isASC) => {
       dispatch(loadFinishedJobsForApplicant(page, take, isASC));
     },
-    onSelectReportedEmployer: (userId) => {
-      dispatch(selectReportedEmployer(userId));
+    onSelectReportedEmployer: (userId, applicantId, jobId) => {
+      dispatch(selectReportedEmployer(userId, applicantId, jobId));
     },
     onSelectReviewEmployer: (applicantId, jobId) => {
       dispatch(selectReviewEmployer(applicantId, jobId));
     },
     onLoadReviewFromEmployer: (jobId) => {
       dispatch(loadReviewFromEmployer(jobId));
+    },
+    onLoadDetailReview: (applicantId) => {
+      dispatch(loadDetailReview(applicantId, false));
+    },
+    onLoadDetailReport: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReport(id_user2, 0, applicantId, jobId));
     },
   };
 };

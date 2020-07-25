@@ -54,20 +54,20 @@ class JobDetailInfoComponent extends Component {
 
         <div className="row my-3">
           <div className="col-3 font-weight-bold">Tính chất:</div>
-          <div className="col-9" style={{ color: "blue" }}>
-            <span style={{ textDecoration: "underline" }}>
+          <div className="col-9">
+            <span>
               {jobDetail.dealable ? "Đấu giá" : "Không cần đấu giá"}
             </span>{" "}
             ,&nbsp;
-            <span style={{ textDecoration: "underline" }}>
+            <span>
               {jobDetail.job_type ? "Thời vụ" : "Sản phẩm"}
             </span>{" "}
             ,&nbsp;
-            <span style={{ textDecoration: "underline" }}>
+            <span>
               {jobDetail.isOnline ? "Online" : "Offline"}
             </span>{" "}
             ,&nbsp;
-            <span style={{ textDecoration: "underline" }}>
+            <span>
               {jobDetail.isCompany ? "Công ty" : "Cá nhân"}
             </span>
           </div>
@@ -86,6 +86,11 @@ class JobDetailInfoComponent extends Component {
         <div className="row mt-3">
           <div className="col-3 font-weight-bold">Yêu cầu thêm:</div>
           <div className="col-9">{jobDetail.requirement}</div>
+        </div>
+
+        <div className="row mt-3">
+          <div className="col-3 font-weight-bold">Phúc lợi:</div>
+          <div className="col-9">{jobDetail.benefit}</div>
         </div>
       </div>
     );

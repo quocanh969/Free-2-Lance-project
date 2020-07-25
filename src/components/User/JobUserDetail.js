@@ -65,36 +65,50 @@ class JobUserDetailComponent extends Component {
     renderReview(reviews) {
         let content = [];
 
-        reviews.forEach((e, index) => {
-            content.push(
-                <div className='row mb-2 pb-2 mx-1 border-bottom border-dark' key={index}>
-                    <div className='col-3 profile-img'>
-                        <img src={getImageSrc(null, avatarPlaceholder)}></img>
-                    </div>
-
-                    <div className='col-9'>
-                        <h3>{e.title}</h3>
-                        <div>
-                            <span className='h5'>{e.fullname}</span>
-                            <span>&nbsp;-&nbsp;</span>
-                            <span className='h5'>{e.email}</span>
+        if (reviews.length > 0) {
+            reviews.forEach((e, index) => {
+                content.push(
+                    <div className='row mb-2 pb-2 mx-1 border-bottom border-dark' key={index}>
+                        <div className='col-3 profile-img'>
+                            <img src={getImageSrc(null, avatarPlaceholder)}></img>
                         </div>
-                        <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployee}/5 <i className="icon-material-outline-star text-warning"></i></div>
-                        <div className='font-weight-bold'>Nội dung phản hồi:</div>
-                        <p>{e.feedback_fromEmployee}</p>
+
+                        <div className='col-9'>
+                            <h3>{e.title}</h3>
+                            <div>
+                                <h3 className='text-primary'>{e.fullname}</h3>
+                                <h5>{e.email}</h5>
+                            </div>
+                            <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployee}/5 <i className="icon-material-outline-star text-warning"></i></div>
+                            <div className='font-weight-bold'>Nội dung phản hồi:</div>
+                            <p>{e.feedback_fromEmployee}</p>
+                        </div>
                     </div>
+                )
+            })
+        }
+        else {
+            content.push(
+                <div className='row p-4' key={0}>
+                    Người dùng chưa nhận phản hồi nào !
                 </div>
             )
-        })
+        }
+
+
 
         return content;
     }
 
     render() {
-        let { userDetail, jobs, totalJob, currentJobPage } = this.props.UserDetailReducer;
+        let { userDetail, jobs, totalJob, currentJobPage, isLoadingJobReview } = this.props.UserDetailReducer;
         let totalPage = Math.ceil(totalJob / 8);
 
-        if (userDetail === null) return '';
+        if (userDetail === null || isLoadingJobReview) return (<div className="loading" key={1}>
+            <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+            </div>
+        </div>);
         else {
             return (
                 <div>
@@ -102,7 +116,7 @@ class JobUserDetailComponent extends Component {
 
                     {/* Pagination */}
                     {(
-                        totalJob === 0
+                        (totalJob === 0 || isLoadingJobReview)
                             ?
                             ''
                             :

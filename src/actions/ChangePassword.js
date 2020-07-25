@@ -29,6 +29,7 @@ export const sendchangePassword = (oldPW, newPW) => {
             confirmButtonText: "Ok!",
           }).then((result) => {
             if (result.value) {
+              dispatch(userLogOut());
               localStorage.clear();
               history.push("/login");
             }
@@ -67,6 +68,11 @@ export const sendchangePassword = (oldPW, newPW) => {
   function reset() {
     return {
       type: "CHANGE_PW_RESET",
+    };
+  }
+  function userLogOut() {
+    return {
+      type: 'USER_LOG_OUT',
     };
   }
 };

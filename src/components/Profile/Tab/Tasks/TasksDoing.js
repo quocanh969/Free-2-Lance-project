@@ -12,9 +12,10 @@ import {
   prettierNumber,
 } from "../../../../ultis/SHelper/helperFunctions";
 
-import UserAvatarPlaceholder from "../../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../../assets/images/portrait_placeholder.png";
 import { history } from "../../../../ultis/history/history";
 import ReportForm from "./Modals/ReportForm";
+import { loadDetailReport } from "../../../../actions/ContactUs";
 
 class TasksDoingComponent extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class TasksDoingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.ApplicantReducer.currentProcessingPage) {
+      window.scrollTo(0, 0);
       this.loadJobList(pageNum);
     }
   }
@@ -40,14 +42,21 @@ class TasksDoingComponent extends Component {
     onLoadProcessingTask(page, 4, 0);
   }
 
-  reportEmployer(userId) {
-    let { onSelectReportedEmployer } = this.props;
-    onSelectReportedEmployer(userId);
+  reportEmployer(userId, applicantId, jobId) {
+    let { onSelectReportedEmployer, onLoadDetailReport } = this.props;
+    onSelectReportedEmployer(userId, applicantId, jobId);
+    onLoadDetailReport(userId, applicantId, jobId);
   }
 
   renderJobList() {
-    let { processingTasksList } = this.props.ApplicantReducer;
+    let { processingTasksList, isLoadingProcessingTasksList } = this.props.ApplicantReducer;
+    let { reportApplicantId } = this.props.ContactUsReducer;
     let content = [];
+    if (isLoadingProcessingTasksList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary my-4" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (processingTasksList.length > 0) {
       processingTasksList.forEach((e, index) => {
@@ -69,20 +78,20 @@ class TasksDoingComponent extends Component {
                     {e.fullname}
                   </h4>
                   <div className="d-flex justify-content-between">
-                    <span className="freelancer-detail-item">
+                    <div className="freelancer-detail-item">
                       <span className="font-weight-bold">
                         <i className="icon-feather-mail" />
                         &nbsp;Email:{" "}
                       </span>{" "}
                       {e.email}
-                    </span>
-                    <span className="freelancer-detail-item">
+                    </div>
+                    <div className="freelancer-detail-item">
                       <span className="font-weight-bold">
                         <i className="icon-feather-phone" />
                         &nbsp;Liên lạc:{" "}
                       </span>{" "}
                       {e.dial}
-                    </span>
+                    </div>
                   </div>
                   <h4 className="mt-3 row">
                     <div className="col">
@@ -96,7 +105,7 @@ class TasksDoingComponent extends Component {
                       {prettierNumber(e.salary)} VNĐ
                     </div>
                   </h4>
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     <span>{e.description}</span>
                   </div>
@@ -136,37 +145,50 @@ class TasksDoingComponent extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="row">
-                      <div className="col">
-                        <span className="font-weight-bold">
-                          <i className="icon-material-outline-date-range" />
+                      <div className="row">
+                        <div className="col">
+                          <span className="font-weight-bold">
+                            <i className="icon-material-outline-date-range" />
                           Ngày kết thúc công việc:{" "}
-                        </span>
-                        {prettierDate(e.deadline)}
+                          </span>
+                          {prettierDate(e.deadline)}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  <div className="mt-3">
-                    {/* <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span> */}
-                    <span
-                      className="btn mx-2 p-2 bg-silver rounded"
-                      onClick={() => {
-                        history.push(`/job-detail/${e.id_job}`);
-                      }}
-                    >
-                      <i className="icon-line-awesome-clone" /> Xem chi tiết
-                      công việc
-                    </span>
-                    <span
-                      data-toggle="modal"
-                      data-target="#reportEmployerModal"
-                      onClick={() => this.reportEmployer(e.employer)}
-                      className="btn mx-2 p-2 bg-danger text-white rounded"
-                    >
-                      <i className="icon-line-awesome-warning" /> Báo cáo người
-                      thuê
-                    </span>
-                  </div>
+                    )}
+                    {(
+                      e.id_applicant === reportApplicantId
+                      ?
+                      <div className='text-center w-100 my-2'>
+                        <div className="loading my-2 text-center" key={1}>
+                          <div className="spinner-border text-primary " role="status">
+                            <span className="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                      </div> 
+                      :
+                      <div className="mt-3">
+                        {/* <span className='btn mx-2 p-2 bg-293FE4 text-white rounded'><i className='icon-feather-refresh-ccw'></i> Cập nhật thông tin</span> */}
+                        <span
+                          className="btn mx-2 p-2 bg-silver rounded"
+                          onClick={() => {
+                            history.push(`/job-detail/${e.id_job}`);
+                          }}
+                        >
+                          <i className="icon-line-awesome-clone" /> Xem chi tiết
+                          công việc
+                        </span>
+                        <span
+                          data-toggle="modal"
+                          data-target="#reportEmployerModal"
+                          onClick={() => this.reportEmployer(e.employer, e.id_applicant, e.id_job)}
+                          className="btn mx-2 p-2 bg-danger text-white rounded"
+                        >
+                          <i className="icon-line-awesome-warning" /> Báo cáo người
+                          thuê
+                        </span>
+                      </div>                
+                    )}
+                  
                 </div>
               </div>
             </div>
@@ -189,7 +211,7 @@ class TasksDoingComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -223,9 +245,9 @@ class TasksDoingComponent extends Component {
     let {
       totalProcessingTasks,
       currentProcessingPage,
+      isLoadingProcessingTasksList,
     } = this.props.ApplicantReducer;
     let totalPage = Math.ceil(totalProcessingTasks / 4);
-
     return (
       <div className="dashboard-content-inner">
         {/* Dashboard Headline */}
@@ -251,49 +273,49 @@ class TasksDoingComponent extends Component {
                 <ul className="dashboard-box-list">{this.renderJobList()}</ul>
               </div>
             </div>
-            {totalProcessingTasks === 0 ? (
+            {(totalProcessingTasks === 0||isLoadingProcessingTasksList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentProcessingPage === 1 ||
-                          totalPage - currentProcessingPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentProcessingPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentProcessingPage === 1 ||
+                            totalPage - currentProcessingPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentProcessingPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentProcessingPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentProcessingPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentProcessingPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentProcessingPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentProcessingPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentProcessingPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}
@@ -318,13 +340,14 @@ const mapDispatchToProps = (dispatch) => {
     onLoadProcessingTask: (page, take, isASC) => {
       dispatch(loadProcessingJobsForApplicant(page, take, isASC));
     },
-    onSelectReportedEmployer: (userId) => {
-      dispatch(selectReportedEmployer(userId));
+    onSelectReportedEmployer: (userId, applicantId, jobId) => {
+      dispatch(selectReportedEmployer(userId, applicantId, jobId));
+    },    
+    onLoadDetailReport: (id_user2, applicantId, jobId) => {
+      dispatch(loadDetailReport(id_user2, 0, applicantId, jobId));
     },
   };
 };
 
-const TasksDoing = withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(TasksDoingComponent)
-);
+const TasksDoing = withRouter(connect(mapStateToProps, mapDispatchToProps)(TasksDoingComponent));
 export default TasksDoing;

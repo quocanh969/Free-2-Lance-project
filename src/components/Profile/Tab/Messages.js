@@ -3,9 +3,11 @@ import React, { Component } from 'react'
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getImageSrc } from "../../../ultis/SHelper/helperFunctions";
-import UserAvatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../assets/images/portrait_placeholder.png";
 import Tooltip from "@material-ui/core/Tooltip";
 import moment from 'moment';
+var _ = require('lodash');
+
 const firebase = require("firebase");
 
 class MessagesComponent extends Component {
@@ -44,19 +46,37 @@ class MessagesComponent extends Component {
                 .collection('chats')
                 .where('users', 'array-contains', email)
                 .onSnapshot(async res => {
-                    const chats = res.docs.map(_doc => _doc.data());
+                    const chats = res.docs.map(_doc => _doc.data()).reverse();
                     console.log('chats:', chats)
-                    if(chats.length>0)
-                    {
-                        await this.setState({
-                            email: email,
-                            chats: chats,
-                            chatChoosen: chats[0],
-                            emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
-                            friends: []
-                        });
+                    if (chats.length > 0) {
+                        const { chatChoosen, emailReciver,email } = this.state;
+                        console.log('chatChoosen in component did mount:', chatChoosen)
+                        if (chatChoosen) {
+                            let chatResult = _.filter(chats, function (o) {
+                                console.log('o:', o)
+                                return o.img.filter(el=>el.email != email)[0].email == emailReciver;
+                            })
+                            console.log('chatResult:', chatResult)
+                            await this.setState({
+                                email: email,
+                                chats: chats,
+                                chatChoosen: chatResult[0],
+                                emailReciver: emailReciver,
+                                friends: []
+                            });
+                        }
+                        else {
+                            await this.setState({
+                                email: email,
+                                chats: chats,
+                                chatChoosen: chats[0],
+                                emailReciver: chats[0].img.filter(el => el.email !== email)[0].email,
+                                friends: []
+                            });
+                        }
+
                     }
-                 
+
                 })
         }
 
@@ -68,9 +88,9 @@ class MessagesComponent extends Component {
     }
     submitMessage = async (e) => {
         e.target.value = "";
-        const { emailReciver, email, chatText } = this.state;
+        const { emailReciver, email, chatText, chatChoosen } = this.state;
+        console.log('chatChoosen in submit 1:', chatChoosen)
         let docKey = this.buildDocKey();
-        console.log('con chim:', chatText)
         if (email && chatText) {
             await firebase
                 .firestore()
@@ -86,6 +106,7 @@ class MessagesComponent extends Component {
                 });
         }
 
+        console.log('chatChoosen in submit 2:', chatChoosen)
 
     }
     sendReadMessage = async () => {
@@ -120,56 +141,50 @@ class MessagesComponent extends Component {
     }
     render() {
         const { chats, email, selectedIndex, chatChoosen, chatText } = this.state;
-        console.log('chats:', chats)
-        console.log('chatChoosen:', chatChoosen);
-        console.log('chatText:', chatText)
+        console.log('chatChoose123n:', chatChoosen)
         const styleUnseen = { fontWeight: 'bold', color: 'black' };
         return (
             <div className="dashboard-content-inner">
                 {/* Dashboard Headline */}
                 <div className="dashboard-headline">
-                    <h3>Messages</h3>
-                    {/* Breadcrumbs */}
-                    <nav id="breadcrumbs" className="dark">
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Dashboard</a></li>
-                            <li>Messages</li>
-                        </ul>
-                    </nav>
+                    <h3>Tin nhắn</h3>
                 </div>
                 <div className="messages-container margin-top-0">
                     <div className="messages-container-inner">
                         {/* Messages */}
                         <div className="messages-inbox" ref={this.messagesEndRef} >
                             <div className="messages-headline">
-                                <div className="input-with-icon">
+                                {/* <div className="input-with-icon">
                                     <input id="autocomplete-input" type="text" placeholder="Search" />
                                     <i className="icon-material-outline-search" />
-                                </div>
+                                </div> */}
+                                Danh sách người dùng
                             </div>
                             <ul>
                                 {
-                                    
                                     chats.map((chat, index) => {
-                                        return (
-                                            <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>
-                                                <a href="#">
-                                                    <div className="message-avatar"><i className="status-icon status-online" /><img src={getImageSrc(chat.img.filter(el => el.email !== email)[0].img, UserAvatarPlaceholder)} alt="" /></div>
-                                                    <div className="message-by">
-                                                        <div className="message-by-headline">
-                                                            <h5>{chat.img.filter(el => el.email !== email)[0].fullname}</h5>
-                                                            {/* <span>4 hours ago</span> */}
+                                        let chatArray = chat.img.filter(el => el.email !== email);
+                                        if (chatArray.length > 0) {
+                                            return (
+                                                <li onClick={() => { this.selectChat(chat, index) }} className={index == selectedIndex ? 'active-message' : ''} key={index}>
+                                                    <div className='cursor-pointer messages-cell'>
+                                                        <div className="message-avatar"><i className="status-icon status-online" /><img src={getImageSrc(chatArray[0].img, UserAvatarPlaceholder)} alt="" /></div>
+                                                        <div className="message-by">
+                                                            <div className="message-by-headline">
+                                                                <h5>{chatArray[0].fullname}</h5>
+                                                                {/* <span>4 hours ago</span> */}
+                                                            </div>
+                                                            {
+                                                                chat.messages.length > 0 && (<p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>)
+                                                            }
                                                         </div>
-
-
-                                                       {
-                                                           chat.messages.length>0 && (<p style={chat.messages[chat.messages.length - 1].sender !== email && !chat.receiverHasRead ? styleUnseen : {}}>{chat.messages[chat.messages.length - 1].message.substring(0, 30) + ' ...'}</p>)
-                                                       } 
                                                     </div>
-                                                </a>
-                                            </li>
-                                        )
+                                                </li>
+                                            )
+                                        }
+                                        else {
+                                            return '';
+                                        }
                                     })
                                 }
 
@@ -182,14 +197,10 @@ class MessagesComponent extends Component {
                             <div className="message-content" ref={this.messagesEndRef}>
                                 <div className="messages-headline">
                                     <h4>{chatChoosen.img.filter(el => el.email !== email)[0].fullname}</h4>
-                                    <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a>
+                                    {/* <a href="#" className="message-action"><i className="icon-feather-trash-2" /> Delete Conversation</a> */}
                                 </div>
                                 {/* Message Content Inner */}
                                 <div className="message-content-inner" id="message-content-inner">
-                                    {/* Time Sign */}
-                                    <div className="message-time-sign">
-                                        <span>28 June, 2018</span>
-                                    </div>
                                     {
                                         chatChoosen.messages.map((el, index) => {
                                             return (<div key={index} className={el.sender == email ? "message-bubble me" : "message-bubble "}>
@@ -216,10 +227,10 @@ class MessagesComponent extends Component {
                                 <div className="message-reply">
                                     <input
                                         onClick={this.sendReadMessage}
-                                        placeholder='Type your message..'
+                                        placeholder='Nhập tin nhắn ...'
                                         onKeyUp={(e) => this.userTyping(e)}
-                                        cols={1} rows={1} placeholder="Your Message" data-autoresize defaultValue={""} />
-                                    <button className="button ripple-effect" onClick={this.submitMessage} >Send</button>
+                                        cols={1} rows={1} data-autoresize defaultValue={""} />
+                                    <button className="button ripple-effect" onClick={this.submitMessage} >Gửi</button>
                                 </div>
                             </div>
                         }

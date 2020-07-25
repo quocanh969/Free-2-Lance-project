@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import {
   loadApplyingJobsForEmployer,
   cancelRecruit,
+  removeJob,
   selectJobApplying,
   loadApplyingApplicantsForEmployer,
 } from "../../../../actions/Job";
@@ -33,6 +34,7 @@ class JobsApplyingComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentApplyingPage) {
+      window.scrollTo(0, 0);
       this.loadJobListFunc(pageNum);
     }
   }
@@ -61,20 +63,44 @@ class JobsApplyingComponent extends Component {
     });
   }
 
-  showApplicantsList(jobId, title) {
+  removeJob(jobId) {
+    Swal.fire({
+      title: "Bạn có chắc muốn gỡ bỏ công việc và các ứng viên?",
+      text: "Công việc sẽ chuyển qua trạng thái 'Bị gỡ' và",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ok, tôi đồng ý",
+      cancelButtonText: "Hủy bỏ",
+    }).then((result) => {
+      if (result.value) {
+        let { onRemoveApplyingJob } = this.props;
+        let { currentApplyingPage } = this.props.EmployerReducer;
+        onRemoveApplyingJob(jobId, currentApplyingPage, 4, 0);
+      }
+    });
+  }
+
+  showApplicantsList(jobId, title, number) {
     let { onSelectJobApplying, onLoadApplicants } = this.props;
-    onSelectJobApplying(jobId, title);
+    onSelectJobApplying(jobId, title, number);
     onLoadApplicants(jobId, 1, takenApplyingApplicantsPerPage);
   }
 
   generateListJobs() {
-    let { applyingJobsList } = this.props.EmployerReducer;
+    let { applyingJobsList, isLoadingApplyingJobsList, selectedApplyingJobById } = this.props.EmployerReducer;
     let content = [];
+    if (isLoadingApplyingJobsList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary my-4" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (applyingJobsList.length > 0) {
       applyingJobsList.forEach((e, index) => {
         content.push(
-          <li key={index}>
+          <li key={index} className={e.id_status === 4 ? 'border border-danger' : ''}>
             {/* Job Listing */}
             <div className="job-listing">
               {/* Job Listing Details */}
@@ -83,25 +109,32 @@ class JobsApplyingComponent extends Component {
                 <div className="job-listing-description">
                   <h3 className="job-listing-title">{e.title}</h3>
                   <h4 className="d-flex justify-content-between">
-                    <span>
+                    <div>
                       <span className="font-weight-bold">Loại công việc: </span>
                       {!e.job_type
                         ? "Công việc thời vụ"
                         : "Công việc theo sản phẩm"}
-                    </span>
+                    </div>
                     {e.dealable ? (
                       ""
                     ) : (
-                      <span className="text-primary">
-                        <span className="font-weight-bold">Mức lương</span>{" "}
-                        {prettierNumber(e.salary) + " VNĐ"}
-                      </span>
-                    )}
+                        <div className="text-primary">
+                          <span className="font-weight-bold">Mức lương</span>{" "}
+                          {prettierNumber(e.salary) + " VNĐ"}
+                        </div>
+                      )}
                   </h4>
                   {/* Job Listing Footer */}
-                  <div style={{ width: "100vh" }} className="text-truncate">
+                  <div style={{ width: "80vh" }} className="text-truncate">
                     <span className="font-weight-bold">Mô tả: </span>
                     {e.description}
+                  </div>
+                  <div style={{ width: "80vh" }} className="text-truncate">
+                    <span className="font-weight-bold">Số lượng cần tuyển: </span>
+                    {e.vacancy}
+                    <span style={{ display: "inline-block", width: "30px" }}></span>
+                    <span className="font-weight-bold">Đã tuyển được: </span>
+                    {e.participants}
                   </div>
                   <div className="text-primary font-weight-bold">
                     {e.dealable
@@ -153,8 +186,8 @@ class JobsApplyingComponent extends Component {
                           {prettierDate(e.deadline)}
                         </li>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </ul>
                     {!e.job_type ? (
                       <ul>
@@ -174,39 +207,73 @@ class JobsApplyingComponent extends Component {
                         </li>
                       </ul>
                     ) : (
-                      ""
-                    )}
+                        ""
+                      )}
                   </div>
                 </div>
               </div>
             </div>
             {/* Buttons */}
-            <div>
-              <button
-                data-toggle="modal"
-                data-target="#applyingApplicantsModal"
-                onClick={() => this.showApplicantsList(e.id_job, e.title)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Ứng
-                viên đăng ký: {e.candidates}
-              </button>
-              <span
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => {
-                  history.push(`/job-detail/${e.id_job}`);
-                }}
-              >
-                <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
-              </span>
-              {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
-              <span
-                onClick={() => this.StopRecuit(e.id_job)}
-                className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
-              >
-                <i className="icon-line-awesome-hand-stop-o" /> Ngừng tuyển
-              </span>
-            </div>
+            {(
+              e.id_status === 4
+                ?
+                <div className='font-weight-bold text-danger'>Công việc đã quá hạn nhưng vẫn còn các trường hợp người dùng ứng tuyển</div>
+                :
+                ''
+            )}
+            {(
+              e.id_job === selectedApplyingJobById
+                ?
+                <div className='text-center my-2 w-100'>
+                  <div className="loading" key={1}>
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+                
+                :
+                <div>
+                  <button
+                    data-toggle="modal"
+                    data-target="#applyingApplicantsModal"
+                    onClick={() => this.showApplicantsList(e.id_job, e.title, e.vacancy - e.participants)}
+                    className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Ứng viên đăng ký: {e.candidates}
+                  </button>
+                  <span
+                    className="btn m-2 py-2 px-4 bg-silver rounded"
+                    onClick={() => {
+                      history.push(`/job-detail/${e.id_job}`);
+                    }}
+                  >
+                    <i className="icon-line-awesome-clone" /> Xem chi tiết công việc
+                  </span>
+                  {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
+                  <span
+                    onClick={() => this.StopRecuit(e.id_job)}
+                    className="btn m-2 py-2 px-4 bg-success text-white rounded"
+                  >
+                    <i className="icon-material-outline-check" /> Bắt đầu công việc
+                  </span>
+                  {(
+                    e.id_status === 4
+                      ?
+                      <span
+                        onClick={() => this.removeJob(e.id_job)}
+                        className="btn m-2 py-2 px-4 bg-danger text-white rounded"
+                      >
+                        <i className="icon-line-awesome-hand-stop-o" /> Kết thúc công việc
+                </span>
+                      :
+                      ''
+                  )}
+
+                </div>
+
+            )}
+
           </li>
         );
       });
@@ -226,7 +293,7 @@ class JobsApplyingComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -257,7 +324,7 @@ class JobsApplyingComponent extends Component {
   }
 
   render() {
-    let { totalApplyingJobs, currentApplyingPage } = this.props.EmployerReducer;
+    let { totalApplyingJobs, currentApplyingPage, isLoadingApplyingJobsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalApplyingJobs / 4);
 
     return (
@@ -288,49 +355,49 @@ class JobsApplyingComponent extends Component {
               </div>
             </div>
 
-            {totalApplyingJobs === 0 ? (
+            {(totalApplyingJobs === 0 || isLoadingApplyingJobsList) ? (
               ""
             ) : (
-              <div className="pagination-container margin-top-30 margin-bottom-60">
-                <nav className="pagination">
-                  <ul>
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        ((currentApplyingPage === 1 ||
-                          totalPage - currentApplyingPage < 3) &&
-                          "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage - 1);
-                        }}
+                <div className="pagination-container margin-top-30 margin-bottom-60">
+                  <nav className="pagination">
+                    <ul>
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          ((currentApplyingPage === 1 ||
+                            totalPage - currentApplyingPage < 3) &&
+                            "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-left" />
-                      </div>
-                    </li>
-                    {this.renderPagination(currentApplyingPage, totalPage)}
-                    <li
-                      className={
-                        "pagination-arrow " +
-                        (totalPage - currentApplyingPage < 3 && "d-none")
-                      }
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          this.handlePagination(currentApplyingPage + 1);
-                        }}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage - 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-left" />
+                        </div>
+                      </li>
+                      {this.renderPagination(currentApplyingPage, totalPage)}
+                      <li
+                        className={
+                          "pagination-arrow " +
+                          (totalPage - currentApplyingPage < 3 && "d-none")
+                        }
                       >
-                        <i className="icon-material-outline-keyboard-arrow-right" />
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            this.handlePagination(currentApplyingPage + 1);
+                          }}
+                        >
+                          <i className="icon-material-outline-keyboard-arrow-right" />
+                        </div>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
           </div>
         </div>
         {/* Row / End */}
@@ -358,8 +425,11 @@ const mapDispatchToProps = (dispatch) => {
     onCancelRecruit: (jobId, page, take, isASC) => {
       dispatch(cancelRecruit(jobId, page, take, isASC));
     },
-    onSelectJobApplying: (jobId, title) => {
-      dispatch(selectJobApplying(jobId, title));
+    onRemoveApplyingJob: (jobId, page, take, isASC) => {
+      dispatch(removeJob(jobId, page, take, isASC));
+    },
+    onSelectJobApplying: (jobId, title, number) => {
+      dispatch(selectJobApplying(jobId, title, number));
     },
     onLoadApplicants: (jobId, page, take) => {
       dispatch(loadApplyingApplicantsForEmployer(jobId, page, take));

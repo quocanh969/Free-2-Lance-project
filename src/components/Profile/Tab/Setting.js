@@ -8,7 +8,7 @@ import { getImageSrc } from "../../../ultis/SHelper/helperFunctions";
 
 import avatarPlaceholder from "../../../assets/images/portrait_placeholder.png";
 import imagePlaceholder from "../../../assets/images/image-placeholder.jpg";
-import UserAvatarPlaceholder from "../../../assets/images/user-avatar-placeholder.png";
+import UserAvatarPlaceholder from "../../../assets/images/portrait_placeholder.png";
 
 import {
   updatePersonalInfo,
@@ -306,6 +306,7 @@ class SettingComponent extends Component {
                           <input
                             type="text"
                             id="identity"
+                            disabled={user.account_status === 2 ? true : false}
                             pattern="[0-9+]{10,15}"
                             className="with-border"
                             defaultValue={user.identity}
@@ -355,27 +356,33 @@ class SettingComponent extends Component {
                           alt=""
                         />
                       </div>
-                      {/* Upload Button */}
-                      <div className="uploadButton margin-top-0">
-                        <input
-                          id="portrait"
-                          className="uploadButton-input"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            this.handleImageChange(e, "portrait-img");
-                          }}
-                        />
-                        <label
-                          className="uploadButton-button ripple-effect"
-                          htmlFor="portrait"
-                        >
-                          Đăng ảnh
-                        </label>
-                        <span className="uploadButton-file-name">
-                          Cập nhật ảnh chân dung
-                        </span>
-                      </div>
+                      {(
+                        user.account_status === 2
+                        ?
+                        ''
+                        :
+                        <div className="uploadButton margin-top-0">
+                          <input
+                            id="portrait"
+                            className="uploadButton-input"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              this.handleImageChange(e, "portrait-img");
+                            }}
+                          />
+                          <label
+                            className="uploadButton-button ripple-effect"
+                            htmlFor="portrait"
+                          >
+                            Đăng ảnh
+                          </label>
+                          <span className="uploadButton-file-name">
+                            Cập nhật ảnh chân dung
+                          </span>
+                        </div>
+                      )}
+                      
                     </div>
                   </div>
                   <div className="col-4">
@@ -390,27 +397,33 @@ class SettingComponent extends Component {
                           alt=""
                         />
                       </div>
-                      {/* Upload Button */}
-                      <div className="uploadButton margin-top-0">
-                        <input
-                          id="frontID"
-                          className="uploadButton-input"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            this.handleImageChange(e, "front-img");
-                          }}
-                        />
-                        <label
-                          className="uploadButton-button ripple-effect"
-                          htmlFor="frontID"
-                        >
-                          Đăng ảnh
-                        </label>
-                        <span className="uploadButton-file-name">
-                          Cập nhật ảnh CMND/Passport
-                        </span>
-                      </div>
+                      {(
+                        user.account_status === 2
+                        ?
+                        ''
+                        :
+                        <div className="uploadButton margin-top-0">
+                          <input
+                            id="frontID"
+                            className="uploadButton-input"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              this.handleImageChange(e, "front-img");
+                            }}
+                          />
+                          <label
+                            className="uploadButton-button ripple-effect"
+                            htmlFor="frontID"
+                          >
+                            Đăng ảnh
+                          </label>
+                          <span className="uploadButton-file-name">
+                            Cập nhật ảnh CMND/Passport
+                          </span>
+                        </div>
+                      )}
+                      
                     </div>
                   </div>
                   <div className="col-4">
@@ -425,27 +438,33 @@ class SettingComponent extends Component {
                           alt=""
                         />
                       </div>
-                      {/* Upload Button */}
-                      <div className="uploadButton margin-top-0">
-                        <input
-                          id="backID"
-                          className="uploadButton-input"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            this.handleImageChange(e, "back-img");
-                          }}
-                        />
-                        <label
-                          className="uploadButton-button ripple-effect"
-                          htmlFor="backID"
-                        >
-                          Đăng ảnh
-                        </label>
-                        <span className="uploadButton-file-name">
-                          Cập nhật ảnh CMND/Passport
-                        </span>
-                      </div>
+                      {(
+                        user.account_status === 2
+                        ?
+                        ''
+                        :
+                        <div className="uploadButton margin-top-0">
+                          <input
+                            id="backID"
+                            className="uploadButton-input"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              this.handleImageChange(e, "back-img");
+                            }}
+                          />
+                          <label
+                            className="uploadButton-button ripple-effect"
+                            htmlFor="backID"
+                          >
+                            Đăng ảnh
+                          </label>
+                          <span className="uploadButton-file-name">
+                            Cập nhật ảnh CMND/Passport
+                          </span>
+                        </div>
+                      )}
+                      
                     </div>
                   </div>
                 </div>
@@ -606,9 +625,9 @@ class SettingComponent extends Component {
               <div>
                 <h5 className="text-primary font-weight-bold mb-1">
                   <i className="icon-line-awesome-circle bg-primary rounded rounded-circle"></i>{" "}
-                  Đã kích hoạt
+                  Đã kích hoạt, chờ xác thực
                 </h5>
-                <h5>( Vui lòng xác thực tài khoản )</h5>
+                <h5>( Vui lòng cung cấp thông tin chính xác để xác thực tài khoản )</h5>
               </div>
             ) : user.account_status === 2 ? (
               <div>

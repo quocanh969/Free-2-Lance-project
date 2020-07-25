@@ -29,6 +29,7 @@ class ReviewsComponent extends Component {
 
     handleTaskPagination(pageNum) {
         if (pageNum !== this.props.UserDetailReducer.currentTaskPage) {
+            window.scrollTo(0,0);
             this.loadTaskListFunc(pageNum);
         }
     }
@@ -76,6 +77,7 @@ class ReviewsComponent extends Component {
 
     handleJobPagination(pageNum) {
         if (pageNum !== this.props.UserDetailReducer.currentJobPage) {
+            window.scrollTo(0,0);
             this.loadJobListFunc(pageNum);
         }
     }
@@ -113,40 +115,91 @@ class ReviewsComponent extends Component {
         return content;
     }
 
-
-    renderReview(reviews) {
+    renderEmployeeReview(reviews) {
         let content = [];
+        if (reviews.length > 0) {
+            reviews.forEach((e, index) => {                
+                content.push(
+                    <li key={index}>
+                        <div className='row mb-2 pb-2 mx-1 border-bottom border-dark'>
+                            <div className='col-3 profile-img'>
+                                <img src={getImageSrc(null, avatarPlaceholder)} style={{ width: '50px', height: '50px' }}></img>
+                            </div>
 
-        reviews.forEach((e, index) => {
+                            <div className='col-9'>
+                                <h4>{e.title}</h4>
+                                <div className='h5'>{e.fullname}</div>
+                            </div>
+                            <div className='col'>
+                                <div className='h5'>{e.email}</div>
+                                <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployer}/5 <i className="icon-material-outline-star text-warning"></i></div>
+                                <div className='font-weight-bold'>Nội dung phản hồi:</div>
+                                <p>{e.feedback_fromEmployer}</p>
+                            </div>
+                        </div>
+                    </li>
+                )
+            })
+        }
+        else {
             content.push(
-                <li key={index}>
-                    <div className='row mb-2 pb-2 mx-1 border-bottom border-dark'>
-                        <div className='col-3 profile-img'>
-                            <img src={getImageSrc(null, avatarPlaceholder)} style={{ width: '50px', height: '50px' }}></img>
-                        </div>
-
-                        <div className='col-9'>
-                            <h4>{e.title}</h4>
-                            <div className='h5'>{e.fullname}</div>
-                        </div>
-                        <div className='col'>
-                            <div className='h5'>{e.email}</div>
-                            <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployee}/5 <i className="icon-material-outline-star text-warning"></i></div>
-                            <div className='font-weight-bold'>Nội dung phản hồi:</div>
-                            <p>{e.feedback_fromEmployee}</p>
-                        </div>
+                <li key={0}>
+                    <div className='mb-2 pb-2 mx-1'>
+                        Bạn hiện vẫn chưa có phản hồi nào !!!
                     </div>
                 </li>
             )
-        })
+        }
+
+        return content;
+    }
+
+    renderEmployerReview(reviews) {
+        let content = [];
+        if (reviews.length > 0) {
+            reviews.forEach((e, index) => {                
+                content.push(
+                    <li key={index}>
+                        <div className='row mb-2 pb-2 mx-1 border-bottom border-dark'>
+                            <div className='col-3 profile-img'>
+                                <img src={getImageSrc(null, avatarPlaceholder)} style={{ width: '50px', height: '50px' }}></img>
+                            </div>
+
+                            <div className='col-9'>
+                                <h4>{e.title}</h4>
+                                <div className='h5'>{e.fullname}</div>
+                            </div>
+                            <div className='col'>
+                                <div className='h5'>{e.email}</div>
+                                <div className='font-weight-bold'>Đánh giá:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{e.rating_fromEmployee}/5 <i className="icon-material-outline-star text-warning"></i></div>
+                                <div className='font-weight-bold'>Nội dung phản hồi:</div>
+                                <p>{e.feedback_fromEmployee}</p>
+                            </div>
+                        </div>
+                    </li>
+                )
+            })
+        }
+        else {
+            content.push(
+                <li key={0}>
+                    <div className='mb-2 pb-2 mx-1'>
+                        Bạn hiện vẫn chưa có phản hồi nào !!!
+                    </div>
+                </li>
+            )
+        }
 
         return content;
     }
 
     render() {
-        let { jobs, totalJob, currentJobPage, tasks, totalTask, currentTaskPage } = this.props.UserDetailReducer;
+        let { jobs, totalJob, currentJobPage, isLoadingJobReview, tasks, totalTask, currentTaskPage, isLoadingTaskReview } = this.props.UserDetailReducer;
         let totalTaskPage = Math.ceil(totalTask / 8);
         let totalJobPage = Math.ceil(totalJob / 8);
+
+        console.log(jobs);
+        console.log(tasks);
 
         return (
             <div className="dashboard-content-inner">
@@ -166,12 +219,16 @@ class ReviewsComponent extends Component {
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
-                                    {this.renderReview(tasks)}
+                                    {isLoadingTaskReview ? (<div className="loading" key={1}>
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>
+                                    </div>) : this.renderEmployeeReview(tasks)}
                                 </ul>
                             </div>
                         </div>
                         {(
-                            totalTask === 0
+                            (totalTask === 0 || isLoadingTaskReview)
                                 ?
                                 ''
                                 :
@@ -204,12 +261,16 @@ class ReviewsComponent extends Component {
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
-                                    {this.renderReview(jobs)}
+                                    {isLoadingJobReview ? (<div className="loading" key={1}>
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>
+                                    </div>) : this.renderEmployerReview(jobs)}
                                 </ul>
                             </div>
                         </div>
                         {(
-                            totalJob === 0
+                            (totalJob === 0 || isLoadingJobReview)
                                 ?
                                 ''
                                 :

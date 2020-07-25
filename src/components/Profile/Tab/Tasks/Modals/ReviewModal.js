@@ -9,51 +9,62 @@ import StarRatings from "react-star-ratings";
 class ReviewModalConponent extends Component {
   generateReview() {
     let { user } = this.props.HeaderReducer;
-    let { reviewList } = this.props.ApplicantReducer;
+    let { reviewList, isLoadingReviewList } = this.props.ApplicantReducer;
+    if (isLoadingReviewList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     let content = [];
     if (reviewList.length > 0) {
       reviewList.forEach((e, index) => {
-        if (e.id_user != user.id_user) return;
-        content.push(
-          <li key={index}>
-            {/* Infomation */}
-            <div>
-              <div className="container">
-                <div className="row">
-                  <div className="col-xl-5">
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Họ và tên: </span>
-                      {e.employer_name}
+        if (e.id_user2 != user.id_user) return;
+        else if (e.rating_fromEmployer !== null) {
+          content.push(
+            <li key={index}>
+              {/* Infomation */}
+              <div>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xl-5">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Họ và tên: </span>
+                        {e.employer_name}
+                      </div>
+                    </div>
+                    <div className="col-xl-4">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Đánh giá: </span>
+                        <span style={{ marginBottom: "5px" }}>
+                          <StarRatings
+                            rating={e.rating_fromEmployer}
+                            starRatedColor="blue"
+                            starDimension="23px"
+                            starSpacing="10px"
+                            numberOfStars={5}
+                            name="rating"
+                          />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-xl-4">
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Đánh giá: </span>
-                      <span style={{ marginBottom: "5px" }}>
-                        <StarRatings
-                          rating={e.rating_fromEmployer}
-                          starRatedColor="blue"
-                          starDimension="23px"
-                          starSpacing="10px"
-                          numberOfStars={5}
-                          name="rating"
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-xl-9">
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Phản hồi: </span>
-                      {e.feedback_fromEmployer}
+                  <div className="row mt-2">
+                    <div className="col-xl-9">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Phản hồi: </span>
+                        {e.feedback_fromEmployer}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </li>
-        );
+            </li>
+          );
+        }
+        else {
+          // do nothing
+        }
+
       });
     }
     if (content.length === 0) {

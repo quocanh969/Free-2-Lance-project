@@ -4,14 +4,14 @@ import Swal from 'sweetalert2';
 import { history } from "../../ultis/history/history";
 
 let axios = Axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: "https://f2l-client.herokuapp.com/",
   headers: { "Content-Type": "application/json" },
 });
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
   //get token  
-  let token = JSON.parse(localStorage.getItem("token"));
+  let token = JSON.parse(localStorage.getItem("client_token"));
   config.headers.Authorization = token ? `Bearer ${token}` : "";
   return config;
 });
@@ -22,7 +22,15 @@ axios.interceptors.response.use(
   },
   (error) => {
     console.log(error);
-    if (error.response.status === 401) {
+    if(!error.response) {
+      localStorage.clear();
+      // history.push("/login");
+      history.push('/login');
+      MyStore.dispatch({
+        type: "USER_LOG_OUT",
+      });
+    }
+    else if (error.response.status === 401) {
       console.log(error.response);
       // alert(error.response);
       Swal.fire({
@@ -30,14 +38,15 @@ axios.interceptors.response.use(
         text: 'Vui lòng đăng nhập lại',
         icon: "warning",
         confirmButtonText: 'OK'
-      });
-      localStorage.clear();
-
-      // history.push("/login");
-      window.location.href = "./login";
-      MyStore.dispatch({
-        type: "USER_LOG_OUT",
-      });
+      }).then((result) => {
+        if (result.value) {
+          localStorage.clear();
+          history.push("/login");
+          MyStore.dispatch({
+            type: "USER_LOG_OUT",
+          });
+        }
+      });;
     }
     return Promise.reject(error);
   }

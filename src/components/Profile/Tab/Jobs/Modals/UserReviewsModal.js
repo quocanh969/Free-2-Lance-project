@@ -26,7 +26,7 @@ class UserReviewsModalComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -64,51 +64,57 @@ class UserReviewsModalComponent extends Component {
   }
 
   generateReviewsList() {
-    let { reviewList } = this.props.EmployerReducer;
+    let { reviewList, isLoadingreviewList } = this.props.EmployerReducer;
     let content = [];
-    console.log(reviewList);
+    if (isLoadingreviewList) return (<div className="loading" key={1}>
+      <div className="spinner-border text-primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
     if (reviewList.length > 0) {
       reviewList.forEach((e, index) => {
-        content.push(
-          <li key={index}>
-            {/* Infomation */}
-            <div>
-              <div className="container">
-                <div className="row">
-                  <div className="col-xl-5">
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Họ và tên: </span>
-                      {e.employee_name}
+        if (e.rating_fromEmployee !== null) {
+          content.push(
+            <li key={index}>
+              {/* Infomation */}
+              <div>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xl-5">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Họ và tên: </span>
+                        {e.employee_name}
+                      </div>
+                    </div>
+                    <div className="col-xl-4">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Đánh giá: </span>
+                        <span style={{ marginBottom: "5px" }}>
+                          <StarRatings
+                            rating={e.rating_fromEmployee}
+                            starRatedColor="blue"
+                            starDimension="23px"
+                            starSpacing="10px"
+                            numberOfStars={5}
+                            name="rating"
+                          />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-xl-4">
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Đánh giá: </span>
-                      <span style={{ marginBottom: "5px" }}>
-                        <StarRatings
-                          rating={e.rating_fromEmployee}
-                          starRatedColor="blue"
-                          starDimension="23px"
-                          starSpacing="10px"
-                          numberOfStars={5}
-                          name="rating"
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-xl-9">
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Phản hồi: </span>
-                      {e.feedback_fromEmployee}
+                  <div className="row mt-2">
+                    <div className="col-xl-9">
+                      <div style={{ width: "80vh" }} className="text-truncate">
+                        <span className="font-weight-bold">Phản hồi: </span>
+                        {e.feedback_fromEmployee}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </li>
-        );
+            </li>
+          );
+        }
       });
     } else {
       content.push(
@@ -122,7 +128,7 @@ class UserReviewsModalComponent extends Component {
   }
 
   render() {
-    let { totalReviews, currentReviewPage } = this.props.EmployerReducer;
+    let { totalReviews, currentReviewPage, isLoadingreviewList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalReviews / takenReviewsPerPage);
     return (
       <div className="modal-content">
@@ -155,49 +161,49 @@ class UserReviewsModalComponent extends Component {
                 </div>
               </div>
 
-              {totalReviews === 0 ? (
+              {(totalReviews === 0 || isLoadingreviewList) ? (
                 ""
               ) : (
-                <div className="pagination-container margin-top-20">
-                  <nav className="pagination">
-                    <ul>
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          ((currentReviewPage === 1 ||
-                            totalPage - currentReviewPage < 3) &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentReviewPage - 1);
-                          }}
+                  <div className="pagination-container margin-top-20">
+                    <nav className="pagination">
+                      <ul>
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            ((currentReviewPage === 1 ||
+                              totalPage - currentReviewPage < 3) &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-left" />
-                        </div>
-                      </li>
-                      {this.renderPagination(currentReviewPage, totalPage)}
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          (totalPage - currentReviewPage < 3 && "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentReviewPage + 1);
-                          }}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentReviewPage - 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-left" />
+                          </div>
+                        </li>
+                        {this.renderPagination(currentReviewPage, totalPage)}
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            (totalPage - currentReviewPage < 3 && "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-right" />
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentReviewPage + 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-right" />
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
             </div>
           </div>
         </div>

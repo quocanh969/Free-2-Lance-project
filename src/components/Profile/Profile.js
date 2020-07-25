@@ -18,6 +18,7 @@ import ChangePassword from './Tab/ChangePassword';
 
 import DetailTemplate from './Tab/Jobs/JobDetail/DetailTemplate';
 import { history } from '../../ultis/history/history';
+import Transaction from './Tab/Transaction';
 const firebase = require("firebase");
 
 class ProfileComponent extends Component {
@@ -63,7 +64,7 @@ class ProfileComponent extends Component {
                         }
                     });
                     await this.setState({
-                        unreadMessage
+                        unreadMessage,
                     });
                 })
         }
@@ -125,6 +126,10 @@ class ProfileComponent extends Component {
                 return (
                     <DetailTemplate></DetailTemplate>
                 );
+            case 14:
+                return (
+                    <Transaction></Transaction>
+                );
             default: return (<div></div>);
         }
     }
@@ -136,6 +141,7 @@ class ProfileComponent extends Component {
         localStorage.clear();
         onLogOut();
         history.push("/login");
+        // window.location.replace('/login');
     }
 
     render() {
@@ -174,7 +180,6 @@ class ProfileComponent extends Component {
                                                     </li>
                                                     <li className={(this.state.tab === 2 ? 'active' : '')}>
                                                         <NavLink className='cursor-pointer' to='/dashboard/tab=2'>
-
                                                             <i className="icon-material-outline-question-answer" /> Tin nhắn {
                                                                 unreadMessage > 0 && <span className="nav-tag">{unreadMessage}</span>
                                                             }
@@ -183,8 +188,19 @@ class ProfileComponent extends Component {
                                                     <li className={(this.state.tab === 3 ? 'active' : '')}>
                                                         <NavLink className='cursor-pointer' to='/dashboard/tab=3'>
                                                             <i className="icon-material-outline-rate-review" /> Phản hồi
-                                                </NavLink>
+                                                        </NavLink>
                                                     </li>
+                                                    {(
+                                                    user.isBusinessUser
+                                                        ?
+                                                        ""
+                                                        :
+                                                        <li className={(this.state.tab === 14 ? 'active' : '')}>
+                                                            <NavLink className='cursor-pointer' to='/dashboard/tab=14'>
+                                                                <i className="icon-material-outline-account-balance" /> Xem doanh thu
+                                                            </NavLink>
+                                                        </li>
+                                                    )}
                                                 </ul>
                                                 <ul data-submenu-title="Quản lý đăng công việc">
                                                     <li className={(this.state.tab === 4 ? 'active' : '')}>

@@ -1,13 +1,18 @@
 const initState = {
   // =====
+  isLoadingApplyingTasksList: false,
   applyingTasksList: [],
   totalApplyingTasks: 0,
   currentApplyingPage: 0,
+
+  selectApplyingTaskId: null,
   // =====
+  isLoadingProcessingTasksList: false,
   processingTasksList: [],
   totalProcessingTasks: 0,
   currentProcessingPage: 0,
   // =====
+  isLoadingFinishedTasksList: false,
   finishedTasksList: [],
   totalFinishedTasks: 0,
   currentFinishedPage: 0,
@@ -15,7 +20,10 @@ const initState = {
   selectedReviewApplicantId: null,
   selectedReviewJobId: null,
   selectedReportedUser: null,
+  selectedReportedApplicantId: null,
+  selectedReportedJobId: null,
   reviewList: [],
+  isLoadingReviewList: false,
 };
 
 const ApplicantReducer = (state = initState, action) => {
@@ -23,9 +31,20 @@ const ApplicantReducer = (state = initState, action) => {
     case "APPLICANT_APPLYING_TASK_UPDATE":
       return {
         ...state,
+        isLoadingApplyingTasksList: false,
         applyingTasksList: action.jobList,
         totalApplyingTasks: action.total,
         currentApplyingPage: action.page,
+      };
+    case "APPLICANT_APPLYING_TASK_LOADING":
+      return {
+        ...state,
+        isLoadingApplyingTasksList: true,
+      };
+    case "APPLICANT_APPLYING_TASK_FAILURE":
+      return {
+        ...state,
+        isLoadingApplyingTasksList: false,
       };
     case "APPLICANT_APPLYING_TASK_RESET":
       return {
@@ -34,12 +53,30 @@ const ApplicantReducer = (state = initState, action) => {
         totalApplyingTasks: 0,
         currentApplyingPage: 0,
       };
+    case "APPLICANT_APPLYING_SELECT_JOB": 
+      return {
+        ...state,
+        selectApplyingTaskId: action.id_job,
+      };
+// ===========================================================================================
+
     case "APPLICANT_PROCESSING_TASK_UPDATE":
       return {
         ...state,
+        isLoadingProcessingTasksList: false,
         processingTasksList: action.jobList,
         totalProcessingTasks: action.total,
         currentProcessingPage: action.page,
+      };
+    case "APPLICANT_PROCESSING_TASK_LOADING":
+      return {
+        ...state,
+        isLoadingProcessingTasksList: true,
+      };
+    case "APPLICANT_PROCESSING_TASK_FAILURE":
+      return {
+        ...state,
+        isLoadingProcessingTasksList: false,
       };
     case "APPLICANT_PROCESSING_TASK_RESET":
       return {
@@ -48,12 +85,24 @@ const ApplicantReducer = (state = initState, action) => {
         totalProcessingTasks: 0,
         currentProcessingPage: 0,
       };
+  // ===========================================================================================
     case "APPLICANT_FINISHED_TASK_UPDATE":
       return {
         ...state,
+        isLoadingFinishedTasksList: false,
         finishedTasksList: action.jobList,
         totalFinishedTasks: action.total,
         currentFinishedPage: action.page,
+      };
+    case "APPLICANT_FINISHED_TASK_LOADING":
+      return {
+        ...state,
+        isLoadingFinishedTasksList: true,
+      };
+    case "APPLICANT_FINISHED_TASK_FAILURE":
+      return {
+        ...state,
+        isLoadingFinishedTasksList: false,
       };
     case "APPLICANT_FINISHED_TASK_RESET":
       return {
@@ -66,6 +115,8 @@ const ApplicantReducer = (state = initState, action) => {
       return {
         ...state,
         selectedReportedUser: action.userId,
+        selectedReportedApplicantId: action.applicantId,
+        selectedReportedJobId: action.jobId,
       };
     case "APPLICANT_SELECT_REVIEW_USER":
       return {
@@ -77,6 +128,17 @@ const ApplicantReducer = (state = initState, action) => {
       return {
         ...state,
         reviewList: action.list,
+        isLoadingReviewList: false,
+      };
+    case "APPLICANT_REVIEW_LOADING":
+      return {
+        ...state,
+        isLoadingReviewList: true,
+      };
+    case "APPLICANT_REVIEW_FAILURE":
+      return {
+        ...state,
+        isLoadingReviewList: false,
       };
     default:
       return state;

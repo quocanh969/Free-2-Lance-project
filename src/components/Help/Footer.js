@@ -4,87 +4,110 @@ import Logo2 from '../../assets/images/logo2.png';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-export default class Footer extends Component {
+class FooterComponent extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
     }
     render() {
+        let { user } = this.props.HeaderReducer;
+
         return (
-            < div id = "footer" >                
-                
+            < div id="footer" >
+
                 <div className="footer-middle-section">
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-3 col-lg-3 col-md-12 border-right border-secondary">
                                 <img src={Logo2}></img>
                             </div>
-                            {/* Links */}
-                            <div className="col-xl-2 col-lg-2 col-md-3">
+                            <div className="col-xl-3 col-lg-3 col-md-4">
                                 <div className="footer-links">
-                                    <h3>For Candidates</h3>
+                                    <h3>Người dùng</h3>
                                     <ul>
-                                        <li><NavLink to="/"><span>Browse Jobs</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Add Resume</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Job Alerts</span></NavLink></li>
-                                        <li><NavLink to="/"><span>My Bookmarks</span></NavLink></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            {/* Links */}
-                            <div className="col-xl-2 col-lg-2 col-md-3">
-                                <div className="footer-links">
-                                    <h3>Người ứng tuyển</h3>
-                                    <ul>
+                                        <li><NavLink to="/job-list"><span>Xem tất cả công việc</span></NavLink></li>
                                         <li><NavLink to="/search"><span>Tìm kiếm công việc</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Post a Job</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Post a Task</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Plans &amp; Pricing</span></NavLink></li>
+                                        {(
+                                            user === null
+                                            ?
+                                            ''
+                                            :
+                                            <li><NavLink to="/dashboard/tab=4"><span>Đăng việc</span></NavLink></li>
+                                        )}                                        
                                     </ul>
                                 </div>
                             </div>
-                            {/* Links */}
-                            <div className="col-xl-2 col-lg-2 col-md-3">
-                                <div className="footer-links">
-                                    <h3>Helpful Links</h3>
-                                    <ul>
-                                        <li><NavLink to="/contact"><span>Contact</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Privacy Policy</span></NavLink></li>
-                                        <li><NavLink to="/"><span>Terms of Use</span></NavLink></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            {/* Tài khoản */}
-                            <div className="col-xl-2 col-lg-2 col-md-3">
-                                <div className="footer-links">
-                                    <h3>Tài khoản</h3>
-                                    <ul>     
 
-                                        <li><NavLink to='/login'><span>Log In</span></NavLink></li>
-                                        <li><NavLink to="/dashboard"><span>Tài khoản của tôi</span></NavLink></li>
+                            {/* Tài khoản */}
+                            {(
+                                user === null
+                                ?
+                                ''
+                                :
+                                <div className="col-xl-3 col-lg-3 col-md-4">
+                                    <div className="footer-links">
+                                        <h3>Tài khoản người dùng</h3>
+                                        <ul>
+                                            <li><NavLink to="/dashboard/tab=1"><span>Thông tin chung</span></NavLink></li>
+                                            <li><NavLink to="/dashboard/tab=4"><span>Quản lý đăng việc</span></NavLink></li>
+                                            <li><NavLink to="/dashboard/tab=8"><span>Quản lý việc làm</span></NavLink></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}                            
+
+                            <div className="col-xl-3 col-lg-3 col-md-4">
+                                <div className="footer-links">
+                                    <h3>Hỗ trợ</h3>
+                                    <ul>
+                                        <div>
+                                            <li><NavLink to='/contact'><span>Liên hệ với chúng tôi</span></NavLink></li>
+                                            {(
+                                                user === null
+                                                ?
+                                                <div>
+                                                    <li><NavLink to='/login'><span>Đăng nhập tài khoản</span></NavLink></li>
+                                                    <li><NavLink to='/register'><span>Tạo tài khoản</span></NavLink></li>
+                                                </div>
+                                                :
+                                                ''
+                                            )}                                 
+                                        </div>
                                     </ul>
                                 </div>
                             </div>
-                            
-                            
+
                         </div>
                     </div>
                 </div>
-                
-       
-                {/* Footer Copyrights */ }
+
+
+                {/* Footer Copyrights */}
                 <div className="footer-bottom-section">
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-12">
                                 © 2018 <strong>Hireo</strong>. All Rights Reserved.
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
-                {/* Footer Copyrights / End */ }
-            </div >            
+                {/* Footer Copyrights / End */}
+            </div >
         )
+
     }
 }
+
+// Container
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+}
+
+const Footer = withRouter(connect(mapStateToProps, mapDispatchToProps)(FooterComponent));
+export default Footer;

@@ -11,6 +11,7 @@ import {
   getImageSrc,
 } from "../../../../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
+import StarRatings from "react-star-ratings";
 
 export const takenApplyingApplicantsPerPage = 3;
 class JobsApplyingModalComponent extends Component {
@@ -20,6 +21,7 @@ class JobsApplyingModalComponent extends Component {
 
   handlePagination(pageNum) {
     if (pageNum !== this.props.EmployerReducer.currentApplicantsPage) {
+      window.scrollTo(0, 0);
       this.loadApplicantListFunc(pageNum);
     }
   }
@@ -29,7 +31,7 @@ class JobsApplyingModalComponent extends Component {
     let start = 1,
       end = 4;
     if (totalPage - 4 < page) {
-      if (totalPage - 4 < 0) {
+      if (totalPage - 4 <= 0) {
         start = 1;
       } else {
         start = totalPage - 4;
@@ -71,6 +73,13 @@ class JobsApplyingModalComponent extends Component {
   }
 
   acceptApplicant(userId, email, applicantId) {
+    //check number of vacancy
+    let { totalNeedApplicants } = this.props.EmployerReducer
+    if (totalNeedApplicants <= 0) {
+      Swal.fire("Đã đạt số lượng người cần tuyển", "Vui lòng bắt đầu công việc!!", "error");
+      return;
+    }
+    //accept applicant
     Swal.fire({
       title: "Bạn có chắc muốn tuyển ứng viên này??",
       text: "Bạn sẽ phải thanh toán trước",
@@ -104,6 +113,12 @@ class JobsApplyingModalComponent extends Component {
   }
 
   rejectApplicant(userId, email) {
+    //check number of vacancy
+    let { totalNeedApplicants } = this.props.EmployerReducer
+    if (totalNeedApplicants <= 0) {
+      Swal.fire("Đã đạt số lượng người cần tuyển", "Vui lòng bắt đầu công việc!!", "error");
+      return;
+    }
     Swal.fire({
       title: "Bạn có chắc muốn từ chối ứng viên này??",
       icon: "warning",
@@ -124,8 +139,6 @@ class JobsApplyingModalComponent extends Component {
         onSendRejectApplicant(
           selectedApplyingJobId,
           userId,
-          email,
-          selectedApplyingJobTitle,
           currentApplicantsPage,
           currentApplyingPage,
           takenApplyingApplicantsPerPage
@@ -169,8 +182,13 @@ class JobsApplyingModalComponent extends Component {
   }
 
   generateApplicantsList() {
-    let { applicantsList } = this.props.EmployerReducer;
+    let { applicantsList, isLoadingApplicantsList, selectedApplyingUserId } = this.props.EmployerReducer;
     let content = [];
+    if (isLoadingApplicantsList) return (<div className="loading my-2 py-4" key={1}>
+      <div className="spinner-border text-primary " role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>);
 
     if (applicantsList.length > 0) {
       applicantsList.forEach((e, index) => {
@@ -181,62 +199,103 @@ class JobsApplyingModalComponent extends Component {
               <div className="container">
                 <div className="row">
                   <div className="col-xl-5">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Họ và tên: </span>
                       {e.fullname}
                     </div>
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Email: </span>
                       {e.email}
                     </div>
+                    <div style={{ width: "80vh" }} className="text-truncate">
+                      <span className="font-weight-bold">Đã làm: </span>
+                      {e.employee_job} công việc
+                    </div>
+
                   </div>
                   <div className="col-xl-4">
-                    <div style={{ width: "100vh" }} className="text-truncate">
+                    <div style={{ width: "80vh" }} className="text-truncate">
                       <span className="font-weight-bold">Số điện thoại: </span>
                       {e.dial}
                     </div>
-                    <div style={{ width: "100vh" }} className="text-truncate">
-                      <span className="font-weight-bold">Lương: </span>
+                    <div style={{ width: "80vh" }} className="text-truncate">
+                      <span className="font-weight-bold">Lương yêu cầu: </span>
                       {prettierNumber(e.proposed_price)} VNĐ
                     </div>
+                    <div style={{ width: "80vh" }} className="text-truncate">
+                      <span className="font-weight-bold">Được đánh giá: </span>
+                      <StarRatings
+                        rating={e.employer_rating}
+                        starRatedColor="ffd11a"
+                        starDimension="18px"
+                        starSpacing="3px"
+                        numberOfStars={5}
+                        name="rating"
+                      />
+                    </div>
                   </div>
+
+                </div>
+                <div style={{ width: '450px' }} className="text-truncate">
+                  <span className="font-weight-bold">Tự giới thiệu: </span>
+                  {e.introduction_string}
                 </div>
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="container text-right">
-              <span
-                onClick={() =>
-                  this.acceptApplicant(e.id_user, e.email, e.id_applicant)
-                }
-                className="btn mx-2 py-2 px-4 bg-success text-white rounded"
-              >
-                <i className="icon-material-outline-check-circle"></i> Phê duyệt
-              </span>
-              <span
-                onClick={() => this.viewApplicantInfo(e.id_user)}
-                className="btn mx-2 py-2 px-4 bg-293FE4 text-white rounded"
-              >
-                <i className="icon-material-outline-supervisor-account"></i> Xem
-                thông tin
-              </span>
-              <span
-                data-toggle="modal"
-                data-target="#CVModal"
-                className="btn mx-2 py-2 px-4 bg-silver rounded"
-                onClick={() => this.viewApplicantCV(e.attachment)}
-              >
-                <i className="icon-line-awesome-clone" /> Xem CV
-              </span>
+            {(
+              selectedApplyingUserId === e.id_user
+                ?
+                <div className='text-center w-100 my-2'>
+                  <div className="loading my-2 text-center" key={1}>
+                    <div className="spinner-border text-primary " role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>                
+                :
+                <div className="container text-right" style={{ marginTop: "10px" }}>
+                  <span
+                    onClick={() =>
+                      this.acceptApplicant(e.id_user, e.email, e.id_applicant)
+                    }
+                    className="btn m-2 py-2 px-4 bg-success text-white rounded"
+                  >
+                    <i className="icon-material-outline-check-circle"></i> Phê duyệt
+                  </span>
+                  <span
+                    onClick={() => this.viewApplicantInfo(e.id_user)}
+                    className="btn m-2 py-2 px-4 bg-293FE4 text-white rounded"
+                  >
+                    <i className="icon-material-outline-supervisor-account"></i> Xem
+                    thông tin
+                  </span>
 
-              <span
-                onClick={() => this.rejectApplicant(e.id_user, e.email)}
-                className="btn mx-2 py-2 px-4 bg-danger text-white rounded"
-              >
-                <i className="icon-line-awesome-hand-stop-o" /> Từ chối
-              </span>
-            </div>
+                  {(
+                    e.attachment === ''
+                      ?
+                      ''
+                      :
+                      <span
+                        data-toggle="modal"
+                        data-target="#CVModal"
+                        className="btn m-2 py-2 px-4 bg-silver rounded"
+                        onClick={() => this.viewApplicantCV(e.attachment)}
+                      >
+                        <i className="icon-line-awesome-clone" /> Xem CV
+                      </span>
+                  )}
+
+
+                  <span
+                    onClick={() => this.rejectApplicant(e.id_user, e.email)}
+                    className="btn m-2 py-2 px-4 bg-danger text-white rounded"
+                  >
+                    <i className="icon-line-awesome-hand-stop-o" /> Từ chối
+                  </span>
+                </div>
+            )}
+
           </li>
         );
       });
@@ -252,7 +311,7 @@ class JobsApplyingModalComponent extends Component {
   }
 
   render() {
-    let { totalApplicants, currentApplicantsPage } = this.props.EmployerReducer;
+    let { totalApplicants, currentApplicantsPage, isLoadingApplicantsList } = this.props.EmployerReducer;
     let totalPage = Math.ceil(totalApplicants / takenApplyingApplicantsPerPage);
     return (
       <div className="modal-content">
@@ -285,49 +344,49 @@ class JobsApplyingModalComponent extends Component {
                 </div>
               </div>
 
-              {totalApplicants === 0 ? (
+              {(totalApplicants === 0 || isLoadingApplicantsList) ? (
                 ""
               ) : (
-                <div className="pagination-container margin-top-20">
-                  <nav className="pagination">
-                    <ul>
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          ((currentApplicantsPage === 1 ||
-                            totalPage - currentApplicantsPage < 3) &&
-                            "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentApplicantsPage - 1);
-                          }}
+                  <div className="pagination-container margin-top-20">
+                    <nav className="pagination">
+                      <ul>
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            ((currentApplicantsPage === 1 ||
+                              totalPage - currentApplicantsPage < 3) &&
+                              "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-left" />
-                        </div>
-                      </li>
-                      {this.renderPagination(currentApplicantsPage, totalPage)}
-                      <li
-                        className={
-                          "pagination-arrow " +
-                          (totalPage - currentApplicantsPage < 3 && "d-none")
-                        }
-                      >
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            this.handlePagination(currentApplicantsPage + 1);
-                          }}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentApplicantsPage - 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-left" />
+                          </div>
+                        </li>
+                        {this.renderPagination(currentApplicantsPage, totalPage)}
+                        <li
+                          className={
+                            "pagination-arrow " +
+                            (totalPage - currentApplicantsPage < 3 && "d-none")
+                          }
                         >
-                          <i className="icon-material-outline-keyboard-arrow-right" />
-                        </div>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              )}
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              this.handlePagination(currentApplicantsPage + 1);
+                            }}
+                          >
+                            <i className="icon-material-outline-keyboard-arrow-right" />
+                          </div>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -376,8 +435,6 @@ const mapDispatchToProps = (dispatch) => {
     onSendRejectApplicant: (
       jobId,
       userId,
-      email,
-      job_title,
       page,
       jobPage,
       take
@@ -386,8 +443,6 @@ const mapDispatchToProps = (dispatch) => {
         sendRejectApplicant(
           jobId,
           userId,
-          email,
-          job_title,
           page,
           jobPage,
           take

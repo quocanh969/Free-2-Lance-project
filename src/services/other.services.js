@@ -13,5 +13,20 @@ function getStatistic() {
     return axios.get('/getStatistic');
 }
 
+function getDetailReview(id_applicant) {
+    return axios.post('/getDetailReview', {
+        id_applicant,
+    })
+}
 
-export { getAllAreas, getStatistic, getAllDistrictsFromArea };
+function getDetailReport(id_user2, type, applicantId, jobId) {
+    return axios.post('/accepted/getDetailReport', {
+        id_user2,
+        type,
+        applicantId,
+        jobId,
+    })
+}
+
+
+export { getAllAreas, getStatistic, getAllDistrictsFromArea, getDetailReview, getDetailReport };
