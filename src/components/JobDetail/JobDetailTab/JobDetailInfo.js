@@ -25,7 +25,7 @@ class JobDetailInfoComponent extends Component {
 
         <div className="row my-3">
           <div className="col-3 font-weight-bold">Chủ đề:</div>
-          <div className="col-9">{jobDetail.job_topic}</div>
+          <div className="col-9">{jobDetail.topic_name}</div>
         </div>
 
         <div className="row my-3">
