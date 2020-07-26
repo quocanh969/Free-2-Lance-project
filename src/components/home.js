@@ -244,7 +244,7 @@ class HomeComponent extends Component {
         return b.count - a.count;
       })
       .slice(0, 8);
-    if (isLoadingJobTopic) return (<div className="loading" key={1}>
+    if (isLoadingJobTopic) return (<div className="loading w-100 text-center" key={1}>
       <div className="spinner-border text-primary" role="status">
         <span className="sr-only">Loading...</span>
       </div>
@@ -398,7 +398,7 @@ class HomeComponent extends Component {
     let content = [],
       count = 0;
     let { topUsers, isLoadingTopUsers } = this.props.HomeReducer;
-    if (isLoadingTopUsers) return (<div className="loading" key={1}>
+    if (isLoadingTopUsers) return (<div className="loading w-100 text-center" key={1}>
       <div className="spinner-border text-primary" role="status">
         <span className="sr-only">Loading...</span>
       </div>
@@ -512,6 +512,7 @@ class HomeComponent extends Component {
   }
 
   render() {
+    let { topUsers } = this.props.HomeReducer;
     return (
       <div>
         {this.bannerSession()}
@@ -570,48 +571,57 @@ class HomeComponent extends Component {
         {/* Featured Jobs / End */}
 
         {/* Testimonials */}
-        <div className="section gray padding-top-10 padding-bottom-55">
-          <div className="container">
-            <div className="row">
-              <div className="col-xl-12">
-                {/* Section Headline */}
-                <div className="section-headline centered margin-top-0 margin-bottom-5">
-                  <h3>Những người dùng nổi bật</h3>
+        {(
+          topUsers.length > 0
+            ?
+
+            <div div className="section gray padding-top-10 padding-bottom-55">
+              <div className="container">
+                <div className="row">
+                  <div className="col-xl-12">
+                    {/* Section Headline */}
+                    <div className="section-headline centered margin-top-0 margin-bottom-5">
+                      <h3>Những người dùng nổi bật</h3>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div
-            id="myCarousel"
-            className="carousel slide w-50 task-listing p-5"
-            data-ride="carousel"
-          >
-            {/* Wrapper for carousel items */}
-            <div className="carousel-inner">{this.renderTestimonials()}</div>
-            {/* Carousel controls */}
-            <a
-              className="carousel-control left carousel-control-prev ml-4"
-              href="#myCarousel"
-              data-slide="prev"
-            >
-              <i className="icon-line-awesome-angle-left" />
-            </a>
-            <a
-              className="carousel-control right carousel-control-next mr-4"
-              href="#myCarousel"
-              data-slide="next"
-            >
-              <i className="icon-line-awesome-angle-right" />
-            </a>
-          </div>
-        </div>
+
+              <div
+                id="myCarousel"
+                className="carousel slide w-50 task-listing p-5"
+                data-ride="carousel"
+              >
+                {/* Wrapper for carousel items */}
+                <div className="carousel-inner">{this.renderTestimonials()}</div>
+                {/* Carousel controls */}
+                <a
+                  className="carousel-control left carousel-control-prev ml-4"
+                  href="#myCarousel"
+                  data-slide="prev"
+                >
+                  <i className="icon-line-awesome-angle-left" />
+                </a>
+                <a
+                  className="carousel-control right carousel-control-next mr-4"
+                  href="#myCarousel"
+                  data-slide="next"
+                >
+                  <i className="icon-line-awesome-angle-right" />
+                </a>
+              </div>
+            </div>
+
+            :
+            ''
+        )}
         {/* Testimonials / End */}
 
         {/* Counters */}
         {this.renderCounter()}
         {/* Counters / End */}
-      </div>
+      </div >
     );
   }
 }
