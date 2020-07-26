@@ -93,7 +93,7 @@ class LoginComponent extends Component {
                   </span>
                 </div>
                 <div className="text-danger">
-                  *Nếu bạn đăng nhập không đúng tài khoản, mật khẩu thì vui lòng kiểm tra lại email xem có thông tin yêu cầu "Quên mật khẩu" không!
+                  *Nếu bạn đăng nhập không đúng tài khoản, mật khẩu thì vui lòng kiểm tra lại email xem có thông tin yêu cầu "Quên mật khẩu" không hoặc do tài khoản của bạn chưa kích hoạt!
                 </div>
                 {/* Form */}
                 <form

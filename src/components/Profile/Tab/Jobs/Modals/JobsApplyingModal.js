@@ -112,6 +112,11 @@ class JobsApplyingModalComponent extends Component {
     });
   }
 
+  handleStopAccept() {
+    let {onStopAccept} = this.props;
+    onStopAccept();
+  }
+
   rejectApplicant(userId, email) {
     //check number of vacancy
     let { totalNeedApplicants } = this.props.EmployerReducer
@@ -251,6 +256,9 @@ class JobsApplyingModalComponent extends Component {
                     <div className="spinner-border text-primary " role="status">
                       <span className="sr-only">Loading...</span>
                     </div>
+                  </div>
+                  <div className='btn btn-primary w-100' onClick={() => this.handleStopAccept()}>
+                    Ngưng hoạt động chấp nhận
                   </div>
                 </div>                
                 :
@@ -448,6 +456,11 @@ const mapDispatchToProps = (dispatch) => {
           take
         )
       );
+    },
+    onStopAccept: () => {
+      dispatch({
+        type: 'STOP_ACCEPT_EMPLOYER',
+      })
     },
   };
 };

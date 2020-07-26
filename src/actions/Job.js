@@ -22,6 +22,7 @@ import {
 } from "../services/job.services";
 import Swal from "sweetalert2";
 import { history } from "../ultis/history/history";
+import { MyStore } from "..";
 
 //#region load job
 export const loadJobList = (page, take, isASC, query) => {
@@ -597,7 +598,7 @@ const GetResultTransactions = (
             .catch((err) => {
               console.log(err);
             });
-        } else {
+        } else if(MyStore.getState().EmployerReducer.isWaitingForMomo) {
           setTimeout(() => {
             dispatch(
               GetResultTransactions(
@@ -612,6 +613,10 @@ const GetResultTransactions = (
               )
             );
           }, 3000);
+        }
+        else {
+          // do nothing
+          dispatch(finishSelect());
         }
       })
       .catch((err) => {

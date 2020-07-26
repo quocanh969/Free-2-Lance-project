@@ -50,6 +50,8 @@ const initState = {
   reviewList: [],
   totalReviews: 0,
   currentReviewPage: 0,
+
+  isWaitingForMomo: false,
 };
 
 const EmployerReducer = (state = initState, action) => {
@@ -126,6 +128,7 @@ const EmployerReducer = (state = initState, action) => {
       return {
         ...state,
         selectedApplyingUserId: action.id_user,
+        isWaitingForMomo: true,
       };
     case "EMPLOYER_APPLYING_SELECT_JOB": 
       return {
@@ -312,6 +315,13 @@ const EmployerReducer = (state = initState, action) => {
         currentReviewPage: 0,
       };
       
+    
+    case "STOP_ACCEPT_EMPLOYER":
+      return {
+        ...state,
+        isWaitingForMomo: false,
+      };
+
     default:
     return state;
   }
