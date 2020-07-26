@@ -44,23 +44,33 @@ class JobsApplyingComponent extends Component {
     onLoadApplyingJob(page, 4, 0);
   }
 
-  StopRecuit(jobId) {
-    Swal.fire({
-      title: "Bạn có chắc muốn ngừng tuyển??",
-      text: "Công việc sẽ chuyển qua trạng thái thực hiện!!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Ngừng tuyển",
-      cancelButtonText: "Hủy bỏ",
-    }).then((result) => {
-      if (result.value) {
-        let { onCancelRecruit } = this.props;
-        let { currentApplyingPage } = this.props.EmployerReducer;
-        onCancelRecruit(jobId, currentApplyingPage, 4, 0);
-      }
-    });
+  StopRecuit(jobId, participants) {
+    if(participants === 0) {
+      Swal.fire({
+        title: 'Bạn không thể bắt đầu công việc',
+        text: 'Bạn vẫn chưa tuyển được người nào cho công việc này nên công việc không thể tiếp tục',
+        icon: 'error',
+      })
+    }
+    else {
+      Swal.fire({
+        title: "Bạn có chắc muốn ngừng tuyển??",
+        text: "Công việc sẽ chuyển qua trạng thái thực hiện!!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Ngừng tuyển",
+        cancelButtonText: "Hủy bỏ",
+      }).then((result) => {
+        if (result.value) {
+          let { onCancelRecruit } = this.props;
+          let { currentApplyingPage } = this.props.EmployerReducer;
+          onCancelRecruit(jobId, currentApplyingPage, 4, 0);
+        }
+      });
+    }
+    
   }
 
   removeJob(jobId) {
@@ -252,7 +262,7 @@ class JobsApplyingComponent extends Component {
                   </span>
                   {/* <span className='btn mx-2 p-2 bg-silver rounded'><i className="icon-feather-edit"/> Edit</span> */}
                   <span
-                    onClick={() => this.StopRecuit(e.id_job)}
+                    onClick={() => this.StopRecuit(e.id_job, e.participants)}
                     className="btn m-2 py-2 px-4 bg-success text-white rounded"
                   >
                     <i className="icon-material-outline-check" /> Bắt đầu công việc
@@ -337,6 +347,9 @@ class JobsApplyingComponent extends Component {
           ( Để xem phản hồi của người khác về mình, vui lòng vào trang{" "}
           <NavLink to="/dashboard/tab=3">Phản hồi</NavLink> )
         </p>
+        <div className='my-3'>
+          <div className='btn btn-primary' onClick={() => {this.loadJobListFunc(1)}}>Làm mới danh sách</div>
+        </div>
         {/* Row */}
         <div className="row">
           {/* Dashboard Box */}

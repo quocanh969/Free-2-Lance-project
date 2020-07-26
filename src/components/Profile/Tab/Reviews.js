@@ -212,10 +212,12 @@ class ReviewsComponent extends Component {
                 <div className="row">
                     {/* Dashboard Box */}
                     <div className="col-xl-6">
+                        
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
-                            <div className="headline">
-                                <h3><i className="icon-material-outline-business" /> Phản hồi từ người thuê</h3>
+                            <div className="headline d-flex justify-content-between">
+                                <h3><i className="icon-material-outline-business" /> Phản hồi từ người thuê</h3>                                
+                                <div className='btn btn-primary' onClick={() => {this.loadTaskListFunc(1)}}><i className="icon-feather-refresh-ccw pt-1" /></div>
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">
@@ -256,8 +258,9 @@ class ReviewsComponent extends Component {
                     <div className="col-xl-6">
                         <div className="dashboard-box margin-top-0">
                             {/* Headline */}
-                            <div className="headline">
-                                <h3><i className="icon-material-outline-face" /> Phản hồi từ người nhân việc</h3>
+                            <div className="headline d-flex justify-content-between">
+                                <h3><i className="icon-material-outline-business" /> Phản hồi từ người làm</h3>                                
+                                <div className='btn btn-primary' onClick={() => {this.loadJobListFunc(1)}}><i className="icon-feather-refresh-ccw pt-1"/></div>
                             </div>
                             <div className="content">
                                 <ul className="dashboard-box-list">

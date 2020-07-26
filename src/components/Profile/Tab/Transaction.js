@@ -137,6 +137,9 @@ class TransactionComponent extends Component {
                 <p>
                     ( Vui lòng đến trung tâm CSKH của Free2Lance để có thể rút tiền công )
                 </p>
+                <div className='my-3'>
+                    <div className='btn btn-primary' onClick={() => {this.loadJobListFunc(1)}}>Làm mới danh sách</div>
+                </div>
                 {/* Row */}
                 <div className="card text-white bg-primary mb-3">
                     <div className="card-header">Tổng doanh thu</div>

@@ -283,6 +283,9 @@ class TasksApplyingComponent extends Component {
           ( Để xem phản hồi của người khác về mình, vui lòng vào trang{" "}
           <NavLink to="/dashboard/tab=3">Phản hồi</NavLink> )
         </p>
+        <div className='my-3'>
+          <div className='btn btn-primary' onClick={() => {this.loadJobList(1)}}>Làm mới danh sách</div>
+        </div>
         {/* Row */}
         <div className="row">
           {/* Dashboard Box */}

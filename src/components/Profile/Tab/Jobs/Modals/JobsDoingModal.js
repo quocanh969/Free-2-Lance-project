@@ -207,6 +207,9 @@ class JobsDoingModalComponent extends Component {
           </button>
         </div>
         <div className="modal-body">
+          <div className='my-3'>
+            <div className='btn btn-primary' onClick={() => {this.loadApplicantListFunc(1)}}>Làm mới danh sách</div>
+          </div>
           <div className="row">
             {/* Dashboard Box */}
             <div className="col-xl-12">
