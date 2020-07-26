@@ -61,4 +61,8 @@ function editCompanyInfo(company) {
   return axios.put('/users/editCompanyInfo',company);
 }
 
-export { login, getUserInfo, checkExpireJobs, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo, editCompanyInfo};
+function logOut() {
+  return axios.post("/logout");
+}
+
+export { login, logOut, getUserInfo, checkExpireJobs, register, forgetPassword, activateAccount, resendActivationMail, verify, editPersonalInfo, editCompanyInfo};

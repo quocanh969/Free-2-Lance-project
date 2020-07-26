@@ -1,6 +1,8 @@
 import { editPersonalInfo, getUserInfo, editCompanyInfo, checkExpireJobs } from '../services/account.services';
 import Swal from 'sweetalert2';
 import { getUserStatistic } from '../services/user.services';
+import { logOut } from '../services/account.services';
+import { history } from '../ultis/history/history';
 
 export const updatePersonalInfo = (personal) => {
     return dispatch => {
@@ -150,6 +152,32 @@ export const updateUserState = () => {
     function failure() {
         return {
             type: 'LOAD_USER_INFO_FAILURE'
+        }
+    }
+}
+
+export const doLogOut = () => {
+    return dispatch => {
+        logOut().then(res => {
+            if (res.code === 1) {
+                localStorage.clear();
+                dispatch(userLogOut);
+                history.push("/login");
+            }
+            else {
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Có lỗi trong việc gửi thông tin log out',
+                    icon: 'error',
+                })
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+    function userLogOut() {
+        return {
+            type: "USER_LOG_OUT",
         }
     }
 }

@@ -19,6 +19,7 @@ import ChangePassword from './Tab/ChangePassword';
 import DetailTemplate from './Tab/Jobs/JobDetail/DetailTemplate';
 import { history } from '../../ultis/history/history';
 import Transaction from './Tab/Transaction';
+import { doLogOut } from '../../actions/Account';
 const firebase = require("firebase");
 
 class ProfileComponent extends Component {
@@ -136,11 +137,7 @@ class ProfileComponent extends Component {
 
     handleLogOut() {
         let { onLogOut } = this.props;
-
-        console.log('hahaha');
-        localStorage.clear();
         onLogOut();
-        history.push("/login");
         // window.location.replace('/login');
     }
 
@@ -296,9 +293,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         onLogOut: () => {
-            dispatch({
-                type: "USER_LOG_OUT",
-            });
+            dispatch(doLogOut());
         },
     }
 }

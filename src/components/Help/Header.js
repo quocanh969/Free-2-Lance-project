@@ -11,7 +11,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import { loadTopics, loadAreas, loadTags } from "../../actions/Home";
 import { loadJobList } from "../../actions/Job";
-import { updateUserState, checkExpiredJob } from "../../actions/Account";
+import { updateUserState, checkExpiredJob, doLogOut } from "../../actions/Account";
 import { history } from "../../ultis/history/history";
 import { getImageSrc } from "../../ultis/SHelper/helperFunctions";
 import Swal from "sweetalert2";
@@ -153,9 +153,8 @@ class HeaderComponent extends Component {
 
   handleLogOut() {
     let { onLogOut } = this.props;
-    localStorage.clear();
     onLogOut();
-    history.push("/login");
+    
     // window.location.replace('/login');
   }
 
@@ -939,9 +938,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(checkExpiredJob());
     },
     onLogOut: () => {
-      dispatch({
-        type: "USER_LOG_OUT",
-      });
+      dispatch(doLogOut());
     },
     onLoadTopics: () => {
       dispatch(loadTopics());
