@@ -755,7 +755,7 @@ class HeaderComponent extends Component {
             </NavLink>
             <div className="dropdown-divider" />
             {(
-              user.id_status !== 2
+              user.account_status !== 2
               ?
               <div>
                 <div className='px-2 m-1 border border-danger'>Tài khoản của bạn chưa được xác thực, vui lòng cập nhật thông tin và liên hệ free2lance2020@gmail.com</div>
